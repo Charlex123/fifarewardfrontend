@@ -1,0 +1,79 @@
+.footer {
+    background-color: #111010bb;color: #ffffff !important;font-family: "Montserrat",sans-serif;margin: 0;
+    padding: 5rem 0 1rem 0;
+    text-align: center;
+}
+.footer .footermain {
+    display: flex;flex-direction: row;flex-wrap: nowrap;width: 100%;
+}
+.footer .footermain .footermain_in {
+    display: flex;flex-direction: row;flex-wrap: nowrap;width: 60%;
+}
+.footer .footermain .footermain_in .footer_c1,.footer .footermain .footermain_in .footer_c2 {
+    width: 45%;margin: 0 2%;
+}
+.footer .footermain .footer_c3 {
+    width: 30%;
+}
+.footer .footermain .footer_c1 h3, .footer .footermain .footer_c2 h3, .footer .footermain .footer_c3 h3 {
+    width: 100%;text-align: left;margin: 1rem .4rem .1rem 0;font-weight: 700;
+}
+.footer .footermain .footer_c1 .f_c, .footer .footermain .footer_c2 .f_c {
+    width: 100%;display: block;margin: 5px .4rem 2rem 0;padding: 5px;
+    text-align: left;
+}
+.footer .footermain .footer_c1 .f_c div, .footer .footermain .footer_c2 .f_c div {
+    text-align: left;margin-left: 0;margin-top: 1rem;
+}
+.footer .footermain .footer_c3 .f_c  {
+    margin-top: 1rem;
+}
+.footer .footermain .footer_c3 .f_c input {
+    background-color: #c9c8c8;color: #2c2b2b;font-size: 12px;font-weight: 600;padding: 3px 6px;
+    border-radius: 60px;width: 80%;
+}
+.footer .footermain .footer_c3 .f_c button {
+    background-color: orange;color: #2c2b2b;font-size: 12px;font-weight: 600;padding: 3px 12px;
+    border-radius: 60px;width: 15%;
+}
+.footer .footermain .footer_c3 .f_c div {
+    text-align: left;margin-left: 0;
+}
+.footer .footermain .footer_c3 .f_c span {
+    font-size: 14px;
+}
+.footer .footermain .footer_c3 .f_c a {
+    width: 94%;display: block;text-align: left;margin-top: 20px;color: #c9c8c8;
+}
+.footer .footermain .footer_c3 .f_c a.buylink {
+    width: fit-content;color: #ffffff;background-color: green;
+    font-weight: 800;padding: 3px 12px;border-radius: 120px;
+}
+.footer .footam {
+    color: #ffffff !important;text-align: center;padding: 5rem auto 5rem auto !important;
+}
+@media (max-width: 991px) {
+    .footer .footermain {
+        width: 100%;display: block;
+    }
+    .footer .footermain .footermain_in {
+        width: 100%;
+    }
+    .footer .footermain .footer_c3 {
+        width: 96%;margin-left: 2%;
+    }
+    .footer .footermain .footer_c3 .f_c input {
+        width: 70%;
+    }
+    .footer .footermain .footer_c3 .f_c button {
+        width: 10%;
+    }
+}
+@media (max-width: 767px) {
+    .footer .footermain .footer_c3 .f_c input {
+        width: 80%;
+    }
+    .footer .footermain .footer_c3 .f_c button {
+        width: 15%;
+    }
+}

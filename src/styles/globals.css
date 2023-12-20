@@ -1,0 +1,77 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css?family=Poppins");
+@import url("https://fonts.googleapis.com/css?family=Big+Shoulders+Text");
+@import url('https://fonts.googleapis.com/css?family=Roboto rel="stylesheet');
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC");
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+@import url("https://fonts.googleapis.com/css?family=Raleway");
+@import url("https://fonts.googleapis.com/css?family=Caveat");
+
+@font-face {
+  font-family: "BestermindRegular";
+  src: url("../assets/fonts/Bestermind/BestermindRegular.ttf");
+  src: url("../assets/fonts/Bestermind/BestermindRegular.ttf")
+      format("embedded-opentype"),
+    url("../assets/fonts/Bestermind/BestermindRegular.ttf") format("truetype");
+}
+
+* {
+  margin: 0;
+  box-sizing: border-box;
+}
+body {
+  position: relative;
+  box-sizing: border-box;
+  /* background: rgb(14,17,13);
+  background: linear-gradient(90deg, rgba(14,17,13,1) 0%, rgba(14,17,13,1) 100%, rgba(0,212,255,1) 100%); */
+  background-image: url("../assets/images/bbg.jpg");
+  background-repeat: none;
+  background-position: cover;
+  font-family: "Poppins",sans-serif !important;
+  overflow-x: hidden;
+}
+a {
+  text-decoration: none;
+}
+
+.MuiPaper-root,
+.MuiBackdropRoot {
+  background: rgba(33, 33, 33, 0.15) !important;
+  backdrop-filter: blur(20px) !important;
+}
+/* scrollBar */
+
+::-webkit-scrollbar {
+  width: 0;
+}
+
+::-webkit-scrollbar-track {
+  background: #555;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+:root {
+  --primaryFont: "Poppins", sans-serif;
+  /* --primaryFont: 'Montserrat', sans-serif; */
+  /* --primaryFont: 'Raleway', sans-serif; */
+}
+
+@media screen and (max-width: 400px) {
+  body {
+    overflow-x: hidden;
+  }
+}
+
+@media only screen and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-device-pixel-ratio: 2) and (device-aspect-ratio: 2/3) {
+  body {
+    overflow-x: hidden;
+  }
+}

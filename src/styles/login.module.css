@@ -1,0 +1,71 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Rubik+Wet+Paint:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Creepster:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+.back {
+    color: #e2d7d7;padding: 5px 10px;font-size: 14px;font-family: "Poppins", sans-serif;
+}
+.qrcode {
+    width: 10rem;height: 20rem;margin: 1rem auto; text-align: center;
+}
+.forminput {
+    border-radius: 12px;width: 100% !important;height: 40px;padding: .2rem .8rem;
+    border: none;margin-top: 10px;
+}
+.formlabel {
+    color: #e2d7d7;margin-top: 1rem;padding: .6rem 0;font-family: "Montserrat";font-size: 14px;
+}
+.formTag {
+    background-color: transparent;border-radius: 8px;padding: 1rem;margin: auto;height: 100vh;padding-top: 5rem;
+    width: 60vw;
+}
+.formTag .fhead {
+    margin: 1rem auto;
+}
+.formTag .fhead h3 {
+    font-family: "Poppins", sans-serif;margin: 1rem auto;color: #e2d7d7;font-weight: 600;
+    text-align: center;font-size: 18px;
+}
+.formpTag {
+    font-size: 12px;font-family: "Montserrat";font-style: italic;color: #e2d7d7;
+}
+.form_group {
+    margin: 35px 0;
+}
+.labelDiv {
+    width: 100%;
+}
+.btns {
+    display: flex;justify-content: space-evenly;flex-direction: row;flex-wrap: nowrap;margin: 3rem auto 2rem auto;
+}
+.btns .alink {
+    color: #e2d7d7;padding-top: .4rem;font-size: 14px;
+}
+.fpass {
+    width: 100%;margin-right: 0;text-align: right;margin-top: 1rem;
+}
+.fpass a {
+    color: #dd1515;font-family: "Poppins",sans-serif;font-weight: 600;margin-top: 10px;text-align: right;
+}
+.btns a {
+    font-family: "Montserrat", sans-serif;font-size: 14px;color: #79f17f;font-weight: 600;
+}
+.btns .registerButton {
+    border-radius: 120px;background-color: #c0bbbbc4;font-size: 16px;font-weight: 600;
+    padding: .4rem 60px;border: none;color: #1c1f2b;font-family: "Poppins",sans-serif;
+}
+.passhideshowButton {
+    text-align: right;float: right;margin-top: .6rem;margin-right: .5rem;
+    border: none;color: #e2d7d7;
+}
+@media (max-width: 991px) {
+    .formTag {
+        height: 100vh;padding-top: 5rem;
+        width: 95vw;
+    }   
+    .btns .registerButton {
+        padding: .4rem 20px;
+    }
+}

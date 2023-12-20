@@ -1,0 +1,24 @@
+.overlay_dap {
+    background-color: rgba(58, 57, 57, 0.089);z-index: 99;position: fixed;top: 0;right: 0;bottom: 0;left: 0;display: none;
+}
+.dappconalert {
+    position: fixed;z-index: 999;background-color: rgba(8, 56, 2, 0.897) !important;width: 90%;
+    border-radius: 66px;margin: 8rem auto 0 auto;text-align: center;font-size: 14px;
+    padding: .2rem 1rem .2rem 1rem;color: #f1f1f1;top: 0;left: 0;right: 0;
+}
+.dappconalerted {
+    position: fixed;z-index: 999;background-color: rgba(8, 56, 2, 0.897) !important;width: 90%;
+    border-radius: 66px;margin: 0 auto;text-align: center;font-size: 14px;
+    padding: .2rem 1rem .2rem 1rem;color: #f1f1f1;top: 0;left: 0;right: 0;
+}
+.dappconalertclosediv {
+    margin-right: 15px;margin-top: 5px;text-align: right;position: absolute;right: 5px;
+}
+.dappconalert_in {
+    margin: .4rem auto;
+}
+@media (max-width: 991px) {
+    .dappconalert {
+        width: 90%;
+    }
+}
