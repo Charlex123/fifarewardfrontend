@@ -1,6 +1,8 @@
 const dotenv = require('dotenv')
 dotenv.config()
-
+/**
+ * @type {import('next').NextConfig}
+ **/
 // next.config.js
 const nextConfig = {
   images: {

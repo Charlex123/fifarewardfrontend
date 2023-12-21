@@ -1,4 +1,5 @@
-import {React, useContext} from 'react'
+import React from 'react'
+import { useContext } from 'react';
 // import { Container } from '../App'
 // import { OutreachButton } from './styles/ButtonVariants.styled'
 // import {HashRouter as Router,} from "react-router-dom";
@@ -209,8 +210,8 @@ const toggleNav = () => {
         <div>
           <h4>Buy FRD from these listed exchanges</h4>
           <div className={styles.dexchanges}>
-            <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noreferrer noopener'><Image src={pcslogo} className={styles.delginks} width={150} height={40} /></a>
-            <a href='https://www.geckoterminal.com/bsc/pools/0x7c0406a570ca1407c412238c173898cd145fd52e' rel='noreferrer noopener'><Image src={cgk} className={styles.delginks} width={150} height={40} /></a>
+            <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noreferrer noopener'><Image src={pcslogo} className={styles.delginks} width={150} height={40} alt='image'/></a>
+            <a href='https://www.geckoterminal.com/bsc/pools/0x7c0406a570ca1407c412238c173898cd145fd52e' rel='noreferrer noopener'><Image src={cgk} className={styles.delginks} width={150} height={40} alt='image'/></a>
           </div>
         </div>
 
@@ -244,28 +245,28 @@ const toggleNav = () => {
           <h1>FIFAREWARD ECO SYSTEM</h1>
         </div>
         <div>
-          <Image src={stakebanner} quality={90} style={{objectFit:"contain"}} className={styles.stakebanner}/>
+          <Image src={stakebanner} quality={90} style={{objectFit:"contain"}} className={styles.stakebanner} alt='banner'/>
         </div>
 
         <div className={styles.gov}>
           <div className={styles.gov_in}>
             <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={trust} className={styles.gov_img}/></div>
+              <div className={styles.image_c}><Image src={trust} className={styles.gov_img} alt='image'/></div>
               <h2>Stake Tafa</h2>
               <p>Earn sustainable passive rewards by time locking in our innovative gamified smart contracts.</p>
             </div>
             <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={peopl_} className={styles.gov_img}/></div>
+              <div className={styles.image_c}><Image src={peopl_} className={styles.gov_img} alt='image'/></div>
               <h2>DAO Governance </h2>
               <p>Self-sustainable community driven TAFAVAULT with onchain voting</p>
             </div>
             <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={stat} className={styles.gov_img}/></div>
+              <div className={styles.image_c}><Image src={stat} className={styles.gov_img} alt='image'/></div>
               <h2>Sustainability</h2>
               <p>Mathematically programmed rewards through carefully balanced tokenomics</p>
             </div>
             <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={developt} className={styles.gov_img}/></div>
+              <div className={styles.image_c}><Image src={developt} className={styles.gov_img} alt='image'/></div>
               <h2>Utility</h2>
               <p>The protocol is asset backed to protect from even the worst conditions in the market.</p>
             </div>  
@@ -429,12 +430,12 @@ const toggleNav = () => {
               <p>FIFAREWARD is launching in three stages over the coming months</p>
               <p>We start with a huge airdrop, allowing thousands of DeFi users to Free Claim some FIFAREWARD Tokens</p>
               <div className={styles.dexlinks}>
-                <a href='https://avax.network' rel='noreferrer noopener' className={styles.dl}><Image src={avllogo} className={styles.launchlinks} /></a>
-                <a href='https://bnbchain.org' rel='noreferrer noopener' className={styles.dl}><Image src={bnblogo} className={styles.launchlinks} /></a>
-                <a href='https://fantom.foundation' rel='noreferrer noopener' className={styles.dl}><Image src={fantlogo} className={styles.launchlinks} /></a>
-                <a href='https://ethereum.org/en' rel='noreferrer noopener' className={styles.dl}><Image src={ethlogo} className={styles.launchlinks} /></a>
-                <a href='https://polygon.technology' rel='noreferrer noopener' className={styles.dl}><Image src={polychlogo} className={styles.launchlinks} /></a>
-                <a href='https://cronos.org' rel='noreferrer noopener' className={styles.dl}><Image src={cronlogo} className={styles.launchlinks} /></a>
+                <a href='https://avax.network' rel='noreferrer noopener' className={styles.dl}><Image src={avllogo} className={styles.launchlinks} alt='image'/></a>
+                <a href='https://bnbchain.org' rel='noreferrer noopener' className={styles.dl}><Image src={bnblogo} className={styles.launchlinks} alt='image'/></a>
+                <a href='https://fantom.foundation' rel='noreferrer noopener' className={styles.dl}><Image src={fantlogo} className={styles.launchlinks} alt='image'/></a>
+                <a href='https://ethereum.org/en' rel='noreferrer noopener' className={styles.dl}><Image src={ethlogo} className={styles.launchlinks} alt='image'/></a>
+                <a href='https://polygon.technology' rel='noreferrer noopener' className={styles.dl}><Image src={polychlogo} className={styles.launchlinks} alt='image'/></a>
+                <a href='https://cronos.org' rel='noreferrer noopener' className={styles.dl}><Image src={cronlogo} className={styles.launchlinks} alt='image'/></a>
               </div>
             </div>
             <div className={styles.tkl_body}>

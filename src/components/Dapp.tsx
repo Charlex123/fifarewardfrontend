@@ -36,7 +36,7 @@ library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircl
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
 
-const Dapp = () =>  {
+const Dapp:React.FC<{}> = () =>  {
 
   const router = useRouter();
   const TAFAAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";

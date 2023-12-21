@@ -7,13 +7,13 @@ import Whitepaper from '../components/Whitepaper';
 // import pdfurl from '../assets/pdfs/TAFAXTRA WHITE PAPER 1.0.0.pdf';
 
 function WhitePaperPage() {
-
+  const {url} = "https://pdfobject.com/pdf/sample.pdf";
   return (
     <>
       <BackToTop />
       <ChangeTheme />
       <Navbar />
-      <Whitepaper url= "https://pdfobject.com/pdf/sample.pdf" />
+      <Whitepaper url />
       <Footer />
     </>
   )

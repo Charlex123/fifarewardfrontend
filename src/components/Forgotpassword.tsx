@@ -8,7 +8,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash  } from "@fortawesome/free-regular-svg-icons";
 import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 // component
-import Loading from '../components/Loading';
+import Loading from './Loading';
 import AlertMessage from './AlertMessage';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 

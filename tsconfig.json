@@ -110,7 +110,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/Dapp.js"  ],
+, "src/components/Dapp.tsx", "src/components/Activateaccountstatus.tsx"  ],
   "exclude": [
     "node_modules"
   ]

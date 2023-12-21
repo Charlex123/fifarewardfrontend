@@ -6,9 +6,9 @@ import logo from '../../assets/images/logo.png';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faPeopleGroup, faChevronUp, faAngleRight } from '@fortawesome/free-solid-svg-icons'
+import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faPeopleGroup, faChevronUp, faAngleRight, faFootball, faFootballBall, faRobot, faGamepad } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome, faTelegram, faBandcamp } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { faQuestionCircle, faSoccerBall } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 
 function Navbar() {
@@ -81,7 +81,7 @@ function Navbar() {
     }
 
 
-    const shortname = (name) => {
+    const shortname = (name:any) => {
         if (name.length > 12) {
             return name.split(' ')[0];
         } else {
@@ -110,12 +110,16 @@ function Navbar() {
                             <li><a href='/whitepaper' rel='noopener noreferrer' > <FontAwesomeIcon icon={faAngleRight} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
                         </ul>
                     </li>
-                    <li><a href='/whitepaper' rel='noopener noreferrer'>White Paper</a></li>
+                    <li><a href='/footballai' rel='noopener noreferrer'>Football AI</a></li>
+                    <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
+                    <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} onMouseOut={toggleIconDown2}>
                         Features {dropdwnIcon2}
                         <ul>
                             <li><a href='/#tafastaking' rel='noopener noreferrer' ><FontAwesomeIcon icon={faCircleDollarToSlot} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Staking Rewards</span></a></li>
-                            <li><a href='/#freeclaim' rel='noopener noreferrer' ><FontAwesomeIcon icon={faGift} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>TafaXtra Free Claim</span></a></li>
+                            <li><a href='/#freeclaim' rel='noopener noreferrer' ><FontAwesomeIcon icon={faRobot} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Football AI</span></a></li>
+                            <li><a href='/#freeclaim' rel='noopener noreferrer' ><FontAwesomeIcon icon={faSoccerBall} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Betting </span></a></li>
+                            <li><a href='/#freeclaim' rel='noopener noreferrer' ><FontAwesomeIcon icon={faGamepad} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Gaming </span></a></li>
                             <li><a href='/#referrals' rel='noopener noreferrer' ><FontAwesomeIcon icon={faPeopleGroup} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Referral</span></a></li>
                         </ul>
                     </li>

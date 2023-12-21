@@ -1,3 +1,4 @@
+import type {nextNumPages} from 'next'
 import { useState } from "react";
 // import default react-pdf entry
 import { Document, Page, pdfjs } from "react-pdf";

@@ -10,7 +10,7 @@ import regstyles from "../styles/register.module.css";
 
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
-const EmailVStatus = () =>  {
+const loadBets: React.FC<{}> = () =>  {
 
   const router = useRouter();
 
@@ -34,4 +34,4 @@ const EmailVStatus = () =>  {
   );
 }
 
-export default EmailVStatus
+export default loadBets
