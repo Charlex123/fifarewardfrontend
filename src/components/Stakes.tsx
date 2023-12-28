@@ -65,7 +65,7 @@ const Dapp = () =>  {
   const [verified, setVerified] = useState();
   const [walletaddress, setWalletAddress] = useState("NA"); 
   const [stakeAmount, setstakeAmount] = useState(50);
-  const [stakeDuration, setstakeDuration] = useState(2592000);
+  const [stakeDuration, setstakeDuration] = useState<any>(2592000);
   const [showTimer, setShowTimer] = useState(false);
   const [showWithdrawStake, setShowWithdrawStake] = useState(false);
   
@@ -78,7 +78,7 @@ const Dapp = () =>  {
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
   
-  const handleChange = (event) => {
+  const handleChange = (event:any) => {
     const newValue = event.target.value;
     setstakeAmount(newValue);
 };
@@ -127,50 +127,50 @@ const handleCopyClick = () => {
     setWAlert(!wAlert);
   }
 
-  const handleStakeDuration = (e) => {
+  const handleStakeDuration = (e:any) => {
     setstakeDuration(e.target.value)
   }
 
   // define contract data
   
-  const StakeTAFA = async (e) => {
+  const StakeTAFA = async () => {
     try {
       setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider)
+      const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner()
       const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
       const reslt = await StakeContract.stake(StakeAddress,stakeAmount);
       console.log(reslt)
-    } catch (error) {
+    } catch (error:any) {
       console.log(error)
     }
   }
 
-  const Approve = async (e) => {
+  const Approve = async () => {
     
     try {
       setWAlert(!wAlert);
       // setShowTimer(!showTimer);
-      const provider = new ethers.providers.Web3Provider(walletProvider)
+      const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
       const TAFAContract = new ethers.Contract(TAFAAddress, TAFAAbi, signer);
       const reslt = await TAFAContract.approve(StakeAddress,stakeAmount);
       if(reslt) {
         StakeTAFA();
       }
-    } catch (error) {
+    } catch (error:any) {
       setDappConnector(true);
       setErrorMessage("Connect Wallet First");
     }
     
   }
 
-  const checkhasStake = async (e) => {
+  const checkhasStake = async () => {
     
     try {
       // setShowTimer(!showTimer);
       setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider)
+      const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
       const stakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
       const reslt = await stakeContract.hasStake(signer);
@@ -191,7 +191,7 @@ const handleCopyClick = () => {
   const calculateReward = async () => {
     try {
       setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider);
+      const provider = new ethers.providers.Web3Provider(walletProvider as any);
       const signer = provider.getSigner();
       const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
       const reslt = await StakeContract.calcReward();
@@ -206,7 +206,7 @@ const handleCopyClick = () => {
   const Withdraw = async () => {
     try {
       setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider);
+      const provider = new ethers.providers.Web3Provider(walletProvider as any);
       const signer = provider.getSigner();
       const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
       const reslt = await StakeContract.withdrawStake();
@@ -222,8 +222,8 @@ const handleCopyClick = () => {
     
     localStorage.setItem('staketimer',stakeDuration);
 
-    setstakeDuration(localStorage.getItem('staketimer'))
-    const udetails = JSON.parse(localStorage.getItem("userInfo"));
+    setstakeDuration(localStorage.getItem('staketimer')!)
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  

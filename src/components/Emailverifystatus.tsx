@@ -1,4 +1,5 @@
-import { React, useState } from 'react';
+import React from 'react';
+import { useState } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,7 +14,7 @@ import regstyles from "../styles/register.module.css";
 
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
-const EmailVStatus = () =>  {
+const EmailVStatus: React.FC<{}> = () =>  {
 
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(false);

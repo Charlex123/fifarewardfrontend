@@ -6,14 +6,16 @@ import ChangeTheme from '../components/change-theme/change-theme';
 import Whitepaper from '../components/Whitepaper';
 // import pdfurl from '../assets/pdfs/TAFAXTRA WHITE PAPER 1.0.0.pdf';
 
-function WhitePaperPage() {
-  const {url} = "https://pdfobject.com/pdf/sample.pdf";
+interface Props {
+  url: any
+}
+const WhitePaperPage: React.FC<Props> = (props: Props) => {
   return (
     <>
       <BackToTop />
       <ChangeTheme />
       <Navbar />
-      <Whitepaper url />
+      {/* <Whitepaper url = "https://pdfobject.com/pdf/sample.pdf" /> */}
       <Footer />
     </>
   )

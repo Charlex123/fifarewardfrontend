@@ -8,21 +8,21 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash  } from "@fortawesome/free-regular-svg-icons";
 import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 // component
-import Loading from './Loading';
+import Loading from '../components/Loading';
 import AlertMessage from './AlertMessage';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
 
-export default function LoginForm() {
+ const LoginForm: React.FC<{}> = () => {
   
   const router = useRouter();
 
   const [email, setEmail] = useState("");
   const [newpassword, setNewPassword] = useState("");
   const [confirmnewpassword, setConfirmNewPassword] = useState("");
-  const [message, setMessage] = useState(null);
+  const [errorMessage, setErrorMessage] = useState<string>("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
@@ -40,14 +40,15 @@ export default function LoginForm() {
     }
   };
   
-  const checkPass = (e) => {
+  const checkPass = () => {
     if (newpassword !== confirmnewpassword) {
-      setError("Passwords do not match");
+      setError(true);
+      setErrorMessage("Passwords do not match");
     }else {
-      setError(null);
+      setError(false);
     }
   } 
-  const checkEmail = async (e) => {
+  const checkEmail = async (e:any) => {
     setLoading(true);
     setEmail(e.target.value)
     const config = {
@@ -65,7 +66,7 @@ export default function LoginForm() {
   }
   
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e:any) => {
     e.preventDefault();
 
     try {
@@ -87,7 +88,7 @@ export default function LoginForm() {
       console.log('login res username',data.username)
       setLoading(false)
       router.push(`/signin`)
-    } catch (error) {
+    } catch (error:any) {
       console.log(error.response.data)
     }
   }
@@ -97,7 +98,7 @@ export default function LoginForm() {
         <div>
             <a href='/signin' rel='noopener noreferrer' className={loginstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back to login</a>
             <form className={loginstyles.formTag} onSubmit={submitHandler}>
-            {error && <AlertMessage variant="danger">{error}</AlertMessage>}
+            {error && <AlertMessage variant="danger">{errorMessage}</AlertMessage>}
             {loading && <Loading />}
             <div className={loginstyles.fhead}>
                 <h3>Recover Password <FontAwesomeIcon icon={faLockOpen} /></h3>
@@ -145,3 +146,4 @@ export default function LoginForm() {
     </>
   );
 }
+export default LoginForm;

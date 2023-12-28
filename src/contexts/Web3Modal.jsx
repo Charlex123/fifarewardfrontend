@@ -16,9 +16,9 @@ const mainnet = {
 
 // 3. Create modal
 const metadata = {
-  name: 'TafaXtra',
-  description: 'TafaXtra Staking Dapp',
-  url: 'https://tafaextra.io',
+  name: 'FifaReward',
+  description: 'FifaReward Betting and Staking Dapp',
+  url: 'https://fifareward.io',
   icons: ['https://avatars.mywebsite.com/']
 }
 

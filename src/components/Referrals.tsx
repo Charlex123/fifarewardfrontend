@@ -63,9 +63,9 @@ const Referrals = () =>  {
   const [sponsorWalletAddress, setsponsorWalletAddress] = useState("");
   const [userObjId, setUserObjId] = useState(""); // Initial value
   const [verified, setVerified] = useState();
-  const [firstgenreferrals, setFirstGenReferrals] = useState([]);
-  const [secondgenreferrals, setSecondGenReferrals] = useState([]);
-  const [thirdgenreferrals, setThirdGenReferrals] = useState([]);
+  const [firstgenreferrals, setFirstGenReferrals] = useState<any>([]);
+  const [secondgenreferrals, setSecondGenReferrals] = useState<any>([]);
+  const [thirdgenreferrals, setThirdGenReferrals] = useState<any>([]);
   
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { open, close } = useWeb3Modal();
@@ -112,7 +112,7 @@ const handleCopyClick = () => {
   }
   useEffect(() => {
     
-    const udetails = JSON.parse(localStorage.getItem("userInfo"));
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
@@ -148,13 +148,8 @@ getWalletAddress();
 
     async function getreferrals() {
       try {
-         const config = {
-         headers: {
-            "Content-type": "application/json"
-         }
-         }  
          const {data} = await axios.get(`https://tafabackend.onrender.com/api/users/getreferrals/${udetails.userId}`, {
-         }, config);
+         });
          setFirstGenReferrals(data.firstgendownlines);
          console.log('ref data',data.firstgendownlines);
       } catch (error) {
@@ -390,12 +385,12 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                         <table id="resultTable" className="table01 margin-table">
                             <thead>
                                 <tr>
-                                    <th id="accountTh" width="" className="align-L">UserId</th>
-                                    <th id="balanceTh" width="10%">Wallet Address</th>
+                                    <th id="accountTh" className="align-L">UserId</th>
+                                    <th id="balanceTh">Wallet Address</th>
                                 </tr>
                             </thead>
                             <tbody id="userData">
-                            {firstgenreferrals.map((downline) =>(
+                            {firstgenreferrals.map((downline:any) =>(
                                 <tr key={downline._id}>
                                 <td>{downline.userId}</td>
                                 <td>{downline.walletaddress}</td>
@@ -413,12 +408,12 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                         <table id="resultTable" className="table01 margin-table">
                             <thead>
                                 <tr>
-                                    <th id="accountTh" width="" className="align-L">UserId</th>
-                                    <th id="balanceTh" width="10%">Wallet Address</th>
+                                    <th id="accountTh" className="align-L">UserId</th>
+                                    <th id="balanceTh" >Wallet Address</th>
                                 </tr>
                             </thead>
                             <tbody id="userData">
-                            {secondgenreferrals.map((downline) =>(
+                            {secondgenreferrals.map((downline:any) =>(
                                 <tr key={downline._id}>
                                 <td>{downline.userId}</td>
                                 <td>{downline.walletaddress}</td>
@@ -436,12 +431,12 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                         <table id="resultTable" className="table01 margin-table">
                             <thead>
                                 <tr>
-                                    <th id="accountTh" width="" className="align-L">UserId</th>
-                                    <th id="balanceTh" width="10%">Wallet Address</th>
+                                    <th id="accountTh" className="align-L">UserId</th>
+                                    <th id="balanceTh" >Wallet Address</th>
                                 </tr>
                             </thead>
                             <tbody id="userData">
-                            {thirdgenreferrals.map((downline) =>(
+                            {thirdgenreferrals.map((downline:any) =>(
                                 <tr key={downline._id}>
                                 <td>{downline.userId}</td>
                                 <td>{downline.walletaddress}</td>

@@ -24,18 +24,18 @@ const RegisterForm = () =>  {
   const [pic, setPic] = useState(
     "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
   );
-  const [password, setPassword] = useState("");
-  const [confirmpassword, setConfirmPassword] = useState("");
-  const [message, setMessage] = useState(false);
-  const [error, setError] = useState(false);
-  const [messageContent, setMessageContent] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
-  const [sponsorId, setSponsorId] = useState("");
-  const [level, setLevel] = useState("White Label");
-  const [tpin, setTPin] = useState(1234);
-  const [loading, setLoading] = useState(false);
-  const [status] = useState("Inactive");
-  const [passwordinputType, setpasswordinputType] = useState("password");
+  const [password, setPassword] = useState<string>("");
+  const [confirmpassword, setConfirmPassword] = useState<string>("");
+  const [message, setMessage] = useState<boolean>(false);
+  const [error, setError] = useState<boolean>(false);
+  const [messageContent, setMessageContent] = useState<string>("");
+  const [errorMessage, setErrorMessage] = useState<string>("");
+  const [sponsorId, setSponsorId] = useState<any>("");
+  const [level, setLevel] = useState<string>("White Label");
+  const [tpin, setTPin] = useState<any>(1234);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [status] = useState<any>("Inactive");
+  const [passwordinputType, setpasswordinputType] = useState<string>("password");
   const [eyeIcon, setEyeIcon] = useState(<FontAwesomeIcon icon={faEye} />);
   //   const [accounts, setAccounts] = useState([]);
 
@@ -69,7 +69,7 @@ const RegisterForm = () =>  {
     }
   };
   
-  const checkPass = (e) => {
+  const checkPass = (e:any) => {
     if (password !== confirmpassword) {
       setError(true)
       setErrorMessage("Passwords do not match");
@@ -78,7 +78,7 @@ const RegisterForm = () =>  {
     }
   } 
 
-  const checkUsername = async (e) => {
+  const checkUsername = async (e:any) => {
     setLoading(true);
     setUserame(e.target.value)
     console.log(username)
@@ -97,7 +97,7 @@ const RegisterForm = () =>  {
     }
   }
 
-  const checkEmail = async (e) => {
+  const checkEmail = async (e:any) => {
     setLoading(true);
     setEmail(e.target.value)
     const config = {
@@ -115,13 +115,14 @@ const RegisterForm = () =>  {
     }
   }
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e:any) => {
     e.preventDefault();
     console.log('uname',username)
     if (password !== confirmpassword) {
-      setMessage("Passwords do not match");
+      setMessage(true)
+      setMessageContent('Passwords do not match')
     }else {
-      setMessage(null);
+      setMessage(false);
       try {
         const config = {
           headers: {
@@ -148,7 +149,7 @@ const RegisterForm = () =>  {
         localStorage.setItem("userInfo", JSON.stringify(data))
         setLoading(false)
         router.push(`/emailverifystatus/${data.message}`)
-      } catch (error) {
+      } catch (error:any) {
         setError(true)
         setErrorMessage(error.response.data)
         console.log(error.response.data)

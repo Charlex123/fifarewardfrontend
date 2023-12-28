@@ -1,35 +1,67 @@
-import React from 'react';
-import { useRouter } from 'next/router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { useEffect } from 'react';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCheckCircle, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
+import dotenv from 'dotenv';
+dotenv.config();
 // material
-import regstyles from "../styles/register.module.css";
 // component
 
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
-const loadBets: React.FC<{}> = () =>  {
+function loadBets () {
+  try {
 
-  const router = useRouter();
+    // var config = {
+    //   method: 'get',
+    //   url: 'https://v3.football.api-sports.io/leagues',
+    //   headers: {
+    //     'x-rapidapi-key': 'aa2a3bb1320411e0c7ad474b053c6514',
+    //     'x-rapidapi-host': 'v3.football.api-sports.io'
+    //   }
+    // };
+    
+    // axios(config)
+    // .then(function (response:any) {
+    //   console.log(JSON.stringify(response.data));
+    //   return 
+    // })
+    // .catch(function (error:any) {
+    //   console.log(error);
+    // });
+}catch(error) 
+{
+  console.log(error)
+}
 
-  const { name } = router.query;
-  
-  const username = name;
-  
+  useEffect(() => {
+    // console.log(' hopa in')
+//     console.log('api key',process.env.API_SPORTS)
+//     try {
+
+//       // var config = {
+//       //   method: 'get',
+//       //   url: 'https://v3.football.api-sports.io/leagues',
+//       //   headers: {
+//       //     'x-rapidapi-key': 'aa2a3bb1320411e0c7ad474b053c6514',
+//       //     'x-rapidapi-host': 'v3.football.api-sports.io'
+//       //   }
+//       // };
+      
+//       // axios(config)
+//       // .then(function (response:any) {
+//       //   console.log(JSON.stringify(response.data));
+//       //   return 
+//       // })
+//       // .catch(function (error:any) {
+//       //   console.log(error);
+//       // });
+//   }catch(error) 
+//   {
+//     console.log(error)
+//   }
+})
+
   return (
     <>
-        <a href='/register' rel='noopener noreferrer' className={regstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back </a>
-        <div className={regstyles.regsuccess}>
-            <div className={regstyles.regs_in}>
-                <h3>Account Activation Success <FontAwesomeIcon icon={faCheckCircle} /></h3>
-                <div>
-                    <p>Hello <span>{username}</span>, your account creation is successful</p>
-                    <a href='/signin' rel='noopener noreferrer'> Proceed To Login </a>
-                </div>
-            </div>
-        </div>
+        <div>Hello</div>
     </>
   );
 }

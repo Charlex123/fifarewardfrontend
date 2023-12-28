@@ -42,7 +42,7 @@ export default function LoginForm() {
   };
   
 
-  const submitHandler = async (e) => {
+  const submitHandler = async (e:any) => {
     e.preventDefault();
 
     try {
@@ -69,7 +69,7 @@ export default function LoginForm() {
         router.push(`/dapp/`)
       }
       
-    } catch (error) {
+    } catch (error:any) {
       setError(true)
       seterrorMessage(error.response.data)
       console.log(error.response.data)

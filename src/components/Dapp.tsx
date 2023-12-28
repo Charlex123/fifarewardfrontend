@@ -43,10 +43,10 @@ const Dapp:React.FC<{}> = () =>  {
   const StakeAddress = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
 
   // Replace 'YOUR_API_KEY' with your BscScan API key
-const apiKey = process.env.BSCSCAN_APIKEY;
+  const apiKey = process.env.BSCSCAN_APIKEY;
 
-// Replace 'YOUR_WALLET_ADDRESS' with the BSC wallet address you want to track
-const walletAddressToTrack = '0x5951d5Cb5cFb9022B5ab5e9848fD1454C6dA7842';
+  // Replace 'YOUR_WALLET_ADDRESS' with the BSC wallet address you want to track
+  const walletAddressToTrack = '0x5951d5Cb5cFb9022B5ab5e9848fD1454C6dA7842';
 
   const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
@@ -58,7 +58,7 @@ const walletAddressToTrack = '0x5951d5Cb5cFb9022B5ab5e9848fD1454C6dA7842';
   const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");  
-  const [walletaddress, setWalletAddress] = useState("NA");  
+  const [walletaddress, setWalletAddress] = useState<any>("NA");  
   const [isWalletAddressUpdated,setisWalletAddressUpdated] = useState(false);
 
   const [signature, setSignature] = useState("");
@@ -114,7 +114,7 @@ const walletAddressToTrack = '0x5951d5Cb5cFb9022B5ab5e9848fD1454C6dA7842';
   }
   useEffect(() => {
     
-    const udetails = JSON.parse(localStorage.getItem("userInfo"));
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
       if(username_) {
@@ -173,7 +173,7 @@ getWalletAddress();
 
     async function Addreferrer() {
       // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const provider = new ethers.providers.Web3Provider(walletProvider)
+      const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
       const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
       const reslt = await StakeContract.addReferrer(sponsorWalletAddress);
@@ -198,48 +198,7 @@ getWalletAddress();
         }
     }
     updateWalletAddress();
-  }
-
-
-
-  // Replace 'YOUR_BSC_NODE_WS_URL' with the BSC WebSocket URL
-  const bscWsUrl = 'wss://go.getblock.io/1e188a9b60fd41fbbc97b7909dfec3e2';
-  // Assuming you have a properly initialized web3 instance
-  const web3 = new Web3.providers.WebsocketProvider(bscWsUrl);
-  // new Web3('https://bsc-dataseed1.binance.org:443');
-  const options = {
-    fromBlock: '0x0',
-    address: '0xcd5485b34c9902527bbee21f69312fe2a73bc802',
-  };
-  
-  const handleSubscriptionError = (error) => {
-    console.error('Error when watching incoming transactions:', error.message);
-  };
-  
-  const handleSubscriptionData = (log) => {
-    console.log('Got something back:', log);
-    // Your continued code...
-  };
-  
-  const subscribeToLogs = async () => {
-    try {
-      const subscription = await web3.eth.subscribe('logs', options);
-      subscription.on('data', handleSubscriptionData);
-    } catch (error) {
-      handleSubscriptionError(error);
-    }
-  };  
-  // Start the subscription
-  subscribeToLogs();
-
-//   const subscription = web3.eth.subscribe('logs', {
-//     address: '0x5951d5Cb5cFb9022B5ab5e9848fD1454C6dA7842',
-//     topics: ['0x12345...']
-// }, function(error, result){
-//     if (!error)
-//         console.log('sub result',result);
-// });
-  
+  }  
 
 // Create an EtherscanProvider with your API key
 // const provider = new ethers.providers.EtherscanProvider('bsc', apiKey);

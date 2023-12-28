@@ -1,4 +1,3 @@
-import type {nextNumPages} from 'next'
 import { useState } from "react";
 // import default react-pdf entry
 import { Document, Page, pdfjs } from "react-pdf";
@@ -10,10 +9,10 @@ pdfjs.GlobalWorkerOptions.workerSrc = workerSrc;
 
 export default function PDFViewer() {
   const [file, setFile] = useState("./TAFA XTRA WHITEPAPER 1.0.0.pdf");
-  const [numPages, setNumPages] = useState(null);
+  const [numPages, setNumPages] = useState<any>(null);
 
-  function onDocumentLoadSuccess({ numPages: nextNumPages }) {
-    setNumPages(nextNumPages);
+  function onDocumentLoadSuccess() {
+    setNumPages(numPages);
   }
 
   return (

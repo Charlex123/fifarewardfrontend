@@ -37,6 +37,9 @@ import { ThemeContext } from '../../contexts/theme-context';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { Chrono } from "react-chrono";
 import 'react-vertical-timeline-component/style.min.css';
+import dotenv from 'dotenv';
+dotenv.config();
+import Betting from '../loadBets'
 import { fas, faCheck, faCheckCircle,faAlignJustify, faCircleChevronRight, faCheckSquare, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
@@ -203,7 +206,10 @@ const toggleNav = () => {
             <Image src={Heroimg} alt='hero img' style={{objectFit: "contain",marginTop: '5rem'}} quality={90} />
           </div>
       </div>
-      
+      {/* fifa reward betting */}
+      <div>
+          <Betting/>
+      </div>
       {/* dex tools */}
       <div className={styles.exchmain}>
         <h1>FIFAREWARD PARTNERSHIPS</h1>
