@@ -38,13 +38,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { Chrono } from "react-chrono";
 import 'react-vertical-timeline-component/style.min.css';
 import dotenv from 'dotenv';
-dotenv.config();
-import Betting from '../loadBets'
+import Betting from '../Loadbets'
+import OpenChatbot from '../LoadOpenAIChat'
 import { fas, faCheck, faCheckCircle,faAlignJustify, faCircleChevronRight, faCheckSquare, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-
+dotenv.config();
 const Home = () => {
 // Create a state variable to manage the visibility of the navigation menu
 const [isNavOpen, setNavOpen] = useState(false);
@@ -209,6 +209,11 @@ const toggleNav = () => {
       {/* fifa reward betting */}
       <div>
           <Betting/>
+      </div>
+
+      {/* fifa reward chat bot */}
+      <div>
+          <OpenChatbot/>
       </div>
       {/* dex tools */}
       <div className={styles.exchmain}>

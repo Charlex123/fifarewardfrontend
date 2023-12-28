@@ -6,7 +6,7 @@ dotenv.config();
 // material
 // component
 
-function loadBets () {
+function LoadBets () {
   try {
 
     // var config = {
@@ -32,8 +32,7 @@ function loadBets () {
 }
 
   useEffect(() => {
-    // console.log(' hopa in')
-//     console.log('api key',process.env.API_SPORTS)
+//     console.log('api key',process.env.NEXT_PUBLIC_API_SPORTS)
 //     try {
 
 //       // var config = {
@@ -61,9 +60,9 @@ function loadBets () {
 
   return (
     <>
-        <div>Hello</div>
+        <div style={{color: 'white'}}>Hello</div>
     </>
   );
 }
 
-export default loadBets
+export default LoadBets
