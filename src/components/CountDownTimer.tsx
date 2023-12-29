@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 
-const CountdownTimer = ({time}) => {
+const CountdownTimer = ({time}:any) => {
 
   const [timeRemaining, setTimeRemaining] = useState(time); // 30 days in seconds
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setTimeRemaining((prevTime) => {
+      setTimeRemaining((prevTime:any) => {
         if (prevTime <= 0) {
           clearInterval(interval);
           // You can add any additional logic here when the timer reaches zero
@@ -20,7 +20,7 @@ const CountdownTimer = ({time}) => {
     return () => clearInterval(interval);
   }, []);
 
-  const formatTime = (seconds) => {
+  const formatTime = (seconds:any) => {
     const days = Math.floor(seconds / 86400);
     const hours = Math.floor((seconds % 86400) / 3600);
     const minutes = Math.floor((seconds % 3600) / 60);
