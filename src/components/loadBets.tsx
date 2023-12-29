@@ -6,7 +6,7 @@ dotenv.config();
 // material
 // component
 
-function LoadBets () {
+const LoadBets:React.FC<{}> = () => {
   try {
 
     // var config = {
@@ -32,7 +32,7 @@ function LoadBets () {
 }
 
   useEffect(() => {
-//     console.log('api key',process.env.NEXT_PUBLIC_API_SPORTS)
+    console.log('api key',process.env.NEXT_PUBLIC_API_SPORTS)
 //     try {
 
 //       // var config = {
