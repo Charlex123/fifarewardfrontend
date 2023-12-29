@@ -5,7 +5,7 @@ const Link = ({
   children,
   className,
   ...props
-}) => {
+}:any) => {
 
   console.log(children);
   return (
