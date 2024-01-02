@@ -38,8 +38,7 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { Chrono } from "react-chrono";
 import 'react-vertical-timeline-component/style.min.css';
 import dotenv from 'dotenv';
-import Betting from '../Loadbets'
-import OpenChatbot from '../LoadOpenAIChat'
+import Betting from '../LoadBets'
 import { fas, faCheck, faCheckCircle,faAlignJustify, faCircleChevronRight, faCheckSquare, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
@@ -211,10 +210,6 @@ const toggleNav = () => {
           <Betting/>
       </div>
 
-      {/* fifa reward chat bot */}
-      <div>
-          <OpenChatbot/>
-      </div>
       {/* dex tools */}
       <div className={styles.exchmain}>
         <h1>FIFAREWARD PARTNERSHIPS</h1>

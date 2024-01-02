@@ -9,7 +9,7 @@ import { faTwitter, faFontAwesome, faGoogle,faDiscord, faFacebook, faTelegram, f
 library.add(fas, faTwitter, faFontAwesome, faGoogle, faCheck,faCheckCircle, faCircleDollarToSlot, faGift, faPeopleGroup)
 
 const Footer = () => {
-   const [contractAddress, setcontractAddress] = useState('0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B');
+   const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
    const [buttonText, setButtonText] = useState("Copy");
 
 const handleCopyClick = () => {
@@ -71,7 +71,7 @@ const handleCopyClick = () => {
                         <a href='/#tafastaking' rel='noopener noreferrer' ><FontAwesomeIcon icon={faCircleDollarToSlot} size='lg' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Staking Rewards</span></a>
                      </div>
                      <div>
-                        <a href='/#freeclaim' rel='noopener noreferrer' ><FontAwesomeIcon icon={faGift} size='lg' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>TafaXtra Free Claim</span></a>
+                        <a href='/#freeclaim' rel='noopener noreferrer' ><FontAwesomeIcon icon={faGift} size='lg' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>FifaReward Free Claim</span></a>
                      </div>
                      <div>
                         <a href='/#referrals' rel='noopener noreferrer' ><FontAwesomeIcon icon={faPeopleGroup} size='lg' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Referral</span></a>
@@ -85,11 +85,11 @@ const handleCopyClick = () => {
                <div className={footerstyles.f_c}>
                   <div><span>Contract Address:</span></div>
                   <div><input type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
-                  <div className={footerstyles.buylinkp}><a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' className={footerstyles.buylink} rel='noopener noreferrer'>BUY TAFA</a></div>
+                  <div className={footerstyles.buylinkp}><a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' className={footerstyles.buylink} rel='noopener noreferrer'>BUY FRD</a></div>
                </div>
             </div>
          </div>
-         <div><div className={footerstyles.footam}>TAFAXTRA | ©2023 <br></br></div></div>
+         <div><div className={footerstyles.footam}>FIFAREWARD | ©2023 <br></br></div></div>
       </div>
    )
    }

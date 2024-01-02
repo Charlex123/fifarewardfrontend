@@ -1,66 +1,102 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
+import bettingstyle from '../styles/betting.module.css'
+import axios from 'axios';
 import dotenv from 'dotenv';
+import moment from 'moment';
+import { faCalendar, faCalendarAlt, faFontAwesome } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
 // material
 // component
 
 const LoadBets:React.FC<{}> = () => {
-  try {
+  const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
+  const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
+  const [dbfyesterday_d,setDBFYesterday_d] = useState<any>();
+  const [dbfyesterday_dm,setDBFYesterday_dm] = useState<any>();
+  const [yesterday_d,setYesterday_d] = useState<any>();
+  const [yesterday_dm,setYesterday_dm] = useState<any>();
+  const [today_d,setToday_d] = useState<any>();
+  const [today_dm,setToday_dm] = useState<any>();
+  const [tomorrow_d,setTomorrow_d] = useState<any>();
+  const [tomorrow_dm,setTomorrow_dm] = useState<any>();
+  const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
+  const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
 
-    // var config = {
-    //   method: 'get',
-    //   url: 'https://v3.football.api-sports.io/leagues',
-    //   headers: {
-    //     'x-rapidapi-key': 'aa2a3bb1320411e0c7ad474b053c6514',
-    //     'x-rapidapi-host': 'v3.football.api-sports.io'
-    //   }
-    // };
-    
-    // axios(config)
-    // .then(function (response:any) {
-    //   console.log(JSON.stringify(response.data));
-    //   return 
-    // })
-    // .catch(function (error:any) {
-    //   console.log(error);
-    // });
-}catch(error) 
-{
-  console.log(error)
-}
-
+  const [fixturesdata, setFixturesdata] = useState<any>('')
+  
   useEffect(() => {
-    console.log('api key',process.env.NEXT_PUBLIC_API_SPORTS)
-//     try {
+    try {
 
-//       // var config = {
-//       //   method: 'get',
-//       //   url: 'https://v3.football.api-sports.io/leagues',
-//       //   headers: {
-//       //     'x-rapidapi-key': 'aa2a3bb1320411e0c7ad474b053c6514',
-//       //     'x-rapidapi-host': 'v3.football.api-sports.io'
-//       //   }
-//       // };
-      
-//       // axios(config)
-//       // .then(function (response:any) {
-//       //   console.log(JSON.stringify(response.data));
-//       //   return 
-//       // })
-//       // .catch(function (error:any) {
-//       //   console.log(error);
-//       // });
-//   }catch(error) 
-//   {
-//     console.log(error)
-//   }
-})
+      const getDates:any = () => {
+        let dbfyesterday_d_ = moment().subtract(2,'day').format('ddd');
+        let dbfyesterday_dm_ = moment().subtract(2,'day').format('DD, MMM');
+        let yesterday_d_ = moment().subtract(1,'day').format('ddd');
+        let yesterday_dm_ = moment().subtract(1,'day').format('DD, MMM');
+        let today_d_ = "Today";
+        let today_dm_ = moment().format('DD, MMM');
+        let tomorrow_d_ = moment().add(1,'day').format('ddd');
+        let tomorrow_dm_ = moment().add(1,'day').format('DD, MMM');
+        let nexttomorrow_d_ = moment().add(2,'day').format('ddd');
+        let nexttomorrow_dm_ = moment().add(2,'day').format('DD, MMM');
+        setDBFYesterday_d(dbfyesterday_d_);
+        setDBFYesterday_dm(dbfyesterday_dm_);
+        setYesterday_d(yesterday_d_);
+        setYesterday_dm(yesterday_dm_);
+        setToday_d(today_d_);
+        setToday_dm(today_dm_);
+        setTomorrow_d(tomorrow_d_);
+        setTomorrow_dm(tomorrow_dm_);
+        setNextTomorrow_d(nexttomorrow_d_);
+        setNextTomorrow_dm(nexttomorrow_dm_);
+      }
+      getDates()
+
+      async function loadFixtures() {
+        const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
+          console.log('fixtures',data)
+          setFixturesdata(data);
+        }
+    loadFixtures();
+    }catch(error) 
+    {
+      console.log(error)
+    }
+},[fixturesdata])
 
   return (
     <>
-        <div style={{color: 'white'}}>Hello</div>
+      <div className={bettingstyle.main}>
+        
+        <div className={bettingstyle.main_in}>
+          <div className={bettingstyle.leagues}>
+            Henderrrrrrrrrrrrrrrrrrr
+          </div>
+          <div className={bettingstyle.betmain}>
+          <div className={bettingstyle.betmain_top}>
+              <div className={bettingstyle.betmain_top_in}>
+                <div className={bettingstyle.fix_date}><button>Live</button></div>
+                <div className={bettingstyle.fix_date}><button><div>{dbfyesterday_d}</div><div>{dbfyesterday_dm}</div></button></div>
+                <div className={bettingstyle.fix_date}><button><div>{yesterday_d}</div><div>{yesterday_dm}</div></button></div>
+                <div className={bettingstyle.fix_date}><button><div>{today_d}</div><div>{today_dm}</div></button></div>
+                <div className={bettingstyle.fix_date}><button><div>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
+                <div className={bettingstyle.fix_date}><button><div>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
+                <div className={bettingstyle.fix_date}><button>{calendarIcon} {drpdwnIcon}</button></div>
+              </div>
+            </div>
+          </div>
+          <div className={bettingstyle.betslip}>
+            slip
+          </div>
+        </div>
+      </div>
     </>
   );
 }

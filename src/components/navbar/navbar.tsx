@@ -110,7 +110,7 @@ function Navbar() {
                             <li><a href='/whitepaper' rel='noopener noreferrer' > <FontAwesomeIcon icon={faAngleRight} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
                         </ul>
                     </li>
-                    <li><a href='/footballai' rel='noopener noreferrer'>Football AI</a></li>
+                    <li><a href='/aichat' rel='noopener noreferrer'>Football AI</a></li>
                     <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} onMouseOut={toggleIconDown2}>

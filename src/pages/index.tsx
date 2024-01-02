@@ -13,7 +13,6 @@ function HomePage() {
       <BackToTop />
       <ChangeTheme />
       <Navbar />
-      
       <Landing />
       <Footer />
     </>
