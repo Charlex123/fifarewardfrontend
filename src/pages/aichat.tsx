@@ -4,7 +4,7 @@ import ChangeTheme from '../components/change-theme/change-theme';
 import LoadOpenAIChat from '../components/LoadOpenAIChat';
 import Navbar from '../components/navbar/navbar';
 import Footer from '../components/Footer';
-function Dapp() {
+function AIChat() {
 
   return (
     <>
@@ -17,4 +17,4 @@ function Dapp() {
   )
 }
 
-export default Dapp
+export default AIChat

@@ -4,7 +4,8 @@ import ChangeTheme from '../components/change-theme/change-theme';
 import LoadBets from '../components/LoadBets';
 import Navbar from '../components/navbar/navbar';
 import Footer from '../components/Footer';
-function Dapp() {
+
+function Betting() {
 
   return (
     <>
@@ -17,4 +18,4 @@ function Dapp() {
   )
 }
 
-export default Dapp
+export default Betting
