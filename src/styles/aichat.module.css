@@ -36,7 +36,7 @@
     position: relative;z-index: 9;
 }
 .main .settings .bg_option {
-    display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-evenly;align-items: start;
+    display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-evenly;align-items: flex-start;
 }
 .main .settings .bg_option .bg_options_ {
     width: 140px;height: 150px;margin: 5px 5px 5px 5px;border-radius: 8px;background-color: #8c88882a;

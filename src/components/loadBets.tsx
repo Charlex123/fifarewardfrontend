@@ -12,6 +12,7 @@ dotenv.config();
 // component
 
 const LoadBets:React.FC<{}> = () => {
+
   const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
   const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
   const [dbfyesterday_d,setDBFYesterday_d] = useState<any>();
@@ -25,7 +26,97 @@ const LoadBets:React.FC<{}> = () => {
   const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
   const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
 
-  const [fixturesdata, setFixturesdata] = useState<any>('')
+  const [fixturesdata, setFixturesdata] = useState<any>('');
+
+  interface Fixture {
+    _id: string;
+    fid: number;
+    fixture: {
+      id: number;
+      referee: string | null;
+      timezone: string;
+      date: string;
+      timestamp: number;
+      periods: {
+        first: number;
+        second: number;
+      };
+      venue: {
+        id: number | null;
+        name: string;
+        city: string;
+      };
+      status: {
+        long: string;
+        short: string;
+        elapsed: number;
+      };
+    };
+    league: {
+      id: number;
+      name: string;
+      country: string;
+      logo: string;
+      flag: string;
+      season: number;
+      round: string;
+    };
+    teams: {
+      home: {
+        id: number;
+        name: string;
+        logo: string;
+        winner: boolean | null;
+      };
+      away: {
+        id: number;
+        name: string;
+        logo: string;
+        winner: boolean | null;
+      };
+    };
+    goals: {
+      home: number;
+      away: number;
+    };
+    score: {
+      halftime: {
+        home: number;
+        away: number;
+      };
+      fulltime: {
+        home: number;
+        away: number;
+      };
+      extratime: {
+        home: number | null;
+        away: number | null;
+      };
+      penalty: {
+        home: number | null;
+        away: number | null;
+      };
+    };
+    __v: number;
+  }
+  
+  interface LeagueFixtures {
+    _id: number;
+    leagueName: string;
+    fixtures: Fixture[];
+  }
+  
+  interface Team {
+    id: number;
+    name: string;
+    logo: string;
+    winner: boolean | null;
+}
+
+  interface FixturesData {
+    fixtures: LeagueFixtures[];
+  }
+  
   
   useEffect(() => {
     try {
@@ -61,23 +152,42 @@ const LoadBets:React.FC<{}> = () => {
             }
           }  
           const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
-          console.log('fixtures',data)
           setFixturesdata(data);
+          console.log('fixtures data',data)
         }
     loadFixtures();
     }catch(error) 
     {
       console.log(error)
     }
+
+  
 },[fixturesdata])
 
+console.log('fixtures data oop',fixturesdata)
+// Import your JSON data here
+const dataf: FixturesData = fixturesdata;
+console.log('fixtures data oop 00-',dataf)
   return (
     <>
       <div className={bettingstyle.main}>
         
         <div className={bettingstyle.main_in}>
           <div className={bettingstyle.leagues}>
-            Henderrrrrrrrrrrrrrrrrrr
+            {fixturesdata ? <div>
+              {dataf.fixtures.map(league => (
+                <div key={league._id}>
+                  <h2>{league.leagueName}</h2>
+                  {league.fixtures.map(fixture => (
+                    <div key={fixture._id}>
+                      <p>{fixture.fixture.venue.name} - {fixture.fixture.date}</p>
+                      <p>{fixture.teams.home.name} vs {fixture.teams.away.name}</p>
+                      <p>Score: {fixture.score.fulltime.home} - {fixture.score.fulltime.away}</p>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>: <div> Loading </div>}
           </div>
           <div className={bettingstyle.betmain}>
           <div className={bettingstyle.betmain_top}>
