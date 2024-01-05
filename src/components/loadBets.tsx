@@ -25,7 +25,7 @@ const LoadBetData:React.FC<{}> = () => {
   const [tomorrow_dm,setTomorrow_dm] = useState<any>();
   const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
   const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
-
+// s
   const [fixturesdata, setFixturesdata] = useState<any>('');
 
   interface Fixture {
