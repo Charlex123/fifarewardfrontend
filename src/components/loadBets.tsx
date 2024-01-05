@@ -11,7 +11,7 @@ dotenv.config();
 // material
 // component
 
-const LoadBets:React.FC<{}> = () => {
+const LoadBetData:React.FC<{}> = () => {
 
   const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
   const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
@@ -99,11 +99,18 @@ const LoadBets:React.FC<{}> = () => {
     };
     __v: number;
   }
-  
+
   interface LeagueFixtures {
     _id: number;
     leagueName: string;
     fixtures: Fixture[];
+    fixtureCount: number;
+  }
+
+  interface Country {
+    name: string;
+    leagues: LeagueFixtures[];
+    leagueCount: number;
   }
   
   interface Team {
@@ -111,7 +118,7 @@ const LoadBets:React.FC<{}> = () => {
     name: string;
     logo: string;
     winner: boolean | null;
-}
+  }
 
   interface FixturesData {
     fixtures: LeagueFixtures[];
@@ -211,4 +218,4 @@ console.log('fixtures data oop 00-',dataf)
   );
 }
 
-export default LoadBets
+export default LoadBetData
