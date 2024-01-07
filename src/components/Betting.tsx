@@ -5,6 +5,8 @@ import bettingstyle from '../styles/betting.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import moment from 'moment';
+import Loading from './Loading';
+import LeagueFixtures from './LeagueFixtures'
 import { faCalendar, faCalendarAlt, faFontAwesome } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
@@ -15,44 +17,47 @@ const LoadBetData:React.FC<{}> = () => {
 
   const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
   const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
-  const [dbfyesterday_d,setDBFYesterday_d] = useState<any>();
-  const [dbfyesterday_dm,setDBFYesterday_dm] = useState<any>();
-  const [yesterday_d,setYesterday_d] = useState<any>();
-  const [yesterday_dm,setYesterday_dm] = useState<any>();
   const [today_d,setToday_d] = useState<any>();
   const [today_dm,setToday_dm] = useState<any>();
   const [tomorrow_d,setTomorrow_d] = useState<any>();
   const [tomorrow_dm,setTomorrow_dm] = useState<any>();
   const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
   const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
+  const [nextthree_d,setNextThree_d] = useState<any>();
+  const [nextthree_dm,setNextThree_dm] = useState<any>();
+  const [nextfour_d,setNextFour_d] = useState<any>();
+  const [nextfour_dm,setNextFour_dm] = useState<any>();
 
   const [fixturesdata, setFixturesdata] = useState<any>('');
+  const [showleagueFixtures, setShowleagueFixtures] = useState<any>();
+  const [countryName,setCountryName] = useState<string>('');
 
-  interface Fixture {
-    _id: string;
-    fid: number;
-    fixture: {
+  // types.ts
+interface Fixture {
+  _id: string;
+  fid: number;
+  fixture: {
       id: number;
       referee: string | null;
       timezone: string;
       date: string;
       timestamp: number;
       periods: {
-        first: number;
-        second: number;
+          first: number;
+          second: number;
       };
       venue: {
-        id: number | null;
-        name: string;
-        city: string;
+          id: number | null;
+          name: string;
+          city: string;
       };
       status: {
-        long: string;
-        short: string;
-        elapsed: number;
+          long: string;
+          short: string;
+          elapsed: number;
       };
-    };
-    league: {
+  };
+  league: {
       id: number;
       name: string;
       country: string;
@@ -60,8 +65,8 @@ const LoadBetData:React.FC<{}> = () => {
       flag: string;
       season: number;
       round: string;
-    };
-    teams: {
+  };
+  teams: {
       home: {
         id: number;
         name: string;
@@ -74,56 +79,30 @@ const LoadBetData:React.FC<{}> = () => {
         logo: string;
         winner: boolean | null;
       };
-    };
-    goals: {
+  };
+  goals: {
       home: number;
       away: number;
-    };
-    score: {
-      halftime: {
-        home: number;
-        away: number;
-      };
-      fulltime: {
-        home: number;
-        away: number;
-      };
-      extratime: {
-        home: number | null;
-        away: number | null;
-      };
-      penalty: {
-        home: number | null;
-        away: number | null;
-      };
-    };
-    __v: number;
-  }
+  };
+  score: {
+    halftime: { home: number; away: number };
+    fulltime: { home: number; away: number };
+    extratime: { home: number | null; away: number | null };
+    penalty: { home: number | null; away: number | null };
+  };
+  __v: number;
+}
 
-  interface LeagueFixtures {
-    _id: number;
-    leagueName: string;
-    fixtures: Fixture[];
-    fixtureCount: number;
-  }
+interface League {
+  leagueId: number;
+  leagueName: string;
+  fixtures: Fixture[];
+}
 
-  interface Country {
-    name: string;
-    leagues: LeagueFixtures[];
-    leagueCount: number;
-  }
-  
-  interface Team {
-    id: number;
-    name: string;
-    logo: string;
-    winner: boolean | null;
-  }
-
-  interface FixturesData {
-    fixtures: LeagueFixtures[];
-  }
-  
+interface Country {
+  _id: string;
+  leagues: League[];
+} 
   
   useEffect(() => {
     try {
@@ -139,16 +118,21 @@ const LoadBetData:React.FC<{}> = () => {
         let tomorrow_dm_ = moment().add(1,'day').format('DD, MMM');
         let nexttomorrow_d_ = moment().add(2,'day').format('ddd');
         let nexttomorrow_dm_ = moment().add(2,'day').format('DD, MMM');
-        setDBFYesterday_d(dbfyesterday_d_);
-        setDBFYesterday_dm(dbfyesterday_dm_);
-        setYesterday_d(yesterday_d_);
-        setYesterday_dm(yesterday_dm_);
+        let nextthree_d_ = moment().add(3,'day').format('ddd');
+        let nextthree_dm_ = moment().add(3,'day').format('DD, MMM');
+        let nextfour_d_ = moment().add(4,'day').format('ddd');
+        let nextfour_dm_ = moment().add(4,'day').format('DD, MMM');
+        
         setToday_d(today_d_);
         setToday_dm(today_dm_);
         setTomorrow_d(tomorrow_d_);
         setTomorrow_dm(tomorrow_dm_);
         setNextTomorrow_d(nexttomorrow_d_);
         setNextTomorrow_dm(nexttomorrow_dm_);
+        setNextThree_d(nextthree_d_);
+        setNextThree_dm(nextthree_dm_);
+        setNextFour_d(nextfour_d_);
+        setNextFour_dm(nextfour_dm_);
       }
       getDates()
 
@@ -160,7 +144,6 @@ const LoadBetData:React.FC<{}> = () => {
           }  
           const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
           setFixturesdata(data);
-          console.log('fixtures data',data)
         }
     loadFixtures();
     }catch(error) 
@@ -171,43 +154,84 @@ const LoadBetData:React.FC<{}> = () => {
   
 },[fixturesdata])
 
-console.log('fixtures data oop',fixturesdata)
+
 // Import your JSON data here
-const dataf: FixturesData = fixturesdata;
-console.log('fixtures data oop 00-',dataf)
+console.log('fixture data',fixturesdata.fixtures)
+const betdata: Country[] = fixturesdata.fixtures;
+
+const getleagueFixtures = async (leagueid:any) => {
+    
+    try {
+      const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+      }  
+      const {data} = await axios.post("http://localhost:9000/api/leaguefixtures/loadleaguefixtures", {
+        leagueid
+      }, config);
+      setShowleagueFixtures(<LeagueFixtures fixtures={data}/>);
+      let betwrapin = document.getElementById("betwrapin");
+      console.log('juewsus ',betwrapin)
+    } catch (error) {
+      console.log(error)
+    }
+}
+
   return (
     <>
       <div className={bettingstyle.main}>
         
         <div className={bettingstyle.main_in}>
           <div className={bettingstyle.leagues}>
+            <div><h3>Games/Fixtures</h3></div>
             {fixturesdata ? <div>
-              {dataf.fixtures.map(league => (
-                <div key={league._id}>
-                  <h2>{league.leagueName}</h2>
-                  {league.fixtures.map(fixture => (
-                    <div key={fixture._id}>
-                      <p>{fixture.fixture.venue.name} - {fixture.fixture.date}</p>
-                      <p>{fixture.teams.home.name} vs {fixture.teams.away.name}</p>
-                      <p>Score: {fixture.score.fulltime.home} - {fixture.score.fulltime.away}</p>
-                    </div>
-                  ))}
+              <div><h3>Fixtures By Country</h3></div>
+              {betdata.map(country => (
+                <div key={country._id}>
+                  <ul>
+                    <li id={country._id}>
+                       <div className={bettingstyle.leagued}>
+                          <div>
+                            {country.leagues.map(league => (
+                              <div className={bettingstyle.lde} onClick={() => getleagueFixtures(league.leagueId)}>
+                                <div className={bettingstyle.ldef}>
+                                  <input type='checkbox' className={bettingstyle.mchkbox} id={country._id}/>
+                                  <span className={bettingstyle.chkbox}>&nbsp;&nbsp;</span> <span>{league.leagueName}</span>
+                                </div>
+                                <div className={bettingstyle.ldes}>
+                                  ({league.fixtures.length})
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      <div className={bettingstyle.lita} >
+                        <div>{country._id}</div>
+                        <div>{country.leagues.map(fixture => fixture.fixtures).reduce((sum,fixture)=> sum + fixture.length,0)}</div>
+                      </div>
+                    </li>
+                  </ul>
                 </div>
-              ))}
-            </div>: <div> Loading </div>}
+            ))}
+
+            </div>: <div> <Loading /> </div>}
           </div>
           <div className={bettingstyle.betmain}>
-          <div className={bettingstyle.betmain_top}>
-              <div className={bettingstyle.betmain_top_in}>
-                <div className={bettingstyle.fix_date}><button>Live</button></div>
-                <div className={bettingstyle.fix_date}><button><div>{dbfyesterday_d}</div><div>{dbfyesterday_dm}</div></button></div>
-                <div className={bettingstyle.fix_date}><button><div>{yesterday_d}</div><div>{yesterday_dm}</div></button></div>
-                <div className={bettingstyle.fix_date}><button><div>{today_d}</div><div>{today_dm}</div></button></div>
-                <div className={bettingstyle.fix_date}><button><div>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                <div className={bettingstyle.fix_date}><button><div>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                <div className={bettingstyle.fix_date}><button>{calendarIcon} {drpdwnIcon}</button></div>
+              <div className={bettingstyle.betmain_top}>
+                <div className={bettingstyle.betmain_top_in}>
+                  <div className={bettingstyle.fix_date}><button>Live</button></div>
+                  <div className={bettingstyle.fix_date}><button><div>{today_d}</div><div>{today_dm}</div></button></div>
+                  <div className={bettingstyle.fix_date}><button><div>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
+                  <div className={bettingstyle.fix_date}><button><div>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
+                  <div className={bettingstyle.fix_date}><button><div>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
+                  <div className={bettingstyle.fix_date}><button><div>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
+                  <div className={bettingstyle.fix_date}><button>{calendarIcon} {drpdwnIcon}</button></div>
+                </div>
               </div>
-            </div>
+              <div className={bettingstyle.betwrap}>
+                  <div className={bettingstyle.betwrapin} id='betwrapin'></div>
+              </div>
           </div>
           <div className={bettingstyle.betslip}>
             slip

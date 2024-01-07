@@ -2,11 +2,11 @@
 
 .spinner {
   display: inline-block;
-  width: 50px;
-  height: 50px;
+  width: 30px;
+  height: 30px;
   border: 3px solid rgba(255,255,255,.3);
   border-radius: 50%;
-  border-top-color: #ffffff;
+  border-top-color: #e28305;
   animation: spin .5s ease-in-out infinite;
   -webkit-animation: spin .5s ease-in-out infinite;
 }
