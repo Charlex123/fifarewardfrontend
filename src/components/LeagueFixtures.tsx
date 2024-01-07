@@ -78,19 +78,43 @@ interface Fixture {
     fixtures: Fixture[];
   }
 
-const LoadLeagueFixtures:React.FC<{Props: League[]}> = (props) => {
-  
-  console.log('league fixtures props',props)
+const LoadLeagueFixtures = (leaguid:any) => {
+  console.log()
+  const [fixturesd,setFixturesd] = useState<any>('');
+
+  (async (leagueid) => {
+    try {
+      const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+      }  
+      const {data} = await axios.post("https://fifareward.onrender.com/api/leaguefixtures/loadleaguefixtures", {
+        leagueid
+      }, config);
+      setFixturesd(data)
+    } catch (error) {
+      console.log(error)
+    }
+  })(leaguid)
+
+  console.log('league fixtures props',fixturesd)
   // types.ts
+  const fixturesdata: League[] = fixturesd.fixtures;
 
 return (
     <>
-      <div className={bettingstyle.main}>
-        
+      {/* <div className={bettingstyle.main}>
         <div className={bettingstyle.main_in}>
-          
+          {fixturesdata.map(fixture => (
+            <div key={fixture.leagueId}>
+              {fixture.fixtures.map(fixture => (
+                fixture.fixture.id
+              ))}
+            </div>
+          ))}
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

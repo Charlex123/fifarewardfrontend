@@ -52,7 +52,7 @@ export default function LoginForm() {
         }
       }  
       setLoading(true)
-      const {data} = await axios.post("https://tafabackend.onrender.com/api/users/signin", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/users/signin", {
         email,
         password
       }, config);

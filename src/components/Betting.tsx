@@ -142,7 +142,7 @@ interface Country {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
+          const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures", config);
           setFixturesdata(data);
         }
     loadFixtures();
@@ -167,12 +167,14 @@ const getleagueFixtures = async (leagueid:any) => {
             "Content-type": "application/json"
         }
       }  
-      const {data} = await axios.post("http://localhost:9000/api/leaguefixtures/loadleaguefixtures", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/leaguefixtures/loadleaguefixtures", {
         leagueid
       }, config);
       setShowleagueFixtures(<LeagueFixtures fixtures={data}/>);
       let betwrapin = document.getElementById("betwrapin");
+      console.log('bet waui',<LeagueFixtures fixtures={data}/>)
       console.log('juewsus ',betwrapin)
+      console.log('juewsus ShowleagueFixtures ',showleagueFixtures)
     } catch (error) {
       console.log(error)
     }

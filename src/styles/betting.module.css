@@ -91,6 +91,9 @@
 .main .main_top .main_top_in .fix_date button {
     margin: 0 25px;width: 100%;padding: 3px 12px;
 }
+.main .betwrap .betwrapin {
+    background-color: #e2d7d7;
+}
 .main .main_in .betslip {
     background-color: #e2d7d7;;width: 18%;margin: 0 2%;
 }
