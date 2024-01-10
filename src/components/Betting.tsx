@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCaretDown, faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 import bettingstyle from '../styles/betting.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import moment from 'moment';
 import Loading from './Loading';
 import LeagueFixtures from './LeagueFixtures'
-import { faCalendar, faCalendarAlt, faFontAwesome } from '@fortawesome/free-regular-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Overlay } from 'react-bootstrap';
 dotenv.config();
 // material
 // component
@@ -142,7 +143,7 @@ interface Country {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures", config);
+          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
           setFixturesdata(data);
         }
     loadFixtures();
@@ -167,7 +168,7 @@ const getleagueFixtures = async (leagueid:any) => {
             "Content-type": "application/json"
         }
       }  
-      const {data} = await axios.post("https://fifareward.onrender.com/api/leaguefixtures/loadleaguefixtures", {
+      const {data} = await axios.post("http://localhost:9000/api/leaguefixtures/loadleaguefixtures", {
         leagueid
       }, config);
       setShowleagueFixtures(<LeagueFixtures fixtures={data}/>);
@@ -180,15 +181,197 @@ const getleagueFixtures = async (leagueid:any) => {
     }
 }
 
+const toggleFixtures = (divId:any) => {
+  
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  if((svg !== null && svg !== undefined) || path !== null && path !== undefined) {
+    if(svg !== null && svg !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
+      targetDiv.style.display = (targetDiv.style.display == 'none') ? 'block' : 'none';
+    }
+    if(path !== null && path !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+      targetDiv.style.display = (targetDiv.style.display == 'none') ? 'block' : 'none';
+    }
+  }else {
+    let targetDiv = divId.parentElement.parentElement.nextElementSibling;
+    targetDiv.style.display = (targetDiv.style.display == 'none') ? 'block' : 'none';
+  }
+  
+
+}
+
+const closeLeagueFixtures = (divId:any) => {
+  console.log('huo',divId);
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  if(svg !== null && svg !== undefined) {
+    divId.parentElement.parentElement.parentElement.remove();
+  }
+  if(path !== null && path !== undefined) {
+    divId.parentElement.parentElement.parentElement.parentElement.remove()
+  }
+}
+
+const closeHIWDiv = (divId:any) => {
+  console.log('huo',divId);
+  console.log('huo pareant',divId.parentElement.parentElement);
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  if(svg !== null && svg !== undefined) {
+    divId.parentElement.parentElement.style.display = 'none';
+  }
+  if(path !== null && path !== undefined) {
+    divId.parentElement.parentElement.parentElement.style.display = 'none';
+  }
+}
+
+const closeHIWE = (divId:any) => {
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display == 'block') ? 'none' : 'block';
+  if(svg !== null && svg !== undefined) {
+    divId.parentElement.parentElement.parentElement.style.display = 'none';
+  }
+  if(path !== null && path !== undefined) {
+    divId.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
+  }
+}
+
+const firstopenHIW = (divId:any) => {
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  console.log('t div firr oo parent',divId.parentElement.parentElement)
+  console.log('t div',divId.parentElement.parentElement.firstElementChild)
+  if((svg !== null && svg !== undefined) || path !== null && path !== undefined) {
+    if(svg !== null && svg !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.firstElementChild;
+      targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+    }
+    if(path !== null && path !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.firstElementChild;
+      targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+    }
+  }else {
+    let targetDiv = divId.parentElement.parentElement.firstElementChild;
+    targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+  }
+}
+
+const openHIWE = (divId:any) => {
+  let hiwdiv = document.querySelector('#howitworks') as HTMLElement;
+  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  console.log('hiw div',hiwdiv)
+  console.log('hiw overlay',hiw_bgoverlay)
+  hiwdiv.style.display = (hiwdiv.style.display == 'block') ? 'none' : 'block';
+  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display == 'block') ? 'none' : 'block';
+
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+
+  if((svg !== null && svg !== undefined) || path !== null && path !== undefined) {
+    if(svg !== null && svg !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement;
+      targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+    }
+    if(path !== null && path !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.parentElement;
+      targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+    }
+  }else {
+    let targetDiv = divId.parentElement.parentElement.parentElement;
+    targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+  }
+}
+
+const placeBet = (divId:any) => {
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  if((svg !== null && svg !== undefined) || path !== null && path !== undefined) {
+    if(svg !== null && svg !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+      let targetDivP = divId.parentElement.parentElement.parentElement;
+      console.log('target Pppp',targetDivP)
+      targetDivP.style.display = 'none';
+      targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+    }
+    if(path !== null && path !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+      let targetDivP = divId.parentElement.parentElement.parentElement.parentElement;
+      targetDivP.style.display = 'none';
+      targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+    }
+  }else {
+    let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
+    let targetDivP = divId.parentElement.parentElement;
+    // targetDivP.style.display = 'none';
+    console.log('target Pp poo',targetDiv)
+    console.log('target Pppp',targetDivP)
+    targetDiv.style.display = (targetDiv.style.display == 'block') ? 'none' : 'block';
+  }
+}
+
+const closePBET = (divId:any) => {
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  console.log('ddeeee fer first d0p',divId)
+  console.log('ddeeee fer',divId.parentElement.parentElement);
+  if(svg !== null && svg !== undefined) {
+    // divId.parentElement.parentElement.style.display = 'none';
+  }
+  if(path !== null && path !== undefined) {
+    // divId.parentElement.parentElement.parentElement.style.display = 'none';
+  }
+}
   return (
     <>
+    <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div>
       <div className={bettingstyle.main}>
-        
+        {/* how it works div starts */}
+        <div id='howitworks' className={bettingstyle.hiwmain}>
+          <div className={bettingstyle.hiw_c}>
+            <div className={bettingstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
+            <h3>How It Works</h3>
+            <ul>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='fifareward'>Join Fifa Reward</a>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Visit the betting page
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a>open bets</a>
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Draw bets are carried over to a next match
+              </li>
+            </ul>
+          </div>
+        </div>
+        {/* how it works div starts */}
+
         <div className={bettingstyle.main_in}>
           <div className={bettingstyle.leagues}>
-            <div><h3>Games/Fixtures</h3></div>
+            <div className={bettingstyle.gf}><h3>Games</h3></div>
             {fixturesdata ? <div>
-              <div><h3>Fixtures By Country</h3></div>
+              <div className={bettingstyle.fb}><h3>By Country</h3></div>
               {betdata.map(country => (
                 <div key={country._id}>
                   <ul>
@@ -222,21 +405,311 @@ const getleagueFixtures = async (leagueid:any) => {
           <div className={bettingstyle.betmain}>
               <div className={bettingstyle.betmain_top}>
                 <div className={bettingstyle.betmain_top_in}>
-                  <div className={bettingstyle.fix_date}><button>Live</button></div>
-                  <div className={bettingstyle.fix_date}><button><div>{today_d}</div><div>{today_dm}</div></button></div>
-                  <div className={bettingstyle.fix_date}><button><div>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.fix_date}><button><div>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.fix_date}><button><div>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
-                  <div className={bettingstyle.fix_date}><button><div>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
-                  <div className={bettingstyle.fix_date}><button>{calendarIcon} {drpdwnIcon}</button></div>
+                  <div className={bettingstyle.live}><button>Live</button></div>
+                  <div className={bettingstyle.today}><button><div>{today_d}</div><div>{today_dm}</div></button></div>
+                  <div className={bettingstyle.tom}><button><div>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
+                  <div className={bettingstyle.nxttom}><button><div>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
+                  <div className={bettingstyle.threed}><button><div>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
+                  <div className={bettingstyle.fourd}><button><div>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
+                  <div className={bettingstyle.cal}><button>{calendarIcon} {drpdwnIcon}</button></div>
                 </div>
               </div>
               <div className={bettingstyle.betwrap}>
-                  <div className={bettingstyle.betwrapin} id='betwrapin'></div>
+                  <div className={bettingstyle.betwrapin} id='betwrapin'>
+                  {fixturesdata ? 
+                    <div>
+                      {betdata.map(country => (country.leagues.map(league => (
+                        <div className={bettingstyle.league_wrap}>
+                          <div className={bettingstyle.tgle} >
+                            <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
+                            <div className={bettingstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                            <div className={bettingstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                          </div>
+                          <div className={bettingstyle.league_wrap_in} >
+                            {league.fixtures.map(fixture => (
+                              <div className={bettingstyle.fixt}>
+                                <div className={bettingstyle.fixt_d_o}>
+                                  <div className={bettingstyle.fixt_d}>
+                                   <span>Date</span> {`${moment(fixture.fixture.date).format('DD/MM ddd')}`}
+                                  </div>
+                                  <div className={bettingstyle.dd}>
+                                      <div><span>Time</span>{`${moment(fixture.fixture.timestamp).format('hh:mm a')}`}</div>
+                                      <div className={bettingstyle.fid}>ID: {fixture.fixture.id}</div>
+                                  </div>
+                                </div>
+
+                                <div className={bettingstyle.fixt_tm}>
+                                  <div className={bettingstyle.teams}>
+                                    <div>{`${fixture.teams.home.name}`}</div>
+                                    <div className={bettingstyle.vs}>Vs</div>
+                                    <div>{`${fixture.teams.away.name}`}</div>
+                                  </div>
+                                </div>
+                                <div className={bettingstyle.openbet}>
+                                  <div className={bettingstyle.opb_btns_div}>
+                                    <div className={bettingstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                                    <div className={bettingstyle.opb_btns}>
+                                      <div className={bettingstyle.opb_open} onClick={(e) => placeBet(e.target)}><button>Open Bet {<FontAwesomeIcon icon={faFutbol}/>}</button></div>
+                                      <div className={bettingstyle.opb_hiw} onClick={(e) => openHIWE(e.target)}><button>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
+                                    </div>
+                                  </div>
+
+                                  <div className={bettingstyle.pbet}>
+                                    <div className={bettingstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
+                                    <form>
+                                      <div>
+                                        <label>Enter amount</label>
+                                        <input type='number' />
+                                      </div>
+                                    </form>
+                                  </div>
+
+                                  <div>
+                                    <button onClick={(e) => firstopenHIW(e.target)}>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      ))))}
+                    </div>
+                  : <div> <Loading/> </div>
+                  }
+                  </div>
               </div>
           </div>
-          <div className={bettingstyle.betslip}>
-            slip
+          <div className={bettingstyle.openbets_list}>
+            <div className={bettingstyle.opb_h}>
+              <h3>Open Bets</h3>
+              <div className={bettingstyle.opb}>
+                <ul>
+                  <li>
+                    <div>
+                      <div><span>User</span></div>
+                      <div><span>Charles</span></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Bet Id</span>
+                      </div>
+                      <div>
+                        <span>87788</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Status</span>
+                      </div>
+                      <div>
+                        <span className={bettingstyle.stat}>Open</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Match Id</span>
+                      </div>
+                      <div>
+                        <span>823987</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Teams</span>
+                      </div>
+                      <div className={bettingstyle.tms}>
+                        <div>
+                          <span>Man U</span>
+                        </div>
+                        <div>
+                          <span className={bettingstyle.tmsvs}>Vs</span>
+                        </div>
+                        <div>
+                          <span>Chelsea</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <div>
+                      <div><span>User</span></div>
+                      <div><span>Charles</span></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Bet Id</span>
+                      </div>
+                      <div>
+                        <span>87788</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Status</span>
+                      </div>
+                      <div>
+                        <span className={bettingstyle.stat}>Open</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Match Id</span>
+                      </div>
+                      <div>
+                        <span>823987</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Teams</span>
+                      </div>
+                      <div className={bettingstyle.tms}>
+                        <div>
+                          <span>Man U</span>
+                        </div>
+                        <div>
+                          <span className={bettingstyle.tmsvs}>Vs</span>
+                        </div>
+                        <div>
+                          <span>Chelsea</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <div>
+                      <div><span>User</span></div>
+                      <div><span>Charles</span></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Bet Id</span>
+                      </div>
+                      <div>
+                        <span>87788</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Status</span>
+                      </div>
+                      <div>
+                        <span className={bettingstyle.stat}>Open</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Match Id</span>
+                      </div>
+                      <div>
+                        <span>823987</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Teams</span>
+                      </div>
+                      <div className={bettingstyle.tms}>
+                        <div>
+                          <span>Man U</span>
+                        </div>
+                        <div>
+                          <span className={bettingstyle.tmsvs}>Vs</span>
+                        </div>
+                        <div>
+                          <span>Chelsea</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <ul>
+                  <li>
+                    <div>
+                      <div><span>User</span></div>
+                      <div><span>Charles</span></div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Bet Id</span>
+                      </div>
+                      <div>
+                        <span>87788</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Status</span>
+                      </div>
+                      <div>
+                        <span className={bettingstyle.stat}>Open</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Match Id</span>
+                      </div>
+                      <div>
+                        <span>823987</span>
+                      </div>
+                    </div>
+                  </li>
+                  <li>
+                    <div>
+                      <div>
+                        <span>Teams</span>
+                      </div>
+                      <div className={bettingstyle.tms}>
+                        <div>
+                          <span>Man U</span>
+                        </div>
+                        <div>
+                          <span className={bettingstyle.tmsvs}>Vs</span>
+                        </div>
+                        <div>
+                          <span>Chelsea</span>
+                        </div>
+                      </div>
+                    </div>
+                  </li>
+                </ul>
+                <div className={bettingstyle.opb_full_list}><a href='./openbetslist'>See All Open Bets ...</a></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

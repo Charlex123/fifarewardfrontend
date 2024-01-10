@@ -22,6 +22,9 @@
   margin: 0;
   box-sizing: border-box;
 }
+.main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
+  display: block;
+}
 body {
   position: relative;
   box-sizing: border-box;
