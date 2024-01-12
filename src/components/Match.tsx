@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import bettingstyle from '../styles/betting.module.css'
+import matchstyle from '../styles/match.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import Image from 'next/image';
@@ -24,32 +24,6 @@ type DateValuePiece = Date | null;
 type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 
 const MatchData:React.FC<{}> = () => {
-
-  const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
-  const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
-  const [today_d,setToday_d] = useState<any>();
-  const [today_dm,setToday_dm] = useState<any>();
-  const [tomorrow_d,setTomorrow_d] = useState<any>();
-  const [tomorrow_dm,setTomorrow_dm] = useState<any>();
-  const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
-  const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
-  const [nextthree_d,setNextThree_d] = useState<any>();
-  const [nextthree_dm,setNextThree_dm] = useState<any>();
-  const [nextfour_d,setNextFour_d] = useState<any>();
-  const [nextfour_dm,setNextFour_dm] = useState<any>();
-  const [datevalue, onChange] = useState<DateValue>(new Date());
-  const [showcalender, setShowCalendar] = useState<boolean>(false);
-  const [loadedlaguedata,setLoadedLeagueData] = useState<any>(false);
-  const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
-  const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
-
-  const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
-  const[countryparam,setCountryParam] = useState<string>('');
-  const[leagueparam,setLeagueParam] = useState<string>('');
-  const[matchparam,setMatchParam] = useState<string>('');
-  const[matchidparam,setMatchIdParam] = useState<string>('');
-
-  const router = useRouter();
   // types.ts
 interface Fixture {
   _id: string;
@@ -110,7 +84,9 @@ interface Fixture {
   };
   __v: number;
 }
-
+interface Match {
+    fixture: Fixture[];
+}
 interface League {
   leagueId: number;
   leagueName: string;
@@ -132,7 +108,34 @@ interface Countries {
   leagues: CountriesLeagues[],
   totalFixturesInCountry: number
 } 
-  
+
+const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
+const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
+const [today_d,setToday_d] = useState<any>();
+const [today_dm,setToday_dm] = useState<any>();
+const [tomorrow_d,setTomorrow_d] = useState<any>();
+const [tomorrow_dm,setTomorrow_dm] = useState<any>();
+const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
+const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
+const [nextthree_d,setNextThree_d] = useState<any>();
+const [nextthree_dm,setNextThree_dm] = useState<any>();
+const [nextfour_d,setNextFour_d] = useState<any>();
+const [nextfour_dm,setNextFour_dm] = useState<any>();
+const [datevalue, onChange] = useState<DateValue>(new Date());
+const [showcalender, setShowCalendar] = useState<boolean>(false);
+const [loadedlaguedata,setLoadedLeagueData] = useState<any>(false);
+const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
+const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
+
+const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
+const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
+const[countryparam,setCountryParam] = useState<string>('');
+const[leagueparam,setLeagueParam] = useState<string>('');
+const[matchparam,setMatchParam] = useState<string>('');
+const[matchidparam,setMatchIdParam] = useState<string>('');
+const[matchData,setMatchData] = useState<Fixture[]>([]);
+
+const router = useRouter();
 
   useEffect(() => {
     try {
@@ -188,8 +191,13 @@ interface Countries {
                   const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatch", {
                     matchidparam
                   }, config);
+                  if(data.match !== null) {
+                    setIsMatchDataLoaded(true);
+                    setMatchData(data.match);
+                    console.log('match data',data.match);
+                  }
             }
-        }loadMatchData()
+        }loadMatchData();
 
     }catch(error) 
     {
@@ -197,7 +205,7 @@ interface Countries {
     }
 
   
-},[countryfixturesdata,router.query.match])
+},[countryfixturesdata,router.query.match,matchidparam])
 
 const getleagueFixtures = async (leagueid:number) => {
     try {
@@ -378,80 +386,82 @@ const closePBET = (divId:any) => {
 // Import your JSON data here
 const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
+console.log('hopae ',matchData)
+
   return (
     <>
-    <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div>
-      <div className={bettingstyle.main}>
-        <div className={bettingstyle.headbg}>
+    <div className={matchstyle.hiw_overlay} id="hiw_overlay"></div>
+      <div className={matchstyle.main}>
+        <div className={matchstyle.headbg}>
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
-        {isparamsLoaded && <div className={bettingstyle.breadcrum}>
+        {isparamsLoaded && <div className={matchstyle.breadcrum}>
           <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`/${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam} {'>'} {leagueparam} {'>'} {matchparam}</a>
         </div> }
         
         {/* how it works div starts */}
-        <div id='howitworks' className={bettingstyle.hiwmain}>
-          <div className={bettingstyle.hiw_c}>
-            <div className={bettingstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
+        <div id='howitworks' className={matchstyle.hiwmain}>
+          <div className={matchstyle.hiw_c}>
+            <div className={matchstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='fifareward'>Join Fifa Reward</a>
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='fifareward'>Join Fifa Reward</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Visit the betting page
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Visit the betting page
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a>open bets</a>
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a>open bets</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Draw bets are carried over to a next match
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Draw bets are carried over to a next match
               </li>
             </ul>
           </div>
         </div>
         {/* how it works div starts */}
 
-        <div className={bettingstyle.main_in}>
-          <div className={bettingstyle.leagues}>
-            <div className={bettingstyle.gf}><h3>Games</h3></div>
+        <div className={matchstyle.main_in}>
+          <div className={matchstyle.leagues}>
+            <div className={matchstyle.gf}><h3>Games</h3></div>
             {countryfixturesdata ? <div>
-              <div className={bettingstyle.fb}><h3>By Country</h3></div>
+              <div className={matchstyle.fb}><h3>By Country</h3></div>
               {countryfixturescount.map(country => (
                 <div key={country._id}>
                   <ul>
                     <li>
-                       <div className={bettingstyle.leagued}>
+                       <div className={matchstyle.leagued}>
                           <div>
                             {country.leagues.map(league => (
-                              <div className={bettingstyle.lde} onClick={() => getleagueFixtures(league.leagueId)} key={league.leagueId}>
-                                <div className={bettingstyle.ldef}>
-                                  <input title='title' type='checkbox' className={bettingstyle.mchkbox} id={country._id}/>
-                                  <span className={bettingstyle.chkbox}>&nbsp;&nbsp;</span> <span>{league.leagueName}</span>
+                              <div className={matchstyle.lde} key={league.leagueId}>
+                                <div className={matchstyle.ldef}>
+                                  <input title='title' type='checkbox' disabled className={matchstyle.mchkbox} id={country._id}/>
+                                  <span className={matchstyle.chkbox}>&nbsp;&nbsp;</span> <span>{league.leagueName}</span>
                                 </div>
-                                <div className={bettingstyle.ldes}>
+                                <div className={matchstyle.ldes}>
                                   ({league.totalFixtures})
                                 </div>
                               </div>
                             ))}
                           </div>
                         </div>
-                      <div className={bettingstyle.lita} >
+                      <div className={matchstyle.lita} >
                         <div>{country._id}</div>
                         <div>{country.totalFixturesInCountry}</div>
                       </div>
@@ -462,73 +472,72 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
             </div>: <div> <Loading /> </div>}
           </div>
-          <div className={bettingstyle.betmain}>
-              <div className={bettingstyle.betmain_top}>
-                <div className={bettingstyle.betmain_top_in}>
-                  <div className={bettingstyle.live}><button type='button' title='button' onClick={() => loadfixturesbyDate('live')}>Live</button></div>
-                  <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(today_dm)}><div className={bettingstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
-                  <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrow_dm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrow_dm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_dm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
-                  <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_dm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
-                  <div className={bettingstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
+          <div className={matchstyle.betmain}>
+              <div className={matchstyle.betmain_top}>
+                <div className={matchstyle.betmain_top_in}>
+                  <div className={matchstyle.live}><button type='button' title='button' onClick={() => loadfixturesbyDate('live')}>Live</button></div>
+                  <div className={matchstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(today_dm)}><div className={matchstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
+                  <div className={matchstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrow_dm)}><div className={matchstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
+                  <div className={matchstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrow_dm)}><div className={matchstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
+                  <div className={matchstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_dm)}><div className={matchstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
+                  <div className={matchstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_dm)}><div className={matchstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
+                  <div className={matchstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
                 </div>
                 {
                   showcalender && (
-                  <div className={bettingstyle.calndar}>
+                  <div className={matchstyle.calndar}>
                     <Calendar onChange={onChange} value={datevalue} showWeekNumbers />
                   </div>
                   )
                 }
                 
               </div>
-              <div className={bettingstyle.betwrap}>
-                  <div className={bettingstyle.betwrapin} id='betwrapin'>
-                  {countryfixturesdata ? 
+              <div className={matchstyle.betwrap}>
+                  <div className={matchstyle.betwrapin} id='betwrapin'>
+                  
+                  {ismatchdataLoaded &&
                     <div>
-                      {/* {betdata.map(country => (country.leagues.map(league => (
-                        <div className={bettingstyle.league_wrap}>
-                          <div className={bettingstyle.tgle} >
-                            <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                            <div className={bettingstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                            <div className={bettingstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                        <div className={matchstyle.league_wrap}>
+                          <div className={matchstyle.tgle} >
+                            <div onClick={(e) => toggleFixtures(e.target)}><h3>{matchData.league.name}</h3></div>
+                            <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                            <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
                           </div>
-                          <div className={bettingstyle.league_wrap_in} >
-                            {league.fixtures.map(fixture => (
-                              <div className={bettingstyle.fixt}>
-                                <div className={bettingstyle.fixt_d_o}>
-                                  <div className={bettingstyle.fixt_d}>
-                                   <span>Date</span> {`${moment(fixture.fixture.date).format('DD/MM ddd')}`}
-                                  </div>
-                                  <div className={bettingstyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture.fixture.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={bettingstyle.fid}>ID: {fixture.fixture.id}</div>
-                                  </div>
-                                </div>
-
-                                <div className={bettingstyle.fixt_tm}>
-                                  <div className={bettingstyle.teams}>
-                                    <div>{`${fixture.teams.home.name}`}</div>
-                                    <div className={bettingstyle.vs}>Vs</div>
-                                    <div>{`${fixture.teams.away.name}`}</div>
-                                  </div>
-                                </div>
-                                <div className={bettingstyle.openbet}>
-                                  <div className={bettingstyle.opb_btns_div}>
-                                    <div className={bettingstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                                    <div className={bettingstyle.opb_btns}>
-                                      <div className={bettingstyle.opb_open} onClick={(e) => placeBet(e.target)}><button type='button' title='button'>Open Bet {<FontAwesomeIcon icon={faFutbol}/>}</button></div>
-                                      <div className={bettingstyle.opb_hiw} onClick={(e) => openHIWE(e.target)}><button type='button' title='button'>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
+                          <div className={matchstyle.league_wrap_in} >
+                            <div className={matchstyle.fixt}>
+                                <div className={matchstyle.fixt_d_o}>
+                                    <div className={matchstyle.fixt_d}>
+                                    <span>Date</span> {`${moment(matchData.fixture.date).format('DD/MM ddd')}`}
                                     </div>
-                                  </div>
+                                    <div className={matchstyle.dd}>
+                                        <div><span>Time</span>{`${moment(matchData.fixture.timestamp).format('hh:mm a')}`}</div>
+                                        <div className={matchstyle.fid}>ID: {matchData.fixture.id}</div>
+                                    </div>
+                                </div>
 
-                                  <div className={bettingstyle.pbet}>
-                                    <div className={bettingstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
+                                <div className={matchstyle.fixt_tm}>
+                                    <div className={matchstyle.teams}>
+                                    <div>{`${matchData.teams.home.name}`}</div>
+                                    <div className={matchstyle.vs}>Vs</div>
+                                    <div>{`${matchData.teams.away.name}`}</div>
+                                    </div>
+                                </div>
+                                <div className={matchstyle.openbet}>
+                                    <div className={matchstyle.opb_btns_div}>
+                                    <div className={matchstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                                    <div className={matchstyle.opb_btns}>
+                                        <div className={matchstyle.opb_open} onClick={(e) => placeBet(e.target)}><button type='button' title='button'>Open Bet {<FontAwesomeIcon icon={faFutbol}/>}</button></div>
+                                        <div className={matchstyle.opb_hiw} onClick={(e) => openHIWE(e.target)}><button type='button' title='button'>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
+                                    </div>
+                                    </div>
+
+                                    <div className={matchstyle.pbet}>
+                                    <div className={matchstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
                                     <form>
-                                      <h3>Place Bet</h3>
-                                      <div className={bettingstyle.form_g}>
+                                        <h3>Place Bet</h3>
+                                        <div className={matchstyle.form_g}>
                                         <ul>
-                                          <li>
+                                            <li>
                                             <div>
                                                 <div>
                                                     Bet Id
@@ -537,52 +546,49 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                                     987678
                                                 </div>
                                             </div>
-                                          </li>
-                                          <li>
+                                            </li>
+                                            <li>
                                             <div>
                                                 <div>
                                                     Match Id
                                                 </div>
                                                 <div>
-                                                    {fixture.fixture.id}
+                                                    {matchData.fixture.id}
                                                 </div>
                                             </div>
-                                          </li>
+                                            </li>
                                         </ul>
-                                      </div>
-                                      <div className={bettingstyle.form_g}>
+                                        </div>
+                                        <div className={matchstyle.form_g}>
                                         <label>Enter amount</label>
                                         <input type='number' title='input'/>
-                                      </div>
-                                      <div className={bettingstyle.form_g}>
+                                        </div>
+                                        <div className={matchstyle.form_g}>
                                         <label>Select number of betting participants</label>
                                         <div>
-                                          <select title='select'>
+                                            <select title='select'>
                                             <option value='2'>2 Participants</option>
                                             <option value='4'>4 Participants</option>
                                             <option value='6'>6 Participants</option>
                                             <option value='8'>8 Participants</option>
                                             <option value='10'>10 Participants</option>
-                                          </select>
+                                            </select>
                                         </div>
-                                      </div>
-                                      <div className={bettingstyle.form_g}>
+                                        </div>
+                                        <div className={matchstyle.form_g}>
                                         <button type='button' title='button'>Bet</button>
-                                      </div>
+                                        </div>
                                     </form>
-                                  </div>
+                                    </div>
 
-                                  <div>
+                                    <div>
                                     <button onClick={(e) => firstopenHIW(e.target)}>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
-                                  </div>
+                                    </div>
                                 </div>
-                              </div>
-                            ))}
+                            </div>
                           </div>
                         </div>
-                      ))))} */}
                     </div>
-                  : <div> <Loading/> </div>
                   }
                   {loadedlaguedata &&
                     <div>
@@ -592,10 +598,10 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                   </div>
               </div>
           </div>
-          <div className={bettingstyle.openbets_list}>
-            <div className={bettingstyle.opb_h}>
+          <div className={matchstyle.openbets_list}>
+            <div className={matchstyle.opb_h}>
               <h3>Open Bets</h3>
-              <div className={bettingstyle.opb}>
+              <div className={matchstyle.opb}>
                 <ul>
                   <li>
                     <div>
@@ -619,7 +625,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                         <span>Status</span>
                       </div>
                       <div>
-                        <span className={bettingstyle.stat}>Open</span>
+                        <span className={matchstyle.stat}>Open</span>
                       </div>
                     </div>
                   </li>
@@ -638,12 +644,12 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                       <div>
                         <span>Teams</span>
                       </div>
-                      <div className={bettingstyle.tms}>
+                      <div className={matchstyle.tms}>
                         <div>
                           <span>Man U</span>
                         </div>
                         <div>
-                          <span className={bettingstyle.tmsvs}>Vs</span>
+                          <span className={matchstyle.tmsvs}>Vs</span>
                         </div>
                         <div>
                           <span>Chelsea</span>
@@ -675,7 +681,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                         <span>Status</span>
                       </div>
                       <div>
-                        <span className={bettingstyle.stat}>Open</span>
+                        <span className={matchstyle.stat}>Open</span>
                       </div>
                     </div>
                   </li>
@@ -694,12 +700,12 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                       <div>
                         <span>Teams</span>
                       </div>
-                      <div className={bettingstyle.tms}>
+                      <div className={matchstyle.tms}>
                         <div>
                           <span>Man U</span>
                         </div>
                         <div>
-                          <span className={bettingstyle.tmsvs}>Vs</span>
+                          <span className={matchstyle.tmsvs}>Vs</span>
                         </div>
                         <div>
                           <span>Chelsea</span>
@@ -731,7 +737,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                         <span>Status</span>
                       </div>
                       <div>
-                        <span className={bettingstyle.stat}>Open</span>
+                        <span className={matchstyle.stat}>Open</span>
                       </div>
                     </div>
                   </li>
@@ -750,12 +756,12 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                       <div>
                         <span>Teams</span>
                       </div>
-                      <div className={bettingstyle.tms}>
+                      <div className={matchstyle.tms}>
                         <div>
                           <span>Man U</span>
                         </div>
                         <div>
-                          <span className={bettingstyle.tmsvs}>Vs</span>
+                          <span className={matchstyle.tmsvs}>Vs</span>
                         </div>
                         <div>
                           <span>Chelsea</span>
@@ -787,7 +793,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                         <span>Status</span>
                       </div>
                       <div>
-                        <span className={bettingstyle.stat}>Open</span>
+                        <span className={matchstyle.stat}>Open</span>
                       </div>
                     </div>
                   </li>
@@ -806,12 +812,12 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                       <div>
                         <span>Teams</span>
                       </div>
-                      <div className={bettingstyle.tms}>
+                      <div className={matchstyle.tms}>
                         <div>
                           <span>Man U</span>
                         </div>
                         <div>
-                          <span className={bettingstyle.tmsvs}>Vs</span>
+                          <span className={matchstyle.tmsvs}>Vs</span>
                         </div>
                         <div>
                           <span>Chelsea</span>
@@ -820,8 +826,8 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                     </div>
                   </li>
                 </ul>
-                <div className={bettingstyle.opb_full_list}><a href='./openbetslist'>See All Open Bets ...</a></div>
-                <div className={bettingstyle.opb_banner}>
+                <div className={matchstyle.opb_full_list}><a href='./openbetslist'>See All Open Bets ...</a></div>
+                <div className={matchstyle.opb_banner}>
                   <Image src={footballg} alt='banner' style={{width: '100%',height: '320px'}}/>
                 </div>
               </div>

@@ -75,6 +75,7 @@ a {
   font-family: "Poppins", sans-serif;
   line-height: 1.125em;
   position: absolute;right: 0;
+  z-index: 9999;
 }
 
 .react-calendar--doubleView {
