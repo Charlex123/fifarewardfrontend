@@ -11,7 +11,7 @@ import Typed from 'react-typed';
 import Heroimg from '../../assets/images/herobg.png';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
-import dextools from '../../assets/images/dextools-chart-95a9780d.png';
+import stadiumbg from '../../assets/images/footballstadium.jpg';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
 import peopl_ from '../../assets/images/group.png';
 import trust from '../../assets/images/trust.png';
@@ -161,6 +161,7 @@ const toggleNav = () => {
     <div className={styles.homemain}>
       <div className={styles.overlay_d}></div>
       <div className={styles.c_content}>
+        <div className={styles.overlay_d}></div>
           <div className={styles.hero_h1}>
             <div>
               <h1 className={styles.h1}>
@@ -196,7 +197,7 @@ const toggleNav = () => {
             <div className={styles.ca}>
               <span>Contract Address</span> 
               <div className={styles.ca_in}>
-                <input type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button>
+                <input title='input' type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button>
               </div>
             </div>
           </div>

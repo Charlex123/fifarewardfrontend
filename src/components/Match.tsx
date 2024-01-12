@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
 import bettingstyle from '../styles/betting.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -22,7 +23,7 @@ type DateValuePiece = Date | null;
 
 type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 
-const LoadBetData:React.FC<{}> = () => {
+const MatchData:React.FC<{}> = () => {
 
   const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
   const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
@@ -42,6 +43,13 @@ const LoadBetData:React.FC<{}> = () => {
   const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
   const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 
+  const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
+  const[countryparam,setCountryParam] = useState<string>('');
+  const[leagueparam,setLeagueParam] = useState<string>('');
+  const[matchparam,setMatchParam] = useState<string>('');
+  const[matchidparam,setMatchIdParam] = useState<string>('');
+
+  const router = useRouter();
   // types.ts
 interface Fixture {
   _id: string;
@@ -154,15 +162,34 @@ interface Countries {
       }
       getDates()
 
-      window.onload = async function() {
-        const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-          }  
-          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
-          setCountryFixturesdata(data);
+        window.onload = async function() {
+            const config = {
+                headers: {
+                    "Content-type": "application/json"
+                }
+            }  
+            const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
+            setCountryFixturesdata(data);
         }
+
+        async function loadMatchData() {
+            if(router.query.match){
+                setIsParamsLoaded(true)
+                setCountryParam(router.query.match[0]);
+                setLeagueParam(router.query.match[1]);
+                setMatchParam(router.query.match[2]);
+                setMatchIdParam(router.query.match[3])
+
+                const config = {
+                    headers: {
+                        "Content-type": "application/json"
+                    }
+                  }  
+                  const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatch", {
+                    matchidparam
+                  }, config);
+            }
+        }loadMatchData()
 
     }catch(error) 
     {
@@ -170,7 +197,7 @@ interface Countries {
     }
 
   
-},[countryfixturesdata])
+},[countryfixturesdata,router.query.match])
 
 const getleagueFixtures = async (leagueid:number) => {
     try {
@@ -358,9 +385,10 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
         <div className={bettingstyle.headbg}>
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
-        <div className={bettingstyle.breadcrum}>
-          <a href='/'>home</a> {'>'} <a href='/betting'>betting</a>
-        </div>
+        {isparamsLoaded && <div className={bettingstyle.breadcrum}>
+          <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`/${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam} {'>'} {leagueparam} {'>'} {matchparam}</a>
+        </div> }
+        
         {/* how it works div starts */}
         <div id='howitworks' className={bettingstyle.hiwmain}>
           <div className={bettingstyle.hiw_c}>
@@ -806,4 +834,4 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
   );
 }
 
-export default LoadBetData
+export default MatchData

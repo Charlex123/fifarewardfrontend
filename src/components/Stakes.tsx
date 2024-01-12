@@ -337,7 +337,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>
             <div className={dappconalertstyles.dappconalert}>
-              <div className={dappconalertstyles.dappconalertclosediv}><button type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
+              <div className={dappconalertstyles.dappconalertclosediv}><button title='button' type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
               <div className={dappconalertstyles.dappconalert_in}>
                 {errorMessage}
               </div>
@@ -399,7 +399,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
               </button>
                 <div className={dappstyles.reflink}>
-                    <div className={dappstyles.reflinkdex}>Ref Link: <input value={referralLink} onChange={(e) => setreferralLink(e.target.value)} /><button type='button' onClick={handleCopyClick}>{buttonText}</button> </div>
+                    <div className={dappstyles.reflinkdex}>Ref Link: <input title='input' value={referralLink} onChange={(e) => setreferralLink(e.target.value)} /><button type='button' onClick={handleCopyClick}>{buttonText}</button> </div>
                     <div><small>Share referral link to earn more tokens!</small></div>
                     <div>Connected Wallet: <span style={{color: 'orange'}}>{walletaddress}</span></div>
                 </div>
@@ -416,7 +416,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                     <div className={dappstyles.s_b}>Bonus <div>2% Daily</div></div>
                                 </div>
                                 <div className={dappstyles.amountprog}>
-                                  <input
+                                  <input title='input'
                                     type="range"
                                     id="horizontalInput"
                                     min={50}
@@ -432,7 +432,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                 <h3>Stake Duration</h3>
                                 <div className={dappstyles.s_m_in_c}>
                                     <div className={dappstyles.s_a}>
-                                      <select onChange={handleStakeDuration}>
+                                      <select title='select' onChange={handleStakeDuration}>
                                         <option value="">Select Duration</option>
                                         <option value="30">30 Days</option>
                                         <option value="90">90 Days</option>
@@ -483,7 +483,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                   {wAlert && (
                                     <div className={dappstyles.w_alert}>
                                       <div>Go to your connected wallet and complete transaction</div>
-                                      <div className={dappstyles.walertclosediv}><button type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
+                                      <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
                                     </div>
                                   )}
                                   <div>

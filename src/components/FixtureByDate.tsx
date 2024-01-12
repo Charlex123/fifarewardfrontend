@@ -13,7 +13,7 @@ dotenv.config();
 // component
 
 type MyComponentProps = {
-  leagueid: number;
+  date: string;
 };
 interface Fixture {
     fixture: {
@@ -71,7 +71,7 @@ interface Fixture {
     fixtures: Fixture[];
   }
 
-const LoadLeagueFixtures:React.FC<MyComponentProps> = ({leagueid}) => {
+const LoadLeagueFixtures:React.FC<MyComponentProps> = ({date}) => {
   console.log()
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
@@ -83,7 +83,7 @@ const LoadLeagueFixtures:React.FC<MyComponentProps> = ({leagueid}) => {
         }
       }  
       const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures", {
-        leagueid
+        date
       }, config);
       setIsleagueLoaded(true)
       setFixturesd(data.leaguefixtures);
@@ -91,7 +91,7 @@ const LoadLeagueFixtures:React.FC<MyComponentProps> = ({leagueid}) => {
     } catch (error) {
       console.log(error)
     }
-  })(leagueid)
+  })(date)
 
 
   const toggleFixtures = (divId:any) => {
