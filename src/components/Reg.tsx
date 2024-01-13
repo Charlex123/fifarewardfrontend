@@ -31,7 +31,7 @@ const RegisterForm = () =>  {
   const [messageContent, setMessageContent] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [sponsorId, setSponsorId] = useState<any>("");
-  const [level, setLevel] = useState<string>("White Label");
+  const [level, setLevel] = useState<string>("Baller");
   const [tpin, setTPin] = useState<any>(1234);
   const [loading, setLoading] = useState<boolean>(false);
   const [status] = useState<any>("Inactive");

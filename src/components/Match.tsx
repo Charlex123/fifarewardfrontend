@@ -15,6 +15,7 @@ import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootb
 import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Overlay } from 'react-bootstrap';
+import { min } from 'bn.js';
 dotenv.config();
 // material
 // component
@@ -84,9 +85,6 @@ interface Fixture {
   };
   __v: number;
 }
-interface Match {
-    fixture: Fixture[];
-}
 interface League {
   leagueId: number;
   leagueName: string;
@@ -109,8 +107,8 @@ interface Countries {
   totalFixturesInCountry: number
 } 
 
-const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
-const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
+const [calendarIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCalendarAlt}/>);
+const [drpdwnIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCaretDown}/>);
 const [today_d,setToday_d] = useState<any>();
 const [today_dm,setToday_dm] = useState<any>();
 const [tomorrow_d,setTomorrow_d] = useState<any>();
@@ -123,9 +121,11 @@ const [nextfour_d,setNextFour_d] = useState<any>();
 const [nextfour_dm,setNextFour_dm] = useState<any>();
 const [datevalue, onChange] = useState<DateValue>(new Date());
 const [showcalender, setShowCalendar] = useState<boolean>(false);
-const [loadedlaguedata,setLoadedLeagueData] = useState<any>(false);
+const [loadedlaguedata,setLoadedLeagueData] = useState<boolean>(false);
 const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
 const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
+const [username, setUsername] = useState<string>("");
+const [userId, setUserId] = useState<number>();  
 
 const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
 const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
@@ -134,36 +134,47 @@ const[leagueparam,setLeagueParam] = useState<string>('');
 const[matchparam,setMatchParam] = useState<string>('');
 const[matchidparam,setMatchIdParam] = useState<string>('');
 const[matchData,setMatchData] = useState<Fixture[]>([]);
+const[betAmount,setBetAmount] = useState<string>();
+const[betParticipantsCount,setBetParticipantsCount] = useState<string>();
 
 const router = useRouter();
 
   useEffect(() => {
     try {
 
-      const getDates:any = () => {
-        let today_d_ = "Today";
-        let today_dm_ = moment().format('DD, MMM');
-        let tomorrow_d_ = moment().add(1,'day').format('ddd');
-        let tomorrow_dm_ = moment().add(1,'day').format('DD, MMM');
-        let nexttomorrow_d_ = moment().add(2,'day').format('ddd');
-        let nexttomorrow_dm_ = moment().add(2,'day').format('DD, MMM');
-        let nextthree_d_ = moment().add(3,'day').format('ddd');
-        let nextthree_dm_ = moment().add(3,'day').format('DD, MMM');
-        let nextfour_d_ = moment().add(4,'day').format('ddd');
-        let nextfour_dm_ = moment().add(4,'day').format('DD, MMM');
+        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+        if(udetails && udetails !== null && udetails !== "") {
+            const username_ = udetails.username;  
+            if(username_) {
+                setUsername(username_);
+                setUserId(udetails.userId)
+            }
+        }
         
-        setToday_d(today_d_);
-        setToday_dm(today_dm_);
-        setTomorrow_d(tomorrow_d_);
-        setTomorrow_dm(tomorrow_dm_);
-        setNextTomorrow_d(nexttomorrow_d_);
-        setNextTomorrow_dm(nexttomorrow_dm_);
-        setNextThree_d(nextthree_d_);
-        setNextThree_dm(nextthree_dm_);
-        setNextFour_d(nextfour_d_);
-        setNextFour_dm(nextfour_dm_);
-      }
-      getDates()
+        const getDates:any = () => {
+            let today_d_ = "Today";
+            let today_dm_ = moment().format('DD, MMM');
+            let tomorrow_d_ = moment().add(1,'day').format('ddd');
+            let tomorrow_dm_ = moment().add(1,'day').format('DD, MMM');
+            let nexttomorrow_d_ = moment().add(2,'day').format('ddd');
+            let nexttomorrow_dm_ = moment().add(2,'day').format('DD, MMM');
+            let nextthree_d_ = moment().add(3,'day').format('ddd');
+            let nextthree_dm_ = moment().add(3,'day').format('DD, MMM');
+            let nextfour_d_ = moment().add(4,'day').format('ddd');
+            let nextfour_dm_ = moment().add(4,'day').format('DD, MMM');
+            
+            setToday_d(today_d_);
+            setToday_dm(today_dm_);
+            setTomorrow_d(tomorrow_d_);
+            setTomorrow_dm(tomorrow_dm_);
+            setNextTomorrow_d(nexttomorrow_d_);
+            setNextTomorrow_dm(nexttomorrow_dm_);
+            setNextThree_d(nextthree_d_);
+            setNextThree_dm(nextthree_dm_);
+            setNextFour_d(nextfour_d_);
+            setNextFour_dm(nextfour_dm_);
+        }
+        getDates()
 
         window.onload = async function() {
             const config = {
@@ -207,11 +218,37 @@ const router = useRouter();
   
 },[countryfixturesdata,router.query.match,matchidparam])
 
-const getleagueFixtures = async (leagueid:number) => {
+
+const handleFormSubmit = async () => {
     try {
-      const newleagueComponent = <LeagueFixtures leagueid={leagueid} key={leaguecomponent.length} />;
-      setLoadedLeagueData(true);
-      setLeagueComponent([newleagueComponent, ...leaguecomponent]);
+        let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
+        let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
+        if(betAmount && parseInt(betAmount) < 5) {
+            inputAlertDiv.innerHTML = "You can't bet below $5";
+            return;
+        }
+        if(!betParticipantsCount) {
+            selectAlertDiv.innerHTML = "You must select number of bet participants";
+            return;
+        }
+
+        const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+        }  
+        const {data} = await axios.post("http://localhost:9000/api/users/openbet", {
+            betAmount,
+            betParticipantsCount,
+            matchidparam,
+            matchparam
+        }, config);
+        if(data.match !== null) {
+            // setIsMatchDataLoaded(true);
+            // setMatchData(data.match);
+            // console.log('match data',data.match);
+        }
+        console.log('submit handle ran')
     } catch (error) {
       console.log(error)
     }
@@ -560,29 +597,31 @@ console.log('hopae ',matchData)
                                         </ul>
                                         </div>
                                         <div className={matchstyle.form_g}>
-                                        <label>Enter amount</label>
-                                        <input type='number' title='input'/>
+                                            <label>Enter amount ($)</label>
+                                            <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} />
+                                            <small id='minamuntalert'></small>
                                         </div>
                                         <div className={matchstyle.form_g}>
-                                        <label>Select number of betting participants</label>
-                                        <div>
-                                            <select title='select'>
-                                            <option value='2'>2 Participants</option>
-                                            <option value='4'>4 Participants</option>
-                                            <option value='6'>6 Participants</option>
-                                            <option value='8'>8 Participants</option>
-                                            <option value='10'>10 Participants</option>
-                                            </select>
-                                        </div>
+                                            <label>Select number of betting participants</label>
+                                            <div>
+                                                <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
+                                                    <option value='2'>2 Participants</option>
+                                                    <option value='4'>4 Participants</option>
+                                                    <option value='6'>6 Participants</option>
+                                                    <option value='8'>8 Participants</option>
+                                                    <option value='10'>10 Participants</option>
+                                                </select>
+                                            </div>
+                                            <small id='partpntsalert'></small>
                                         </div>
                                         <div className={matchstyle.form_g}>
-                                        <button type='button' title='button'>Bet</button>
+                                        <button type='button' onClick={(e) => handleFormSubmit()} title='button'>Bet</button>
                                         </div>
                                     </form>
                                     </div>
 
                                     <div>
-                                    <button onClick={(e) => firstopenHIW(e.target)}>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                    <button type='button' title='buttn' onClick={(e) => firstopenHIW(e.target)}>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
                                     </div>
                                 </div>
                             </div>

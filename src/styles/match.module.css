@@ -247,12 +247,15 @@
     text-align: left;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g input {
-    width: 100%;font-size: 14px;color: #ffffff;font-family: "Montserrat",sans-serif;height: 30px;
-    border-radius: 4px;
+    width: 100%;font-size: 14px;color: #212222;font-family: "Montserrat",sans-serif;height: 30px;
+    border-radius: 4px;padding-left: 4px;font-weight: 600;
+}
+.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g small {
+    color: red;font-size: 14px;font-family: "Montserrat";font-weight: 600;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g select {
-    width: 100%;font-size: 14px;color: #212222;font-family: "PT Sans",sans-serif;height: 30px;
-    border-radius: 4px;
+    width: 100%;font-size: 14px;color: #212222;font-family: "Montserrat",sans-serif;height: 30px;
+    border-radius: 4px;font-weight: 600;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g button {
     background-color: #e28305;margin: 13px auto 3px auto;text-align: center;width: 100%;

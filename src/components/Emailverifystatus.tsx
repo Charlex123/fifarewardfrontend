@@ -17,7 +17,8 @@ library.add(faEye, faEyeSlash);
 const EmailVStatus: React.FC<{}> = () =>  {
 
     const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
+    const [error, setError] = useState<boolean>(false);
+    const [errorMessage, setErrorMessage] = useState<string>('');
 
   const router = useRouter();
 
@@ -32,12 +33,13 @@ const EmailVStatus: React.FC<{}> = () =>  {
           "Content-type": "application/json"
         }
       }
-      const {data} = await axios.post("https://tafabackend.onrender.com/api/users/resendverifyemail", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/users/resendverifyemail", {
             username,
       }, config);
       if(data) {
         setLoading(false);
-        setError(data.message)
+        setError(true)
+        setErrorMessage(data.message)
       }
   }
 
@@ -45,7 +47,7 @@ const EmailVStatus: React.FC<{}> = () =>  {
     <>
         <a href='/register' rel='noopener noreferrer' className={regstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back </a>
         <div className={regstyles.regsuccess}>
-        {error && <AlertMessage variant="danger">{error}</AlertMessage>}
+        {error && <AlertMessage variant="danger">{errorMessage}</AlertMessage>}
         {loading && <Loading />}
             <div className={regstyles.regs_in}>
                 <h3>Registration Successful <FontAwesomeIcon icon={faCheckCircle} /></h3>

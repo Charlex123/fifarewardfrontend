@@ -1,11 +1,32 @@
+import { useState } from "react";
+import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
-import { Alert } from "react-bootstrap";
+import alertstyles from '../styles/alertmessage.module.css'
 
 const AlertMessage = ({ variant = "info", children }:any) => {
+
+  const[toggleAlert,setToggleAlert] = useState<boolean>(true);
+  
+  console.log('toggle alert',toggleAlert)
+  const closeAlertMessageModule = () => {
+    setToggleAlert(false);
+    setTimeout(function() {
+      setToggleAlert(true);
+    },10000)
+  }
+
   return (
-    <Alert variant={variant} style={{ fontSize: 14, textAlign: 'center',fontFamily: 'Poppins', background: '#e27272', margin:'12px auto',padding: '8px 20px', color:'white', borderRadius: '120px', fontWeight:'lighter'}}>
-      <strong>{children}</strong>
-    </Alert>
+    <>
+    {toggleAlert && 
+      <div className={alertstyles.main}>
+        <div className={alertstyles.closebtn}><button type="button" title="button" onClick={closeAlertMessageModule}>{<FontAwesomeIcon icon={faXmark} />}</button></div>
+        <div className={alertstyles.alert}>
+          <strong>{children}</strong>
+        </div>
+      </div>
+    } 
+    </>
   );
 };
 

@@ -15,7 +15,7 @@
     border: none;margin-top: 10px;
 }
 .formlabel {
-    color: #e2d7d7;margin-top: 1rem;padding: .6rem 0;font-family: "Montserrat";font-size: 14px;
+    color: #e3a204;margin-top: 1rem;padding: .6rem 0;font-family: "Montserrat";font-size: 14px;
 }
 .formTag {
     background-color: transparent;border-radius: 8px;padding: 1rem;margin: auto;height: 100vh;padding-top: 5rem;
@@ -47,13 +47,13 @@
     width: 100%;margin-right: 0;text-align: right;margin-top: 1rem;
 }
 .fpass a {
-    color: #dd1515;font-family: "Poppins",sans-serif;font-weight: 600;margin-top: 10px;text-align: right;
+    color: #e2d7d7;font-family: "Poppins",sans-serif;font-weight: 600;margin-top: 10px;text-align: right;
 }
 .btns a {
-    font-family: "Montserrat", sans-serif;font-size: 14px;color: #79f17f;font-weight: 600;
+    font-family: "Montserrat", sans-serif;font-size: 14px;color: #e3a204;font-weight: 600;
 }
 .btns .registerButton {
-    border-radius: 120px;background-color: #c0bbbbc4;font-size: 16px;font-weight: 600;
+    border-radius: 120px;background-color: #e3a204;font-size: 16px;font-weight: 600;
     padding: .4rem 60px;border: none;color: #1c1f2b;font-family: "Poppins",sans-serif;
 }
 .passhideshowButton {
