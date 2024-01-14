@@ -12,7 +12,7 @@ dotenv.config();
 // material
 // component
 
-type MyComponentProps = {
+type Props = {
   leagueid: number;
 };
 interface Fixture {
@@ -63,6 +63,8 @@ interface Fixture {
     };
     __v: number;
   }
+
+const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
   
   interface League {
     leagueName: string;
@@ -71,8 +73,6 @@ interface Fixture {
     fixtures: Fixture[];
   }
 
-const LoadLeagueFixtures:React.FC<MyComponentProps> = ({leagueid}) => {
-  console.log()
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
   (async (leagueid) => {
@@ -216,7 +216,7 @@ return (
                         </div>
                         <div className={leaguefixturestyle.league_wrap_in} >
                           {league.fixtures.map(fixture => (
-                            <a href={`/betting/${league.country.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.id}`} key={fixture.fixture?.id}>
+                            <a href={`/betting/${league.country.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={fixture.fixture?.id}>
                               <div className={leaguefixturestyle.fixt}>
                                 <div className={leaguefixturestyle.fixt_d_o}>
                                   <div className={leaguefixturestyle.fixt_d}>
@@ -224,7 +224,7 @@ return (
                                   </div>
                                   <div className={leaguefixturestyle.dd}>
                                       <div><span>Time</span>{`${moment(fixture.fixture?.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.id}</div>
+                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
                                   </div>
                                 </div>
 

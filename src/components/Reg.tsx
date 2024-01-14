@@ -21,18 +21,16 @@ const RegisterForm = () =>  {
 
   const [email, setEmail] = useState("");
   const [username, setUserame] = useState("");
-  const [pic, setPic] = useState(
+  const [pic] = useState(
     "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
   );
   const [password, setPassword] = useState<string>("");
   const [confirmpassword, setConfirmPassword] = useState<string>("");
-  const [message, setMessage] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
-  const [messageContent, setMessageContent] = useState<string>("");
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [sponsorId, setSponsorId] = useState<any>("");
   const [level, setLevel] = useState<string>("Baller");
-  const [tpin, setTPin] = useState<any>(1234);
+  const [tpin] = useState<any>(1234);
   const [loading, setLoading] = useState<boolean>(false);
   const [status] = useState<any>("Inactive");
   const [passwordinputType, setpasswordinputType] = useState<string>("password");
@@ -92,8 +90,8 @@ const RegisterForm = () =>  {
     }, config);
     if(data) {
       setLoading(false);
-      setMessage(true)
-      setMessageContent(data.message)
+      setError(true)
+      setErrorMessage(data.message)
     }
   }
 
@@ -110,8 +108,8 @@ const RegisterForm = () =>  {
     }, config);
     if(data) {
       setLoading(false);
-      setMessage(true)
-      setMessageContent(data.message)
+      setError(true)
+      setErrorMessage(data.message)
     }
   }
 
@@ -119,10 +117,10 @@ const RegisterForm = () =>  {
     e.preventDefault();
     console.log('uname',username)
     if (password !== confirmpassword) {
-      setMessage(true)
-      setMessageContent('Passwords do not match')
+      setError(true)
+      setErrorMessage('Passwords do not match')
     }else {
-      setMessage(false);
+      setError(false);
       try {
         const config = {
           headers: {
@@ -158,13 +156,16 @@ const RegisterForm = () =>  {
   
 }
 
+const closeAlertModal = () => {
+  setError(false)
+}
+
   return (
     <>
         <a href='/' rel='noopener noreferrer' className={regstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back to home</a>
         <form className={regstyles.formTag} onSubmit={submitHandler}>
         
-        {error && <AlertMessage variant="danger">{errorMessage}</AlertMessage>}
-        {message && <AlertMessage variant="danger">{messageContent}</AlertMessage>}
+        {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
         {loading && <Loading />}
         
         <div className={regstyles.fhead}>

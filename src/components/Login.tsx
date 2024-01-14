@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import { Link as RouterLink } from 'react-router-dom';
+import React, { useState } from 'react';
 import {useRouter} from 'next/navigation'
 // material
 import axios from 'axios';
@@ -20,17 +19,33 @@ export default function LoginForm() {
   
   const router = useRouter();
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [message, setMessage] = useState(null);
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [errorMessage, seterrorMessage] = useState("");
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState<boolean>(false);
 
   const [passwordinputType, setpasswordinputType] = useState("password");
   const [eyeIcon, setEyeIcon] = useState(<FontAwesomeIcon icon={faEye} />);
   
-  
+  const checkEmail = async (e:any) => {
+    setLoading(true);
+    setEmail(e.target.value)
+    const config = {
+      headers: {
+        "Content-type": "application/json"
+      }
+    }
+    const {data} = await axios.post("http://localhost:9000/api/users/checkemail", {
+          email,
+    }, config);
+    if(data) {
+      setLoading(false);
+      setError(true);
+      seterrorMessage(data.message)
+    }
+  }
+
   const togglePasswordVisiblity = () => {
     if(passwordinputType === "password") {
       setpasswordinputType("text")
@@ -52,7 +67,7 @@ export default function LoginForm() {
         }
       }  
       setLoading(true)
-      const {data} = await axios.post("https://fifareward.onrender.com/api/users/signin", {
+      const {data} = await axios.post("https://localhost:9000/api/users/signin", {
         email,
         password
       }, config);
@@ -76,12 +91,16 @@ export default function LoginForm() {
     }
   }
 
+  const closeAlertModal = () => {
+    setError(false)
+  }
+  
   return (
     <>
         <div>
           <a href='/' rel='noopener noreferrer' className={loginstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back to home</a>
           <form className={loginstyles.formTag} onSubmit={submitHandler}>
-          {error && <AlertMessage variant="danger">{errorMessage}</AlertMessage>}
+          {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
           {loading && <Loading />}
           <div className={loginstyles.fhead}>
               <h3>Sign In <FontAwesomeIcon icon={faLockOpen} /></h3>
@@ -92,6 +111,7 @@ export default function LoginForm() {
                   type="email"
                   value={email}
                   placeholder="Enter email"
+                  onBlur={checkEmail}
                   onChange={(e) => setEmail(e.target.value)}
                   />
           </div>

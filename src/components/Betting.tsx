@@ -42,6 +42,9 @@ const LoadBetData:React.FC<{}> = () => {
   const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
   const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 
+  const [username, setUsername] = useState<string>("");
+  const [userId, setUserId] = useState<string>("");  
+  const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
   // types.ts
 interface Fixture {
   _id: string;
@@ -129,6 +132,19 @@ interface Countries {
   useEffect(() => {
     try {
 
+      const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+      if(udetails && udetails !== null && udetails !== "") {
+      const username_ = udetails.username;  
+      if(username_) {
+          setUsername(username_);
+          setUserId(udetails.userId);
+          setIsloggedIn(true);
+          
+      }
+      }else {
+          setIsloggedIn(false);
+      }
+      
       const getDates:any = () => {
         let today_d_ = "Today";
         let today_dm_ = moment().format('DD, MMM');
@@ -174,7 +190,7 @@ interface Countries {
 
 const getleagueFixtures = async (leagueid:number) => {
     try {
-      const newleagueComponent = <LeagueFixtures leagueid={leagueid} key={leaguecomponent.length} />;
+      const newleagueComponent = <LeagueFixtures leagueid={leagueid} />;
       setLoadedLeagueData(true);
       setLeagueComponent([newleagueComponent, ...leaguecomponent]);
     } catch (error) {

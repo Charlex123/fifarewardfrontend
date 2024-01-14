@@ -1,0 +1,80 @@
+@import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Rubik+Wet+Paint:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Creepster:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
+
+.loginmodalmain {
+    color: #e2d7d7;padding: 5px 10px;font-size: 14px;font-family: "Poppins", sans-serif;
+    position: relative;margin-top: 0;
+}
+.loginmodalmain .loginmodalmainin {
+    position: absolute;background-color: #000000ea;left: 50%;transform: translate(-50%,50%);
+    padding: 2px 2px 2px 2px;top: -450px;border-radius: 4px;z-index: 9999;
+}
+.loginmodalmain .closebtn button {
+    position: absolute;right: 8px;top: 4px;color: #fffcfc;cursor: pointer;background-color: none;z-index: 99999;
+}
+.qrcode {
+    width: 10rem;height: 20rem;margin: 1rem auto; text-align: center;
+}
+.loginmodalmain .loginmodalmainin .formTag {
+    background-color: transparent;border-radius: 8px;padding: 1rem;margin: auto;height: inherit;padding-top: 5rem;
+    width: 60vw;
+}
+.loginmodalmain .loginmodalmainin .formTag .fhead {
+    margin: 1rem auto;
+}
+.loginmodalmain .loginmodalmainin .formTag .fhead h3 {
+    font-family: "Poppins", sans-serif;margin: 0 auto;color: #e2d7d7;font-weight: 600;
+    text-align: center;font-size: 18px;
+}
+.loginmodalmain .loginmodalmainin .formpTag {
+    font-size: 12px;font-family: "Montserrat";font-style: italic;color: #e2d7d7;
+}
+.loginmodalmain .loginmodalmainin .form_group {
+    margin: 35px 0;width: 100%;display: block;text-align: left;
+}
+.loginmodalmain .loginmodalmainin .form_group .formlabel {
+    color: #e3a204;margin-top: 1rem;padding: .6rem 0;font-family: "Montserrat";font-size: 14px;
+    text-align: left;margin-left: 0 !important;
+}
+.loginmodalmain .loginmodalmainin .form_group .forminput {
+    border-radius: 12px;width: 100% !important;height: 35px;padding: .2rem .8rem;
+    border: none;margin-top: 10px;color: #000000;
+}
+.loginmodalmain .loginmodalmainin .labelDiv {
+    width: 100%;text-align: left;
+}
+.loginmodalmain .loginmodalmainin .btns {
+    display: flex;justify-content: space-evenly;flex-direction: row;flex-wrap: nowrap;margin: 3rem auto 2rem auto;
+}
+.loginmodalmain .loginmodalmainin .btns .alink {
+    color: #e2d7d7;padding-top: .4rem;font-size: 14px;
+}
+.loginmodalmain .loginmodalmainin .fpass {
+    width: 100%;margin-right: 0;text-align: right;margin-top: 1rem;
+}
+.loginmodalmain .loginmodalmainin .fpass a {
+    color: #e2d7d7;font-family: "Poppins",sans-serif;font-weight: 600;margin-top: 10px;text-align: right;
+}
+.loginmodalmain .loginmodalmainin .btns a {
+    font-family: "Montserrat", sans-serif;font-size: 14px;color: #e3a204;font-weight: 600;
+}
+.loginmodalmain .loginmodalmainin .btns .registerButton {
+    border-radius: 120px;background-color: #e3a204;font-size: 16px;font-weight: 600;
+    padding: .4rem 60px;border: none;color: #1c1f2b;font-family: "Poppins",sans-serif;
+}
+.loginmodalmain .loginmodalmainin .passhideshowButton {
+    text-align: right;float: right;margin-top: .6rem;margin-right: .5rem;
+    border: none;color: #e2d7d7;
+}
+@media (max-width: 991px) {
+    .loginmodalmain .loginmodalmainin .formTag {
+        height: 100vh;padding-top: 5rem;
+        width: 95vw;
+    }   
+    .loginmodalmain .loginmodalmainin .btns .registerButton {
+        padding: .4rem 20px;
+    }
+}

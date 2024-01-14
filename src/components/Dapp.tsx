@@ -55,8 +55,8 @@ const Dapp:React.FC<{}> = () =>  {
   // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [username, setUsername] = useState("");
-  const [userId, setUserId] = useState("");  
+  const [username, setUsername] = useState<string>("");
+  const [userId, setUserId] = useState<number>();  
   const [walletaddress, setWalletAddress] = useState<any>("NA");  
   const [isWalletAddressUpdated,setisWalletAddressUpdated] = useState(false);
 

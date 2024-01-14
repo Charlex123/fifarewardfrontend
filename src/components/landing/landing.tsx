@@ -59,6 +59,9 @@ const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
 const { theme, drawerOpen } = useContext(ThemeContext);
 const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
 const [buttonText, setButtonText] = useState("Copy");
+const [username, setUsername] = useState<string>("");
+const [userId, setUserId] = useState<string>("");  
+const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 
 const images = [
   cgk,
@@ -123,6 +126,18 @@ const handleCopyClick = () => {
 
 useEffect(() => {
 
+  const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+  if(udetails && udetails !== null && udetails !== "") {
+  const username_ = udetails.username;  
+  if(username_) {
+      setUsername(username_);
+      setUserId(udetails.userId);
+      setIsloggedIn(true);
+      
+  }
+  }else {
+      setIsloggedIn(false);
+  }
   // Auto-play functionality
   const intervalId = setInterval(goToNextImage, 3000); // Change image every 3 seconds
 

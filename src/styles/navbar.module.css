@@ -91,7 +91,7 @@ background-color: #f0eded49;border: 1px dashed #e28305;
     color: #f1f1f1;font-family: "Poppins",sans-serif;text-decoration: none;font-size: 14px;
 }
 .nav .nav_container .nav_container_p ul.upa li ul {
-  position: absolute;z-index: 9;top: 45px;width: 220px;max-width: 250px;
+  position: absolute;z-index: 9;top: 45px;width: 220px;max-width: 250px;right: 0;
   padding: 10px 40px 20px 0;border-radius: 8px;text-align: left;height: inherit;
   background: rgb(13,20,24);display: none;z-index: 9;
   background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(13,20,24,1) 0%, rgba(58,58,66,1) 0%, rgba(24,28,45,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);

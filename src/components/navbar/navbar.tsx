@@ -18,17 +18,33 @@ function Navbar() {
     const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
     const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
     const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
+    const [username, setUsername] = useState<string>("");
+    const [userId, setUserId] = useState<string>("");  
+    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 
     useEffect(() => {
-    // Function to handle window resize
-    const handleResize = () => {
-        // Check the device width and update isNavOpen accordingly
-        if (window.innerWidth <= 990) {
-        setNavOpen(false);
-        } else {
-        setNavOpen(true);
+
+        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+        if(udetails && udetails !== null && udetails !== "") {
+        const username_ = udetails.username;  
+        if(username_) {
+            setUsername(username_);
+            setUserId(udetails.userId);
+            setIsloggedIn(true);
+            
         }
-    };
+        }else {
+            setIsloggedIn(false);
+        }
+        // Function to handle window resize
+        const handleResize = () => {
+            // Check the device width and update isNavOpen accordingly
+            if (window.innerWidth <= 990) {
+            setNavOpen(false);
+            } else {
+            setNavOpen(true);
+            }
+        };
 
     // Initial check when the component mounts
     handleResize();
@@ -89,6 +105,8 @@ function Navbar() {
         }
     };
 
+    console.log('username',username)
+    console.log('username',isLoggedIn)
     const navClass = scrolling ? styles.scrolled : '';
 
     return (
@@ -96,7 +114,7 @@ function Navbar() {
             <button title='togglebtn' className={styles.nav_toggle_btn} type='button' onClick={toggleNav}><FontAwesomeIcon icon={faAlignJustify} size='lg' className={styles.toggle_icon}/></button>
             <div className={`${styles.nav_container} ${navClass}`}>
                 <div className={styles.logo}>
-                <a href='/' rel='noopener noreferrer'><Image src={logo} alt='logo' className={styles.logoni}/></a>
+                <a title='link' href='/' rel='noopener noreferrer'><Image src={logo} alt='logo' className={styles.logoni}/></a>
                 </div> 
                 
                 {isNavOpen && (
@@ -141,10 +159,12 @@ function Navbar() {
                         </ul>
                     </li> */}
                 </ul>
-                <ul className={styles.upa}>
-                    <li className={styles.si}><a href='/signin' rel='noopener noreferrer'>Sign In</a></li>
-                    <li className={styles.ld}><a href='/register' rel='noopener noreferrer'>Join Us</a></li>
-                </ul>
+                {!isLoggedIn && 
+                    <ul className={styles.upa}>
+                        <li className={styles.si}><a href='/signin' rel='noopener noreferrer'>Sign In</a></li>
+                        <li className={styles.ld}><a href='/register' rel='noopener noreferrer'>Join Us</a></li>
+                    </ul>
+                }
                 </div>)
                 }
             </div>

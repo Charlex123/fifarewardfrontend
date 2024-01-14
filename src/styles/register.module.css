@@ -75,7 +75,7 @@
     text-transform: capitalize;color: #c58f06;font-weight: 600;
 }
 .regsuccess a, .regsuccess button {
-    color: #e3a204;background-color: #1c1f2b;width: fit-content;margin: 5px auto;text-align: center;
+    color: #1c1f2b;background-color: #c58f06;width: fit-content;margin: 5px auto;text-align: center;
     font-family: "Poppins",sans-serif;font-size: 16px;font-weight: 600;border-radius: 120px;
     padding: 4px 20px;
 }
