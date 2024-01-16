@@ -5,6 +5,7 @@ import axios from 'axios';
 import dotenv from 'dotenv';
 import Image from 'next/image';
 import footballb from '../assets/images/footaballb.jpg';
+import AlertDanger from './AlertDanger';
 import footballg from '../assets/images/footballg.jpg';
 import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
@@ -48,6 +49,9 @@ const [betData,setBetData] = useState<Bets[]>([]);
 const [currentPage, setCurrentPage] = useState<number>(1);
 const [limit] = useState<number>(10)
 const [totalPages, setTotalPages] = useState(0);
+const [errorMessage, seterrorMessage] = useState("");
+const [error, setError] = useState<boolean>(false);
+const [isBetDataLoaded, setIsBetDataLoaded] = useState<boolean>(false)
 
 useEffect(() => {
 
@@ -71,6 +75,7 @@ useEffect(() => {
       if(data !== null && data !== undefined) {
           setBetData(data.loadbets);
           setTotalPages(data.totalPages);
+          setIsBetDataLoaded(true);
       }
   }loadOpenBets();
   
@@ -78,7 +83,9 @@ useEffect(() => {
 
   const JoinBet = (e: any) => {
     if(username && username !== null && username !== undefined && username !== '') {
-      
+      let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+      hiw_bgoverlay.style.display = 'block';
+      e.parentElement.parentElement.nextElementSibling.firstElementChild.style.display = 'block';
     }else {
       let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
       hiw_bgoverlay.style.display = 'block';
@@ -91,13 +98,10 @@ useEffect(() => {
   const JoinBetNow = async (e:any,betId:number,betAmount:any,matchid:number,participantscount:number,openedby:string,status:string,totalparticipantscount:number,participants:string,remainingparticipantscount:number) => {
     try {
         if(username && username !== null && username !== undefined && username !== '') {
-            let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
-            let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
-            if(betAmount && (parseInt(betAmount) < 5)) {
-                inputAlertDiv.innerHTML = "You can't bet below $5";
-                return;
-            }
             
+            if(username === openedby) {
+
+            }
 
             const config = {
                 headers: {
@@ -205,8 +209,13 @@ const gotoPage = (pageNumber: number) => {
   setCurrentPage(pageNumber);
 };
 
+const closeAlertModal = () => {
+  setError(false)
+}
+
   return (
     <>
+    {error && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     <div className={openbetsstyle.hiw_overlay} id="hiw_overlay"></div>
       <div className={openbetsstyle.main}>
         <div className={openbetsstyle.headbg}>
@@ -294,8 +303,9 @@ const gotoPage = (pageNumber: number) => {
                     <th>Match Id</th>
                     <th>Opened BY</th>
                     <th>Max. Participants</th>
-                    <th>Partpants Joined Count</th>
+                    <th>Participants Joined Count</th>
                     <th>Participants Joined</th>
+                    <th>Remaining Participants</th>
                     <th>Status</th>
                     <th>Join Bet</th>
                   </tr>
@@ -311,7 +321,8 @@ const gotoPage = (pageNumber: number) => {
                       <td><div className={openbetsstyle.div}>{openbet.totalparticipantscount}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.participantscount}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.participants}</div></td>
-                      <td className={openbetsstyle.stat}><div className={openbetsstyle.div}><span>{openbet.betstatus}</span></div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.remainingparticipantscount}</div></td>
+                      <td className={openbetsstyle.stat}><div className={openbetsstyle.div}><span className={openbetsstyle.betstatus}>{openbet.betstatus}</span></div></td>
                       {openbet.betstatus === 'open' 
                       ? 
                       <td className={openbetsstyle.jb}><div className={openbetsstyle.div}><button className={openbetsstyle.open} type='button' title='button' onClick={(e) => JoinBet(e.target)}>Join Bet</button></div></td> 

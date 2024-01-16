@@ -241,7 +241,7 @@
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet {
     position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
-    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: -300px;display: none;
+    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: -380px;display: none;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet .pbet_x {
     color: #ffffff;position: absolute;right: 8px;top: 4px;cursor: pointer;
@@ -251,6 +251,9 @@
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form h3 {
     color: #ffffff;
+}
+.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form p {
+    color: #ffffff;margin: 15px auto 15px auto;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g {
     margin: 15px 0;width: 100%;text-align: left;
@@ -264,6 +267,13 @@
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li .fixid {
     background-color: #e28305;color: #ffffff;border-radius: 4px;padding: 2px 4px;
+}
+.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li .matchd {
+    background-color: #f1f1f1;color: #151414;border-radius: 4px;padding: 2px 4px;font-weight: 600;
+    display: flex;flex-direction: row;justify-content: space-between;margin-left: 20px;
+}
+.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li .matchd div {
+    margin: 0 5px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g label {
     width: 100%;font-size: 14px;color: #ffffff;font-family: "Montserrat",sans-serif;

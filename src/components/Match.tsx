@@ -627,7 +627,10 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                     <div className={matchstyle.pbet}>
                                     <div className={matchstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
                                     <form>
-                                        <h3>Place Bet</h3>
+                                        <h3>Open Bet</h3>
+                                        <div>
+                                          <p>Open bet by selecting the appropriate details</p>
+                                        </div>
                                         <div className={matchstyle.form_g}>
                                         <ul>
                                             <li>
@@ -643,7 +646,43 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                         </ul>
                                         </div>
                                         <div className={matchstyle.form_g}>
-                                            <label>Enter amount ($)</label>
+                                        <ul>
+                                            <li>
+                                            <div>
+                                                <div>
+                                                    Match
+                                                </div>
+                                                <div className={matchstyle.matchd}>
+                                                    <div>{matchData?.teams.home.name}</div>
+                                                    <div>Vs</div>
+                                                    <div>{matchData?.teams.away.name}</div>
+                                                </div>
+                                            </div>
+                                            </li>
+                                        </ul>
+                                        </div>
+                                        <div className={matchstyle.form_g}>
+                                            <label>Which team are you betting on?</label>
+                                            <div>
+                                                <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
+                                                    <option value='2'>West Torrens Birkalla</option>
+                                                    <option value='4'>Adelaide Victory</option>
+                                                </select>
+                                            </div>
+                                            <small id='teamalert'></small>
+                                        </div>
+                                        <div className={matchstyle.form_g}>
+                                            <label>Select Prediction</label>
+                                            <div>
+                                                <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
+                                                    <option value='Win'>Win</option>
+                                                    <option value='Draw'>Draw</option>
+                                                </select>
+                                            </div>
+                                            <small id='predictionalert'></small>
+                                        </div>
+                                        <div className={matchstyle.form_g}>
+                                            <label>Enter amount ($/10000FRD)</label>
                                             <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={'5'} />
                                             <small id='minamuntalert'></small>
                                         </div>

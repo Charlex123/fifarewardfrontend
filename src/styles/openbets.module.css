@@ -101,7 +101,7 @@
 }
 .main .openbetmain .pbet {
     position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
-    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 0;display: block;
+    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 0;display: none;
     left: 22%;transform: translate(-50%,50%);color: #ffffff;
 }
 .main .openbetmain .pbet .pbet_x {
