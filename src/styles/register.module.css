@@ -7,9 +7,6 @@
 @import url("https://fonts.googleapis.com/css?family=Caveat");
 
 
-.back {
-    color: #e2d7d7;padding: 5px 10px;font-size: 14px;font-family: "Poppins", sans-serif;
-}
 .qrcode {
     width: 10rem;height: 20rem;margin: 1rem auto; text-align: center;
 }
@@ -63,7 +60,7 @@
     width: fit-content;height: auto;padding: 20px;background-color: #e2d7d7;margin: 1rem auto;border-radius: 16px;
 }
 .regsuccess .regs_in button {
-    background-color: #ac7c02;color: #fdfdfd;
+    background-color: #ac7c02;color: #151414;
 }
 .regsuccess h3 {
     color: #1c1f2b;font-size: 32px;font-family: "Poppins", sans-serif;
@@ -79,7 +76,9 @@
     font-family: "Poppins",sans-serif;font-size: 16px;font-weight: 600;border-radius: 120px;
     padding: 4px 20px;
 }
-
+button.back {
+    color: #e2d7d7;padding: 5px 10px;font-size: 14px;font-family: "Poppins", sans-serif;
+}
 @media (max-width: 991px) {
     .formTag {
         height: 100vh;padding-top: 5rem;

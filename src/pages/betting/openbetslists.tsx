@@ -4,8 +4,9 @@ import ChangeTheme from '../../components/change-theme/change-theme';
 import OpenBets from '../../components/OpenBets';
 import Navbar from '../../components/navbar/navbar';
 import Footer from '../../components/Footer';
+import FooterNavBar from '../../components/FooterNav';
 
-function Betting() {
+function OpenBetsList() {
 
   return (
     <>
@@ -13,9 +14,10 @@ function Betting() {
         <BackToTop />
         <ChangeTheme />
         <OpenBets />
+        <FooterNavBar />
         <Footer/>
     </>
   )
 }
 
-export default Betting
+export default OpenBetsList

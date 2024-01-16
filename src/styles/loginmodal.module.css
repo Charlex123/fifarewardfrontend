@@ -10,7 +10,8 @@
 }
 .loginmodalmain .loginmodalmainin {
     position: absolute;background-color: #000000ea;left: 50%;transform: translate(-50%,50%);
-    padding: 2px 2px 2px 2px;top: -450px;border-radius: 4px;z-index: 9999;
+    padding: 2px 2px 2px 2px;top: -400px;border-radius: 4px;z-index: 9999;width: 50%;
+    height: 70vh;margin: auto;
 }
 .loginmodalmain .closebtn button {
     position: absolute;right: 8px;top: 4px;color: #fffcfc;cursor: pointer;background-color: none;z-index: 99999;
@@ -19,15 +20,14 @@
     width: 10rem;height: 20rem;margin: 1rem auto; text-align: center;
 }
 .loginmodalmain .loginmodalmainin .formTag {
-    background-color: transparent;border-radius: 8px;padding: 1rem;margin: auto;height: inherit;padding-top: 5rem;
-    width: 60vw;
+    background-color: transparent;border-radius: 8px;padding: 1rem;margin: auto;height: inherit;padding-top: 2rem;
 }
 .loginmodalmain .loginmodalmainin .formTag .fhead {
-    margin: 1rem auto;
+    margin: 0 auto;
 }
 .loginmodalmain .loginmodalmainin .formTag .fhead h3 {
     font-family: "Poppins", sans-serif;margin: 0 auto;color: #e2d7d7;font-weight: 600;
-    text-align: center;font-size: 18px;
+    text-align: center;font-size: 14px;
 }
 .loginmodalmain .loginmodalmainin .formpTag {
     font-size: 12px;font-family: "Montserrat";font-style: italic;color: #e2d7d7;
@@ -40,7 +40,7 @@
     text-align: left;margin-left: 0 !important;
 }
 .loginmodalmain .loginmodalmainin .form_group .forminput {
-    border-radius: 12px;width: 100% !important;height: 35px;padding: .2rem .8rem;
+    border-radius: 12px;width: 100% !important;height: 32px;padding: .2rem .8rem;
     border: none;margin-top: 10px;color: #000000;
 }
 .loginmodalmain .loginmodalmainin .labelDiv {
@@ -56,14 +56,15 @@
     width: 100%;margin-right: 0;text-align: right;margin-top: 1rem;
 }
 .loginmodalmain .loginmodalmainin .fpass a {
-    color: #e2d7d7;font-family: "Poppins",sans-serif;font-weight: 600;margin-top: 10px;text-align: right;
+    color: #e2d7d7;font-family: "Poppins",sans-serif;font-weight: 500;margin-top: 10px;text-align: right;
+    text-decoration: underline;
 }
 .loginmodalmain .loginmodalmainin .btns a {
     font-family: "Montserrat", sans-serif;font-size: 14px;color: #e3a204;font-weight: 600;
 }
 .loginmodalmain .loginmodalmainin .btns .registerButton {
     border-radius: 120px;background-color: #e3a204;font-size: 16px;font-weight: 600;
-    padding: .4rem 60px;border: none;color: #1c1f2b;font-family: "Poppins",sans-serif;
+    padding: .2rem 30px;border: none;color: #1c1f2b;font-family: "Poppins",sans-serif;
 }
 .loginmodalmain .loginmodalmainin .passhideshowButton {
     text-align: right;float: right;margin-top: .6rem;margin-right: .5rem;

@@ -4,228 +4,91 @@ import openbetsstyle from '../styles/openbets.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import Image from 'next/image';
-import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
-import moment from 'moment';
-import Calendar from 'react-calendar';
+import footballg from '../assets/images/footballg.jpg';
 import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
-import LeagueFixtures from './LeagueFixtures'
 import LoginModal from './LoginModal';
-import FixtureByDate from './FixtureByDate'
-import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faRightFromBracket, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
-import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
+import { faCircle, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Overlay } from 'react-bootstrap';
-import { min } from 'bn.js';
 dotenv.config();
 // material
 // component
 
-type DateValuePiece = Date | null;
-
-type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
-
 const OpenBets:React.FC<{}> = () => {
   // types.ts
-interface Fixture {
-  _id: string;
-  fid: number;
-  fixture: {
-      id: number;
-      referee: string | null;
-      timezone: string;
-      date: string;
-      timestamp: number;
-      periods: {
-          first: number;
-          second: number;
-      };
-      venue: {
-          id: number | null;
-          name: string;
-          city: string;
-      };
-      status: {
-          long: string;
-          short: string;
-          elapsed: number;
-      };
-  };
-  league: {
-      id: number;
-      name: string;
-      country: string;
-      logo: string;
-      flag: string;
-      season: number;
-      round: string;
-  };
-  teams: {
-      home: {
-        id: number;
-        name: string;
-        logo: string;
-        winner: boolean | null;
-      };
-      away: {
-        id: number;
-        name: string;
-        logo: string;
-        winner: boolean | null;
-      };
-  };
-  goals: {
-      home: number;
-      away: number;
-  };
-  score: {
-    halftime: { home: number; away: number };
-    fulltime: { home: number; away: number };
-    extratime: { home: number | null; away: number | null };
-    penalty: { home: number | null; away: number | null };
-  };
-  __v: number;
-}
-interface League {
-  leagueId: number;
-  leagueName: string;
-  fixtures: Fixture[];
-}
-interface Country {
-  _id: string;
-  leagues: League[];
-} 
 
-interface CountriesLeagues {
-  leagueId: number,
-  leagueName: string,
-  totalFixtures: number
-} 
-
-interface Countries {
-  _id: string,
-  leagues: CountriesLeagues[],
-  totalFixturesInCountry: number
-} 
-
-const [calendarIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCalendarAlt}/>);
-const [drpdwnIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCaretDown}/>);
-const [today_d,setToday_d] = useState<any>();
-const [today_dm,setToday_dm] = useState<any>();
-const [tomorrow_d,setTomorrow_d] = useState<any>();
-const [tomorrow_dm,setTomorrow_dm] = useState<any>();
-const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
-const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
-const [nextthree_d,setNextThree_d] = useState<any>();
-const [nextthree_dm,setNextThree_dm] = useState<any>();
-const [nextfour_d,setNextFour_d] = useState<any>();
-const [nextfour_dm,setNextFour_dm] = useState<any>();
-const [datevalue, onChange] = useState<DateValue>(new Date());
-const [showcalender, setShowCalendar] = useState<boolean>(false);
-const [loadedlaguedata,setLoadedLeagueData] = useState<boolean>(false);
-const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
-const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 const [username, setUsername] = useState<string>("");
 const [userId, setUserId] = useState<string>("");  
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 const [showloginComp,setShowLoginComp] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
 
-const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
-const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
-const[countryparam,setCountryParam] = useState<string>('');
-const[leagueparam,setLeagueParam] = useState<string>('');
-const[matchparam,setMatchParam] = useState<string>('');
-const[matchidparam,setMatchIdParam] = useState<string>('');
-const[matchData,setMatchData] = useState<Fixture[]>([]);
-const[betAmount,setBetAmount] = useState<string>('5');
-const[betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
-
 const router = useRouter();
 
-  useEffect(() => {
-    try {
+interface Bets {
+  betid: number,
+  betamount: number,
+  match: string,
+  matchid: number,
+  userId: number,
+  openedby: string,
+  totalparticipantscount: number,
+  participantscount: number,
+  participants: string,
+  remainingparticipantscount: number,
+  betstatus: string,
+  betresult: string,
+  betwinners: string,
+  betlosers: string,
+  createddate: Date
+}
 
-        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-        if(udetails && udetails !== null && udetails !== "") {
-            const username_ = udetails.username;  
-            if(username_) {
-                setUsername(username_);
-                setUserId(udetails.userId);
-                setIsloggedIn(true);
-            }
-        }
-        
-        const getDates:any = () => {
-            let today_d_ = "Today";
-            let today_dm_ = moment().format('DD, MMM');
-            let tomorrow_d_ = moment().add(1,'day').format('ddd');
-            let tomorrow_dm_ = moment().add(1,'day').format('DD, MMM');
-            let nexttomorrow_d_ = moment().add(2,'day').format('ddd');
-            let nexttomorrow_dm_ = moment().add(2,'day').format('DD, MMM');
-            let nextthree_d_ = moment().add(3,'day').format('ddd');
-            let nextthree_dm_ = moment().add(3,'day').format('DD, MMM');
-            let nextfour_d_ = moment().add(4,'day').format('ddd');
-            let nextfour_dm_ = moment().add(4,'day').format('DD, MMM');
-            
-            setToday_d(today_d_);
-            setToday_dm(today_dm_);
-            setTomorrow_d(tomorrow_d_);
-            setTomorrow_dm(tomorrow_dm_);
-            setNextTomorrow_d(nexttomorrow_d_);
-            setNextTomorrow_dm(nexttomorrow_dm_);
-            setNextThree_d(nextthree_d_);
-            setNextThree_dm(nextthree_dm_);
-            setNextFour_d(nextfour_d_);
-            setNextFour_dm(nextfour_dm_);
-        }
-        getDates()
+const [betData,setBetData] = useState<Bets[]>([]);
+const [currentPage, setCurrentPage] = useState<number>(1);
+const [limit] = useState<number>(10)
+const [totalPages, setTotalPages] = useState(0);
 
-        window.onload = async function() {
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            }  
-            const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
-            setCountryFixturesdata(data);
-        }
+useEffect(() => {
 
-        async function loadMatchData() {
-            if(router.query.match){
-                setIsParamsLoaded(true)
-                setCountryParam(router.query.match[0]);
-                setLeagueParam(router.query.match[1]);
-                setMatchParam(router.query.match[2]);
-                setMatchIdParam(router.query.match[3])
-
-                const config = {
-                    headers: {
-                        "Content-type": "application/json"
-                    }
-                  }  
-                  const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatch", {
-                    matchidparam
-                  }, config);
-                  if(data.match !== null) {
-                    setIsMatchDataLoaded(true);
-                    setMatchData(data.match);
-                    console.log('match data',data.match);
-                  }
-            }
-        }loadMatchData();
-
-    }catch(error) 
-    {
-      console.log(error)
-    }
-
+  const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+  if(udetails && udetails !== null && udetails !== "") {
+      const username_ = udetails.username;  
+      if(username_) {
+          setUsername(username_);
+          setUserId(udetails.userId);
+          setIsloggedIn(true);
+      }
+  }
   
-},[countryfixturesdata,router.query.match,matchidparam,username])
+  async function loadOpenBets() {
+      const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+      }  
+      const {data} = await axios.get(`http://localhost:9000/api/bets/loadbets/${currentPage}/${limit}`, config);
+      if(data !== null && data !== undefined) {
+          setBetData(data.loadbets);
+          setTotalPages(data.totalPages);
+      }
+  }loadOpenBets();
+  
+},[betData,limit,currentPage])
 
+  const JoinBet = (e: any) => {
+    if(username && username !== null && username !== undefined && username !== '') {
+      
+    }else {
+      let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+      hiw_bgoverlay.style.display = 'block';
+      setShowLoginComp(true);
+      e.parentElement.parentElement.parentElement.style.display = 'none';
+      console.log('showlogincomp',showloginComp)
+    }
+  }
 
-const handleFormSubmit = async (e:any) => {
+  const JoinBetNow = async (e:any,betId:number,betAmount:any,matchid:number,participantscount:number,openedby:string,status:string,totalparticipantscount:number,participants:string,remainingparticipantscount:number) => {
     try {
         if(username && username !== null && username !== undefined && username !== '') {
             let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
@@ -234,10 +97,7 @@ const handleFormSubmit = async (e:any) => {
                 inputAlertDiv.innerHTML = "You can't bet below $5";
                 return;
             }
-            if(!betParticipantsCount) {
-                selectAlertDiv.innerHTML = "You must select number of bet participants";
-                return;
-            }
+            
 
             const config = {
                 headers: {
@@ -246,9 +106,8 @@ const handleFormSubmit = async (e:any) => {
             }  
             const {data} = await axios.post("http://localhost:9000/api/users/openbet", {
                 betAmount,
-                betParticipantsCount,
-                matchidparam,
-                matchparam
+                username,
+                userId
             }, config);
             if(data !== null) {
                 console.log('bet data',data)
@@ -259,11 +118,7 @@ const handleFormSubmit = async (e:any) => {
                 setBetOpenSuccess(true);
             }
         }else {
-            let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-            hiw_bgoverlay.style.display = 'block';
-            setShowLoginComp(true);
-            e.parentElement.parentElement.parentElement.style.display = 'none';
-            console.log('showlogincomp',showloginComp)
+            
         }
 
         
@@ -271,12 +126,6 @@ const handleFormSubmit = async (e:any) => {
     } catch (error) {
       console.log(error)
     }
-}
-  
-const showloginCompNow = () => {
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = 'block';
-    setShowLoginComp(true);
 }
 
 const closeLoginModal = () => {
@@ -290,156 +139,6 @@ const closeActionModalComp = () => {
     hiw_bgoverlay.style.display = 'none';
     setBetOpenSuccess(false);
     router.push('openbets');
-}
-
-const loadfixturesbyDate = async (date:string) => {
-  try {
-    console.log('load leagues by date',date)
-    const newleagueComponent = <FixtureByDate date={date} />;
-    setLoadedLeagueData(true);
-    setLeagueComponent([...leaguecomponent, newleagueComponent]);
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const toggleShowCalendar = () => {
-setShowCalendar(!showcalender)
-}
-
-const toggleFixtures = (divId:any) => {
-  
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
-    if(svg !== null && svg !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
-      targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
-    }
-    if(path !== null && path !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
-      targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
-    }
-  }else {
-    let targetDiv = divId.parentElement.parentElement.nextElementSibling;
-    targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
-  }
-  
-
-}
-
-const closeLeagueFixtures = (divId:any) => {
-  console.log('huo',divId);
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  if(svg !== null && svg !== undefined) {
-    divId.parentElement.parentElement.parentElement.remove();
-  }
-  if(path !== null && path !== undefined) {
-    divId.parentElement.parentElement.parentElement.parentElement.remove()
-  }
-}
-
-const closeHIWDiv = (divId:any) => {
-  console.log('huo',divId);
-  console.log('huo pareant',divId.parentElement.parentElement);
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  if(svg !== null && svg !== undefined) {
-    divId.parentElement.parentElement.style.display = 'none';
-  }
-  if(path !== null && path !== undefined) {
-    divId.parentElement.parentElement.parentElement.style.display = 'none';
-  }
-}
-
-const closeHIWE = (divId:any) => {
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
-  if(svg !== null && svg !== undefined) {
-    divId.parentElement.parentElement.parentElement.style.display = 'none';
-  }
-  if(path !== null && path !== undefined) {
-    divId.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
-  }
-}
-
-const firstopenHIW = (divId:any) => {
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  console.log('t div firr oo parent',divId.parentElement.parentElement)
-  console.log('t div',divId.parentElement.parentElement.firstElementChild)
-  if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
-    if(svg !== null && svg !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.firstElementChild;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-    if(path !== null && path !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.firstElementChild;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-  }else {
-    let targetDiv = divId.parentElement.parentElement.firstElementChild;
-    targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-  }
-}
-
-const openHIWE = (divId:any) => {
-  let hiwdiv = document.querySelector('#howitworks') as HTMLElement;
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  console.log('hiw div',hiwdiv)
-  console.log('hiw overlay',hiw_bgoverlay)
-  hiwdiv.style.display = (hiwdiv.style.display === 'block') ? 'none' : 'block';
-  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
-
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-
-  if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
-    if(svg !== null && svg !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-    if(path !== null && path !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.parentElement;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-  }else {
-    let targetDiv = divId.parentElement.parentElement.parentElement;
-    targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-  }
-}
-
-const placeBet = (divId:any) => {
-
-  let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
-    if(svg !== null && svg !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
-      let targetDivP = divId.parentElement.parentElement.parentElement.parentElement;
-      bgoverlay.style.display = 'block';
-      targetDivP.style.display = 'none';
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-    if(path !== null && path !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
-      let targetDivP = divId.parentElement.parentElement.parentElement.parentElement.parentElement;
-      bgoverlay.style.display = 'block';
-      targetDivP.style.display = 'none';
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-  }else {
-    let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
-    let targetDivP = divId.parentElement.parentElement.parentElement;
-    bgoverlay.style.display = 'block';
-    targetDivP.style.display = 'none';
-    targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-  }
 }
 
 const closePBET = (divId:any) => {
@@ -458,12 +157,53 @@ const closePBET = (divId:any) => {
   }
 }
 
+const Cancel = (e:any) => {
+  console.log(e)
+}
+
+// const setLoadOpenBetsDataStatus = () => {
+//   setIsBetDataLoaded(true)
+// }
+
+const closeHIWE = (divId:any) => {
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
+  if(svg !== null && svg !== undefined) {
+    divId.parentElement.parentElement.parentElement.style.display = 'none';
+  }
+  if(path !== null && path !== undefined) {
+    divId.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
+  }
+}
+
+ // Function to render page numbers
+ const renderPageNumbers = () => {
+  let pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(
+      <button className={openbetsstyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+        {i}
+      </button>
+    );
+  }
+  return pages;
+};
+
+const showloginCompNow = () => {
+  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  hiw_bgoverlay.style.display = 'block';
+  setShowLoginComp(true);
+}
+
 const goBack = () => {
     router.back()
 }
-// Import your JSON data here
-const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
+const gotoPage = (pageNumber: number) => {
+  setCurrentPage(pageNumber);
+};
 
   return (
     <>
@@ -473,12 +213,12 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         <div className={openbetsstyle.breadcrum}>
-          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> 
+          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> 
         </div> 
 
         {showloginComp && 
             <div>
-                <LoginModal onChange={closeLoginModal}/>
+                <LoginModal prop={'Join Bet'} onChange={closeLoginModal}/>
             </div>
         }
 
@@ -525,406 +265,160 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
         {/* how it works div starts */}
 
         <div className={openbetsstyle.main_in}>
-          <div className={openbetsstyle.leagues}>
-            <div className={openbetsstyle.gf}><h3>Games</h3></div>
-            {countryfixturesdata ? <div>
-              <div className={openbetsstyle.fb}><h3>By Country</h3></div>
-              {countryfixturescount.map(country => (
-                <div key={country._id}>
-                  <ul>
-                    <li>
-                       <div className={openbetsstyle.leagued}>
-                          <div>
-                            {country.leagues.map(league => (
-                              <div className={openbetsstyle.lde} key={league.leagueId}>
-                                <div className={openbetsstyle.ldef}>
-                                  <input title='title' type='checkbox' disabled className={openbetsstyle.mchkbox} id={country._id}/>
-                                  <span className={openbetsstyle.chkbox}>&nbsp;&nbsp;</span> <span>{league.leagueName}</span>
-                                </div>
-                                <div className={openbetsstyle.ldes}>
-                                  ({league.totalFixtures})
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      <div className={openbetsstyle.lita} >
-                        <div>{country._id}</div>
-                        <div>{country.totalFixturesInCountry}</div>
-                      </div>
-                    </li>
-                  </ul>
+          <div className={openbetsstyle.opb_h}>
+          {!isLoggedIn &&
+            <div className={openbetsstyle.opb_login} id="opb_login">
+                <h3>Login To Join Bet</h3>
+                <div className={openbetsstyle.opblogin_btns}>
+                    <div>
+                        <button type='button' title='button' onClick={showloginCompNow}>Login </button>
+                    </div>
+                    <div>
+                        <a href='/register' title='link'>Register </a>
+                    </div>
                 </div>
-            ))}
-
-            </div>: <div> <Loading /> </div>}
-          </div>
-          <div className={openbetsstyle.betmain}>
-              <div className={openbetsstyle.betmain_top}>
-                <div className={openbetsstyle.betmain_top_in}>
-                  <div className={openbetsstyle.live}><button type='button' title='button' onClick={() => loadfixturesbyDate('live')}>Live</button></div>
-                  <div className={openbetsstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(today_dm)}><div className={openbetsstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
-                  <div className={openbetsstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrow_dm)}><div className={openbetsstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                  <div className={openbetsstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrow_dm)}><div className={openbetsstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                  <div className={openbetsstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_dm)}><div className={openbetsstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
-                  <div className={openbetsstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_dm)}><div className={openbetsstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
-                  <div className={openbetsstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
-                </div>
-                {
-                  showcalender && (
-                  <div className={openbetsstyle.calndar}>
-                    <Calendar onChange={onChange} value={datevalue} showWeekNumbers />
-                  </div>
-                  )
-                }
-                
-              </div>
-              <div className={openbetsstyle.betwrap}>
-                  <div className={openbetsstyle.betwrapin} id='betwrapin'>
-                  
-                  {ismatchdataLoaded &&
-                    <div>
-                        <div className={openbetsstyle.league_wrap}>
-                          <div className={openbetsstyle.tgle} >
-                            <div onClick={(e) => toggleFixtures(e.target)}><h3>{matchData.league.name}</h3></div>
-                            <div className={openbetsstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                            <div className={openbetsstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                          </div>
-                          <div className={openbetsstyle.league_wrap_in} >
-                            <div className={openbetsstyle.fixt}>
-                                <div className={openbetsstyle.fixt_d_o}>
-                                    <div className={openbetsstyle.fixt_d}>
-                                    <span>Date</span> {`${moment(matchData.fixture.date).format('DD/MM ddd')}`}
-                                    </div>
-                                    <div className={openbetsstyle.dd}>
-                                        <div><span>Time</span>{`${moment(matchData.fixture.timestamp).format('hh:mm a')}`}</div>
-                                        <div className={openbetsstyle.fid}>ID: {matchData.fixture.id}</div>
-                                    </div>
-                                </div>
-
-                                <div className={openbetsstyle.fixt_tm}>
-                                    <div className={openbetsstyle.teams}>
-                                    <div>{`${matchData.teams.home.name}`}</div>
-                                    <div className={openbetsstyle.vs}>Vs</div>
-                                    <div>{`${matchData.teams.away.name}`}</div>
-                                    </div>
-                                </div>
-                                <div className={openbetsstyle.openbet}>
-                                    <div className={openbetsstyle.opb_btns_div}>
-                                        <div className={openbetsstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                                        <div className={openbetsstyle.opb_btns}>
-                                            <div className={openbetsstyle.opb_open} onClick={(e) => placeBet(e.target)}><button type='button' title='button'>Open Bet {<FontAwesomeIcon icon={faFutbol}/>}</button></div>
-                                            <div className={openbetsstyle.opb_hiw} onClick={(e) => openHIWE(e.target)}><button type='button' title='button'>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
-                                        </div>
-                                    </div>
-
-                                    <div className={openbetsstyle.pbet}>
-                                    <div className={openbetsstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
-                                    <form>
-                                        <h3>Place Bet</h3>
-                                        <div className={openbetsstyle.form_g}>
-                                        <ul>
-                                            <li>
-                                            <div>
-                                                <div>
-                                                    Match Id
-                                                </div>
-                                                <div className={openbetsstyle.fixid}>
-                                                    {matchData.fixture.id}
-                                                </div>
-                                            </div>
-                                            </li>
-                                        </ul>
-                                        </div>
-                                        <div className={openbetsstyle.form_g}>
-                                            <label>Enter amount ($)</label>
-                                            <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={5} />
-                                            <small id='minamuntalert'></small>
-                                        </div>
-                                        <div className={openbetsstyle.form_g}>
-                                            <label>Select number of betting participants</label>
-                                            <div>
-                                                <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
-                                                    <option value='2'>2 Participants</option>
-                                                    <option value='4'>4 Participants</option>
-                                                    <option value='6'>6 Participants</option>
-                                                    <option value='8'>8 Participants</option>
-                                                    <option value='10'>10 Participants</option>
-                                                </select>
-                                            </div>
-                                            <small id='partpntsalert'></small>
-                                        </div>
-                                        <div className={openbetsstyle.form_g}>
-                                            <button type='button' onClick={(e) => handleFormSubmit(e.target)} title='button'>Open Bet Now</button>
-                                        </div>
-                                    </form>
-                                    </div>
-
-                                    <div>
-                                    <button type='button' title='buttn' onClick={(e) => firstopenHIW(e.target)}>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
-                                    </div>
-                                </div>
-                            </div>
-                          </div>
-                        </div>
-                    </div>
-                  }
-                  {loadedlaguedata &&
-                    <div>
-                      {leaguecomponent.map(component => component)}
-                    </div> 
-                  }
-                  </div>
-              </div>
-          </div>
-          <div className={openbetsstyle.openbets_list}>
-            <div className={openbetsstyle.opb_h}>
-                {!isLoggedIn &&
-                    <div className={openbetsstyle.opb_login} id="opb_login">
-                        <h3>Login To Open Bet</h3>
-                        <div className={openbetsstyle.opblogin_btns}>
-                            <div>
-                                <button type='button' title='button' onClick={showloginCompNow}>Login </button>
-                            </div>
-                            <div>
-                                <a href='/register' title='link'>Register </a>
-                            </div>
-                        </div>
-                    </div>
-                }
-              <h3>Open Bets</h3>
-              <div className={openbetsstyle.opb}>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={openbetsstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={openbetsstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={openbetsstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={openbetsstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={openbetsstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={openbetsstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={openbetsstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={openbetsstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={openbetsstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={openbetsstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={openbetsstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={openbetsstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <div className={openbetsstyle.opb_full_list}><a href='./openbetslist'>See All Open Bets ...</a></div>
-                <div className={openbetsstyle.opb_banner}>
-                  <Image src={footballg} alt='banner' style={{width: '100%',height: '320px'}}/>
-                </div>
-              </div>
-              
             </div>
+          }
+          <div className={openbetsstyle.opb_banner}>
+            <Image src={footballg} alt='banner' style={{width: '100%',height: '320px',marginTop: '20px'}}/>
+          </div>
+          </div>
+          <div className={openbetsstyle.openbetmain}>
+            <div className={openbetsstyle.table_c}>
+              <table>
+                <thead>
+                  <tr>
+                    <th>S/N</th>
+                    <th>Bet Id</th>
+                    <th>Bet Amount</th>
+                    <th>Match Id</th>
+                    <th>Opened BY</th>
+                    <th>Max. Participants</th>
+                    <th>Partpants Joined Count</th>
+                    <th>Participants Joined</th>
+                    <th>Status</th>
+                    <th>Join Bet</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {betData.map((openbet, index) => (
+                    <tr key={index}>
+                      <td><div className={openbetsstyle.div}>{index+1}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.betid}</div></td>
+                      <td><div className={openbetsstyle.div}>${openbet.betamount}{<span className={openbetsstyle.amtunit}>(10000FRD)</span>}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.matchid}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.openedby}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.totalparticipantscount}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.participantscount}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.participants}</div></td>
+                      <td className={openbetsstyle.stat}><div className={openbetsstyle.div}><span>{openbet.betstatus}</span></div></td>
+                      {openbet.betstatus === 'open' 
+                      ? 
+                      <td className={openbetsstyle.jb}><div className={openbetsstyle.div}><button className={openbetsstyle.open} type='button' title='button' onClick={(e) => JoinBet(e.target)}>Join Bet</button></div></td> 
+                      : 
+                      <td className={openbetsstyle.jb}><div className={openbetsstyle.div}><button className={openbetsstyle.closed} type='button' title='button' disabled >Bet Closed</button></div></td>}
+                      <td>
+                      <div className={openbetsstyle.pbet}>
+                        <div className={openbetsstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
+                            <h3>Bet Details</h3>
+                            <div><p>Below are the details of this <span className={openbetsstyle.obet}>Open Bet</span></p></div>
+                              <div className={openbetsstyle.form_g}>
+                              <ul>
+                                <li>
+                                    <div>
+                                        <div>
+                                            Bet Id
+                                        </div>
+                                        <div className={openbetsstyle.betdet}>
+                                          {openbet.betid}
+                                        </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div>
+                                        <div>
+                                            Match Id
+                                        </div>
+                                        <div className={openbetsstyle.betdet}>
+                                          {openbet.matchid}
+                                        </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div>
+                                        <div>
+                                            Match
+                                        </div>
+                                        <div className={openbetsstyle.betdet}>
+                                          {openbet.match}
+                                        </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div>
+                                        <div>
+                                            Max no of participants
+                                        </div>
+                                        <div className={openbetsstyle.betdet}>
+                                          {openbet.totalparticipantscount}
+                                        </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div>
+                                        <div>
+                                            Participant joined
+                                        </div>
+                                        <div className={openbetsstyle.betdet}>
+                                          {openbet.participants}
+                                        </div>
+                                    </div>
+                                  </li>
+                                  <li>
+                                    <div>
+                                        <div>
+                                            Remainin Participants
+                                        </div>
+                                        <div className={openbetsstyle.betdet}>
+                                          {openbet.remainingparticipantscount}
+                                        </div>
+                                    </div>
+                                  </li>
+                              </ul>
+                              </div>
+                              <div className={openbetsstyle.form_btn}>
+                                  <div>
+                                    <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betid,openbet.betamount,openbet.matchid,openbet.participantscount,openbet.openedby,openbet.betstatus,openbet.totalparticipantscount,openbet.participants,openbet.remainingparticipantscount)} title='button'>Confirm</button>
+                                  </div>
+                                  <div>
+                                    <button type='button' className={openbetsstyle.cancel_btn} onClick={(e) => Cancel(e.target)} title='button'>Cancel</button>
+                                  </div>
+                              </div>
+                          </div>
+                        <div>
+
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className={openbetsstyle.paginate_btns}>
+              <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                {'<<'}
+              </button>
+              <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                {'<'}
+              </button>
+              {renderPageNumbers()}
+              <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                {'>'}
+              </button>
+              <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                {'>>'}
+              </button>
+              </div>
           </div>
         </div>
       </div>

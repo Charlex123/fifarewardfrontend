@@ -4,7 +4,6 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 // material
 import Loading from "./Loading";
 import AlertMessage from "./AlertMessage";
@@ -85,7 +84,7 @@ const RegisterForm = () =>  {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkusername", {
+    const {data} = await axios.post("http://localhost:9000/api/users/checkusername", {
           username,
     }, config);
     if(data) {
@@ -103,7 +102,7 @@ const RegisterForm = () =>  {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkemail", {
+    const {data} = await axios.post("http://localhost:9000/api/users/checkemail", {
           email,
     }, config);
     if(data) {
@@ -129,8 +128,8 @@ const RegisterForm = () =>  {
         }  
         
         setLoading(true);
-        setLevel("White Whale");
-        const {data} = await axios.post("https://fifareward.onrender.com/api/users/register", {
+        setLevel("Baller");
+        const {data} = await axios.post("http://localhost:9000/api/users/register", {
           username,
           sponsorId,
           email,
@@ -160,9 +159,13 @@ const closeAlertModal = () => {
   setError(false)
 }
 
+const goBack = () => {
+  router.back();
+}
+
   return (
     <>
-        <a href='/' rel='noopener noreferrer' className={regstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back to home</a>
+        <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
         <form className={regstyles.formTag} onSubmit={submitHandler}>
         
         {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}

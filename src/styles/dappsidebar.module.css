@@ -59,24 +59,24 @@ overflow: scroll;padding-bottom: 2rem;
     background-color: #c2c5c3;color: #0a0a0a;padding: 4px 20px;border-radius: 60px;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld {
-    list-style: none;vertical-align: auto;border: 1px solid #08d34f;height: fit-content;border-radius: 120px;
-    padding: 3px 18px 3px 18px;color: #08d34f;margin-top: 0;width: fit-content;
+    list-style: none;vertical-align: auto;border: 1px solid #e3a204 ;height: fit-content;border-radius: 120px;
+    padding: 3px 18px 3px 18px;color: #e3a204 ;margin-top: 0;width: fit-content;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld a {
-  color: #08d34f;width: fit-content;
+  color: #e3a204 ;width: fit-content;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li a.buytafa {
-  background-color: #08d34f;color: #0a0a0a;padding: 6px 20px 6px 20px;border-radius: 60px;
+  background-color: #e3a204 ;color: #0a0a0a;padding: 6px 20px 6px 20px;border-radius: 60px;
   font-weight: 900;font-size: 14px;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld:hover {
-  background-color: #f0eded49;border: 1px dashed #08d34f;color: #08d34f;
+  background-color: #f0eded49;border: 1px dashed #e3a204 ;color: #e3a204 ;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld:hover > a {
   color: #7af8a6;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld:active {
-  background-color: #f0eded49;border: 1px dashed #08d34f;
+  background-color: #f0eded49;border: 1px dashed #e3a204 ;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.si {
   list-style: none;vertical-align: auto;border: 1px solid #e0f7e8;height: fit-content;border-radius: 120px;
@@ -92,7 +92,7 @@ background-color: #f0eded49;border: 1px dashed #e0f7e8;color: #e0f7e8;
 color: #e0f7e8;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld:active {
-background-color: #f0eded49;border: 1px dashed #08d34f;
+background-color: #f0eded49;border: 1px dashed #e3a204 ;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li a {
     color: #f1f1f1;font-family: "Poppins",sans-serif;text-decoration: none;font-size: 14px;
@@ -108,7 +108,7 @@ background-color: #f0eded49;border: 1px dashed #08d34f;
   border-top: none;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li a.linka:hover,.sidebar .sidebar_container .sidebar_container_p ul.upa li.drpdwnlist:hover,.sidebar .sidebar_container .sidebar_container_p ul.upa li button:hover {
-  border-top: 2px solid #08d34f;
+  border-top: 2px solid #e3a204 ;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li ul li a {
   cursor: pointer;text-align: left;
@@ -120,7 +120,7 @@ background-color: #f0eded49;border: 1px dashed #08d34f;
   margin-left: 0;padding-right: 10px;color: #f1f1f1;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li ul li a:hover > span, .sidebar .sidebar_container .sidebar_container_p ul.upa li ul li a:hover > .sidebardrbdwnbrandicon {
-  color: #08d34f;
+  color: #e3a204 ;
 }
 
 
@@ -194,6 +194,6 @@ background-color: #f0eded49;border: 1px dashed #08d34f;
     margin-left: 0;padding-right: 10px;color: #f1f1f1;
   }
   .sidebar .sidebar_container .sidebar_container_p ul.upa li ul li a:hover > span, .sidebar .sidebar_container .sidebar_container_p ul.upa li ul li a:hover > .sidebardrbdwnbrandicon {
-    color: #08d34f;
+    color: #e3a204 ;
   }
 }

@@ -10,14 +10,12 @@ import moment from 'moment';
 import Calendar from 'react-calendar';
 import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
-import LeagueFixtures from './LeagueFixtures'
+import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
 import FixtureByDate from './FixtureByDate'
-import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faRightFromBracket, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
-import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
+import {  faCaretDown, faCircle,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { Overlay } from 'react-bootstrap';
-import { min } from 'bn.js';
 dotenv.config();
 // material
 // component
@@ -29,22 +27,7 @@ type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 const MatchData:React.FC<{}> = () => {
   // types.ts
 
-interface Bets {
-  betid: number,
-  betamount: number,
-  match: string,
-  matchid: number,
-  userId: number,
-  openedby: string,
-  totalparticipantscount: number,
-  participantscount: number,
-  participants: string,
-  betstatus: string,
-  betresult: string,
-  betwinners: string,
-  betlosers: string,
-  createddate: Date
-}
+
 
 interface Fixture {
   _id: string;
@@ -105,15 +88,15 @@ interface Fixture {
   };
   __v: number;
 }
-interface League {
-  leagueId: number;
-  leagueName: string;
-  fixtures: Fixture[];
-}
-interface Country {
-  _id: string;
-  leagues: League[];
-} 
+// interface League {
+//   leagueId: number;
+//   leagueName: string;
+//   fixtures: Fixture[];
+// }
+// interface Country {
+//   _id: string;
+//   leagues: League[];
+// } 
 
 interface CountriesLeagues {
   leagueId: number,
@@ -159,7 +142,8 @@ const[matchidparam,setMatchIdParam] = useState<string>('');
 const[matchData,setMatchData] = useState<Fixture>();
 const[betAmount,setBetAmount] = useState<string>('5');
 const[betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
-const [betsData,setBetsData] = useState<Bets>()
+
+const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
 const router = useRouter();
 
   useEffect(() => {
@@ -233,17 +217,6 @@ const router = useRouter();
             }
         }loadMatchData();
 
-        async function loadOpenBets() {
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            }  
-            const {data} = await axios.get("http://localhost:9000/api/bets/load4bets", config);
-            if(data !== null) {
-              
-            }
-        }loadOpenBets()
     }catch(error) 
     {
       console.log(error)
@@ -276,7 +249,9 @@ const handleFormSubmit = async (e:any) => {
                 betAmount,
                 betParticipantsCount,
                 matchidparam,
-                matchparam
+                matchparam,
+                username,
+                userId
             }, config);
             if(data !== null) {
                 console.log('bet data',data)
@@ -317,7 +292,7 @@ const closeActionModalComp = () => {
     let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
     hiw_bgoverlay.style.display = 'none';
     setBetOpenSuccess(false);
-    router.push('openbets');
+    router.push('openbetslists');
 }
 
 const loadfixturesbyDate = async (date:string) => {
@@ -486,6 +461,13 @@ const closePBET = (divId:any) => {
   }
 }
 
+const setLoadOpenBetsDataStatus = () => {
+  setIsBetDataLoaded(true)
+}
+
+const goBack = () => {
+  router.back()
+}
 // Import your JSON data here
 const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
@@ -497,12 +479,12 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         {isparamsLoaded && <div className={matchstyle.breadcrum}>
-          <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`/${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam.replace(/-/g, ' ')} {'>'} {leagueparam.replace(/-/g, ' ')} {'>'} {matchparam.replace(/-/g, ' ')}</a>
+          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`/${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam.replace(/-/g, ' ')} {'>'} {leagueparam.replace(/-/g, ' ')} {'>'} {matchparam.replace(/-/g, ' ')}</a>
         </div> }
 
         {showloginComp && 
             <div>
-                <LoginModal onChange={closeLoginModal}/>
+                <LoginModal prop={'Open Bet'} onChange={closeLoginModal}/>
             </div>
         }
 
@@ -517,7 +499,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='fifareward'>Join Fifa Reward</a>
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='../../../../register'>Join Fifa Reward</a>
               </li>
               <li>
                 <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
@@ -532,7 +514,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                 <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a>open bets</a>
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../../../../betting/openbetslists'>open bets</a>
               </li>
               <li>
                 <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
@@ -716,233 +698,16 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                         </div>
                     </div>
                 }
-              <h3>Open Bets</h3>
+              
               <div className={matchstyle.opb}>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={matchstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={matchstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={matchstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={matchstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={matchstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={matchstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={matchstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={matchstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={matchstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <ul>
-                  <li>
-                    <div>
-                      <div><span>User</span></div>
-                      <div><span>Charles</span></div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Bet Id</span>
-                      </div>
-                      <div>
-                        <span>87788</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Status</span>
-                      </div>
-                      <div>
-                        <span className={matchstyle.stat}>Open</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Match Id</span>
-                      </div>
-                      <div>
-                        <span>823987</span>
-                      </div>
-                    </div>
-                  </li>
-                  <li>
-                    <div>
-                      <div>
-                        <span>Teams</span>
-                      </div>
-                      <div className={matchstyle.tms}>
-                        <div>
-                          <span>Man U</span>
-                        </div>
-                        <div>
-                          <span className={matchstyle.tmsvs}>Vs</span>
-                        </div>
-                        <div>
-                          <span>Chelsea</span>
-                        </div>
-                      </div>
-                    </div>
-                  </li>
-                </ul>
-                <div className={matchstyle.opb_full_list}><a href='./openbetslist'>See All Open Bets ...</a></div>
+                {/* {isbetDataLoaded ? */}
+                <div>
+                  <h3>Open Bets</h3>
+                  {<LoadSampleOpenBetsData onMount={setLoadOpenBetsDataStatus}/>}
+                </div> 
+                {/* <div><Loading /></div>
+                } */}
+                <div className={matchstyle.opb_full_list}><a href='../../../openbetslists'>See All Open Bets ...</a></div>
                 <div className={matchstyle.opb_banner}>
                   <Image src={footballg} alt='banner' style={{width: '100%',height: '320px'}}/>
                 </div>

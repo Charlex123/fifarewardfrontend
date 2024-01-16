@@ -12,7 +12,7 @@
     background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(13,20,24,1) 14%, rgba(19,28,28,1) 29%, rgba(28,28,46,1) 44%, rgba(24,28,45,1) 49%, rgba(18,27,43,1) 54%, rgba(19,28,28,1) 64%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .staketimer {
-    color: #010101;font-size: 14px;font-weight: 700;margin: 1rem auto;background-color: #26b826;border-radius: 120px;
+    color: #010101;font-size: 14px;font-weight: 700;margin: 1rem auto;background-color: #e3a204 ;border-radius: 120px;
     width: fit-content;padding: 4px 12px;display: flex;
 }
 .main_c {
@@ -50,7 +50,7 @@
     background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
 }
 .main .reflink input {
-    background-color: #26b826;color: #000000;font-size: 12px;font-weight: 500;padding: 3px 16px 3px 12px;
+    background-color: #e3a204 ;color: #000000;font-size: 12px;font-weight: 500;padding: 3px 16px 3px 12px;
     border-radius: 60px;width: 50%;margin-left: 15px;
 }
 .main .reflink button {
@@ -58,7 +58,7 @@
     border-radius: 60px;width: fit-content;margin-left: 8px;
 }
 .main .reflink small {
-    color: #26b826;
+    color: #e3a204 ;
 }
 .main .uname {
     font-size: 16px;font-family: "Poppins";text-transform: capitalize;color: #e2d7d7;
@@ -178,7 +178,7 @@ background: linear-gradient(90deg, rgba(12,16,32,1) 100%, rgba(44,44,48,1) 100%,
     border-radius: 120px;font-size: 14px;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div button.stakebtn {
-    background-color: #26b826;
+    background-color: #e3a204 ;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div button.calcrwd {
     background-color: orange;
@@ -203,12 +203,12 @@ background: linear-gradient(90deg, rgba(12,16,32,1) 100%, rgba(44,44,48,1) 100%,
     font-weight: 800;
 }
 .connected {
-    position: relative;background-color: transparent;border-radius: 120px;border: 1px solid #26b826;
-    color: #26b826;font-size: 14px;padding: 3px 16px;
+    position: relative;background-color: transparent;border-radius: 120px;border: 1px solid #e3a204 ;
+    color: #e3a204 ;font-size: 14px;padding: 3px 16px;
 }
 .connected span {
     position: absolute;font-size: 10px;top: -15px;background-color: #ffffff;width: fit-content;
-    border-radius: 20px;padding: 1px 4px;color: #26b826;right: 20%;
+    border-radius: 20px;padding: 1px 4px;color: #e3a204 ;right: 20%;
 }  
 .main table {
     color: #e2d7d7;width: 100%;margin: auto;margin-left: 0;text-align: left;

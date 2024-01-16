@@ -14,9 +14,10 @@ import AlertMessage from './AlertMessage';
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
 interface ChildProps {
+    prop: string,
     onChange: (newValue: boolean) => void;
 }
-const LoginModal:React.FC <ChildProps> = ({onChange}) => {
+const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
   
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -108,7 +109,7 @@ const LoginModal:React.FC <ChildProps> = ({onChange}) => {
                 {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
                 {loading && <Loading />}
                 <div className={loginmodalstyles.fhead}>
-                    <h3>Sign In To Open Bet</h3>
+                    <h3>Sign In To {prop}</h3>
                 </div>
                 <div className={loginmodalstyles.form_group}>
                     <label className={loginmodalstyles.formlabel} htmlFor="grid-last-name">Email</label>

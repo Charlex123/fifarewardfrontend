@@ -24,6 +24,7 @@ import { useDisconnect } from '@web3modal/ethers5/react';
 import axios from 'axios';
 import AlertMessage from './AlertMessage';
 import { ThemeContext } from '../contexts/theme-context';
+import FooterNavBar from './FooterNav';
 import DappNav from './Dappnav';
 import StakeAbi from '../../artifacts/contracts/Stake.sol/Stake.json';
 import DappFooter from './DappFooter';
@@ -120,7 +121,7 @@ const Dapp:React.FC<{}> = () =>  {
         setUsername(username_);
         setUserId(udetails.userId)
         setUserObjId(udetails._id)
-        setreferralLink(`https://tafaextra.io/register/${udetails.userId}`);
+        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
       }
     }else {
       router.push(`/signin`);
@@ -135,7 +136,7 @@ const Dapp:React.FC<{}> = () =>  {
           "Content-type": "application/json"
       }
       }  
-      const {data} = await axios.post("https://tafabackend.onrender.com/api/users/getwalletaddress/", {
+      const {data} = await axios.post("https://fifreward .onrender.com/api/users/getwalletaddress/", {
         username
       }, config);
       setWalletAddress(data.message);
@@ -155,7 +156,7 @@ getWalletAddress();
             "Content-type": "application/json"
         }
         }  
-        const {data} = await axios.post("https://tafabackend.onrender.com/api/users/getsponsorwalletaddress", {
+        const {data} = await axios.post("https://fifreward .onrender.com/api/users/getsponsorwalletaddress", {
           userObjId,
         }, config);
         if(data.message === "You do not have a sponsor") {
@@ -186,7 +187,7 @@ getWalletAddress();
               "Content-type": "application/json"
           }
           }  
-          const {data} = await axios.post("https://tafabackend.onrender.com/api/users/updatewalletaddress/", {
+          const {data} = await axios.post("https://fifreward .onrender.com/api/users/updatewalletaddress/", {
             walletaddress,
             username
           }, config);
@@ -347,26 +348,24 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                               <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}>Dapp</a>
                             </li>
                             <li>
-                              <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY TAFA</a>
+                              <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
                             </li>
-                            <li><a href='/stakes' rel='noopener noreferrer' className={dappsidebarstyles.linka}>My Stakes</a></li>
+                            <li><a href='/stakes' rel='noopener noreferrer' className={dappsidebarstyles.linka}> Stakes</a></li>
                             <li>
                               <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>Referrals</a>
                             </li>
-                            <li className={dappsidebarstyles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
-                                Community {dropdwnIcon3}
-                                <ul>
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faTwitter} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Twitter</span></a></li> */}
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faFacebook} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Facebook</span></a></li> */}
-                                    <li className={dappsidebarstyles.lista}><a href='https://t.me/tafaxtraweb' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faTelegram} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Telegram</span></a></li>
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faDiscord} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Discord</span></a></li> */}
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faMedium} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Medium</span></a></li> */}
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faYoutube} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>YouTube</span></a></li> */}
-                                </ul>
+                            <li>
+                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>AI Q&A</a>
+                            </li>
+                            <li>
+                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>My Bets</a>
+                            </li>
+                            <li>
+                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>My NFTs</a>
                             </li>
                         </ul>
                         <ul className={dappsidebarstyles.upa}>
-                            <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake TafaXtra</a></li>
+                            <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
                             <li><button type='button' onClick={logout} className={dappsidebarstyles.linka}>Logout</button></li>
                         </ul>
                         
@@ -394,13 +393,13 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 <div className={dappstyles.head}>
                     <div className={dappstyles.uname}><span>Hi, {username}</span></div>
                     <h1>
-                        WELCOME TO TAFAXTRA 
+                        WELCOME TO FIFAREWARD 
                     </h1>
-                    <p>TAFAXtra is a smart contract platform that replicates the traditional Certificate of Deposit but on the blockchain. It allows users to stake their TAFA tokens to earn fixed interest, 2% daily ROI. It also has NFT functionality, and is backed by ownership of Validator Nodes.</p>
-                    <p>A community DAO manages the TAFA Vault, which collects fees from trade tax and early unstakes. The usage of these funds will be voted on by the community, to use on things such as purchasing additional Validator Nodes, Marketing, Conferences, Token Burns etc.</p>
+                    <p>FifaReward is a smart contract platform that replicates the traditional Certificate of Deposit but on the blockchain. It allows users to stake their FRD tokens to earn fixed interest, 2% daily ROI. It also has NFT functionality, and is backed by ownership of Validator Nodes.</p>
+                    <p>A community DAO manages the FRD Vault, which collects fees from trade tax and early unstakes. The usage of these funds will be voted on by the community, to use on things such as purchasing additional Validator Nodes, Marketing, Conferences, Token Burns etc.</p>
                     <div className={dappstyles.get_sd_btns}>
-                      <a title='get started' href='/stakes' rel='noopener noreferrer' className={dappstyles.getstarted}>Stake TaFaXtra</a>
-                      <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappstyles.learnmore}>Buy TafaXtra</a>
+                      <a title='get started' href='/stakes' rel='noopener noreferrer' className={dappstyles.getstarted}>Stake FRD</a>
+                      <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappstyles.learnmore}>Buy FRD</a>
                     </div>
                 </div>
               </div>
@@ -418,6 +417,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
           </>)}
         {/* {isOpen && (<SelectWalletModal isOpen={isOpen} closeWeb3Modal={closeWeb3Modal} />)} */}
         <DappFooter />
+        <FooterNavBar/>
     </>
   );
 }

@@ -36,7 +36,7 @@ export default function LoginForm() {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("http://localhost:9000/api/users/checkemail", {
+    const {data} = await axios.post("http://localhost:9000/api/users/checkloginemail", {
           email,
     }, config);
     if(data) {
@@ -67,12 +67,16 @@ export default function LoginForm() {
         }
       }  
       setLoading(true)
-      const {data} = await axios.post("https://localhost:9000/api/users/signin", {
+      const {data} = await axios.post("http://localhost:9000/api/users/signin", {
         email,
         password
       }, config);
       
       if(data.message === "Invalid Email or Password") {
+        setError(true)
+        seterrorMessage(data.message)
+        setLoading(false)
+      }else if(data.message === "your account is inactive, activate it using the activation link sent to your email") {
         setError(true)
         seterrorMessage(data.message)
         setLoading(false)

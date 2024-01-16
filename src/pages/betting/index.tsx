@@ -4,7 +4,7 @@ import ChangeTheme from '../../components/change-theme/change-theme';
 import LoadBets from '../../components/Betting';
 import Navbar from '../../components/navbar/navbar';
 import Footer from '../../components/Footer';
-
+import FooterNavBar from '../../components/FooterNav';
 function Betting() {
 
   return (
@@ -13,6 +13,7 @@ function Betting() {
         <BackToTop />
         <ChangeTheme />
         <LoadBets />
+        <FooterNavBar />
         <Footer/>
     </>
   )

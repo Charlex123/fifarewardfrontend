@@ -1,0 +1,18 @@
+.main ul li {
+    margin: 5px 5px 5px 5px;font-size: 12px;font-family: "PT Sans";
+}
+.main ul li div {
+    display: flex;flex-direction: row;justify-content: space-between;
+}
+.main ul li div div span.stat {
+    background-color: #3aa33d;padding: 2px 8px 2px 8px;border-radius: 4px;color: #ffffff;
+}
+.main ul li div div.tms {
+    display: flex;justify-content: space-between;
+}
+.main ul li div div.tms div {
+    margin-left: 5px;
+}
+.main ul li div div.tms div span.tmsvs {
+    background-color: #e28305;padding: 1px 4px 1px 4px;border-radius: 4px;color: #ffffff;
+}

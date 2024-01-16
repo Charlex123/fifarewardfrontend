@@ -5,7 +5,6 @@ import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCheckCircle, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 // material
 import Loading from "./Loading";
 import AlertMessage from "./AlertMessage";
@@ -43,11 +42,19 @@ const EmailVStatus: React.FC<{}> = () =>  {
       }
   }
 
+  const closeAlertModal = () => {
+    setError(false)
+  }
+
+  const goBack = () => {
+    router.back();
+  }
+
   return (
     <>
-        <a href='/register' rel='noopener noreferrer' className={regstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back </a>
+        <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
         <div className={regstyles.regsuccess}>
-        {error && <AlertMessage variant="danger">{errorMessage}</AlertMessage>}
+        {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
         {loading && <Loading />}
             <div className={regstyles.regs_in}>
                 <h3>Registration Successful <FontAwesomeIcon icon={faCheckCircle} /></h3>

@@ -3,7 +3,7 @@
     color: #151414;font-size: 14px;background-color: #fffcfc;position: relative;
 }
 .main .breadcrum {
-    width: 100%;margin: 15px 0;text-align: left;padding-left: 2rem;
+    width: 100%;margin: 15px 0;text-align: left;padding-left: 0;
 }
 .main .breadcrum a {
     color: #151414;
@@ -51,293 +51,111 @@
 .main .main_in {
     display: flex;flex-direction: row;justify-content: space-between;
 }
-.main .main_in .leagues {
-    background-color: #e2d7d7;width: 18%;margin: 0 2%;border: none;border-radius: 4px;color: #151414;
+.main .main_in .opb_h {
+    width: 20%;background-color: #f1f1f1;
 }
-.main .main_in .leagues .gf h3 {
-    width: 100%;font-size: 16px;font-weight: 600;font-family: "Poppins",sans-serif;
-    border-bottom: 1px solid #ffffff;margin: 5px auto 15px auto;padding-bottom: 5px;
+.main .main_in .opb_h .opb_login h3 {
+    background-color: #929292;color: #151414;padding: 10px;font-weight: 600;font-size: 13px;
 }
-.main .main_in .leagues .fb h3 {
-    width: fit-content;font-size: 12px;font-weight: 600;font-family: "Poppins",sans-serif;
-    background-color: #ffffff;margin: 15px auto 8px auto;text-align: center;padding: 2px 4px;
-    border-radius: 4px;
-}
-.main .main_in .leagues ul li {
-    padding: 1px 8px;background-color: #e2d7d7;border-bottom: 1px solid #6d6b6bc5;
-    margin: 10px auto;position: relative;
-}
-.main .main_in .leagues ul li .leagued { 
-    position: absolute;left: 100%;background-color: #e2d7d7;width: 100%;border-top-right-radius: 4px;
-    border-bottom-right-radius: 4px;display: none;border: 1px solid #ffffff;z-index: 999;
-}
-.main .main_in .leagues ul li:hover >  .leagued{
-    display: block;
-}
-.main .main_in .leagues ul li .leagued:before {
-    position: absolute;content: "";border-left: 5px solid transparent;
-    border-right: 5px solid #ffffff;left: -10px;border-bottom: 5px solid transparent;
-    border-top: 7px solid transparent;z-index: 6;
-} 
-.main .main_in .leagues ul li .leagued .lde { 
-    display: flex !important;flex-direction: row;justify-content: space-between;padding: 3px 6px;
-    font-size: 13px;font-family: "PT Sans";cursor: pointer;
-}
-.main .main_in .leagues ul li .leagued .lde:hover {
-    background-color: #c0bebe;border: 1px solid #e2d7d7;
-}
-.main .main_in .leagues ul li .leagued .lde .ldef {
-    margin-left: 0;text-align: left;
-}
-.main .main_in .leagues ul li .leagued .lde .ldef .mchkbox {
-    visibility: hidden;position: absolute;
-}
-.main .main_in .leagues ul li .leagued .lde .ldef .chkbox {
-    border: 1px solid #c5c4c4c5;
-    border-radius: 4px;
-    top: 0;
-    left: 0;
-    height: 20px;
-    width: 20px;
-    background-color: #e6e5e5;
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 8px;
-}
-.main .main_in .leagues ul li .leagued .lde .ldef .mchkbox:checked + .chkbox {
-    background-color: #2196F3;
-}
-.main .main_in .leagues ul li .leagued .lde .ldef .chkbox:after {
-    content: "";
-    position: absolute;
-    display: none;
-}
-.main .main_in .leagues ul li .leagued .lde .ldef .mchkbox:checked + .chkbox:after {
-    display: block;
-} 
-.main .main_in .leagues ul li .leagued .lde .ldef .chkbox:after {
-    left: 7px;
-    top: 3px;
-    width: 5px;
-    height: 10px;
-    border: solid white;
-    border-width: 0 3px 3px 0;
-    transform: rotate(45deg);
-}
-.main .main_in .leagues ul li .leagued .lde .ldes {
-    margin-right: 0;text-align: right;
-}
-.main .main_in .leagues ul li .leagued .lde input {
-    width: 18px;border: 1px solid #ffffff;cursor: pointer;
-}
-.main .main_in .leagues ul li .lita {
-    display: flex;justify-content: space-between;cursor: pointer;font-family: "PT Sans";
-}
-.main .main_in .betmain {
-    width: 56%;
-}
-.main .betmain .betmain_top {
-    width: auto;color: #151414;margin: 0 auto 2rem auto;text-align: center;align-items: center;font-size: 14px;
-    position: relative;
-}
-.main .betmain .betmain_top .betmain_top_in {
-    display: flex;flex-direction: row;justify-content: space-around;width: auto;margin: 0 auto 0 auto;align-items: center;
-    background-color: #e2d7d7;text-align: center;padding: 5px 10px 5px 10px;
-}
-.main .betmain .betmain_top .betmain_top_in .live {
-    margin: 0 10px;
-}
-.main .betmain .betmain_top .betmain_top_in .live button {
-    background-color: #3aa33d;width: fit-content;padding: 2px 8px;border-radius: 4px;
-    color: #ffffff;
-}
-.main .betmain .betmain_top .betmain_top_in .dbdate {
-    margin-bottom: -5px;font-size: 13px;font-weight: 600;
-}
-.main .betmain .calndar {
-    position: absolute;background-color: red;width: 100%;right: 0;
-}
-.main .betwrap {
-    /* background-color: #e2d7d7; */
-    width: 100%;
-}
-.main .betwrap .betwrapin .league_wrap {
-    margin: 20px 0;
-}
-.main .betwrap .betwrapin .league_wrap .tgle {
-    background-color: #686867;width: 100%;position: relative;
-    border: none;cursor: pointer;width: 100%;padding: 1px;
-}
-.main .betwrap .betwrapin .league_wrap .tgle h3 {
-    color: #ffffff;
-}
-.main .betwrap .betwrapin .league_wrap .tgle .drpdwn {
-    position: absolute;top: 4px;right: 25px;cursor: pointer;
-}
-.main .betwrap .betwrapin .league_wrap .tgle .closeicon {
-    position: absolute;top: 4px;right: 5px;cursor: pointer;color: #ffffff;
-}
-.main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
-    display: block;cursor: pointer;
-}
-.main .betwrap .betwrapin .league_wrap h3 {
-    margin: 5px 0;font-size: 16px;font-weight: 800;
-}
-.main .betwrap .betwrapin .league_wrap .fixt {
-    border-bottom: 1px solid #ffffff;margin: 0 0 5px 0;border-radius: 4px;
-    background-color: #e2d7d7;cursor: pointer;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o {
-    display: flex;justify-content: space-between;padding: 3px;font-size: 15px;font-weight: 700;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o span {
-    font-size: 12px;margin: auto 5px;background-color: #4f4848bd;
-    padding: 1px 3px;border-radius: 2px;color: #e2d7d7;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o .fixt_o {
-    display: flex;justify-content: space-between;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o .dd {
-    display: flex;justify-content: space-between;font-family: "Poppins",sans-serif;font-size: 14px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o .dd .fid { 
-    font-size: 12px;margin: 2px auto auto 5px;color: #4f4848bd;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_tm {
-    margin: auto;background-color: #eceaeab1;padding: 2px 0;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams {
-    display: flex;justify-content: center;padding: 0 6px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams div {
-    margin: 0 20px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams div.vs {
-    font-size: 14px;font-weight: 900;background-color: #e2d7d7;border-radius: 8px;padding: 2px 8px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet {
-    margin: 6px auto;position: relative;text-align: center;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .opb_btns_div {
-    position: absolute;background-color: #000000ca;left: 50%;transform: translate(-50%,50%);
-    padding: 12px 12px 12px 12px;top: -105px;border-radius: 4px;display: none;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .opb_btns {
-    display: flex;flex-direction: row;margin: 8px auto 8px auto;text-align: center;
-    justify-content: space-around;
-    border-radius: 4px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .opb_btns_div .bt_close {
-    position: absolute;right: 4px;top: 0;color: #9b9a9a;cursor: pointer;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .opb_btns .opb_open button {
-    background-color: #3aa33d;width: fit-content;padding: 2px 4px;margin-right: 5px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .opb_btns .opb_hiw button {
-    background-color: #e28305;width: fit-content;padding: 2px 4px;margin-left: 5px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet {
-    position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
-    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: -300px;display: none;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet .pbet_x {
-    color: #ffffff;position: absolute;right: 8px;top: 4px;cursor: pointer;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form {
-    width: 100%;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form h3 {
-    color: #ffffff;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g {
-    margin: 15px 0;width: 100%;text-align: left;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li {
-    margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
-    font-family: "Montserrat";
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li div {
-    display: flex;flex-direction: row;justify-content: space-between;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li .fixid {
-    background-color: #e28305;color: #ffffff;border-radius: 4px;padding: 2px 4px;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g label {
-    width: 100%;font-size: 14px;color: #ffffff;font-family: "Montserrat",sans-serif;
-    text-align: left;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g input {
-    width: 100%;font-size: 14px;color: #212222;font-family: "Montserrat",sans-serif;height: 30px;
-    border-radius: 4px;padding-left: 4px;font-weight: 600;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g small {
-    color: red;font-size: 14px;font-family: "Montserrat";font-weight: 600;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g select {
-    width: 100%;font-size: 14px;color: #212222;font-family: "Montserrat",sans-serif;height: 30px;
-    border-radius: 4px;font-weight: 600;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g button {
-    background-color: #e28305;margin: 13px auto 3px auto;text-align: center;width: 100%;
-}
-.main .betwrap .betwrapin .league_wrap .fixt .openbet button {
-    background-color: #e28305;color: #ffffff;padding: 4px 48px 4px 48px;border-radius: 4px;border: none;
-    cursor: pointer;width: fit-content;
-}
-.main .main_in .openbets_list {
-    background-color: #e2d7d7;;width: 18%;margin: 0 2%;
-}
-.main .main_in .openbets_list .opb_h .opb_login h3 {
-    background-color: #929292;color: #151414;
-}
-.main .main_in .openbets_list .opb_h .opb_login .opblogin_btns {
+.main .main_in .opb_h .opb_login .opblogin_btns {
     display: flex;justify-content: space-between;flex-direction: row;padding: 4px 8px;
 }
-.main .main_in .openbets_list .opb_h .opb_login .opblogin_btns div {
+.main .main_in .opb_h .opb_login .opblogin_btns div {
     margin: 5px 0;
 }
-.main .main_in .openbets_list .opb_h .opb_login .opblogin_btns button {
+.main .main_in .opb_h .opb_login .opblogin_btns button {
     background-color: #ffffff;padding: 1px 8px;border-radius: 2px;font-weight: 600;
     color: #151414;font-family: "PT Sans";
 }
-.main .main_in .openbets_list .opb_h .opb_login .opblogin_btns a {
+.main .main_in .opb_h .opb_login .opblogin_btns a {
     background-color: transparent;padding: 4px 8px;border-radius: 2px;font-weight: 600;
     color: #151414;font-family: "PT Sans";border: 2px solid #ffffff;
 }
-.main .main_in .openbets_list .opb_h h3 {
-    font-family: "Poppins",sans-serif;font-size: 14px;font-weight: 800;background-color: #686867;color: #ffffff;
-    padding: 4px 0 4px 0;margin: 0 auto;
+.main .openbetmain {
+    background-color: #f1f1f1;width: 78%;height: fit-content;
 }
-.main .main_in .openbets_list .opb_h ul {
-    width: 96%;background-color: #eceaeab1;border-radius: 4px;margin: 4px;padding: 2px 2px 2px 2px;
+.main .openbetmain .table_c {
+    width: 100%;overflow-x: auto;
 }
-.main .main_in .openbets_list .opb_h ul li {
-    margin: 5px 5px 5px 5px;font-size: 12px;font-family: "PT Sans";
+.main .openbetmain table {
+    width: 100%;margin: 0 auto 10px auto;background-color: #ffffff;padding: 5px 5px 5px 5px;
 }
-.main .main_in .openbets_list .opb_h ul li div {
-    display: flex;flex-direction: row;justify-content: space-between;
+.main .openbetmain table tbody {
+    width: 100%;
 }
-.main .main_in .openbets_list .opb_h ul li div div span.stat {
-    background-color: #3aa33d;padding: 2px 8px 2px 8px;border-radius: 4px;color: #ffffff;
+.main .openbetmain table tbody tr {
+    width: 100%;
 }
-.main .main_in .openbets_list .opb_h ul li div div.tms {
-    display: flex;justify-content: space-between;
+.main .openbetmain table thead tr th {
+    margin: 15px auto 15px auto;background-color: #07060679;color: #151414;padding: 10px;
+    font-weight: 600;font-size: 13px;
 }
-.main .main_in .openbets_list .opb_h ul li div div.tms div {
-    margin-left: 5px;
+.main .openbetmain table tbody tr td .div {
+    margin-top: 2px;margin-bottom: 2px;padding: 3px;background-color: #f5f4f4;text-align: left;
 }
-.main .main_in .openbets_list .opb_h ul li div div.tms div span.tmsvs {
-    background-color: #e28305;padding: 1px 4px 1px 4px;border-radius: 4px;color: #ffffff;
+.main .openbetmain table tbody tr td div .amtunit {
+    font-size: 12px;margin-left: 10px;color: #000000b4;
 }
-.main .main_in .openbets_list .opb_h .opb_full_list {
-    margin: 10px 5px 10px 10px;text-align: left;width: 100%;
+.main .openbetmain table tbody tr td .betstatus {
+    background-color: #e28305;padding: 2px 6px;border-radius: 120px;color: #ffffff;text-align: center;
 }
-.main .main_in .openbets_list .opb_h .opb_full_list a {
-    font-size: 12px;font-family: "Montserrat",sans-serif;color: #ffffff;
-    background-color: #e28305;padding: 2px 6px 2px 6px;border-radius: 4px;
+.main .openbetmain .pbet {
+    position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
+    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 0;display: block;
+    left: 22%;transform: translate(-50%,50%);color: #ffffff;
 }
-.main .main_in .openbets_list .opb_h {
-    margin: 0 0 15px 0;
+.main .openbetmain .pbet .pbet_x {
+    color: #ffffff;position: absolute;right: 8px;top: 4px;cursor: pointer;
+}
+.main .openbetmain .pbet h3 {
+    color: #ffffff;margin: 15px 15px;
+} 
+.main .openbetmain .pbet p .obet {
+    color: #e28305;font-weight: 600;
+}
+.main .openbetmain .pbet .form_g ul li {
+    margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
+    font-family: "Montserrat";
+}
+.main .openbetmain .pbet .form_g ul li div {
+    display: flex;flex-direction: row;justify-content: space-between;margin: 5px 20px;
+}
+.main .openbetmain .pbet .form_g ul li div .betdet {
+    text-transform: capitalize;color: #e28305;font-weight: 600;
+}
+.main .openbetmain .pbet .form_btn {
+    display: flex;flex-direction: row;margin: 15px auto;justify-content: space-evenly;
+}
+.main .openbetmain .pbet .form_btn .sub_btn {
+    background-color: #e28305;border-radius: 60px;color: #151414;padding: 2px 26px;font-weight: 900;
+}
+.main .openbetmain .pbet .form_btn .cancel_btn {
+    background-color: #e20505;border-radius: 60px;color: #ffffff;padding: 2px 26px;font-weight: 900;
+}
+.main .openbetmain table .jb button {
+    background-color: #3aa33d;padding: 3px 8px;border-radius: 4px;color: #ffffff;border-radius: 60px;
+    outline: none;width: max-content;
+}
+.main .openbetmain table .jb .open {
+    background-color: #3aa33d;
+}
+.main .openbetmain table .jb .closed {
+    background-color: #07060679;
+}
+
+.main .openbetmain .paginate_btns {
+    margin: 15px 0;padding: 15px 15px 15px 15px;width: 100%;
+}
+.main .openbetmain .paginate_btns button {
+    margin: 4px 8px 4px 8px;background-color: none;padding: 2px 8px 2px 8px;border-radius: 4px;
+    border: 1px solid #929292;font-size: 14px;
+    font-weight: 600;
+}
+.main .openbetmain .paginate_btns button.number {
+    margin: 4px 2px 4px 2px;border-radius: 50%;font-weight: 500;font-size: 13px;padding: 2px 8px;
+}
+.main .openbetmain button:focus,.main .openbetmain button:active {
+    outline: none;
 }
 .main::-webkit-scrollbar {
 	-webkit-appearance: none;

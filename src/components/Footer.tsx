@@ -84,7 +84,7 @@ const handleCopyClick = () => {
                <h3>TAFXTRA Contract</h3>
                <div className={footerstyles.f_c}>
                   <div><span>Contract Address:</span></div>
-                  <div><input type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
+                  <div><input title='input' type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
                   <div className={footerstyles.buylinkp}><a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' className={footerstyles.buylink} rel='noopener noreferrer'>BUY FRD</a></div>
                </div>
             </div>
