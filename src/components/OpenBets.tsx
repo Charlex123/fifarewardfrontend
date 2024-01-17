@@ -34,6 +34,10 @@ interface Bets {
   matchid: number,
   userId: number,
   openedby: string,
+  betcondition: {
+    bettingteam: string,
+    prediction: string,
+  }
   totalparticipantscount: number,
   participantscount: number,
   participants: string,
@@ -51,7 +55,10 @@ const [limit] = useState<number>(10)
 const [totalPages, setTotalPages] = useState(0);
 const [errorMessage, seterrorMessage] = useState("");
 const [error, setError] = useState<boolean>(false);
-const [isBetDataLoaded, setIsBetDataLoaded] = useState<boolean>(false)
+const[bettingteam,setBettingTeam] = useState<string>('');
+const[betprediction,setBetPrediction] = useState<string>('');
+const [isBetDataLoaded, setIsBetDataLoaded] = useState<boolean>(false);
+const [partpantsArray] = useState<[]>([]);
 
 useEffect(() => {
 
@@ -144,6 +151,14 @@ const closeActionModalComp = () => {
     setBetOpenSuccess(false);
     router.push('openbets');
 }
+
+const setBetPredictn = (prediction:any) => {
+  setBetPrediction(prediction);
+} 
+
+const setBetteam = (team:any) => {
+  setBettingTeam(team)
+} 
 
 const closePBET = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
@@ -315,12 +330,12 @@ const closeAlertModal = () => {
                     <tr key={index}>
                       <td><div className={openbetsstyle.div}>{index+1}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.betid}</div></td>
-                      <td><div className={openbetsstyle.div}>${openbet.betamount}{<span className={openbetsstyle.amtunit}>(10000FRD)</span>}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.betamount}{<span className={openbetsstyle.amtunit}>FRD</span>}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.matchid}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.openedby}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.totalparticipantscount}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.participantscount}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.participants}</div></td>
+                      <td><div className={openbetsstyle.div}>({openbet.participants}) <div className={openbetsstyle.bdet}><button type='button' title='button'> bet details </button></div></div></td>
                       <td><div className={openbetsstyle.div}>{openbet.remainingparticipantscount}</div></td>
                       <td className={openbetsstyle.stat}><div className={openbetsstyle.div}><span className={openbetsstyle.betstatus}>{openbet.betstatus}</span></div></td>
                       {openbet.betstatus === 'open' 
@@ -378,7 +393,7 @@ const closeAlertModal = () => {
                                   <li>
                                     <div>
                                         <div>
-                                            Participant joined
+                                            Participants joined
                                         </div>
                                         <div className={openbetsstyle.betdet}>
                                           {openbet.participants}
@@ -388,7 +403,7 @@ const closeAlertModal = () => {
                                   <li>
                                     <div>
                                         <div>
-                                            Remainin Participants
+                                            Remaining Participants
                                         </div>
                                         <div className={openbetsstyle.betdet}>
                                           {openbet.remainingparticipantscount}
@@ -396,6 +411,31 @@ const closeAlertModal = () => {
                                     </div>
                                   </li>
                               </ul>
+                              </div>
+                              <div className={openbetsstyle.form_g}>
+                                  <label>Which team are you betting on?</label>
+                                  <div>
+                                      <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
+                                          <option value={openbet.match.split('vs')[0]}>{openbet.match.split('vs')[0]}</option>
+                                          <option value={openbet.match.split('vs')[1]}>{openbet.match.split('vs')[1]}</option>
+                                      </select>
+                                  </div>
+                                  <small id='teamalert'></small>
+                              </div>
+                              <div className={openbetsstyle.form_g}>
+                                  <label>Select Prediction</label>
+                                  <div>
+                                      <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
+                                          <option value='Win'>Win</option>
+                                          <option value='Draw'>Draw</option>
+                                      </select>
+                                  </div>
+                                  <small id='predictionalert'></small>
+                              </div>
+                              <div className={openbetsstyle.form_g}>
+                                  <label>Enter amount (10000FRD)</label>
+                                  <input type='number' title='input' required onChange={(e) => (e.target.value)} min={5} placeholder={'50000 FRD'} />
+                                  <small id='minamuntalert'></small>
                               </div>
                               <div className={openbetsstyle.form_btn}>
                                   <div>

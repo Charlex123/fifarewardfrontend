@@ -142,7 +142,7 @@ const[matchidparam,setMatchIdParam] = useState<string>('');
 const[matchData,setMatchData] = useState<Fixture>();
 const[bettingteam,setBettingTeam] = useState<string>('');
 const[betprediction,setBetPrediction] = useState<string>('');
-const[betAmount,setBetAmount] = useState<string>('5');
+const[betAmount,setBetAmount] = useState<string>('50000');
 const[betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
 
 const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
@@ -233,18 +233,22 @@ const handleFormSubmit = async (e:any) => {
         if(username && username !== null && username !== undefined && username !== '') {
             let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
             let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
-            if(betAmount && (parseInt(betAmount) < 5)) {
-                inputAlertDiv.innerHTML = "You can't bet below $5";
+            if(betAmount && (parseInt(betAmount) < 50000)) {
+                inputAlertDiv.innerHTML = "You can't bet below 50,000FRD";
                 return;
             }
             if(betprediction && betprediction !== '' && betprediction !== null && betprediction !== undefined) {
-                selectAlertDiv.innerHTML = "You must select number of bet participants";
+              selectAlertDiv.innerHTML = "";    
+            }else {
+                selectAlertDiv.innerHTML = "Select prediction first";
                 return;
             }
 
             if(bettingteam && bettingteam !== '' && bettingteam !== null && bettingteam !== undefined) {
-              selectAlertDiv.innerHTML = "You must select number of bet participants";
-              return;
+              selectAlertDiv.innerHTML = "";
+            }else {
+              selectAlertDiv.innerHTML = "Select team first";
+                return;
             }
             
             const config = {
@@ -682,7 +686,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                             <label>Which team are you betting on?</label>
                                             <div>
                                                 <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
-                                                    <option value={matchData?.teams.away.name}>{matchData?.teams.home.name}</option>
+                                                    <option value={matchData?.teams.home.name}>{matchData?.teams.home.name}</option>
                                                     <option value={matchData?.teams.away.name}>{matchData?.teams.away.name}</option>
                                                 </select>
                                             </div>
@@ -699,8 +703,8 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                             <small id='predictionalert'></small>
                                         </div>
                                         <div className={matchstyle.form_g}>
-                                            <label>Enter amount ($/10000FRD)</label>
-                                            <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={'5'} />
+                                            <label>Enter amount (10000FRD)</label>
+                                            <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={'50000 FRD'} />
                                             <small id='minamuntalert'></small>
                                         </div>
                                         <div className={matchstyle.form_g}>

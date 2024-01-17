@@ -92,6 +92,11 @@
 }
 .main .openbetmain table tbody tr td .div {
     margin-top: 2px;margin-bottom: 2px;padding: 3px;background-color: #f5f4f4;text-align: left;
+    text-transform: capitalize;
+}
+.main .openbetmain table tbody tr td .bdet button {
+    margin-top: 2px;margin-bottom: 2px;padding: 2px 6px 2px 6px;background-color: #ffffff;text-align: center;
+    margin: auto;border-radius: 20px;border: 2px solid #c5bdbd;color: #151515;font-size: 12px;
 }
 .main .openbetmain table tbody tr td div .amtunit {
     font-size: 12px;margin-left: 10px;color: #000000b4;
@@ -101,8 +106,8 @@
 }
 .main .openbetmain .pbet {
     position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
-    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 0;display: none;
-    left: 22%;transform: translate(-50%,50%);color: #ffffff;
+    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 10px;display: none;
+    left: 0;right: 0;color: #ffffff;margin: auto;
 }
 .main .openbetmain .pbet .pbet_x {
     color: #ffffff;position: absolute;right: 8px;top: 4px;cursor: pointer;
@@ -113,12 +118,29 @@
 .main .openbetmain .pbet p .obet {
     color: #e28305;font-weight: 600;
 }
+.main .openbetmain .pbet .form_g {
+    text-align: left;margin: 10px 0 15px 0;
+}
 .main .openbetmain .pbet .form_g ul li {
     margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
     font-family: "Montserrat";
 }
 .main .openbetmain .pbet .form_g ul li div {
-    display: flex;flex-direction: row;justify-content: space-between;margin: 5px 20px;
+    display: flex;flex-direction: row;justify-content: space-between;margin: 5px 0;
+}
+.main .openbetmain .pbet .form_g input {
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
+    border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;
+}
+.main .openbetmain .pbet .form_g label {
+    font-size: 13px;margin-bottom: 5px;
+}
+.main .openbetmain .pbet .form_g small {
+    color: rgb(250, 68, 68);font-size: 12px;font-family: "Montserrat";font-weight: 600;margin-top: 5px;
+}
+.main .openbetmain .pbet .form_g select {
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
+    border-radius: 4px;font-weight: 500;background-color: #3332328c;
 }
 .main .openbetmain .pbet .form_g ul li div .betdet {
     text-transform: capitalize;color: #e28305;font-weight: 600;
