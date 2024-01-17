@@ -256,7 +256,7 @@
     color: #ffffff;margin: 15px auto 15px auto;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g {
-    margin: 15px 0;width: 100%;text-align: left;
+    margin: 25px 0 25px 0;width: 100%;text-align: left;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li {
     margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
@@ -269,26 +269,30 @@
     background-color: #e28305;color: #ffffff;border-radius: 4px;padding: 2px 4px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li .matchd {
-    background-color: #f1f1f1;color: #151414;border-radius: 4px;padding: 2px 4px;font-weight: 600;
+    background-color: none;color: #e2d7d7;border-radius: 4px;padding: 2px 4px;font-weight: 600;
     display: flex;flex-direction: row;justify-content: space-between;margin-left: 20px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li .matchd div {
-    margin: 0 5px;
+    margin: 0 5px;color: #e28305;
+}
+.main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li .matchd .vs {
+    margin: 0 5px;background-color: #e28305;border-radius: 50%;padding: 2px 4px;font-size: 12px;
+    color: #e2d7d7;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g label {
-    width: 100%;font-size: 14px;color: #ffffff;font-family: "Montserrat",sans-serif;
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;
     text-align: left;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g input {
-    width: 100%;font-size: 14px;color: #212222;font-family: "Montserrat",sans-serif;height: 30px;
-    border-radius: 4px;padding-left: 4px;font-weight: 600;
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
+    border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g small {
-    color: red;font-size: 14px;font-family: "Montserrat";font-weight: 600;
+    color: rgb(250, 68, 68);font-size: 12px;font-family: "Montserrat";font-weight: 600;margin-top: 5px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g select {
-    width: 100%;font-size: 14px;color: #212222;font-family: "Montserrat",sans-serif;height: 30px;
-    border-radius: 4px;font-weight: 600;
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
+    border-radius: 4px;font-weight: 500;background-color: #3332328c;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g button {
     background-color: #e28305;margin: 13px auto 3px auto;text-align: center;width: 100%;

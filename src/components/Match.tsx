@@ -140,6 +140,8 @@ const[leagueparam,setLeagueParam] = useState<string>('');
 const[matchparam,setMatchParam] = useState<string>('');
 const[matchidparam,setMatchIdParam] = useState<string>('');
 const[matchData,setMatchData] = useState<Fixture>();
+const[bettingteam,setBettingTeam] = useState<string>('');
+const[betprediction,setBetPrediction] = useState<string>('');
 const[betAmount,setBetAmount] = useState<string>('5');
 const[betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
 
@@ -235,11 +237,16 @@ const handleFormSubmit = async (e:any) => {
                 inputAlertDiv.innerHTML = "You can't bet below $5";
                 return;
             }
-            if(!betParticipantsCount) {
+            if(betprediction && betprediction !== '' && betprediction !== null && betprediction !== undefined) {
                 selectAlertDiv.innerHTML = "You must select number of bet participants";
                 return;
             }
 
+            if(bettingteam && bettingteam !== '' && bettingteam !== null && bettingteam !== undefined) {
+              selectAlertDiv.innerHTML = "You must select number of bet participants";
+              return;
+            }
+            
             const config = {
                 headers: {
                     "Content-type": "application/json"
@@ -250,6 +257,8 @@ const handleFormSubmit = async (e:any) => {
                 betParticipantsCount,
                 matchidparam,
                 matchparam,
+                bettingteam,
+                betprediction,
                 username,
                 userId
             }, config);
@@ -461,6 +470,14 @@ const closePBET = (divId:any) => {
   }
 }
 
+const setBetPredictn = (prediction:any) => {
+  setBetPrediction(prediction);
+} 
+
+const setBetteam = (team:any) => {
+  setBettingTeam(team)
+} 
+
 const setLoadOpenBetsDataStatus = () => {
   setIsBetDataLoaded(true)
 }
@@ -636,7 +653,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                             <li>
                                             <div>
                                                 <div>
-                                                    Match Id
+                                                    Match Id :
                                                 </div>
                                                 <div className={matchstyle.fixid}>
                                                     {matchData?.fixture.id}
@@ -650,11 +667,11 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                             <li>
                                             <div>
                                                 <div>
-                                                    Match
+                                                    Match :
                                                 </div>
                                                 <div className={matchstyle.matchd}>
                                                     <div>{matchData?.teams.home.name}</div>
-                                                    <div>Vs</div>
+                                                    <div className={matchstyle.vs}>Vs</div>
                                                     <div>{matchData?.teams.away.name}</div>
                                                 </div>
                                             </div>
@@ -664,9 +681,9 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                         <div className={matchstyle.form_g}>
                                             <label>Which team are you betting on?</label>
                                             <div>
-                                                <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
-                                                    <option value='2'>West Torrens Birkalla</option>
-                                                    <option value='4'>Adelaide Victory</option>
+                                                <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
+                                                    <option value={matchData?.teams.away.name}>{matchData?.teams.home.name}</option>
+                                                    <option value={matchData?.teams.away.name}>{matchData?.teams.away.name}</option>
                                                 </select>
                                             </div>
                                             <small id='teamalert'></small>
@@ -674,7 +691,7 @@ const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
                                         <div className={matchstyle.form_g}>
                                             <label>Select Prediction</label>
                                             <div>
-                                                <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
+                                                <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
                                                     <option value='Win'>Win</option>
                                                     <option value='Draw'>Draw</option>
                                                 </select>
