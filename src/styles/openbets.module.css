@@ -11,6 +11,45 @@
 .hiw_overlay {
     position: fixed;background-color: #00000087;z-index: 9;top: 0;left: 0;right: 0;bottom: 0;display: none;
 }   
+.main .search {
+    width: 100%;margin: 10px auto 25px auto;position: relative;
+}
+.main .search form {
+    position: relative;width: 100%;
+}
+.main .search form input {
+    width: 100%;border: 1px solid #e2d7d7;border-radius: 4px;height: 32px;position: relative;padding-left: 4px;
+    font-family: "Montserrat";font-size: 14px;
+}
+.main .search form .searchicon {
+    position: absolute;right: 4px;top: 6px;cursor: pointer;color: #0000005d;
+}
+.main .search form .searchop {
+    width: 100%;text-align: left;color: #565454;border-radius: 1px solid #7d7a7a;
+    margin: 2px 0;font-size: 13px;padding: 2px 2px 2px 2px;border-radius: 4px;position: absolute;
+    background-color: #ffffff;
+}
+.main .search form .searchop div {
+    border: 1px solid #e2d7d7;margin: 4px 0 2px 0;border-radius: 4px;margin: 5px 0;
+}
+.main .search form .searchop div .ft1 {
+    border-radius: 4px solid #ffffff;border: 1px solid #e2d7d7;padding: 0 2px 0 2px;background-color: #ffffff;
+}
+.main .search form .searchop div .ft2 {
+    background-color: #a19d9d87;margin-right: 5px;padding: 0 2px 0 2px;
+}
+.main .search form .searchop div .sc1 {
+    border-radius: 4px solid #ffffff;border: 1px solid #e2d7d7;padding: 0 2px 0 2px;background-color: #ffffff;
+}
+.main .search form .searchop div .sc2 {
+    background-color: #a19d9d87;margin-right: 5px;padding: 0 2px 0 2px;
+}
+.main .search form .searchop div .th1 {
+    border-radius: 4px solid #ffffff;border: 1px solid #e2d7d7;padding: 0 2px 0 2px;background-color: #ffffff;
+}
+.main .search form .searchop div .th2 {
+    background-color: #a19d9d87;margin-right: 5px;padding: 0 2px 0 2px;
+}
 .main .showlogincomp {
     margin: 6px auto;position: relative;text-align: center;
 }
@@ -27,6 +66,28 @@
 .main .showlogincomp .showlogincompin .logbtn button {
     background-color: #e28305;width: fit-content;padding: 4px 24px;margin-right: 5px;
     border-radius: 4px;color: #fffcfc;
+}
+.main .betcondtns {
+    position: relative;
+}
+.main .betcondtns .betcondtns_m {
+    position: absolute;background-color: #000000ea;left: 0;right: 0;top: -150px;margin: auto;width: fit-content;
+    padding: 20px 20px 20px 20px;top: 0;border-radius: 4px;z-index: 9999;color: #f1f1f1;text-align: left;
+}
+.main .betcondtns .betcondtns_x {
+    position: absolute;right: 4px;top: 4px;color: #fffcfc;cursor: pointer;background-color: none;
+}
+.main .betcondtns .betcondtns_m h3 {
+    margin: 15px auto;font-weight: 600;font-family: "Poppins";color: #e28305;font-size: 14px;
+}
+.main .betcondtns .betcondtns_m .betprd {
+    display: flex;flex-direction: row;text-align: left;
+}
+.main .betcondtns .betcondtns_m .betprd div {
+    margin: 4px 15px 4px 0;
+}
+.main .betcondtns .betcondtns_m .betprd div h3 {
+    margin: 0 auto;font-weight: 500;
 }
 .main .hiwmain {
     position: absolute;margin: 5rem auto;text-align: center;z-index: 10;left: 0;right: 0;
@@ -71,6 +132,35 @@
     background-color: transparent;padding: 4px 8px;border-radius: 2px;font-weight: 600;
     color: #151414;font-family: "PT Sans";border: 2px solid #ffffff;
 }
+.main .main_in .opb_h .filter {
+    width: 100%;text-align: left;
+}
+.main .main_in .opb_h .filter h3 {
+    margin: 5px auto 10px auto;background-color: #a19d9d87;text-align: center;
+}
+.main .main_in .opb_h .filter div{
+    font-size: 14px;margin: 4px 2px;
+}
+.main .main_in .opb_h .filter > div > div {
+    font-size: 14px;margin: 4px 2px;border-bottom: 2px solid #a19d9d87;
+}
+.main .main_in .opb_h .filter > div > div button {
+    font-size: 13px;border: 1px solid #a19d9d87;border-radius: 8px;padding: 0 4px 0 4px;
+    background-color: #ffffff;margin-bottom: 2px;
+}
+.main .main_in .opb_h .filter > div > div.amountprog > div {
+    font-size: 13px;
+}
+.main .main_in .opb_h .filter > div > div.amountprog .fba {
+    font-size: 12px;background-color: #ffffff;width: fit-content;padding: 2px 4px;
+    border: 1px solid #a19d9d87;border-radius: 4px;
+}
+.main .main_in .opb_h .filter > div > div.amountprog .fba span {
+    font-size: 11px;color: #e28305;
+}
+.main .main_in .opb_h .filter > div > div.amountprog input {
+    color: #000000ea;background-color: #0000005d;
+}
 .main .openbetmain {
     background-color: #f1f1f1;width: 78%;height: fit-content;
 }
@@ -87,7 +177,7 @@
     width: 100%;
 }
 .main .openbetmain table thead tr th {
-    margin: 15px auto 15px auto;background-color: #07060679;color: #151414;padding: 10px;
+    margin: 15px auto 15px auto;background-color: #a19d9d87;color: #151414;padding: 10px;
     font-weight: 600;font-size: 13px;
 }
 .main .openbetmain table tbody tr td .div {
@@ -96,13 +186,16 @@
 }
 .main .openbetmain table tbody tr td .bdet button {
     margin-top: 2px;margin-bottom: 2px;padding: 2px 6px 2px 6px;background-color: #ffffff;text-align: center;
-    margin: auto;border-radius: 20px;border: 2px solid #c5bdbd;color: #151515;font-size: 12px;
+    margin: auto;border-radius: 20px;border: 2px solid #c5bdbd;color: #151515;font-size: 12px;width: fit-content;
 }
 .main .openbetmain table tbody tr td div .amtunit {
-    font-size: 12px;margin-left: 10px;color: #000000b4;
+    font-size: 12px;margin-left: 0;color: #000000b4;
 }
-.main .openbetmain table tbody tr td .betstatus {
+.main .openbetmain table tbody tr td .betstatusopened {
     background-color: #e28305;padding: 2px 6px;border-radius: 120px;color: #ffffff;text-align: center;
+}
+.main .openbetmain table tbody tr td .betstatusclosed {
+    background-color: #f64141;padding: 2px 6px;border-radius: 120px;color: #ffffff;text-align: center;
 }
 .main .openbetmain .pbet {
     position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
@@ -132,6 +225,9 @@
     width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
     border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;
 }
+.main .openbetmain .pbet .form_g p {
+    color: #f1f1f1;font-size: 14px;
+}
 .main .openbetmain .pbet .form_g label {
     font-size: 13px;margin-bottom: 5px;
 }
@@ -143,7 +239,16 @@
     border-radius: 4px;font-weight: 500;background-color: #3332328c;
 }
 .main .openbetmain .pbet .form_g ul li div .betdet {
-    text-transform: capitalize;color: #e28305;font-weight: 600;
+    text-transform: capitalize;color: #e28305;font-weight: 600;margin-top: 20px;
+}
+.main .openbetmain .pbet .form_g .betp {
+    text-align: left;font-size: 14px;color: #f1f1f1;
+}
+.main .openbetmain .pbet .form_g .betpp {
+    text-align: left;font-size: 14px;margin-top: 5px;color: #e28305;
+}
+.main .openbetmain .pbet .error_alert {
+    color: #f51919;font-size: 12px;font-weight: 600;margin: 5px 0 5px 0;
 }
 .main .openbetmain .pbet .form_btn {
     display: flex;flex-direction: row;margin: 15px auto;justify-content: space-evenly;

@@ -4,8 +4,11 @@
 .main ul li div {
     display: flex;flex-direction: row;justify-content: space-between;
 }
-.main ul li div div span.stat {
+.main ul li div div span.statopen {
     background-color: #3aa33d;padding: 2px 8px 2px 8px;border-radius: 4px;color: #ffffff;
+}
+.main ul li div div span.statclosed {
+    background-color: #74747485;padding: 2px 8px 2px 8px;border-radius: 4px;color: #ffffff;
 }
 .main ul li div div.tms {
     display: flex;justify-content: space-between;

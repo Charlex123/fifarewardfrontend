@@ -13,7 +13,7 @@ import ActionSuccessModal from './ActionSuccess';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
 import FixtureByDate from './FixtureByDate'
-import {  faCaretDown, faCircle,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
@@ -30,8 +30,6 @@ const MatchData:React.FC<{}> = () => {
 
 
 interface Fixture {
-  _id: string;
-  fid: number;
   fixture: {
       id: number;
       referee: string | null;
@@ -110,6 +108,7 @@ interface Countries {
   totalFixturesInCountry: number
 } 
 
+const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
 const [calendarIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCalendarAlt}/>);
 const [drpdwnIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCaretDown}/>);
 const [today_d,setToday_d] = useState<any>();
@@ -144,6 +143,11 @@ const[bettingteam,setBettingTeam] = useState<string>('');
 const[betprediction,setBetPrediction] = useState<string>('');
 const[betAmount,setBetAmount] = useState<string>('50000');
 const[betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
+const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
+const [currentPage, setCurrentPage] = useState<number>(1);
+const [limit] = useState<number>(10);
+const [showloading, setShowLoading] = useState<boolean>(false);
+const [totalPages, setTotalPages] = useState(0);
 
 const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
 const router = useRouter();
@@ -186,14 +190,27 @@ const router = useRouter();
         }
         getDates()
 
-        window.onload = async function() {
-            const config = {
+        if(windowloadgetbetruntimes == 0) {
+          const fetchData = async () => {
+            try {
+              setShowLoading(true);
+              const config = {
                 headers: {
                     "Content-type": "application/json"
                 }
-            }  
-            const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
-            setCountryFixturesdata(data);
+              }  
+              const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
+              setCountryFixturesdata(data);
+              setwindowloadgetbetruntimes(1);
+              console.log('log ',data)
+            } catch (error) {
+              console.error('Error fetching data:', error);
+            }
+          };
+      
+          fetchData();
+        }else {
+      
         }
 
         async function loadMatchData() {
@@ -492,15 +509,54 @@ const goBack = () => {
 // Import your JSON data here
 const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
+let searchOptions = ["Match Id","Match"];
+let currentSearchOptionIndex = 0;
+
+function rotateSearchOption() {
+  let searchinput = document.getElementById("search-input") as HTMLElement;
+  searchinput.setAttribute('placeholder','Search by '+searchOptions[currentSearchOptionIndex]);
+
+  currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
+}
+
+setInterval(rotateSearchOption,5000);
+
+const getKeyWordSearch = () => {
+  setShowSearchOptions(true)
+}
+
   return (
     <>
     <div className={matchstyle.hiw_overlay} id="hiw_overlay"></div>
       <div className={matchstyle.main}>
+        <div className={matchstyle.search}>
+            <div>
+              <form>
+                  <input type='input' title='input' id="search-input" onKeyUp={getKeyWordSearch} placeholder='Search by'/><div className={matchstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass}/></div>
+                  {showsearchoptions && 
+                  <div className={matchstyle.searchop}>
+                    <div>
+                      <button type='button' title='button'>Search By Bet Id</button>
+                    </div>
+                    <div>
+                      <button type='button' title='button'>Search By Match Id</button>
+                    </div>
+                    <div>
+                      <button type='button' title='button'>Search By Match</button>
+                    </div>
+                    <div>
+                      <button type='button' title='button'>Search By Username</button>
+                    </div>
+                  </div>
+                  }
+              </form>
+            </div>
+          </div>
         <div className={matchstyle.headbg}>
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         {isparamsLoaded && <div className={matchstyle.breadcrum}>
-          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`/${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam.replace(/-/g, ' ')} {'>'} {leagueparam.replace(/-/g, ' ')} {'>'} {matchparam.replace(/-/g, ' ')}</a>
+          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam.replace(/-/g, ' ')} {'>'} {leagueparam.replace(/-/g, ' ')} {'>'} {matchparam.replace(/-/g, ' ')}</a>
         </div> }
 
         {showloginComp && 

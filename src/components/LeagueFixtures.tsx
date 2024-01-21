@@ -16,26 +16,24 @@ type Props = {
   leagueid: number;
 };
 interface Fixture {
-    fixture: {
-        id: number;
-        referee: string | null;
-        timezone: string;
-        date: string;
-        timestamp: number;
-        periods: {
-            first: number;
-            second: number;
-        };
-        venue: {
-            id: number | null;
-            name: string;
-            city: string;
-        };
-        status: {
-            long: string;
-            short: string;
-            elapsed: number;
-        };
+    id: number;
+    referee: string | null;
+    timezone: string;
+    date: string;
+    timestamp: number;
+    periods: {
+        first: number;
+        second: number;
+    };
+    venue: {
+        id: number | null;
+        name: string;
+        city: string;
+    };
+    status: {
+        long: string;
+        short: string;
+        elapsed: number;
     };
     teams: {
         home: {
@@ -67,32 +65,33 @@ interface Fixture {
 const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
   
   interface League {
-    leagueName: string;
     leagueId: number;
+    leagueName: string;
     country: string;
     fixtures: Fixture[];
   }
 
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
-  (async (leagueid) => {
-    try {
-      const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-      }  
-      const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures", {
-        leagueid
-      }, config);
-      setIsleagueLoaded(true)
-      setFixturesd(data.leaguefixtures);
-      // console.log('fix id ures',fixturesd)
-    } catch (error) {
-      console.log(error)
-    }
-  })(leagueid)
-
+  
+  useEffect(() => {
+    (async (leagueid) => {
+      try {
+        const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+        }  
+        const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures", {
+          leagueid
+        }, config);
+        setIsleagueLoaded(true)
+        setFixturesd(data.leaguefixtures);
+      } catch (error) {
+        console.log(error)
+      }
+    })(leagueid)
+  })
 
   const toggleFixtures = (divId:any) => {
   
@@ -207,23 +206,23 @@ return (
               {
                 isleagueloaded ? 
                 <div>
-                    {fixturesd?.map(league => (
-                      <div className={leaguefixturestyle.league_wrap} key={league.leagueId}>
+                    {fixturesd?.map((league,index) => (
+                      <div className={leaguefixturestyle.league_wrap} key={index}>
                         <div className={leaguefixturestyle.tgle} >
                           <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
                           <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
                           <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
                         </div>
                         <div className={leaguefixturestyle.league_wrap_in} >
-                          {league.fixtures.map(fixture => (
-                            <a href={`/betting/${league.country.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.id}`} key={fixture?.id}>
+                          {league.fixtures.map((fixture, index) => (
+                            <a href={`/betting/${league.country.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.id}`} key={index}>
                               <div className={leaguefixturestyle.fixt}>
                                 <div className={leaguefixturestyle.fixt_d_o}>
                                   <div className={leaguefixturestyle.fixt_d}>
-                                    <span>Date</span> {`${moment(fixture.fixture?.date).format('DD/MM ddd')}`}
+                                    <span>Date</span> {`${moment(fixture?.date).format('DD/MM ddd')}`}
                                   </div>
                                   <div className={leaguefixturestyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture.fixture?.timestamp).format('hh:mm a')}`}</div>
+                                      <div><span>Time</span>{`${moment(fixture?.timestamp).format('hh:mm a')}`}</div>
                                       <div className={leaguefixturestyle.fid}>ID: {fixture?.id}</div>
                                   </div>
                                 </div>

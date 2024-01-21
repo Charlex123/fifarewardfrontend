@@ -66,7 +66,7 @@ a {
   /* --primaryFont: 'Montserrat', sans-serif; */
   /* --primaryFont: 'Raleway', sans-serif; */
 }
-button:active,button:focus,select:active,select:focus {
+button:active,button:focus,select:active,select:focus,input:active,input:focus {
   outline: none;
 }
 .react-calendar {

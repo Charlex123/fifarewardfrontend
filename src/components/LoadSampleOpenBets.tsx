@@ -46,8 +46,8 @@ const LoadSampleOpenBetsData:React.FC<Props> = ({onMount}) => {
         <>
             <div className={betstyle.main}>
                 {
-                    betData.map(bet => (
-                        <ul>
+                    betData.map((bet,index) => (
+                        <ul key={index}>
                           <li>
                             <div>
                               <div><span>Opened By</span></div>
@@ -70,7 +70,7 @@ const LoadSampleOpenBetsData:React.FC<Props> = ({onMount}) => {
                               <span>Status</span>
                             </div>
                             <div>
-                              <span className={betstyle.stat}>{bet.betstatus}</span>
+                              {bet.betstatus == 'open' ? <span className={betstyle.statopen}>{bet.betstatus}</span> : <span className={betstyle.statclosed}>{bet.betstatus}</span>}
                             </div>
                           </div>
                         </li>

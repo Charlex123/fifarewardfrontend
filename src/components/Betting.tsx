@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import bettingstyle from '../styles/betting.module.css'
 import axios from 'axios';
@@ -14,7 +14,7 @@ import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import FixtureByDate from './FixtureByDate'
-import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faMagnifyingGlass, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Overlay } from 'react-bootstrap';
@@ -28,6 +28,7 @@ type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 
 const LoadBetData:React.FC<{}> = () => {
 
+  const inputRef = useRef<HTMLInputElement>(null);
   const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
   const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
   const [today_d,setToday_d] = useState<any>();
@@ -46,97 +47,109 @@ const LoadBetData:React.FC<{}> = () => {
   const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
   const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 
+  const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
   const [showloginComp,setShowLoginComp] = useState<boolean>(false);
   const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<string>("");  
   const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
+  const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [limit] = useState<number>(10)  
+  const[searchkeyword,setSearchKeyWord] = useState<string>('');
+  const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
+  const [showloading, setShowLoading] = useState<boolean>(false);
+  const [totalPages, setTotalPages] = useState(0);
 
   const router = useRouter();
+
+  interface KeyWordSearch {
+    match: string,
+    openedby: string,
+    betstatus: string
+  }
   // types.ts
-interface Fixture {
-  _id: string;
-  fid: number;
-  fixture: {
-      id: number;
-      referee: string | null;
-      timezone: string;
-      date: string;
-      timestamp: number;
-      periods: {
-          first: number;
-          second: number;
-      };
-      venue: {
-          id: number | null;
+  interface Fixture {
+    fixture: {
+        id: number;
+        referee: string | null;
+        timezone: string;
+        date: string;
+        timestamp: number;
+        periods: {
+            first: number;
+            second: number;
+        };
+        venue: {
+            id: number | null;
+            name: string;
+            city: string;
+        };
+        status: {
+            long: string;
+            short: string;
+            elapsed: number;
+        };
+    };
+    league: {
+        id: number;
+        name: string;
+        country: string;
+        logo: string;
+        flag: string;
+        season: number;
+        round: string;
+    };
+    teams: {
+        home: {
+          id: number;
           name: string;
-          city: string;
-      };
-      status: {
-          long: string;
-          short: string;
-          elapsed: number;
-      };
-  };
-  league: {
-      id: number;
-      name: string;
-      country: string;
-      logo: string;
-      flag: string;
-      season: number;
-      round: string;
-  };
-  teams: {
-      home: {
-        id: number;
-        name: string;
-        logo: string;
-        winner: boolean | null;
-      };
-      away: {
-        id: number;
-        name: string;
-        logo: string;
-        winner: boolean | null;
-      };
-  };
-  goals: {
-      home: number;
-      away: number;
-  };
-  score: {
-    halftime: { home: number; away: number };
-    fulltime: { home: number; away: number };
-    extratime: { home: number | null; away: number | null };
-    penalty: { home: number | null; away: number | null };
-  };
-  __v: number;
-}
+          logo: string;
+          winner: boolean | null;
+        };
+        away: {
+          id: number;
+          name: string;
+          logo: string;
+          winner: boolean | null;
+        };
+    };
+    goals: {
+        home: number;
+        away: number;
+    };
+    score: {
+      halftime: { home: number; away: number };
+      fulltime: { home: number; away: number };
+      extratime: { home: number | null; away: number | null };
+      penalty: { home: number | null; away: number | null };
+    };
+    __v: number;
+  }
 
-interface League {
-  leagueId: number;
-  leagueName: string;
-  fixtures: Fixture[];
-}
-interface Country {
-  _id: string;
-  leagues: League[];
-} 
+  interface League {
+    leagueId: number;
+    leagueName: string;
+    fixtures: Fixture[];
+  }
+  interface Country {
+    _id: string;
+    leagues: League[];
+  } 
 
-interface CountriesLeagues {
-  leagueId: number,
-  leagueName: string,
-  totalFixtures: number
-} 
+  interface CountriesLeagues {
+    leagueId: number,
+    leagueName: string,
+    totalFixtures: number
+  } 
 
-interface Countries {
-  _id: string,
-  leagues: CountriesLeagues[],
-  totalFixturesInCountry: number
-} 
-  
+  interface Countries {
+    _id: string,
+    leagues: CountriesLeagues[],
+    totalFixturesInCountry: number
+  } 
+    
 
   useEffect(() => {
     try {
@@ -179,21 +192,60 @@ interface Countries {
       }
       getDates()
 
-      window.onload = async function() {
-        const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-          }  
-          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures", config);
-          setCountryFixturesdata(data);
-        }
-
-        console.log('load bet sample data',isbetDataLoaded)
     }catch(error) 
     {
       console.log(error)
     }
+    if(windowloadgetbetruntimes == 0) {
+      const fetchData = async () => {
+        try {
+          setShowLoading(true);
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
+          setCountryFixturesdata(data);
+          setwindowloadgetbetruntimes(1);
+          console.log('log ',data)
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchData();
+    }else {
+  
+    }
+
+    // let searchOptions = ["Match Id","Match"];
+    // let currentSearchOptionIndex = 0;
+
+    // function rotateSearchOption() {
+    //   let searchinput = document.getElementById("search-input") as HTMLElement;
+    //   searchinput.setAttribute('placeholder','Search by '+searchOptions[currentSearchOptionIndex]);
+
+    //   currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
+    // }
+
+    // setInterval(rotateSearchOption,5000);
+    const handleClickOutside = (event: MouseEvent) => {
+      // Check if the clicked element is inside the input or not
+      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
+        // Handle closing the event associated with the input
+        setShowSearchOptions(false)
+      }
+    };
+  
+    // Add event listener to the body
+    document.body.addEventListener('click', handleClickOutside);
+  
+    return () => {
+      // Clean up the event listener when the component is unmounted
+      document.body.removeEventListener('click', handleClickOutside);
+      // clearInterval(intervalId);
+    };
 
   
 },[countryfixturesdata,isbetDataLoaded])
@@ -404,10 +456,85 @@ const goBack = () => {
 // Import your JSON data here
 const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
+const getKeyWordSearchN = async (keyword:any) => {
+  // search database and return documents with similar keywords
+  setSearchKeyWord(keyword)
+  const config = {
+      headers: {
+          "Content-type": "application/json"
+      }
+  }  
+  const {data} = await axios.post("http://localhost:9000/api/bets/searchbetkeywords", {
+      searchkeyword
+  }, config);
+  if(data) {
+    setShowSearchOptions(true);
+    setKeywordSearchResults(data.keywordResult);
+    console.log('keyword search results',data.keywordResult);
+  }
+  
+}
+
+const loadSearchResults = async () => {
+  // search database and return documents with similar keywords
+  setShowLoading(true);
+  console.log('search keyword',searchkeyword)
+  const config = {
+      headers: {
+          "Content-type": "application/json"
+      }
+  }  
+  const {data} = await axios.post("http://localhost:9000/api/bets/belistsearch", {
+      searchkeyword,
+      currentPage,
+      limit
+  }, config);
+  if(data) {
+    setShowLoading(false)
+    // setBetData(data.loadbets);
+    setTotalPages(data.totalPages);
+    setIsBetDataLoaded(true);
+  }
+  
+}
+
+const UpKeyWordSearch = (divId: any,match:string,openedby:string) => {
+  setSearchKeyWord(divId.innerHTML);
+  setShowSearchOptions(false)
+}
+
+const handleInputClick = () => {
+  // Handle the event when the input is clicked
+  setShowSearchOptions(true);
+  console.log('Input clicked. Do something!');
+};
+
   return (
     <>
+    {showloading && <Loading/>}
     <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div>
       <div className={bettingstyle.main}>
+        <div className={bettingstyle.search}>
+            <div>
+              <form>
+                  <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
+                  {showsearchoptions && keywordsearchresults?.map((result,index) => (
+                    <div className={bettingstyle.searchop} key={index}>
+                      <div className={bettingstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
+                        {result.match}
+                      </div>
+                      <div className={bettingstyle.sc2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
+                        {result.openedby}
+                      </div>
+                      <div className={bettingstyle.th2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
+                        {result.betstatus}
+                      </div>
+                    </div>
+                  ))}
+              </form>
+            </div>
+          </div>
+
         <div className={bettingstyle.headbg}>
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
