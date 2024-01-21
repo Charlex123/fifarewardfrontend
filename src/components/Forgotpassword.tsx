@@ -93,12 +93,16 @@ library.add(faEye, faEyeSlash);
     }
   }
 
+  const closeAlertModal = () => {
+    setError(false)
+  }
+  
   return (
     <>
         <div>
             <a href='/signin' rel='noopener noreferrer' className={loginstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back to login</a>
             <form className={loginstyles.formTag} onSubmit={submitHandler}>
-            {error && <AlertMessage variant="danger">{errorMessage}</AlertMessage>}
+            {error &&<AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
             {loading && <Loading />}
             <div className={loginstyles.fhead}>
                 <h3>Recover Password <FontAwesomeIcon icon={faLockOpen} /></h3>
