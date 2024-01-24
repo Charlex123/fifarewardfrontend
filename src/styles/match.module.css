@@ -16,13 +16,34 @@
     position: absolute;right: 4px;top: 6px;cursor: pointer;color: #0000005d;
 }
 .main .search form .searchop {
-    width: 100%;text-align: left;color: #565454;background-color: #ffffff;
+    width: 100%;text-align: left;color: #565454;border: 1px solid #a19d9d87;
+    margin: 2px 0;font-size: 13px;padding: 2px 2px 2px 2px;border-radius: 4px;position: absolute;
+    background-color: #ffffff;height: inherit;z-index: 999;
 }
 .main .search form .searchop div {
-    margin: 10px 5px 5px 5px;border-bottom: 1px solid #dad7d7;
+    border-bottom: 1px solid #e2d7d7;margin: 4px 0 2px 0;border-radius: 4px;margin: 5px 0;position: relative;
+    background-color: #ffffff;
 }
-.main .search form .searchop div button {
-    font-size: 14px;font-family: "Montserrat";padding: 2px 8px 2px 2px;background-color: #a19d9d87;
+.main .search form .searchop div .ft1 {
+    border-radius: 4px solid #ffffff;border: 1px solid #e2d7d7;padding: 0 2px 0 2px;background-color: #ffffff;
+    cursor: pointer;position: absolute;
+}
+.main .search form .searchop div .ft2 {
+    background-color: #a19d9d87;margin-right: 5px;padding: 0 2px 0 2px;cursor: pointer;
+}
+.main .search form .searchop div .sc1 {
+    border-radius: 4px solid #ffffff;border: 1px solid #e2d7d7;padding: 0 2px 0 2px;background-color: #ffffff;
+    cursor: pointer;
+}
+.main .search form .searchop div .sc2 {
+    background-color: #a19d9d87;margin-right: 5px;padding: 0 2px 0 2px;cursor: pointer;
+}
+.main .search form .searchop div .th1 {
+    border-radius: 4px solid #ffffff;border: 1px solid #e2d7d7;padding: 0 2px 0 2px;background-color: #ffffff;
+    cursor: pointer;
+}
+.main .search form .searchop div .th2 {
+    background-color: #a19d9d87;margin-right: 5px;padding: 0 2px 0 2px;cursor: pointer;
 }
 .main .breadcrum {
     width: 100%;margin: 15px 0;text-align: left;padding-left: 2rem;

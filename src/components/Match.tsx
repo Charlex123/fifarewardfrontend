@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import matchstyle from '../styles/match.module.css'
 import axios from 'axios';
@@ -27,7 +27,16 @@ type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 const MatchData:React.FC<{}> = () => {
   // types.ts
 
-
+  interface KeyWordSearch {
+    teams: {
+      home: {
+        name: string,
+      },
+      away: {
+        name: string,
+      }
+    }
+  }
 
 interface Fixture {
   fixture: {
@@ -108,6 +117,8 @@ interface Countries {
   totalFixturesInCountry: number
 } 
 
+const inputRef = useRef<HTMLInputElement>(null);
+const divRef = useRef<HTMLDivElement>(null);
 const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
 const [calendarIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCalendarAlt}/>);
 const [drpdwnIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCaretDown}/>);
@@ -150,6 +161,8 @@ const [showloading, setShowLoading] = useState<boolean>(false);
 const [totalPages, setTotalPages] = useState(0);
 
 const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
+const[searchkeyword,setSearchKeyWord] = useState<string>('');
+const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const router = useRouter();
 
   useEffect(() => {
@@ -202,7 +215,6 @@ const router = useRouter();
               const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
               setCountryFixturesdata(data);
               setwindowloadgetbetruntimes(1);
-              console.log('log ',data)
             } catch (error) {
               console.error('Error fetching data:', error);
             }
@@ -241,6 +253,44 @@ const router = useRouter();
       console.log(error)
     }
 
+    let searchOptions = ["Team","Match"];
+    let currentSearchOptionIndex = 0;
+
+    function rotateSearchOption() {
+      let searchinput = document.getElementById("search-input") as HTMLElement;
+      searchinput.setAttribute('placeholder','Search by '+searchOptions[currentSearchOptionIndex]);
+
+      currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
+    }
+
+    setInterval(rotateSearchOption,2000);
+
+// setInterval(rotateSearchOption,5000);
+  const handleClickOutside = (event: MouseEvent) => {
+    const inputElement = inputRef.current;
+    const divElement = divRef.current;
+    // Check if the clicked element is the input or inside the specific div
+    if (
+      inputElement &&
+      !inputElement.contains(event.target as Node) &&
+      divElement &&
+      !divElement.contains(event.target as Node)
+    ) {
+      // Close the event associated with the input
+      setShowSearchOptions(false)
+      console.log('Clicked outside the input and specific div. Close the event!');
+    }
+  };
+
+
+  // Add event listener to the body
+  document.body.addEventListener('click', handleClickOutside);
+
+  return () => {
+    // Clean up the event listener when the component is unmounted
+    document.body.removeEventListener('click', handleClickOutside);
+    // clearInterval(intervalId);
+  };
   
 },[countryfixturesdata,router.query.match,matchidparam,username])
 
@@ -337,7 +387,7 @@ const loadfixturesbyDate = async (date:string) => {
 }
 
 const toggleShowCalendar = () => {
-setShowCalendar(!showcalender)
+  setShowCalendar(!showcalender)
 }
 
 const toggleFixtures = (divId:any) => {
@@ -509,46 +559,83 @@ const goBack = () => {
 // Import your JSON data here
 const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
-let searchOptions = ["Match Id","Match"];
-let currentSearchOptionIndex = 0;
-
-function rotateSearchOption() {
-  let searchinput = document.getElementById("search-input") as HTMLElement;
-  searchinput.setAttribute('placeholder','Search by '+searchOptions[currentSearchOptionIndex]);
-
-  currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
-}
-
-setInterval(rotateSearchOption,5000);
-
 const getKeyWordSearch = () => {
   setShowSearchOptions(true)
+}
+
+const UpKeyWordSearch = (divId: any) => {
+  setSearchKeyWord(divId.innerHTML);
+  setShowSearchOptions(false)
+}
+
+const handleInputClick = () => {
+  // Handle the event when the input is clicked
+  setShowSearchOptions(true);
+  console.log('Input clicked. Do something!');
+};
+
+const getKeyWordSearchN = async (keyword:any) => {
+  // search database and return documents with similar keywords
+  setSearchKeyWord(keyword)
+  const config = {
+      headers: {
+          "Content-type": "application/json"
+      }
+  }  
+  const {data} = await axios.post("http://localhost:9000/api/fixtures/searchmatchbykeyword", {
+      searchkeyword
+  }, config);
+  if(data) {
+    setShowSearchOptions(true);
+    setKeywordSearchResults(data.keywordResult);
+    console.log('keyword search results',data.keywordResult);
+  }
+  
+}
+
+const loadSearchResults = async () => {
+  try {
+    
+    let teams = searchkeyword.split('vs');
+    const hometeam = teams[0].trimEnd();
+    const awayteam = teams[1].trimStart();
+    console.log('hometeam',hometeam,'vs','awayteam',awayteam)
+    const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+    }  
+    const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatchsearchresult", {
+        hometeam,
+        awayteam
+    }, config);
+    if(data.match !== null) {
+        setIsMatchDataLoaded(true);
+        setMatchData(data.match);
+    }
+    
+  } catch (error) {
+    console.log(error)
+  }
 }
 
   return (
     <>
     <div className={matchstyle.hiw_overlay} id="hiw_overlay"></div>
       <div className={matchstyle.main}>
-        <div className={matchstyle.search}>
+      <div className={matchstyle.search} >
             <div>
               <form>
-                  <input type='input' title='input' id="search-input" onKeyUp={getKeyWordSearch} placeholder='Search by'/><div className={matchstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass}/></div>
+                  <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={matchstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
                   {showsearchoptions && 
-                  <div className={matchstyle.searchop}>
-                    <div>
-                      <button type='button' title='button'>Search By Bet Id</button>
+                    <div className={matchstyle.searchop} ref={divRef} >
+                      {keywordsearchresults?.map((result,index) => (
+                      <div className={matchstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target)} key={index}>
+                        {result.teams.home.name + ' vs ' + result.teams.away.name}
+                      </div>
+                      ))}
                     </div>
-                    <div>
-                      <button type='button' title='button'>Search By Match Id</button>
-                    </div>
-                    <div>
-                      <button type='button' title='button'>Search By Match</button>
-                    </div>
-                    <div>
-                      <button type='button' title='button'>Search By Username</button>
-                    </div>
-                  </div>
-                  }
+                  } 
               </form>
             </div>
           </div>
@@ -556,7 +643,7 @@ const getKeyWordSearch = () => {
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         {isparamsLoaded && <div className={matchstyle.breadcrum}>
-          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam.replace(/-/g, ' ')} {'>'} {leagueparam.replace(/-/g, ' ')} {'>'} {matchparam.replace(/-/g, ' ')}</a>
+          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam.replace(/-/g, ' ')} {'>'} {leagueparam.replace(/-/g, ' ')} {'>'} {matchparam.replace(/-/g, ' ')}</a>
         </div> }
 
         {showloginComp && 

@@ -16,25 +16,27 @@ type Props = {
   leagueid: number;
 };
 interface Fixture {
-    id: number;
-    referee: string | null;
-    timezone: string;
-    date: string;
-    timestamp: number;
-    periods: {
-        first: number;
-        second: number;
-    };
-    venue: {
-        id: number | null;
-        name: string;
-        city: string;
-    };
-    status: {
-        long: string;
-        short: string;
-        elapsed: number;
-    };
+    fixture: {
+      id: number;
+      referee: string | null;
+      timezone: string;
+      date: string;
+      timestamp: number;
+      periods: {
+          first: number;
+          second: number;
+      };
+      venue: {
+          id: number | null;
+          name: string;
+          city: string;
+      };
+      status: {
+          long: string;
+          short: string;
+          elapsed: number;
+      }
+    }
     teams: {
         home: {
           id: number;
@@ -67,30 +69,40 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
   interface League {
     leagueId: number;
     leagueName: string;
-    country: string;
+    leagueCountry: string;
     fixtures: Fixture[];
   }
 
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
-  
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
+  const [limit] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState(0);
+
   useEffect(() => {
-    (async (leagueid) => {
-      try {
-        const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-        }  
-        const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures", {
-          leagueid
-        }, config);
-        setIsleagueLoaded(true)
-        setFixturesd(data.leaguefixtures);
-      } catch (error) {
-        console.log(error)
-      }
-    })(leagueid)
+    if(windowloadgetbetruntimes == 0) {
+      (async (leagueid) => {
+        try {
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures/", {
+            leagueid,
+            currentPage,
+            limit
+          }, config);
+          setIsleagueLoaded(true);
+          setTotalPages(data.totalPages);
+          setFixturesd(data.leaguefixtures);
+          setwindowloadgetbetruntimes(1)
+        } catch (error) {
+          console.log(error)
+        }
+      })(leagueid)
+    }
   })
 
   const toggleFixtures = (divId:any) => {
@@ -195,6 +207,23 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
       targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
     }
   }
+
+   // Function to render page numbers
+ const renderPageNumbers = () => {
+  let pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(
+      <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+        {i}
+      </button>
+    );
+  }
+  return pages;
+};
+
+  const gotoPage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
   
   
 return (
@@ -215,15 +244,15 @@ return (
                         </div>
                         <div className={leaguefixturestyle.league_wrap_in} >
                           {league.fixtures.map((fixture, index) => (
-                            <a href={`/betting/${league.country.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.id}`} key={index}>
-                              <div className={leaguefixturestyle.fixt}>
+                            <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={index}>
+                              <div className={leaguefixturestyle.fixt} key={index}>
                                 <div className={leaguefixturestyle.fixt_d_o}>
                                   <div className={leaguefixturestyle.fixt_d}>
-                                    <span>Date</span> {`${moment(fixture?.date).format('DD/MM ddd')}`}
+                                    <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
                                   </div>
                                   <div className={leaguefixturestyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture?.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.id}</div>
+                                      <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
                                   </div>
                                 </div>
 
@@ -242,6 +271,24 @@ return (
                             </div>
                             </a>
                           ))}
+
+                          {fixturesd.length > 0 && 
+                            <div className={leaguefixturestyle.paginate_btns}>
+                              <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                                {'<<'}
+                              </button>
+                              <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                                {'<'}
+                              </button>
+                              {renderPageNumbers()}
+                              <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                                {'>'}
+                              </button>
+                              <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                                {'>>'}
+                              </button>
+                            </div>
+                          }
                         </div>
                       </div>
                     ))}

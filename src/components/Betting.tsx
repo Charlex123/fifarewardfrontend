@@ -13,6 +13,7 @@ import ActionSuccessModal from './ActionSuccess';
 import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
+import LoadFixturesSearchResults from './LoadFixturesSearchResults';
 import FixtureByDate from './FixtureByDate'
 import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faMagnifyingGlass, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
@@ -29,6 +30,7 @@ type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 const LoadBetData:React.FC<{}> = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
+  const divRef = useRef<HTMLDivElement>(null);
   const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
   const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
   const [today_d,setToday_d] = useState<any>();
@@ -65,9 +67,10 @@ const LoadBetData:React.FC<{}> = () => {
   const router = useRouter();
 
   interface KeyWordSearch {
-    match: string,
-    openedby: string,
-    betstatus: string
+    league: {
+      name: string,
+      country: string
+    }
   }
   // types.ts
   interface Fixture {
@@ -209,7 +212,6 @@ const LoadBetData:React.FC<{}> = () => {
           setCountryFixturesdata(data);
           setwindowloadgetbetruntimes(1);
           setShowLoading(false)
-          console.log('log ',data)
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -232,12 +234,21 @@ const LoadBetData:React.FC<{}> = () => {
 
     // setInterval(rotateSearchOption,5000);
     const handleClickOutside = (event: MouseEvent) => {
-      // Check if the clicked element is inside the input or not
-      if (inputRef.current && !inputRef.current.contains(event.target as Node)) {
-        // Handle closing the event associated with the input
+      const inputElement = inputRef.current;
+      const divElement = divRef.current;
+      // Check if the clicked element is the input or inside the specific div
+      if (
+        inputElement &&
+        !inputElement.contains(event.target as Node) &&
+        divElement &&
+        !divElement.contains(event.target as Node)
+      ) {
+        // Close the event associated with the input
         setShowSearchOptions(false)
+        console.log('Clicked outside the input and specific div. Close the event!');
       }
     };
+
   
     // Add event listener to the body
     document.body.addEventListener('click', handleClickOutside);
@@ -465,7 +476,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/searchbetkeywords", {
+  const {data} = await axios.post("http://localhost:9000/api/fixtures/searchfixtbykeyword", {
       searchkeyword
   }, config);
   if(data) {
@@ -477,29 +488,16 @@ const getKeyWordSearchN = async (keyword:any) => {
 }
 
 const loadSearchResults = async () => {
-  // search database and return documents with similar keywords
-  setShowLoading(true);
-  console.log('search keyword',searchkeyword)
-  const config = {
-      headers: {
-          "Content-type": "application/json"
-      }
-  }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/belistsearch", {
-      searchkeyword,
-      currentPage,
-      limit
-  }, config);
-  if(data) {
-    setShowLoading(false)
-    // setBetData(data.loadbets);
-    setTotalPages(data.totalPages);
-    setIsBetDataLoaded(true);
+  try {
+    const newfixtureComponent = <LoadFixturesSearchResults searchkeyword={searchkeyword} />;
+    setLoadedLeagueData(true);
+    setLeagueComponent([newfixtureComponent, ...leaguecomponent]);
+  } catch (error) {
+    console.log(error)
   }
-  
 }
 
-const UpKeyWordSearch = (divId: any,match:string,openedby:string) => {
+const UpKeyWordSearch = (divId: any) => {
   setSearchKeyWord(divId.innerHTML);
   setShowSearchOptions(false)
 }
@@ -510,28 +508,36 @@ const handleInputClick = () => {
   console.log('Input clicked. Do something!');
 };
 
+const FilterByClosedBets = async () => {
+  
+}
+
+const FilterByOpenBets = async () => {
+
+}
   return (
     <>
     {showloading && <Loading/>}
     <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div>
       <div className={bettingstyle.main}>
-        <div className={bettingstyle.search}>
+        <div className={bettingstyle.search} >
             <div>
               <form>
                   <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
-                  {showsearchoptions && keywordsearchresults?.map((result,index) => (
-                    <div className={bettingstyle.searchop} key={index}>
-                      <div className={bettingstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
-                        {result.match}
+                  {showsearchoptions &&
+                    <div className={bettingstyle.searchop} ref={divRef} >
+                      { keywordsearchresults?.map((result,index) => (
+                      <div  key={index}>
+                        <div className={bettingstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target)}>
+                          {result.league.country}
+                        </div>
+                        <div className={bettingstyle.sc2} onClick={(e) => UpKeyWordSearch(e.target)}>
+                          {result.league.name}
+                        </div>
                       </div>
-                      <div className={bettingstyle.sc2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
-                        {result.openedby}
-                      </div>
-                      <div className={bettingstyle.th2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
-                        {result.betstatus}
-                      </div>
+                      ))}
                     </div>
-                  ))}
+                  }
               </form>
             </div>
           </div>
@@ -592,6 +598,19 @@ const handleInputClick = () => {
         <div className={bettingstyle.main_in}>
           <div className={bettingstyle.leagues}>
             <div className={bettingstyle.gf}><h3>Games</h3></div>
+            {/* {countryfixturesdata && 
+              <div className={bettingstyle.filter}>
+              <h3>Filter By</h3>
+              <div>
+                <div>
+                  <button type='button' title='button' onClick={FilterByOpenBets}>Open Bets {'>>'}</button>
+                </div>
+                <div>
+                  <button type='button' title='button' onClick={FilterByClosedBets}>Closed Bets {'>>'}</button>
+                </div>
+              </div>
+            </div> 
+            } */}
             {countryfixturesdata ? <div>
               <div className={bettingstyle.fb}><h3>By Country</h3></div>
               {countryfixturescount.map(country => (

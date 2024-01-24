@@ -16,25 +16,27 @@ type MyComponentProps = {
   date: string;
 };
 interface Fixture {
-    id: number;
-    referee: string | null;
-    timezone: string;
-    date: string;
-    timestamp: number;
-    periods: {
-        first: number;
-        second: number;
-    };
-    venue: {
-        id: number | null;
-        name: string;
-        city: string;
-    };
-    status: {
-        long: string;
-        short: string;
-        elapsed: number;
-    };
+    fixture: {
+      id: number;
+      referee: string | null;
+      timezone: string;
+      date: string;
+      timestamp: number;
+      periods: {
+          first: number;
+          second: number;
+      };
+      venue: {
+          id: number | null;
+          name: string;
+          city: string;
+      };
+      status: {
+          long: string;
+          short: string;
+          elapsed: number;
+      }
+    }
     teams: {
         home: {
           id: number;
@@ -65,7 +67,7 @@ interface Fixture {
   interface League {
     leagueName: string;
     leagueId: number;
-    country: string;
+    leagueCountry: string;
     fixtures: Fixture[];
   }
 
@@ -214,15 +216,15 @@ return (
                         </div>
                         <div className={leaguefixturestyle.league_wrap_in} >
                           {league.fixtures.map(fixture => (
-                            <a href={`/betting/${league.country.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.id}`} key={fixture?.id}>
+                            <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={fixture?.fixture.id}>
                               <div className={leaguefixturestyle.fixt}>
                                 <div className={leaguefixturestyle.fixt_d_o}>
                                   <div className={leaguefixturestyle.fixt_d}>
-                                    <span>Date</span> {`${moment(fixture?.date).format('DD/MM ddd')}`}
+                                    <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
                                   </div>
                                   <div className={leaguefixturestyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture?.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.id}</div>
+                                      <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
                                   </div>
                                 </div>
 

@@ -40,65 +40,6 @@ const LoadOpenAI: React.FC<{}> = () =>  {
             </div>
           </div>
           <div className={styles.main_c}>
-            <div className={styles.settings}>
-              <div className={styles.settings_bg_overlay}></div>
-              <div className={styles.settings_in}>
-                <h2>Image Generaion Options</h2>
-                <div className={styles.img_sel}>
-                  <h2>Select your preferred image options</h2>
-                </div>
-                <div className={styles.bg_option}>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>Vintage</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>Human</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>Vintage</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>Human</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                  <div className={styles.bg_options_}>
-                    <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '80%',borderRadius: '8px'}} alt='bg options'/>
-                    <div className={styles.bg_opt_text}>3 D</div>
-                  </div>
-                </div>
-              </div>
-            </div>
             <div className={styles.chat}>
               {/* <div className={styles.chat_bg_overlay}></div> */}
               <div className={styles.card}>

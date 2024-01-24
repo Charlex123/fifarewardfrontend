@@ -347,7 +347,6 @@ const getKeyWordSearchN = async (keyword:any) => {
   if(data) {
     setShowSearchOptions(true);
     setKeywordSearchResults(data.keywordResult);
-    console.log('keyword search results',data.keywordResult);
   }
   
 }
@@ -433,7 +432,6 @@ const FilterByBetAmount = async (event:any) => {
     setBetData(data.loadbets);
     setTotalPages(data.totalPages);
     setIsBetDataLoaded(true);
-    console.log('keyword search results',data);
   }
 };
 
@@ -453,7 +451,6 @@ const FilterByClosedBets = async () => {
     setBetData(data.loadbets);
     setTotalPages(data.totalPages);
     setIsBetDataLoaded(true);
-    console.log('keyword search results',data);
   }
 }
 
@@ -473,7 +470,6 @@ const FilterByOpenBets = async () => {
     setBetData(data.loadbets);
     setTotalPages(data.totalPages);
     setIsBetDataLoaded(true);
-    console.log('keyword search results',data);
   }
 }
 
@@ -488,19 +484,23 @@ const FilterByOpenBets = async () => {
           <div>
             <form>
                 <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={openbetsstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
-                {showsearchoptions && keywordsearchresults?.map((result,index) => (
-                  <div className={openbetsstyle.searchop} key={index}>
-                    <div className={openbetsstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
-                      {result.match}
+                {showsearchoptions && 
+                  <div className={openbetsstyle.searchop} >
+                    {keywordsearchresults?.map((result,index) => (
+                    <div key={index}>
+                      <div className={openbetsstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
+                        {result.match}
+                      </div>
+                      <div className={openbetsstyle.sc2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
+                        {result.openedby}
+                      </div>
+                      <div className={openbetsstyle.th2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
+                        {result.betstatus}
+                      </div>
                     </div>
-                    <div className={openbetsstyle.sc2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
-                      {result.openedby}
-                    </div>
-                    <div className={openbetsstyle.th2} onClick={(e) => UpKeyWordSearch(e.target,result.match,result.openedby)}>
-                      {result.betstatus}
-                    </div>
+                    ))}
                   </div>
-                ))}
+                }
             </form>
           </div>
         </div>
@@ -779,7 +779,8 @@ const FilterByOpenBets = async () => {
                 </tbody>
               </table>
             </div>
-            <div className={openbetsstyle.paginate_btns}>
+            {betData.length > 0 &&
+              <div className={openbetsstyle.paginate_btns}>
               <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
                 {'<<'}
               </button>
@@ -794,6 +795,8 @@ const FilterByOpenBets = async () => {
                 {'>>'}
               </button>
               </div>
+            }
+            
           </div>
         </div>
       </div>

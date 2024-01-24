@@ -16,10 +16,12 @@
     position: absolute;right: 4px;top: 6px;cursor: pointer;color: #0000005d;
 }
 .main .search form .searchop {
-    width: 100%;text-align: left;color: #565454;background-color: #ffffff;
+    width: 100%;text-align: left;color: #565454;border: 1px solid #a19d9d87;
+    margin: 2px 0;font-size: 13px;padding: 2px 2px 2px 2px;border-radius: 4px;position: absolute;
+    background-color: #ffffff;height: inherit;z-index: 999;
 }
 .main .search form .searchop div {
-    margin: 10px 5px 5px 5px;border-bottom: 1px solid #dad7d7;
+    border-bottom: 1px solid #e2d7d7;margin: 4px 0 2px 0;border-radius: 4px;margin: 5px 0;
 }
 .main .search form .searchop div button {
     font-size: 14px;font-family: "Montserrat";padding: 2px 8px 2px 2px;background-color: #a19d9d87;
@@ -61,6 +63,32 @@
 }
 .main .main_in .leagues {
     background-color: #f1f1f1;width: 18%;margin: 0 2%;border: none;border-radius: 4px;color: #151414;
+}
+.main .main_in .leagues .filter {
+    width: 100%;text-align: left;
+}
+.main .main_in .leagues .filter h3 {
+    margin: 5px auto 10px auto;background-color: #a19d9d87;text-align: center;
+}
+.main .main_in .leagues .filter div{
+    font-size: 14px;margin: 4px 2px;
+}
+.main .main_in .leagues .filter > div > div {
+    font-size: 14px;margin: 4px 2px;border-bottom: 2px solid #a19d9d87;
+}
+.main .main_in .leagues .filter > div > div button {
+    font-size: 13px;border: 1px solid #a19d9d87;border-radius: 8px;padding: 0 4px 0 4px;
+    background-color: #ffffff;margin-bottom: 2px;
+}
+.main .main_in .leagues .filter > div > div.amountprog > div {
+    font-size: 13px;
+}
+.main .main_in .leagues .filter > div > div.amountprog .fba {
+    font-size: 12px;background-color: #ffffff;width: fit-content;padding: 2px 4px;
+    border: 1px solid #a19d9d87;border-radius: 4px;
+}
+.main .main_in .leagues .filter > div > div.amountprog .fba span {
+    font-size: 11px;color: #e28305;
 }
 .main .main_in .leagues .gf h3 {
     width: 100%;font-size: 16px;font-weight: 600;font-family: "Poppins",sans-serif;

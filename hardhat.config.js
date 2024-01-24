@@ -32,13 +32,13 @@ module.exports = {
       url: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
       chainId: 97,
       gasPrice: 20000000000,
-      accounts:  [process.env.TAFA_PRIVATE_KEY] 
+      accounts:  [process.env.FRD_PRIVATE_KEY] 
     },
     mainnet: {
       url: "https://bsc-dataseed.bnbchain.org/",
       chainId: 56,
       gasPrice: 20000000000,
-      accounts: [process.env.TAFA_PRIVATE_KEY]
+      accounts: [process.env.FRD_PRIVATE_KEY]
     }
   },
   etherscan: {
@@ -55,7 +55,7 @@ module.exports = {
         version: "0.8.9",
       },
       {
-        version: "0.8.20",
+        version: "0.8.0",
         settings: {
             evmVersion: 'paris'
         },
