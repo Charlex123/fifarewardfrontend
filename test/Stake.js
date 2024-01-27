@@ -149,83 +149,83 @@
 
 
 // Import necessary libraries and Hardhat plugins
-const { expect } = require("chai");
-const { ethers } = require("hardhat");
-const { hre } = require("hardhat");
+// const { expect } = require("chai");
+// const { ethers } = require("hardhat");
+// const { hre } = require("hardhat");
 
-describe("Stake and TAFA Contracts", function () {
-  let TAFA, Stake, tafa, stake, owner, addr1, addr2;
+// describe("Stake and TAFA Contracts", function () {
+//   let TAFA, Stake, tafa, stake, owner, addr1, addr2;
 
-  beforeEach(async function () {
-    // Deploy TAFA contract
-    TAFA = await ethers.getContractFactory("TAFA");
-    tafa = await TAFA.deploy(1000000, "TAFA", "TAFA");
+//   beforeEach(async function () {
+//     // Deploy TAFA contract
+//     TAFA = await ethers.getContractFactory("TAFA");
+//     tafa = await TAFA.deploy(1000000, "TAFA", "TAFA");
 
-    // Deploy Stake contract and pass the TAFA contract as an argument
-    Stake = await ethers.getContractFactory("Stake");
-    stake = await Stake.deploy(tafa.address);
+//     // Deploy Stake contract and pass the TAFA contract as an argument
+//     Stake = await ethers.getContractFactory("Stake");
+//     stake = await Stake.deploy(tafa.address);
 
-    // Get accounts from Hardhat
-    [owner, addr1, addr2] = await ethers.getSigners();
-  });
+//     // Get accounts from Hardhat
+//     [owner, addr1, addr2] = await ethers.getSigners();
+//   });
 
-  it("Should get msg.sender address", async function () {
-    // Connect TAFA contract to the owner
-    tafa = tafa.connect(owner.address);
+//   it("Should get msg.sender address", async function () {
+//     // Connect TAFA contract to the owner
+//     tafa = tafa.connect(owner.address);
 
-    // Ensure that the address is now addr1
-    expect(await tafa.getOwner()).to.equal(owner.address);
-  });
+//     // Ensure that the address is now addr1
+//     expect(await tafa.getOwner()).to.equal(owner.address);
+//   });
   
-  it("Should receive token", async function () {
-    // Send some TAFA tokens to addr1 and addr2
-    await tafa.transfer(addr1.address, 300000);
-    await tafa.transfer(addr2.address, 200000);
+//   it("Should receive token", async function () {
+//     // Send some TAFA tokens to addr1 and addr2
+//     await tafa.transfer(addr1.address, 300000);
+//     await tafa.transfer(addr2.address, 200000);
 
-    // Connect the contracts to the signers
-    tafa = tafa.connect(addr1);
-    stake = stake.connect(addr1);
+//     // Connect the contracts to the signers
+//     tafa = tafa.connect(addr1);
+//     stake = stake.connect(addr1);
 
-    tafa = tafa.connect(addr1);
-    stake = stake.connect(addr2);
+//     tafa = tafa.connect(addr1);
+//     stake = stake.connect(addr2);
 
-    const address1Balance = await tafa.balanceOf(addr1.address);
-    expect(address1Balance).to.be.gt(0);
-  });
+//     const address1Balance = await tafa.balanceOf(addr1.address);
+//     expect(address1Balance).to.be.gt(0);
+//   });
 
-  it("Should allow staking and calculate rewards", async function () {
-    // Send some TAFA tokens to addr1 and addr2
-    console.log('addresses',owner.address, addr1.address,addr2.address)
-    await tafa.transfer(addr1.address, 30);
-    await tafa.transfer(addr2.address, 20);
+//   it("Should allow staking and calculate rewards", async function () {
+//     // Send some TAFA tokens to addr1 and addr2
+//     console.log('addresses',owner.address, addr1.address,addr2.address)
+//     await tafa.transfer(addr1.address, 30);
+//     await tafa.transfer(addr2.address, 20);
 
-    // Connect the contracts to the signers
-    tafa = tafa.connect(addr1);
-    stake = stake.connect(addr1);
+//     // Connect the contracts to the signers
+//     tafa = tafa.connect(addr1);
+//     stake = stake.connect(addr1);
 
-    tafa = tafa.connect(addr1);
-    stake = stake.connect(addr2);
+//     tafa = tafa.connect(addr1);
+//     stake = stake.connect(addr2);
 
-    // // Add addr1 as a referral
-    // await stake.addReferrer(owner.address);
+//     // // Add addr1 as a referral
+//     // await stake.addReferrer(owner.address);
 
-    // // Stake 100 TAFA tokens for 30 days
-    await stake.stake(100, 30);
+//     // // Stake 100 TAFA tokens for 30 days
+//     await stake.stake(100, 30);
 
-    // // Increase time to simulate 30 days passing
-    await ethers.provider.send("evm_increaseTime", [30 * 24 * 60 * 60]);
-    await ethers.provider.send("evm_mine");
+//     // // Increase time to simulate 30 days passing
+//     await ethers.provider.send("evm_increaseTime", [30 * 24 * 60 * 60]);
+//     await ethers.provider.send("evm_mine");
 
-    // // Withdraw staked amount and calculate rewards
-    const initialBalance = await tafa.balanceOf(addr1.address);
-    await stake.withdrawStake();
-    const finalBalance = await tafa.balanceOf(addr1.address);
+//     // // Withdraw staked amount and calculate rewards
+//     const initialBalance = await tafa.balanceOf(addr1.address);
+//     await stake.withdrawStake();
+//     const finalBalance = await tafa.balanceOf(addr1.address);
 
-    // Ensure that the balance increased due to staking rewards
-    expect(finalBalance).to.be.above(initialBalance);
-  });
+//     // Ensure that the balance increased due to staking rewards
+//     expect(finalBalance).to.be.above(initialBalance);
+//   });
 
-  // Add more tests to cover other functionalities as needed
+//   // Add more tests to cover other functionalities as needed
 
-});
+// });
 

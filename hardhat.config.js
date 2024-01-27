@@ -34,12 +34,16 @@ module.exports = {
       gasPrice: 20000000000,
       accounts:  [process.env.FRD_PRIVATE_KEY] 
     },
-    mainnet: {
-      url: "https://bsc-dataseed.bnbchain.org/",
-      chainId: 56,
-      gasPrice: 20000000000,
-      accounts: [process.env.FRD_PRIVATE_KEY]
-    }
+    // mainnet: {
+    //   url: "https://bsc-dataseed.bnbchain.org/",
+    //   chainId: 56,
+    //   gasPrice: 20000000000,
+    //   accounts: [process.env.FRD_PRIVATE_KEY]
+    // },
+    // mumbai: {
+    //   url: process.env.INFURA_POLYGON_MUMBAI_URL,
+    //   accounts: [`0x${process.env.POLYGONADDRESS_DEV_TEST_PRIVATE_KEY}`]
+    // }
   },
   etherscan: {
     // Your API key for Etherscan
@@ -53,6 +57,30 @@ module.exports = {
     compilers: [
       {
         version: "0.8.9",
+      },
+      {
+        version: "0.8.2",
+        settings: {
+            evmVersion: 'paris'
+        },
+      },
+      {
+        version: "0.5.16",
+        settings: {
+            evmVersion: 'paris'
+        },
+      },
+      {
+        version: "0.5.0",
+        settings: {
+            evmVersion: 'paris'
+        },
+      },
+      {
+        version: "0.8.20",
+        settings: {
+            evmVersion: 'paris'
+        },
       },
       {
         version: "0.8.0",

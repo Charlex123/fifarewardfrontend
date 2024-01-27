@@ -110,7 +110,7 @@
     "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx"
-, "src/components/Dapp.tsx", "src/components/Activateaccountstatus.tsx"  ],
+, "src/components/Dapp.tsx", "src/components/Activateaccountstatus.tsx", "test/NFTMarketplace.js"  ],
   "exclude": [
     "node_modules"
   ]

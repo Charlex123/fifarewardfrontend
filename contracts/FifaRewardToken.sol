@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.4;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/utils/math/SafeMath.sol";
+import "./SafeMath.sol";
 import "@openzeppelin/contracts/utils/Address.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@uniswap/v2-core/contracts/interfaces/IUniswapV2Factory.sol";
@@ -25,10 +25,10 @@ contract FifaRewardToken is ERC20Burnable, Ownable {
     mapping(address => bool) isFeeExempt;
     mapping(address => bool) isTxLimitExempt;
 
-    constructor() ERC20("FIFAReward", "FRD") {
+    constructor() ERC20("FIFAReward", "FRD") Ownable(0x9C9DfBbaa6f14e5B142365df89b8e2B627dd1bda) {
         address admin = 0x9C9DfBbaa6f14e5B142365df89b8e2B627dd1bda;
         transferOwnership(admin);
-        isFeeExempt[address(0)] = true;
+        isFeeExempt[address(0)] = true ;
         isTxLimitExempt[address(0)] = true;
 
         isFeeExempt[address(this)] = true;
@@ -70,7 +70,7 @@ contract FifaRewardToken is ERC20Burnable, Ownable {
         address from,
         address to,
         uint256 amount
-    ) internal view override {
+    ) internal view {
         require(
             amount <= maxTxAmount ||
                 isTxLimitExempt[to] ||
@@ -79,16 +79,16 @@ contract FifaRewardToken is ERC20Burnable, Ownable {
         );
     }
 
-    function _transfer(
+    function _update(
         address from,
         address to,
         uint256 amount
     ) internal override {
         if (isFeeExempt[from] || isFeeExempt[to])
-            return super._transfer(from, to, amount);
+            return super._update(from, to, amount);
         (uint256 recipientAmount, uint256 fee) = __getFee(from, to, amount);
-        super._transfer(from, to, recipientAmount);
-        super._transfer(from, feeAddress, fee);
+        super._update(from, to, recipientAmount);
+        super._update(from, feeAddress, fee);
     }
 
     function __getFee(
