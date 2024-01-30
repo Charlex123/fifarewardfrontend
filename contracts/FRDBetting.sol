@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./SafeMath.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract Bet is ReentrancyGuard {
+contract FRDBetting is ReentrancyGuard {
 
     using SafeMath for uint256;
 

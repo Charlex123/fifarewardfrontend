@@ -26,7 +26,7 @@ import AlertMessage from './AlertMessage';
 import { ThemeContext } from '../contexts/theme-context';
 import FooterNavBar from './FooterNav';
 import DappNav from './Dappnav';
-import StakeAbi from '../../artifacts/contracts/Stake.sol/Stake.json';
+import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import DappFooter from './DappFooter';
 import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
@@ -376,9 +376,9 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               <div className={`${dappstyles.main} ${sideBarToggleCheck}`}>
               <div className={dappstyles.con_btns}>
               {!isConnected ? (
-                <button onClick={() => open()} className={dappstyles.connect}>Connect Wallet</button>
+                <button title='connect wallet' type='button' onClick={() => open()} className={dappstyles.connect}>Connect Wallet</button>
                 ) : (
-                <button onClick={() => disconnect()} className={dappstyles.connected}><span>connected</span>Disconnect</button>
+                <button title='disconnect wallet' type='button' onClick={() => disconnect()} className={dappstyles.connected}><span>connected</span>Disconnect</button>
                 )}
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>

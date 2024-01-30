@@ -32,18 +32,24 @@ module.exports = {
       url: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
       chainId: 97,
       gasPrice: 20000000000,
-      accounts:  [process.env.FRD_PRIVATE_KEY] 
+      accounts:  [process.env.NFTMARKETPLACE_DEV_TEST_PRIVATE_KEY] 
     },
-    // mainnet: {
-    //   url: "https://bsc-dataseed.bnbchain.org/",
-    //   chainId: 56,
-    //   gasPrice: 20000000000,
-    //   accounts: [process.env.FRD_PRIVATE_KEY]
-    // },
-    // mumbai: {
-    //   url: process.env.INFURA_POLYGON_MUMBAI_URL,
-    //   accounts: [`0x${process.env.POLYGONADDRESS_DEV_TEST_PRIVATE_KEY}`]
-    // }
+    mainnet: {
+      url: "https://bsc-dataseed.bnbchain.org/",
+      chainId: 56,
+      gasPrice: 20000000000,
+      accounts: [process.env.NFTMARKETPLACE_DEV_TEST_PRIVATE_KEY]
+    },
+    mumbai: {
+      url: process.env.INFURA_POLYGON_MUMBAI_URL,
+      chainId: 80001,
+      accounts: [`0x${process.env.POLYGONADDRESS_DEV_TEST_PRIVATE_KEY}`]
+    },
+    matic: {
+      url: process.env.INFURA_POLYGON_MAINNET_URL,
+      chainId: 137,
+      accounts: [`0x${process.env.POLYGONADDRESS_DEV_TEST_PRIVATE_KEY}`]
+    }
   },
   etherscan: {
     // Your API key for Etherscan

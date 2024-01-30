@@ -7,7 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./SafeMath.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
-contract Stake is ReentrancyGuard {
+contract FRDStaking is ReentrancyGuard {
 
     using SafeMath for uint256;
 

@@ -1,0 +1,46 @@
+.main {
+    position: relative;width: 100%;margin: 150px auto 50px auto;
+}
+.main .main_c {
+    display: flex;width: 96%;justify-content: space-between;flex-direction: row;margin: 15px auto;align-items: center;
+}
+.main .main_c .dragdrop {
+    width: 40%;background-color: #e2d7d71f;border-radius: 16px;
+}
+.main .main_c .nft_art_desc {
+    width: 58%;margin-top: 0;padding: 15px;border: 1px solid #e2d7d71f;border-radius: 16px;
+    background-color: #e2d7d71f;
+}
+.main .main_c .nft_art_desc .form_g {
+    width: 100%;margin: 15px auto;text-align: center;
+}
+.main .main_c .nft_art_desc .form_g .input_ {
+    width: 100%;background-color: #e2d7d74b;height: 40px;border-radius: 8px;padding-left: 4px;
+    color: #ffffff;font-size: 14px;
+}
+.main .main_c .nft_art_desc .form_g .input_::placeholder {
+    color: #ffffff;
+}
+.main .main_c .nft_art_desc .form_g .textarea_ {
+    width: 100%;background-color: #e2d7d74b;border-radius: 8px;
+    min-height: 180px;font-size: 14px;color: #ffffff;
+}
+.main .main_c .nft_art_desc .form_g .textarea_::placeholder {
+    color: #ffffff;padding-left: 4px;
+}
+.main .main_c .nft_art_desc .form_g button {
+    width: 100%;background-color: #e3a204;width: 100%;text-align: center;margin: auto;
+    padding: 2px 18px 2px 18px;border-radius: 16px;height: 40px;
+}
+
+@media (max-width: 991px) {
+    .main .main_c {
+        display: block;width: 96%;margin: 15px auto;align-items: center;
+    }
+    .main .main_c .dragdrop {
+        width: 100%;
+    }
+    .main .main_c .nft_art_desc {
+        width: 100%;
+    }
+}

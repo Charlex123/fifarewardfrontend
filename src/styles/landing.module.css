@@ -23,17 +23,17 @@
   color: orange;
 }
  .homemain {
-    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-y: hidden;
+    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-y: hidden;z-index: 0;position: relative;
 }
 .c_content {    
-    margin: auto;padding: 35px;display: flex;justify-content: space-between;position: relative;
-    overflow: hidden;background-image: url("../assets/images/footballstadium.jpg");
+    margin: auto;padding: 105px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;margin-top: -30px;
+    overflow: hidden;background-image: url("../assets/images/footballstadium.jpg");background-position: cover;
 }
-.c_content .overlay_d {
-  position: fixed;background-color: #000000e7;z-index: 9;top: 0;left: 0;right: 0;bottom: 0;display: none;
+.c_content .c_overlay_d {
+  position: absolute;background-color: #000000c0;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
 }
 .c_content .hero_image {
-  width: 60%;
+  width: 60%;position: relative;z-index: 2;
 }
 .c_content .ca {
   width: 100%;text-align: left;
@@ -56,7 +56,7 @@
   width: 90%;margin: 80px 0 20px 60px;
 }
 .c_content .hero_h1 {
-    margin: 1rem auto;text-align: center;align-items: center;width: 45%;
+    margin: 1rem auto;text-align: center;align-items: center;width: 60%;position: relative;z-index: 2;
 }
 .c_content .hero_h1 h1 {
     font-size: 45px;font-weight: 900;color: #f1f1f1;
@@ -93,8 +93,8 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .exchmain {
   width: 100%;margin: 115px 0;padding: 0;
-  background: rgb(13,20,24);
-  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(17,17,25,0.9626225490196079) 0%, rgba(9,10,11,1) 0%, rgba(0,0,0,1) 0%, rgba(4,12,4,1) 0%, rgba(6,14,6,1) 0%, rgba(6,14,6,1) 100%, rgba(37,203,6,1) 100%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
+  /* background: rgb(13,20,24);
+  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(17,17,25,0.9626225490196079) 0%, rgba(9,10,11,1) 0%, rgba(0,0,0,1) 0%, rgba(4,12,4,1) 0%, rgba(6,14,6,1) 0%, rgba(6,14,6,1) 100%, rgba(37,203,6,1) 100%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .exchmain h1 {
   font-size: 36px;text-align: center;margin: 3rem auto 1rem auto;color: #f1f1f1;

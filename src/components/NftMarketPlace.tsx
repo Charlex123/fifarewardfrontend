@@ -1,17 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import chatbotlogo from '../assets/images/aichatbot.png';
-import successimage from '../assets/images/success1.png';
-import elipsisloading from '../assets/images/Ellipsis-1s-200px.svg';
 import bgopt1 from '../assets/images/aibg.png';
 import bgopt2 from '../assets/images/aibg2.jpg';
 import bgopt3 from '../assets/images/aibg3.jpg';
 import nftbanner from '../assets/images/aibg2.jpg'
-import { faCheckCircle, faEye, faEyeSlash, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faChevronLeft, faCircleCheck, faLocationArrow, faLocationPin, faMicrophone, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import { faCircleCheck  } from "@fortawesome/free-solid-svg-icons";
 // material
 import styles from "../styles/nftmarketplace.module.css";
 import dotenv from 'dotenv';

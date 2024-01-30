@@ -7,13 +7,16 @@
 @import url("https://fonts.googleapis.com/css?family=Caveat");
 
 .nav {
-    height: 80px;align-items: center;vertical-align: auto;position: fixed;top: 0;right: 0;left: 0;z-index: 99999999999999999999999999999999999999999999999999999999999999999999999999;
+    height: 60px;align-items: center;vertical-align: auto;position: fixed;top: 0;right: 0;left: 0;z-index: 9;
+    background: rgb(13,20,24);
+    background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
+    box-shadow: 1px 1px 2px 2px #8b86862d;
 }
 .logoni {
   width: 160px;
 }
 .nav .nav_toggle_btn {
-    position: fixed;right: 15px;top: 25px;background-color: transparent !important;border: none;
+    position: fixed;right: 15px;top: 15px;background-color: transparent !important;border: none;
     color: #ffffff !important;z-index: 99;
 }
 .nav .nav_toggle_btn .toggle_icon {
@@ -25,7 +28,7 @@
 .nav .nav_container {
     display: flex;vertical-align: auto;justify-content: space-between;width: 100%;
     font-family: "Poppins",sans-serif;color: rgb(230, 224, 224);height: inherit;
-    margin: auto;z-index: 0;top: 0;right: 0;left: 0;
+    margin: auto;z-index: 0;top: 0;right: 0;left: 0;box-shadow: 1px 1px 2px 2px #8b86862d;
 }
 .nav .nav_container.scrolled {
   background: rgb(13,20,24);

@@ -163,20 +163,14 @@ useEffect(() => {
     window.removeEventListener('resize', handleResize);
     clearInterval(intervalId);
   };
-}, []);
-
-
-// Function to toggle the navigation menu
-const toggleNav = () => {
-  setNavOpen(!isNavOpen);
-};
+}, [goToNextImage]);
 
   return (
     <>
     <div className={styles.homemain}>
       <div className={styles.overlay_d}></div>
       <div className={styles.c_content}>
-        <div className={styles.overlay_d}></div>
+        <div className={styles.c_overlay_d}></div>
           <div className={styles.hero_h1}>
             <div>
               <h1 className={styles.h1}>
@@ -216,9 +210,9 @@ const toggleNav = () => {
               </div>
             </div>
           </div>
-          <div className={styles.hero_image}>
+          {/* <div className={styles.hero_image}>
             <Image src={Heroimg} alt='hero img' style={{objectFit: "contain",marginTop: '5rem'}} quality={90} />
-          </div>
+          </div> */}
       </div>
       {/* fifa reward betting */}
       <div>
