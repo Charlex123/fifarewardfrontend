@@ -11,8 +11,6 @@ contract FRDBetting is ReentrancyGuard {
 
     using SafeMath for uint256;
 
-    address staker = msg.sender;
-    address stakedeployer;
     uint timeNow = block.timestamp;
     IERC20 public FifaRewardTokenContract;
     
@@ -21,7 +19,7 @@ contract FRDBetting is ReentrancyGuard {
         stakedeployer = msg.sender; 
     } 
 
-    struct Users {
+    struct OpenBets {
         bool hasStake;
         uint stakeCount;
         bool unStaked;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, CSSProperties } from 'react';
+import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -53,7 +53,7 @@ const DragDropImageUpload: React.FC<DragDropImageUploadProps> = ({ onFileUpload 
       }
       {imagePreview && (
       <div className={styles.img_prev}>
-        <Image src={imagePreview} alt="Preview" className={styles.preview} width={150} height={100} style={{objectFit: 'cover',margin: '10px auto'}}/>
+        <Image src={imagePreview} alt="Preview" className={styles.preview} width={100} height={100} style={{objectFit: 'cover',margin: '0 auto',width: '100%',position: 'absolute',height: '100%',zIndex: 0,borderRadius: '16px'}}/>
       </div>
       )}
     </div>

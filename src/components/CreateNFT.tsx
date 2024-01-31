@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import Image from 'next/image'
 import { create as ipfsHttpClient } from 'ipfs-http-client'
 import { useRouter } from 'next/router'
-import NFTMarketPlace from '../../artifacts/contracts/NFTMarketPlace.sol/NFTMarketPlace.json';
+import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
 import { ethers } from 'ethers';
 import DragDropImageUpload from './DragDropImageUpload';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
@@ -16,13 +16,13 @@ export default function CreateItem() {
   const ipfsHostUrl = 'https://ipfs.infura.io:5001/api/v0';
   const client = (ipfsHttpClient as any)(ipfsHostUrl);
 
-  const [marketplaceAddress] = useState<any>("0x80Da3316F2E94183c8757fC75e9A07a0dc75387b");
+  const [marketplaceAddress] = useState<any>("0x35af7BF4B48869554cB846260149d9318235ACCd");
   const [fileUrl, setFileUrl] = useState<any>(null);
   const { open } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { disconnect } = useDisconnect();
-  const [formInput, updateFormInput] = useState({ price: '', name: '', description: '' });
+  const [formInput, updateFormInput] = useState({ price: '1', name: '', description: '' });
   const router = useRouter();
 
   
@@ -60,18 +60,15 @@ export default function CreateItem() {
     }  
   }
 
-  async function listNFTForSale() {
+  async function createNFT() {
     const url = await uploadToIPFS()
     const provider = new ethers.providers.Web3Provider(walletProvider as any);
     console.log('provider',provider, 'contract address',marketplaceAddress)
     const signer = provider.getSigner();
 
     /* next, create the item */
-    const price = ethers.utils.parseUnits(formInput.price, 'ether')
-    let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace.abi, signer)
-    let listingPrice = await contract.getListingPrice()
-    listingPrice = listingPrice.toString()
-    let transaction = await contract.createToken(url, price, { value: listingPrice })
+    let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace.abi, signer);
+    let transaction = await contract.createToken(url)
     await transaction.wait()
    
     router.push('/')
@@ -92,6 +89,7 @@ export default function CreateItem() {
         </div>
         <div className={styles.nft_art_desc}>
           <div className={styles.form_g}>
+            <label className={styles.label}>Asset Name</label>
             <input 
               placeholder="Asset Name"
               className={styles.input_}
@@ -99,21 +97,23 @@ export default function CreateItem() {
             />
           </div>
           <div className={styles.form_g}>
+          <label className={styles.label}>Description </label>
             <textarea
-              placeholder="Asset Description"
+              placeholder="Say something about your asset"
               className={styles.textarea_}
               onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
             />
           </div>
           <div className={styles.form_g}>
+            <label className={styles.label}>Supply (Max. of 1)</label>
             <input
-              placeholder="Asset Price in FRD"
+              placeholder="1"
               className={styles.input_}
               onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
             />
           </div>
           <div className={styles.form_g}>
-            <button type='button' title='create nft' onClick={listNFTForSale} className={styles.create_btn}>
+            <button type='button' title='create nft' onClick={createNFT} className={styles.create_btn}>
               Create NFT
             </button>
           </div>
