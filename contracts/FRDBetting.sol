@@ -16,16 +16,15 @@ contract FRDBetting is ReentrancyGuard {
     
     constructor(address _FifaRewardTokenAddress) {
         FifaRewardTokenContract = IERC20(_FifaRewardTokenAddress);
-        stakedeployer = msg.sender; 
+        betdeployer = msg.sender; 
     } 
 
     struct OpenBets {
-        bool hasStake;
-        uint stakeCount;
-        bool unStaked;
-        uint refCount;
-        bool wasReferred;
-        mapping(address => Stakes) userStakes;
+        uint betId;
+        uint matchId;
+        string match;
+        address betOpener;
+        mapping(address => participants) betParticipants;
         mapping(address => Referrals) userReferrals;
     }
 
@@ -76,7 +75,7 @@ contract FRDBetting is ReentrancyGuard {
     }
 
     function getOwner() public view returns(address) {
-        return stakedeployer;
+        return betdeployer;
     }
    
     function myTokenBalance() public view returns(uint) {
@@ -94,7 +93,7 @@ contract FRDBetting is ReentrancyGuard {
         // This used to consume all gas in old EVM versions, but not anymore.
         // It is often a good idea to use 'require' to check if functions are called correctly.
         // As a second argument, you can also provide an explanation about what went wrong.
-        require(msg.sender == stakedeployer, "Caller is not owner");
+        require(msg.sender == betdeployer, "Caller is not owner");
         _;
     }
 
