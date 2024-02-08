@@ -22,7 +22,7 @@ import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
-import TAFAAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
+import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import { ThemeContext } from '../contexts/theme-context';
 import DappNav from './Dappnav';
@@ -153,7 +153,7 @@ const handleCopyClick = () => {
       // setShowTimer(!showTimer);
       const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
-      const TAFAContract = new ethers.Contract(TAFAAddress, TAFAAbi, signer);
+      const TAFAContract = new ethers.Contract(TAFAAddress, FRDAbi.abi, signer);
       const reslt = await TAFAContract.approve(StakeAddress,stakeAmount);
       if(reslt) {
         StakeTAFA();
