@@ -16,7 +16,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   uint256 private _itemIds;
   uint256 private _itemsSold;
 
-  address payable marketplaceowner;
+  address payable owner;
   uint256 private salesFeeBasisPoints = 250; // 2.5% in basis points (parts per 10,000) 250/100000
   uint256 private basisPointsTotal = 10000;
 
@@ -24,20 +24,20 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       uint256 indexed tokenId,
       uint256 indexed itemId,
       address creator,
-      address marketplaceowner,
+      address owner,
       uint256 price,
       bool sold
   );
 
   constructor() ERC721("FIFAReward","FRD") {
-    marketplaceowner = payable(msg.sender);
+    owner = payable(msg.sender);
   }
 
   struct MarketItem {
     uint itemId;
     uint256 tokenId;
     address payable creator;
-    address payable marketplaceowner;
+    address payable owner;
     uint256 price;
     bool sold;
   }
@@ -72,7 +72,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   }
 
   function updateRewarsPercentage(uint rewardPercentage) public {
-    require(marketplaceowner == msg.sender, "Only marketplace marketplaceowner can update reward percentage.");
+    require(owner == msg.sender, "Only marketplace owner can update reward percentage.");
     salesFeeBasisPoints = rewardPercentage;
   }
 
@@ -86,19 +86,20 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     }
     require(price > 0, "Price must be at least 1 wei");
     // require(msg.value == listingPrice, "Price must be equal to listing price");
-    console.log("token Id",tokenId_);
-    uint256 itemId = _itemIds;
     _itemIds += 1;
-    idToMarketItem[itemId] =  MarketItem(
-      itemId,
-      tokenId_,
-      payable(msg.sender),
-      payable(address(this)),
-      price,
-      false
-    );
+    uint256 itemId = _itemIds;
+    idToMarketItem[itemId] = MarketItem({
+      itemId : itemId,
+      tokenId : tokenId_,
+      creator : payable(msg.sender),
+      owner : payable(address(this)),
+      price : price,
+      sold : false
+    });
+    
+    console.log("creator addr",idToMarketItem[itemId].creator);
+    console.log(" item Id 2222222--", itemId);
 
-    _transfer(msg.sender, address(this), tokenId_);
     emit MarketItemCreated(
       tokenId_,
       itemId,
@@ -107,7 +108,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       price,
       false
     );
-
+    _transfer(msg.sender, address(this), tokenId_);
     return itemId;
   }
 
@@ -116,6 +117,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     https://fravoll.github.io/solidity-patterns/pull_over_push.html
     https://docs.openzeppelin.com/contracts/2.x/api/payment#PullPayment 
   */
+
   function _allowForPull(address receiver, uint amount) private {
       credits[receiver] += amount;
   }
@@ -139,21 +141,41 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     return salesFeeBasisPoints;
   }
 
+  function getOwnerOfItem(uint itemId) public view returns(address) {
+    return idToMarketItem[itemId].owner;
+  }
+
   /* Unlists an item previously listed for sale and transfer back to the creator */
   function unListMarketItem(
-    uint256 tokenId
+    uint256 itemId
   ) public payable nonReentrant {
-    console.log("creator _address",idToMarketItem[tokenId].creator);
+    console.log("creator _address",idToMarketItem[itemId].creator);
+    console.log("market place owner",idToMarketItem[itemId].owner);
     console.log("msg.sender _address",msg.sender);
-    console.log("token Id",tokenId);
-    require(msg.sender == idToMarketItem[tokenId].creator, "Only creator may unlist an item");
-    idToMarketItem[tokenId].marketplaceowner = payable(msg.sender);
-    transferFrom(address(this), msg.sender, tokenId);
+    console.log("token Id",itemId);
+    uint tokenId = idToMarketItem[itemId].tokenId;
+    require(msg.sender == idToMarketItem[itemId].creator, "Only creator may unlist an item");
+    idToMarketItem[itemId].owner = payable(msg.sender);
+    _transfer(address(this), msg.sender, tokenId);
 
   }
 
+/* Unlists an item previously listed for sale and transfer back to the creator */
+  function ListBackMarketItem(
+    uint256 itemId
+  ) public payable nonReentrant {
+    console.log("creator _address",idToMarketItem[itemId].creator);
+    console.log("market place owner",idToMarketItem[itemId].owner);
+    console.log("msg.sender _address",msg.sender);
+    console.log("token Id",itemId);
+    uint tokenId = idToMarketItem[itemId].tokenId;
+    require(msg.sender == idToMarketItem[itemId].creator, "Only creator may unlist an item");
+    idToMarketItem[itemId].owner = payable(address(this));
+    _transfer(msg.sender, address(this), tokenId);
+
+  }
   /* Creates the sale of a marketplace item */
-  /* Transfers marketplaceownership of the item, as well as funds between parties */
+  /* Transfers ownership of the item, as well as funds between parties */
   function createMarketSale(
       uint256 itemId
       ) public payable nonReentrant {
@@ -161,19 +183,19 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       uint price = idToMarketItem[itemId].price;
       uint tokenId = idToMarketItem[itemId].tokenId;
       address creator = idToMarketItem[itemId].creator;
-
-      require(idToMarketItem[itemId].marketplaceowner == address(this), "This item is not available for sale");
+      console.log("item owner addr",idToMarketItem[itemId].owner);
+      require(idToMarketItem[itemId].owner == address(this), "This item is not available for sale");
       require(msg.value == price, "Please submit the asking price in order to complete the purchase");
 
       uint marketPayment = (price * salesFeeBasisPoints)/basisPointsTotal;
       uint creatorPayment = price - marketPayment;
 
       _allowForPull(creator, creatorPayment);
-      idToMarketItem[itemId].marketplaceowner = payable(msg.sender);
+      idToMarketItem[itemId].owner = payable(msg.sender);
       idToMarketItem[itemId].sold = true;
       // idToMarketItem[tokenId].creator = payable(address(0));
       _itemsSold += 1;
-      _allowForPull(payable(marketplaceowner), marketPayment);
+      _allowForPull(payable(owner), marketPayment);
       _transfer(address(this), msg.sender, tokenId);
   }
 
@@ -199,7 +221,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     uint currentIndex = 0;
 
     for (uint i = 0; i < itemCount; i++) {
-      if (!idToMarketItem[i + 1].sold && idToMarketItem[i + 1].marketplaceowner == address(this)) {
+      if (!idToMarketItem[i + 1].sold && idToMarketItem[i + 1].owner == address(this)) {
         unsoldItemCount += 1;
       }
     }
@@ -207,7 +229,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     MarketItem[] memory items = new MarketItem[](unsoldItemCount);
     for (uint i = 0; i < itemCount; i++) {
       uint currentId = i + 1;
-      if (idToMarketItem[currentId].marketplaceowner == address(this)) {
+      if (idToMarketItem[currentId].owner == address(this)) {
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;
       }
@@ -217,19 +239,19 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
 
   /* Returns only items that a user has purchased */
   function fetchMyNFTs() public view returns (MarketItem[] memory) {
-    uint totalItemCount = _tokenIds;
+    uint totalItemCount = _itemIds;
     uint itemCount = 0;
     uint currentIndex = 0;
 
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].marketplaceowner == msg.sender) {
+      if (idToMarketItem[i + 1].owner == msg.sender) {
         itemCount += 1;
       }
     }
 
     MarketItem[] memory items = new MarketItem[](itemCount);
     for (uint i = 0; i < totalItemCount; i++) {
-      if (idToMarketItem[i + 1].marketplaceowner == msg.sender) {
+      if (idToMarketItem[i + 1].owner == msg.sender) {
         uint currentId = i + 1;
         MarketItem storage currentItem = idToMarketItem[currentId];
         items[currentIndex] = currentItem;

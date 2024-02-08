@@ -10,7 +10,7 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 contract FRDStaking is ReentrancyGuard {
 
     using SafeMath for uint256;
-
+    uint256 private stakeIds;
     address staker = msg.sender;
     address stakedeployer;
     uint timeNow = block.timestamp;
@@ -40,7 +40,6 @@ contract FRDStaking is ReentrancyGuard {
         uint stakeRewardPerDay;
         uint totalstakeReward;
         uint totalReward;
-        uint Stakes;
         bool isActive; 
         address stakerAddress;
     }
@@ -56,6 +55,7 @@ contract FRDStaking is ReentrancyGuard {
 
     mapping(address => uint256) private _balanceOf;
     mapping(address => Users) private userDetails;
+    mapping(address => Stakes) private MyStakes;
     mapping(address => Referrals) private referrals;
     address[] public userAddresses;
     mapping (address => bool) public stakedUsers;
@@ -171,17 +171,25 @@ contract FRDStaking is ReentrancyGuard {
                 interest_RatePerDay = stake_amount.mul(35).div(1000);
             }
 
-            userDetails[msg.sender].stakeCount++;
-            userDetails[msg.sender].userStakes[msg.sender].stakeId++;
-            userDetails[msg.sender].userStakes[msg.sender].rewardTime = timeNow + stake_duration * 1 days;
-            userDetails[msg.sender].userStakes[msg.sender].stakeDuration = stake_duration;
-            userDetails[msg.sender].userStakes[msg.sender].stakeRewardPerDay = interest_RatePerDay;
-            userDetails[msg.sender].userStakes[msg.sender].totalstakeReward = interest_RatePerDay.mul(stake_duration);
-            userDetails[msg.sender].userStakes[msg.sender].totalReward = stake_amount.add(userDetails[msg.sender].userStakes[msg.sender].totalstakeReward);
-            userDetails[msg.sender].userStakes[msg.sender].stakeAmount = stake_amount;
-            userDetails[msg.sender].hasStake = true;
-            userDetails[msg.sender].userStakes[msg.sender].isActive = true;
+            stakeIds += 1;
+            uint256 stakeId = stakeIds;
 
+            MyStakes[staker] = Stakes({
+                stakeId: stakeId,
+                rewardTime: timeNow + stake_duration * 1 days,
+                stakeDuration: stake_duration,
+                stakeAmount: stake_amount,
+                currentstakeReward: stake_amount,
+                stakeRewardPerDay: interest_RatePerDay,
+                totalstakeReward: interest_RatePerDay.mul(stake_duration),
+                totalReward: stake_amount.add(userDetails[msg.sender].userStakes[msg.sender].totalstakeReward),
+                isActive: true,
+                stakerAddress: msg.sender
+            });
+
+            userDetails[msg.sender].stakeCount++;
+            userDetails[msg.sender].hasStake = true;
+            
             uint stakerewardperDay = userDetails[msg.sender].userStakes[msg.sender].stakeRewardPerDay;
             uint total_reward = userDetails[msg.sender].userStakes[msg.sender].totalReward;
             uint totalstake_reward = userDetails[msg.sender].userStakes[msg.sender].totalstakeReward;
