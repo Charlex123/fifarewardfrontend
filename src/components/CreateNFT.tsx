@@ -72,6 +72,7 @@ export default function CreateItem() {
       console.log('Error uploading file: ', error)
     }  
   }
+
   async function uploadToIPFS() {
     const { name, description, price } = formInput
     if (!name || !description || !price || !fileUrl) return
@@ -90,10 +91,9 @@ export default function CreateItem() {
   }
 
   async function checkLogin() {
-    console.log('form input',formInput);
     if(formInput.description === "" || formInput.name === "" ) {
       setShowAlertDanger(true);
-      seterrorMessage("NFT art description and name are required!!");
+      seterrorMessage("NFT art image, description and name are required!!");
     }else {
       if(username && userId) {
         if(!isConnected) {

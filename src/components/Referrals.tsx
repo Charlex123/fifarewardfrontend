@@ -25,7 +25,7 @@ import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
-import StakeAbi from '../../artifacts/contracts/Stake.sol/Stake.json';
+import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import DappFooter from './DappFooter';
 import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
