@@ -1,7 +1,6 @@
 import React from 'react';
-import {
-  Landing, Navbar
-} from '../components';
+import Landing from '../components/landing/Landing';
+import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/Footer'
 import BackToTop from '../components/back-to-top/back-to-top';
 import ChangeTheme from '../components/change-theme/change-theme';
