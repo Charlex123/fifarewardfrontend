@@ -27,7 +27,7 @@ const DragDropImageUpload: React.FC<DragDropImageUploadProps> = ({ onFileUpload 
 
   return (
     <div {...getRootProps()} className={styles.dropzone}>
-      <input {...getInputProps()} />
+      <input {...getInputProps()} required/>
       {
         isDragActive ?
           <p>Drop the media here ...</p> :

@@ -133,13 +133,19 @@ function Navbar() {
                     <li><a href='/nft' rel='noopener noreferrer'>NFT Market Place</a></li>
                     <li><a href='/nft/createnft' rel='noopener noreferrer'>Create NFT</a></li>
                 </ul>
-                <div className={styles.con_btns}>
-                {!isConnected ? (
-                <button title='connect wallet' type='button' onClick={() => open()} className={styles.connect}>Connect Wallet</button>
-                ) : (
-                <button title='disconnect wallet' type='button' onClick={() => disconnect()} className={styles.connected}><span>connected</span>Disconnect</button>
-                )
+                {!isLoggedIn && 
+                    <ul className={styles.upa}>
+                        <li className={styles.si}><a href='/signin' rel='noopener noreferrer'>Sign In</a></li>
+                        <li className={styles.ld}><a href='/register' rel='noopener noreferrer'>Join Us</a></li>
+                    </ul>
                 }
+                <div className={styles.con_btns}>
+                {isLoggedIn && (!isConnected ? (
+                    <button title='connect wallet' type='button' onClick={() => open()} className={styles.connect}>Connect Wallet</button>
+                    ) : (
+                    <button title='disconnect wallet' type='button' onClick={() => disconnect()} className={styles.connected}><span>connected</span>Disconnect</button>
+                    )
+                )}
                 </div>
                 </div>)
                 }

@@ -10,7 +10,7 @@
 }
 .loginmodalmain .loginmodalmainin {
     position: absolute;background-color: #000000ea;left: 50%;transform: translate(-50%,50%);
-    padding: 2px 2px 2px 2px;top: -400px;border-radius: 4px;z-index: 9999;width: 50%;
+    padding: 2px 2px 2px 2px;top: -300px;border-radius: 4px;z-index: 9999;width: 50%;
     height: 70vh;margin: auto;
 }
 .loginmodalmain .closebtn button {

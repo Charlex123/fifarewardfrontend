@@ -1,13 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { ThemeContext } from '../../contexts/theme-context';
 import styles from '../../styles/navbar.module.css';
-import Link from '../link';
 import logo from '../../assets/images/logo.png';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faPeopleGroup, faChevronUp, faAngleRight, faFootball, faFootballBall, faRobot, faGamepad } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faTelegram, faBandcamp, faArtstation } from '@fortawesome/free-brands-svg-icons'
+import { faTwitter, faFontAwesome, faArtstation } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle, faSoccerBall } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 
@@ -15,9 +14,7 @@ function Navbar() {
     const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
     const [isNavOpen, setNavOpen] = useState(false);
     const [scrolling, setScrolling] = useState(false);
-    const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
     const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
-    const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
     const [username, setUsername] = useState<string>("");
     const [userId, setUserId] = useState<string>("");  
     const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
@@ -75,25 +72,11 @@ function Navbar() {
     setNavOpen(!isNavOpen);
     };
 
-    const toggleIconUp1 = () => {
-        setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
-    }
     const toggleIconUp2 = () => {
         setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
     }
-    const toggleIconUp3 = () => {
-        setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
-    }
-
-    const toggleIconDown1 = () => {
-        setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
-    }
     const toggleIconDown2 = () => {
         setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
-    }
-
-    const toggleIconDown3 = () => {
-        setDropdownIcon3(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
     }
 
 

@@ -14,10 +14,17 @@ const LogInSuccessModal:React.FC<Props> = ({prop}) => {
 
     const closeLoginModal = (divId:any) => {
         let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-        hiw_bgoverlay.style.display = 'none';
-        let loginSuccModal = document.querySelector('#loginsuccessmodal') as HTMLElement;
-        loginSuccModal.style.display = 'none';
-        router.reload();
+        if(hiw_bgoverlay) {
+            hiw_bgoverlay.style.display = 'none';
+            let loginSuccModal = document.querySelector('#loginsuccessmodal') as HTMLElement;
+            loginSuccModal.style.display = 'none';
+            router.reload();
+        }else {
+            let loginSuccModal = document.querySelector('#loginsuccessmodal') as HTMLElement;
+            loginSuccModal.style.display = 'none';
+            router.reload();
+        }
+        
     }
 
     // const showLoginModal = (divId:any) => {
