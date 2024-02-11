@@ -130,7 +130,10 @@ function Navbar() {
                 {isNavOpen && (
                 <div className={styles.nav_container_p}>
                 <ul className={styles.upa}>
-                    <li><a href='/nft' rel='noopener noreferrer'>NFT Market Place</a></li>
+                    <li><a href='/aichat' rel='noopener noreferrer'>AI Chat</a></li>
+                    <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li>
+                    <li><a href='/betting/' rel='noopener noreferrer'>Betting</a></li>
+                    <li><a href='/nft' rel='noopener noreferrer'>NFT MarketPlace</a></li>
                     <li><a href='/nft/createnft' rel='noopener noreferrer'>Create NFT</a></li>
                 </ul>
                 {!isLoggedIn && 

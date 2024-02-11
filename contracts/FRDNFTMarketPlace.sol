@@ -56,13 +56,14 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   mapping(address => uint) private credits;
 
   /* Mints a token and lists it in the marketplace */
-  function createToken(string memory tokenURI) public payable returns (uint) {
+  function createToken(string memory tokenURI, uint price) public payable returns (uint) {
     _tokenIds += 1;
     uint256 newTokenId = _tokenIds;
     console.log('new token Id', newTokenId);
     MintedNFTs[msg.sender].hascreatedToken = true;
     _mint(msg.sender, newTokenId);
     _setTokenURI(newTokenId, tokenURI);
+    createMarketItem(newTokenId,price);
     emit NFTMinted(tokenURI, newTokenId, msg.sender);
     return newTokenId;
   }

@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react'
 import Image from 'next/image'
-import { create as ipfsHttpClient } from 'ipfs-http-client'
+import { NFTStorage, File } from 'nft.storage'
 import { useRouter } from 'next/router';
 import AlertDanger from './AlertDanger';
-import Loading from './Loading';
-import ActionSuccessModal from './ActionSuccess';
 import LoginModal from './LoginModal';
 import BgOverlay from './BgOverlay';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
@@ -15,13 +13,16 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import styles from '../styles/createnft.module.css'
+const dotenv = require("dotenv");
+
+dotenv.config();
 
 export default function CreateItem() {
   
-  const ipfsHostUrl = 'https://ipfs.infura.io:5001/api/v0';
-  const client = (ipfsHttpClient as any)(ipfsHostUrl);
-
-  const [marketplaceAddress] = useState<any>("0x35af7BF4B48869554cB846260149d9318235ACCd");
+  const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
+  console.log('nft storage',nftStorageApiKey)
+  const [marketplaceAddress] = useState<any>("0xa7c575897e0DC6005e9a24A15067b201a033c453");
+  const [uploadedMedia, setUploadedMedia] = useState<any>(null);
   const [fileUrl, setFileUrl] = useState<any>(null);
   const { open } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
@@ -34,6 +35,7 @@ export default function CreateItem() {
   const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
   const [errorMessage,seterrorMessage] = useState<string>("");
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
+  const client = new NFTStorage({ token: nftStorageApiKey });
   const [formInput, updateFormInput] = useState({ price: '1', name: '', description: '' });
   const router = useRouter();
 
@@ -55,43 +57,31 @@ export default function CreateItem() {
     
   },[username,userId])
 
-  console.log('chain Id',chainId, marketplaceAddress)
   async function handleFileUpload(file: File) {
-    console.log('File to upload:', file);
-    
-    try {
-      const added = await client.add(
-        file,
-        {
-          progress: (prog:any) => console.log(`received: ${prog}`)
-        }
-      )
-      const url = `https://ipfs.infura.io/ipfs/${added.path}`
-      setFileUrl(url)
-    } catch (error) {
-      console.log('Error uploading file: ', error)
-    }  
+      console.log('File to upload:', file);
+      setUploadedMedia(file)
   }
 
   async function uploadToIPFS() {
     const { name, description, price } = formInput
-    if (!name || !description || !price || !fileUrl) return
+    if (!name || !description || !price || !uploadedMedia) return
     /* first, upload to IPFS */
-    const data = JSON.stringify({
-      name, description, image: fileUrl
-    })
+    const nft = {
+      name:name, description:description, image: uploadedMedia
+    }
     try {
-      const added = await client.add(data)
-      const url = `https://ipfs.infura.io:5001/api/${added.path}`
+      const metadata = await client.store(nft)
+      
       /* after file is uploaded to IPFS, return the URL to use it in the transaction */
-      return url
+      console.log('nft metadata',metadata);
+      setFileUrl(metadata.url)
     } catch (error) {
       console.log('Error uploading file: ', error)
     }  
   }
 
   async function checkLogin() {
-    if(formInput.description === "" || formInput.name === "" ) {
+    if(formInput.description === "" || formInput.name === "" || uploadedMedia === null || uploadedMedia  === "") {
       setShowAlertDanger(true);
       seterrorMessage("NFT art image, description and name are required!!");
     }else {
@@ -109,18 +99,19 @@ export default function CreateItem() {
   }
 
   async function createNFT() {
-    
-    const url = await uploadToIPFS()
+    console.log('uploaded media',uploadedMedia)
     const provider = new ethers.providers.Web3Provider(walletProvider as any);
     console.log('provider',provider, 'contract address',marketplaceAddress)
     const signer = provider.getSigner();
 
+    console.log('url',fileUrl)
     /* next, create the item */
-    let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace.abi, signer);
-    let transaction = await contract.createToken(url)
+    let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
+    console.log('contract',contract)
+    let transaction = await contract.createToken(fileUrl)
     await transaction.wait()
-   
-    router.push('/')
+    console.log('transaction',transaction)
+    // router.push('/')
   }
 
   const closeLoginModal = () => {
