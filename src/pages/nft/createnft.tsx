@@ -5,7 +5,7 @@ import CreateNFT from '../../components/CreateNFT';
 import NFTMarKetPlaceNavBar from '../../components/navbar/NFTMarketPlaceNavbar';
 import Footer from '../../components/Footer';
 
-function NFTArt() {
+function CreateNFTArt() {
 
   return (
     <>
@@ -18,4 +18,4 @@ function NFTArt() {
   )
 }
 
-export default NFTArt
+export default CreateNFTArt

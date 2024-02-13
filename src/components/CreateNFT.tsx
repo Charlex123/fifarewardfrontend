@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { NFTStorage, File } from 'nft.storage'
 import { useRouter } from 'next/router';
 import AlertDanger from './AlertDanger';
+import Loading from './Loading';
 import LoginModal from './LoginModal';
 import BgOverlay from './BgOverlay';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
@@ -20,10 +21,9 @@ dotenv.config();
 export default function CreateItem() {
   
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
-  console.log('nft storage',nftStorageApiKey)
   const [marketplaceAddress] = useState<any>("0xa7c575897e0DC6005e9a24A15067b201a033c453");
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
-  const [fileUrl, setFileUrl] = useState<any>(null);
+  const [fileUrl, setFileUrl] = useState<string>("");
   const { open } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
@@ -74,7 +74,8 @@ export default function CreateItem() {
       
       /* after file is uploaded to IPFS, return the URL to use it in the transaction */
       console.log('nft metadata',metadata);
-      setFileUrl(metadata.url)
+      setFileUrl(metadata.url);
+      createNFT();
     } catch (error) {
       console.log('Error uploading file: ', error)
     }  
@@ -89,7 +90,7 @@ export default function CreateItem() {
         if(!isConnected) {
           open()
         }else {
-          createNFT();
+          uploadToIPFS();
         }
       }else {
         setShowBgOverlay(true);
@@ -107,11 +108,9 @@ export default function CreateItem() {
     console.log('url',fileUrl)
     /* next, create the item */
     let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
-    console.log('contract',contract)
     let transaction = await contract.createToken(fileUrl)
-    await transaction.wait()
-    console.log('transaction',transaction)
-    // router.push('/')
+    await transaction.wait();
+    router.push('../nft/mynfts')
   }
 
   const closeLoginModal = () => {
