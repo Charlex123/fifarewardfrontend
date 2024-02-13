@@ -43,9 +43,9 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   }
 
   struct NFTMints {
+    uint256 tokenId;
     string tokenURI;
     address creator;
-    uint256 tokenId;
     bool hascreatedToken;
   }
 
@@ -53,17 +53,30 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
 
   mapping(uint256 => MarketItem) private idToMarketItem;
   mapping(address => NFTMints) private MintedNFTs;
+  mapping(uint256 => NFTMints) private MintedNFTIds;
   mapping(address => uint) private credits;
 
   /* Mints a token and lists it in the marketplace */
-  function createToken(string memory tokenURI, uint price) public payable returns (uint) {
+  function createToken(string memory tokenURI) public payable returns (uint) {
     _tokenIds += 1;
     uint256 newTokenId = _tokenIds;
     console.log('new token Id', newTokenId);
-    MintedNFTs[msg.sender].hascreatedToken = true;
+    MintedNFTIds[newTokenId] = NFTMints({
+      tokenURI: tokenURI,
+      creator: payable(msg.sender),
+      tokenId: newTokenId,
+      hascreatedToken: true 
+    });
+    MintedNFTs[msg.sender] = NFTMints({
+      tokenURI: tokenURI,
+      creator: payable(msg.sender),
+      tokenId: newTokenId,
+      hascreatedToken: true 
+    });
+    console.log("msg sender in token creation",msg.sender);
+    console.log("nft created by",MintedNFTIds[newTokenId].creator);
     _mint(msg.sender, newTokenId);
     _setTokenURI(newTokenId, tokenURI);
-    createMarketItem(newTokenId,price);
     emit NFTMinted(tokenURI, newTokenId, msg.sender);
     return newTokenId;
   }
@@ -76,6 +89,31 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     require(owner == msg.sender, "Only marketplace owner can update reward percentage.");
     salesFeeBasisPoints = rewardPercentage;
   }
+
+  function getMintedNfts() public view returns (NFTMints[] memory) {
+    uint totalTokenIds = _tokenIds;
+    uint nfttokenCount = 0;
+    uint currentIndex = 0;
+
+    for(uint i = 0; i < totalTokenIds; i++) {
+      if(MintedNFTIds[i+1].creator == msg.sender) {
+        nfttokenCount += 1;
+      }
+    }
+
+    console.log("nft tokens count",nfttokenCount);
+    console.log("nft creator address",MintedNFTIds[nfttokenCount].creator);
+
+    NFTMints[] memory ntfscreated = new NFTMints[](nfttokenCount);
+    for(uint i = 0; i < nfttokenCount; i++) {
+      if(MintedNFTIds[i+1].creator == msg.sender) {
+        NFTMints storage currentNFT = MintedNFTIds[i+1];
+        ntfscreated[currentIndex] = currentNFT;
+        currentIndex += 1;
+      }
+    }
+    return ntfscreated;
+  } 
 
   function createMarketItem(
     uint256 tokenId_,
@@ -98,9 +136,6 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       sold : false
     });
     
-    console.log("creator addr",idToMarketItem[itemId].creator);
-    console.log(" item Id 2222222--", itemId);
-
     emit MarketItemCreated(
       tokenId_,
       itemId,
@@ -222,13 +257,14 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     uint currentIndex = 0;
 
     for (uint i = 0; i < itemCount; i++) {
-      if (!idToMarketItem[i + 1].sold && idToMarketItem[i + 1].owner == address(this)) {
+      if (idToMarketItem[i + 1].sold == false && idToMarketItem[i + 1].owner == address(this)) {
         unsoldItemCount += 1;
       }
     }
+    console.log("unsold item count",unsoldItemCount);
 
     MarketItem[] memory items = new MarketItem[](unsoldItemCount);
-    for (uint i = 0; i < itemCount; i++) {
+    for (uint i = 0; i < unsoldItemCount; i++) {
       uint currentId = i + 1;
       if (idToMarketItem[currentId].owner == address(this)) {
         MarketItem storage currentItem = idToMarketItem[currentId];
@@ -238,8 +274,20 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     return items;
   }
 
+function getUserNFTMintedCount() public view returns (uint) {
+    uint totalTokenIds = _tokenIds;
+    uint nfttokenCount = 0;
+
+    for(uint i = 0; i < totalTokenIds; i++) {
+      if(MintedNFTIds[i+1].creator == msg.sender) {
+        nfttokenCount += 1;
+      }
+    }
+
+    return nfttokenCount;
+}
   /* Returns only items that a user has purchased */
-  function fetchMyNFTs() public view returns (MarketItem[] memory) {
+  function fetchUserPurchasedNFTs() public view returns (MarketItem[] memory) {
     uint totalItemCount = _itemIds;
     uint itemCount = 0;
     uint currentIndex = 0;
