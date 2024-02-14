@@ -6,6 +6,7 @@ import bgopt1 from '../assets/images/aibg.png';
 import bgopt2 from '../assets/images/aibg2.jpg';
 import bgopt3 from '../assets/images/aibg3.jpg';
 import nftbanner from '../assets/images/aibg2.jpg'
+import Loading from './Loading';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
 import { ethers } from 'ethers';
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
@@ -24,6 +25,7 @@ library.add(faEye, faEyeSlash);
 const MyNFTs: React.FC<{}> = () =>  {
 
     const [showloading, setShowLoading] = useState<boolean>(false);
+    const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
     const { address, chainId, isConnected } = useWeb3ModalAccount();
     const { disconnect } = useDisconnect();
@@ -46,21 +48,26 @@ const MyNFTs: React.FC<{}> = () =>  {
             setIsloggedIn(false);
         }
         
+        async function getMyNFTs() {
+            const provider = new ethers.providers.Web3Provider(walletProvider as any);
+            console.log('provider',provider, 'contract address',marketplaceAddress)
+            const signer = provider.getSigner();
+            console.log("signer ",signer,address)
+            /* next, create the item */
+            let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
+            let transaction = await contract.getMintedNfts()
+            await transaction.wait();
+            console.log(transaction)
+        }
+        getMyNFTs()
         
     },[username,userId])
   
-    async function getMyNFTs() {
-        const provider = new ethers.providers.Web3Provider(walletProvider as any);
-        console.log('provider',provider, 'contract address',marketplaceAddress)
-        const signer = provider.getSigner();
     
-        /* next, create the item */
-        let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
-
-      }
 
   return (
     <>
+    {showloading && <Loading/>}
       <div className={styles.main}>
         <div className={styles.main_bg_overlay}></div>
           <div>

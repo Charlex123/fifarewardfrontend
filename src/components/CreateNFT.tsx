@@ -23,6 +23,7 @@ export default function CreateItem() {
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
   const [marketplaceAddress] = useState<any>("0xa7c575897e0DC6005e9a24A15067b201a033c453");
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
+  const [showloading, setShowLoading] = useState<boolean>(false);
   const [fileUrl, setFileUrl] = useState<string>("");
   const { open } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
@@ -125,7 +126,7 @@ export default function CreateItem() {
   return (
     <>
       {showBgOverlay && <BgOverlay />}
-      
+      {showloading && <Loading/>}
       <div className={styles.main}>
         {showloginComp && <LoginModal prop={'Create NFT'} onChange={closeLoginModal}/>}
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
