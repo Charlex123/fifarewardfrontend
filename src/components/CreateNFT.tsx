@@ -101,12 +101,10 @@ export default function CreateItem() {
   }
 
   async function createNFT() {
-    console.log('uploaded media',uploadedMedia)
     const provider = new ethers.providers.Web3Provider(walletProvider as any);
     console.log('provider',provider, 'contract address',marketplaceAddress)
     const signer = provider.getSigner();
 
-    console.log('url',fileUrl)
     /* next, create the item */
     let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
     let transaction = await contract.createToken(fileUrl)

@@ -42,8 +42,7 @@ const MyNFTs: React.FC<{}> = () =>  {
             setUsername(username_);
             setUserId(udetails.userId);
             setIsloggedIn(true);
-            
-        }
+            }
         }else {
             setIsloggedIn(false);
         }
@@ -55,9 +54,10 @@ const MyNFTs: React.FC<{}> = () =>  {
             console.log("signer ",signer,address)
             /* next, create the item */
             let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
-            let transaction = await contract.getMintedNfts()
-            await transaction.wait();
-            console.log(transaction)
+            console.log('contract',contract)
+            // await contract.getMintedNfts();
+            // await transaction.wait();
+            // console.log(transaction)
         }
         getMyNFTs()
         
