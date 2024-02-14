@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useState,useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -23,11 +23,42 @@ dotenv.config();
 library.add(faEye, faEyeSlash);
 const MyNFTs: React.FC<{}> = () =>  {
 
- 
-  useEffect(() => {
-    
-  })
+    const [showloading, setShowLoading] = useState<boolean>(false);
+    const { walletProvider } = useWeb3ModalProvider();
+    const { address, chainId, isConnected } = useWeb3ModalAccount();
+    const { disconnect } = useDisconnect();
+    const [username, setUsername] = useState<string>("");
+    const [userId, setUserId] = useState<number>();
+    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
+    const [marketplaceAddress] = useState<any>("0xa7c575897e0DC6005e9a24A15067b201a033c453");
+
+    useEffect(() => {
+        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+        if(udetails && udetails !== null && udetails !== "") {
+        const username_ = udetails.username;  
+        if(username_) {
+            setUsername(username_);
+            setUserId(udetails.userId);
+            setIsloggedIn(true);
+            
+        }
+        }else {
+            setIsloggedIn(false);
+        }
+        
+        
+    },[username,userId])
   
+    async function getMyNFTs() {
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        console.log('provider',provider, 'contract address',marketplaceAddress)
+        const signer = provider.getSigner();
+    
+        /* next, create the item */
+        let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
+
+      }
+
   return (
     <>
       <div className={styles.main}>
