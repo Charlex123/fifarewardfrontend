@@ -83,6 +83,7 @@ export default function CreateItem() {
   }
 
   async function checkLogin() {
+    setShowLoading(true);
     if(formInput.description === "" || formInput.name === "" || uploadedMedia === null || uploadedMedia  === "") {
       setShowAlertDanger(true);
       seterrorMessage("NFT art image, description and name are required!!");
@@ -101,15 +102,19 @@ export default function CreateItem() {
   }
 
   async function createNFT() {
-    const provider = new ethers.providers.Web3Provider(walletProvider as any);
-    console.log('provider',provider, 'contract address',marketplaceAddress)
-    const signer = provider.getSigner();
+    
+    if(walletProvider) {
+      const provider = new ethers.providers.Web3Provider(walletProvider as any);
+      console.log('provider',provider, 'contract address',marketplaceAddress)
+      const signer = provider.getSigner();
 
-    /* next, create the item */
-    let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
-    let transaction = await contract.createToken(fileUrl)
-    await transaction.wait();
-    router.push('../nft/mynfts')
+      /* next, create the item */
+      let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace.abi, signer);
+      let transaction = await contract.createToken(fileUrl)
+      await transaction.wait();
+      setShowLoading(false);
+      router.push('../nft/mynfts')
+    }
   }
 
   const closeLoginModal = () => {

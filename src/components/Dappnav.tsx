@@ -162,7 +162,7 @@ function Navbar() {
                       <a href='/dapp' rel='noopener noreferrer' className={styles.si}>Dapp</a>
                     </li>
                     <li>
-                      <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={styles.buytafa}>BUY TAFAXTRA</a>
+                      <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={styles.buytafa}>BUY FRD</a>
                     </li>
                     <li>
                       <a href='/referrals' rel='noopener noreferrer' className={styles.si}>Referrals</a>

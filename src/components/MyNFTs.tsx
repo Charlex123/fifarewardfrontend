@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useContext,useState,useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -47,23 +47,36 @@ const MyNFTs: React.FC<{}> = () =>  {
             setIsloggedIn(false);
         }
         
-        async function getMyNFTs() {
-            const provider = new ethers.providers.Web3Provider(walletProvider as any);
-            console.log('provider',provider, 'contract address',marketplaceAddress)
-            const signer = provider.getSigner();
-            console.log("signer ",signer,address)
-            /* next, create the item */
-            let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace, signer);
-            console.log('contract',contract)
-            // await contract.getMintedNfts();
-            // await transaction.wait();
-            // console.log(transaction)
-        }
-        getMyNFTs()
-        
     },[username,userId])
   
     
+    async function getMyNFTs() {
+        try {
+            if(walletProvider) {
+                const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+                const signer = provider.getSigner();
+                console.log("signer ",signer,address);
+                console.log("eal ",signer,address)
+                
+                /* next, create the item */
+                let contractsss = new ethers.Contract(marketplaceAddress, NFTMarketPlace.abi, signer);
+                console.log('contract',contractsss)
+                console.log('get code',provider.getCode(address || ''));
+                if(contractsss) {
+                    contractsss.getMintedNfts();
+                }
+                // let transaction = await contractsss.createToken('primehealth.ng');
+                // await transaction.wait();
+                // console.log('transactions ccc',transaction)
+            
+            }
+        } catch (error) {
+            console.error('Error creating Web3Provider:', error);
+            // Handle or rethrow the error as needed
+        }
+        
+    }
+    getMyNFTs();
 
   return (
     <>

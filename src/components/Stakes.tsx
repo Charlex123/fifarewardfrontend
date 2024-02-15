@@ -40,7 +40,7 @@ const Dapp = () =>  {
 
   const router = useRouter();
 
-  const TAFAAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
+  const FRDAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
   const StakeAddress = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
 
   const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
@@ -133,11 +133,13 @@ const handleCopyClick = () => {
 
   // define contract data
   
-  const StakeTAFA = async () => {
+  const StakeFRD = async () => {
     try {
-      setWAlert(!wAlert);
+      // setWAlert(!wAlert);
       const provider = new ethers.providers.Web3Provider(walletProvider as any)
-      const signer = provider.getSigner()
+      const signer = provider.getSigner();
+      console.log('stakes provider',provider);
+      console.log('stakes signer',provider);
       const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
       const reslt = await StakeContract.stake(StakeAddress,stakeAmount);
       console.log(reslt)
@@ -145,6 +147,7 @@ const handleCopyClick = () => {
       console.log(error)
     }
   }
+  StakeFRD()
 
   const Approve = async () => {
     
@@ -153,10 +156,10 @@ const handleCopyClick = () => {
       // setShowTimer(!showTimer);
       const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
-      const TAFAContract = new ethers.Contract(TAFAAddress, FRDAbi.abi, signer);
-      const reslt = await TAFAContract.approve(StakeAddress,stakeAmount);
+      const FRDContract = new ethers.Contract(FRDAddress, FRDAbi.abi, signer);
+      const reslt = await FRDContract.approve(StakeAddress,stakeAmount);
       if(reslt) {
-        StakeTAFA();
+        StakeFRD();
       }
     } catch (error:any) {
       setDappConnector(true);
@@ -176,7 +179,7 @@ const handleCopyClick = () => {
       const reslt = await stakeContract.hasStake(signer);
       if(reslt === true) {
         setShowTimer(true)
-        StakeTAFA()
+        StakeFRD()
       }else if(reslt === false) {
         Approve()
       }
@@ -230,7 +233,7 @@ const handleCopyClick = () => {
       if(username_) {
         setUsername(username_);
         setUserId(udetails.userId)
-        setreferralLink(`https://tafaextra.io/register/${udetails.userId}`);
+        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
       }
     }else {
       router.push(`/signin`);
@@ -243,7 +246,7 @@ const handleCopyClick = () => {
             "Content-type": "application/json"
         }
         }  
-        const {data} = await axios.post("https://tafabackend.onrender.com/api/users/getwalletaddress/", {
+        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/getwalletaddress/", {
           username
         }, config);
         setWalletAddress(data.message);
@@ -360,7 +363,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                               <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}>Dapp</a>
                             </li>
                             <li>
-                              <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY TAFA</a>
+                              <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
                             </li>
                             <li><a href='/stakes' rel='noopener noreferrer' className={dappsidebarstyles.linka}>My Stakes</a></li>
                             <li>
@@ -379,7 +382,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                             </li>
                         </ul>
                         <ul className={dappsidebarstyles.upa}>
-                            <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake TafaXtra</a></li>
+                            <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
                             <li><button type='button' onClick={logout} className={dappsidebarstyles.linka}>Logout</button></li>
                         </ul>
                         
@@ -390,9 +393,9 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               <div className={`${dappstyles.main} ${sideBarToggleCheck}`}>
               <div className={dappstyles.con_btns}>
               {!isConnected ? (
-                <button onClick={() => open()} className={dappstyles.connect}> Connect Wallet</button>
+                <button onClick={() => open()} className={dappstyles.connect}> Connect Wallet </button>
                 ) : (
-                <button onClick={() => disconnect()} className={dappstyles.connected}><span>connected</span>Disconnect</button>
+                <button onClick={() => disconnect()} className={dappstyles.connected}> Disconnect </button>
                 )}
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
@@ -406,13 +409,13 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
                 <div className={dappstyles.stake}>
                     <div className={dappstyles.stake_mod}>
-                        <div className={dappstyles.top}><h1>Stake Your TafaXtra</h1></div>
+                        <div className={dappstyles.top}><h1>Stake Your FRD</h1></div>
                         <div className={dappstyles.s_m}>
-                          <h3>Stake TafaXtra to earn 2% profit daily</h3>
+                          <h3>Stake FRD to earn 2% profit daily</h3>
                           <div className={dappstyles.s_m_in}>
                               <div className={dappstyles.s_m_inna}>
                                 <div className={dappstyles.s_m_in_c}>
-                                    <div className={dappstyles.s_a}>Stake Amount <div>{stakeAmount} TAFA</div></div>
+                                    <div className={dappstyles.s_a}>Stake Amount <div>{stakeAmount} FRD</div></div>
                                     <div className={dappstyles.s_b}>Bonus <div>2% Daily</div></div>
                                 </div>
                                 <div className={dappstyles.amountprog}>
@@ -453,7 +456,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                 <ul>
                                   <li>
                                     <div className={dappstyles.ir_c}>
-                                      <div>INTEREST</div> <div>TAFA REWARD</div>
+                                      <div>INTEREST</div> <div>FRD REWARD</div>
                                     </div>
                                   </li>
                                   <li>
