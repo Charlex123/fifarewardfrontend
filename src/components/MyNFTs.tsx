@@ -2,10 +2,11 @@ import React, { useContext,useState,useEffect } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import bgopt1 from '../assets/images/aibg.png';
-import bgopt2 from '../assets/images/aibg2.jpg';
-import bgopt3 from '../assets/images/aibg3.jpg';
-import nftbanner from '../assets/images/aibg2.jpg'
+import messi1 from '../assets/images/messi.png';
+import messi from '../assets/images/messi3.jpg';
+import messi2 from '../assets/images/messi3.png';
+import zidane1 from '../assets/images/zidane2.jpg';
+import osimhen from '../assets/images/osimhen.jpg';
 import Loading from './Loading';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
 import { ethers } from 'ethers';
@@ -33,7 +34,7 @@ const MyNFTs: React.FC<{}> = () =>  {
     const [userId, setUserId] = useState<number>();
     const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
     const [marketplaceAddress] = useState<any>("0xa7c575897e0DC6005e9a24A15067b201a033c453");
-
+    const [contractAddress] = useState<any>("0x871a9C28F81139dCC8571b744d425FFc2c707b15");
     useEffect(() => {
         const udetails = JSON.parse(localStorage.getItem("userInfo")!);
         if(udetails && udetails !== null && udetails !== "") {
@@ -59,15 +60,13 @@ const MyNFTs: React.FC<{}> = () =>  {
                 console.log("eal ",signer,address)
                 
                 /* next, create the item */
-                let contractsss = new ethers.Contract(marketplaceAddress, NFTMarketPlace.abi, signer);
+                let contractsss = new ethers.Contract(contractAddress, NFTMarketPlace, signer);
                 console.log('contract',contractsss)
                 console.log('get code',provider.getCode(address || ''));
                 if(contractsss) {
-                    contractsss.getMintedNfts();
+                    let mintednfts = await contractsss.getMintedNfts();
+                    console.log('minted nfts',mintednfts);
                 }
-                // let transaction = await contractsss.createToken('primehealth.ng');
-                // await transaction.wait();
-                // console.log('transactions ccc',transaction)
             
             }
         } catch (error) {
@@ -105,14 +104,14 @@ const MyNFTs: React.FC<{}> = () =>  {
                 <div className={styles.nft_option}>
                   <div className={styles.nft_options_}>
                     <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
+                        <Image src={messi2}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
                         <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                            <div className={styles.nft_pfh}><h2>Lionel Messi {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
                             <div className={styles.nft_addr}>
                                 <span>0x456...</span>
                             </div>
                             <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
+                                <div className={styles.nft_pf}>1500FRD</div>
                                 <div className={styles.nft_pf_btn}>Buy</div>
                             </div>
                         </div>
@@ -120,44 +119,14 @@ const MyNFTs: React.FC<{}> = () =>  {
                   </div>
                   <div className={styles.nft_options_}>
                     <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
+                        <Image src={zidane1}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
                         <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                            <div className={styles.nft_pfh}><h2>Zinadane Zidane {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
                             <div className={styles.nft_addr}>
                                 <span>0x456...</span>
                             </div>
                             <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
-                                <div className={styles.nft_pf_btn}>Buy</div>
-                            </div>
-                        </div>
-                    </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                        <a className={styles.nft_link} href='/nft/nft-link-address'>
-                            <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                            <div className={styles.nft_head}>
-                                <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                                <div className={styles.nft_addr}>
-                                    <span>0x456...</span>
-                                </div>
-                                <div className={styles.nft_price}>
-                                    <div className={styles.nft_pf}>10000FRD</div>
-                                    <div className={styles.nft_pf_btn}>Buy</div>
-                                </div>
-                            </div>
-                        </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                    <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                        <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                            <div className={styles.nft_addr}>
-                                <span>0x456...</span>
-                            </div>
-                            <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
+                                <div className={styles.nft_pf}>500FRD</div>
                                 <div className={styles.nft_pf_btn}>Buy</div>
                             </div>
                         </div>
@@ -165,14 +134,14 @@ const MyNFTs: React.FC<{}> = () =>  {
                   </div>
                   <div className={styles.nft_options_}>
                     <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
+                        <Image src={osimhen}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
                         <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                            <div className={styles.nft_pfh}><h2>Victor Osimhen {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
                             <div className={styles.nft_addr}>
                                 <span>0x456...</span>
                             </div>
                             <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
+                                <div className={styles.nft_pf}>1000FRD</div>
                                 <div className={styles.nft_pf_btn}>Buy</div>
                             </div>
                         </div>
@@ -180,104 +149,14 @@ const MyNFTs: React.FC<{}> = () =>  {
                   </div>
                   <div className={styles.nft_options_}>
                     <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
+                        <Image src={messi}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
                         <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                            <div className={styles.nft_pfh}><h2>Lionel Messi {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
                             <div className={styles.nft_addr}>
                                 <span>0x456...</span>
                             </div>
                             <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
-                                <div className={styles.nft_pf_btn}>Buy</div>
-                            </div>
-                        </div>
-                    </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                    <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                        <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                            <div className={styles.nft_addr}>
-                                <span>0x456...</span>
-                            </div>
-                            <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
-                                <div className={styles.nft_pf_btn}>Buy</div>
-                            </div>
-                        </div>
-                    </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                    <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                        <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                            <div className={styles.nft_addr}>
-                                <span>0x456...</span>
-                            </div>
-                            <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
-                                <div className={styles.nft_pf_btn}>Buy</div>
-                            </div>
-                        </div>
-                    </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                    <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                        <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                            <div className={styles.nft_addr}>
-                                <span>0x456...</span>
-                            </div>
-                            <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
-                                <div className={styles.nft_pf_btn}>Buy</div>
-                            </div>
-                        </div>
-                    </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                    <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt1}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                        <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                            <div className={styles.nft_addr}>
-                                <span>0x456...</span>
-                            </div>
-                            <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
-                                <div className={styles.nft_pf_btn}>Buy</div>
-                            </div>
-                        </div>
-                    </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                    <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt2}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                        <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                            <div className={styles.nft_addr}>
-                                <span>0x456...</span>
-                            </div>
-                            <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
-                                <div className={styles.nft_pf_btn}>Buy</div>
-                            </div>
-                        </div>
-                    </a>
-                  </div>
-                  <div className={styles.nft_options_}>
-                    <a className={styles.nft_link} href='/nft/nft-link-address'>
-                        <Image src={bgopt3}  style={{objectFit:'cover',width: '100%',height: '73%',borderTopLeftRadius: '8px',borderTopRightRadius: '8px'}} alt='bg options'/>
-                        <div className={styles.nft_head}>
-                            <div className={styles.nft_pfh}><h2>Football Leegend Name {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                            <div className={styles.nft_addr}>
-                                <span>0x456...</span>
-                            </div>
-                            <div className={styles.nft_price}>
-                                <div className={styles.nft_pf}>10000FRD</div>
+                                <div className={styles.nft_pf}>2000FRD</div>
                                 <div className={styles.nft_pf_btn}>Buy</div>
                             </div>
                         </div>

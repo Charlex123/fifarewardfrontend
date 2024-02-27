@@ -69,7 +69,7 @@ const handleCopyClick = () => {
                   <h3>Feature</h3>
                   <div className={footerstyles.f_c}>
                      <div>
-                        <a href='/#tafastaking' rel='noopener noreferrer' ><FontAwesomeIcon icon={faCircleDollarToSlot} size='lg' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Staking Rewards</span></a>
+                        <a href='/#staking' rel='noopener noreferrer' ><FontAwesomeIcon icon={faCircleDollarToSlot} size='lg' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Staking Rewards</span></a>
                      </div>
                      <div>
                         <a href='/#freeclaim' rel='noopener noreferrer' ><FontAwesomeIcon icon={faGift} size='lg' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>FifaReward Free Claim</span></a>
@@ -82,7 +82,7 @@ const handleCopyClick = () => {
             </div>
 
             <div className={footerstyles.footer_c3}>
-               <h3>TAFXTRA Contract</h3>
+               <h3>FRD Contract</h3>
                <div className={footerstyles.f_c}>
                   <div><span>Contract Address:</span></div>
                   <div><input title='input' type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button></div>

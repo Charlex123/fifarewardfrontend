@@ -31,6 +31,7 @@ import pcslogo from '../../assets/images/pcs.png';
 import huobilogo from '../../assets/images/huobi.png';
 import kucoinlogo from '../../assets/images/kucoin.png';
 import stakevest from '../../assets/images/stakevest.png'
+import fworldmap from '../../assets/images/world-map.png'
 import teamwork from '../../assets/images/Teamwork.png'
 import polychlogo from '../../assets/images/blockchain-polygon-white-024b04f0.png';
 import { ThemeContext } from '../../contexts/theme-context';
@@ -170,11 +171,14 @@ useEffect(() => {
     <div className={styles.homemain}>
       <div className={styles.overlay_d}></div>
       <div className={styles.c_content}>
+        <video className={styles.bg_video} autoPlay loop muted >
+          <source src="./matchbg.mp4" type="video/mp4"></source>
+        </video>
         <div className={styles.c_overlay_d}></div>
           <div className={styles.hero_h1}>
             <div>
               <h1 className={styles.h1}>
-                Welcome To FIFA REWARD  
+                WELCOME TO FIFA REWARD  
               </h1>
             </div>
             <Typed
@@ -215,8 +219,23 @@ useEffect(() => {
           </div> */}
       </div>
       {/* fifa reward betting */}
-      <div>
-          
+      <div className={styles.connectworld}>
+          <div className={styles.conn_inner}>
+            <div className={styles.connectw}>
+              <h1>Connecting the world through football</h1>
+              <p>
+                Football is a sensational sport that connects the world. 
+              </p>
+              <div>
+                <p><span>FifaReward</span> connects the world through blockchain.</p> 
+                <p>The first complete decentralized betting system on the blockchain <a href='/betting'>bet on the blockchain</a></p>
+                <p>Unique NFT market place of football and soccer legends <a href='/nft'>visit NFT market place</a></p>
+              </div>
+            </div>
+            <div className={styles.conn_image}>
+              <Image src={fworldmap} alt='connecting the world through football' />
+            </div>
+          </div>
       </div>
 
       {/* dex tools */}

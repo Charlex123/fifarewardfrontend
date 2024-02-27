@@ -4,6 +4,35 @@
 .main .main_c {
     display: flex;width: 96%;justify-content: space-between;flex-direction: row;margin: 15px auto;align-items: center;
 }
+.main .addtraits {
+    position: absolute;margin: 5rem auto; background-color: #373434;width: 40%;
+    border-radius: 16px;z-index: 999;text-align: center;left: 0;right: 0;color: #e2d7d7;
+    padding: 10px 10px 10px 10px;
+}
+.main .addtraits .addtraits_h {
+    display: flex;flex-direction: row;justify-content: space-between;margin: 15px 0 35px 0;
+    border-bottom: 1px solid #8d8f9161;
+}
+.main .addtraits .addtraits_h h1 {
+    font-weight: 600;
+}
+.main .addtraits .addtraits_c_ina {
+    display: flex;flex-direction: row;justify-content: space-between;margin: 15px 0;
+}
+.main .addtraits .addtraits_c_ina .addtc {
+    width: 45%;text-align: left;
+}
+.main .addtraits .addtraits_c_ina label {
+    text-align: left;width: 100%;font-size: 14px;font-weight: 600;
+}
+.main .addtraits .addtraits_c_ina input {
+    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 14px;
+}
+.main .addtraits .addtraits_c_in button {
+        background-color: #e3a204;width: 100%;padding: 4px 6px;border-radius: 8px;margin: 35px auto;
+        text-align: center;color: #454545;font-weight: 800;
+}
 .main .main_c .dragdrop {
     width: 40%;background-color: #e2d7d71f;border-radius: 16px;
 }
@@ -12,7 +41,10 @@
     background-color: #e2d7d71f;
 }
 .main .main_c .nft_art_desc .form_g {
-    width: 100%;margin: 15px auto;text-align: left;
+    width: 100%;margin: 15px 0 15px 0;text-align: left;
+}
+.main .main_c .nft_art_desc .form_g label {
+    font-size: 14px;font-weight: 600;
 }
 .main .main_c .nft_art_desc .form_g .input_ {
     width: 100%;background-color: #e2d7d74b;height: 40px;border-radius: 8px;padding-left: 4px;
@@ -31,6 +63,13 @@
 .main .main_c .nft_art_desc .form_g button {
     width: 100%;background-color: #e3a204;width: 100%;text-align: center;margin: auto;
     padding: 2px 18px 2px 18px;border-radius: 16px;height: 40px;
+}
+.main .main_c .nft_art_desc .form_g p {
+    color: #e2d7d7;margin: 10px 0;font-size: 14px;
+}
+.main .main_c .nft_art_desc .form_g button.add_traits {
+    background-color: #ffffff;width: fit-content;color: #454545;
+    padding: 2px 8px 2px 8px;height: 30px;margin-bottom: 20px;
 }
 .main .main_c .nft_art_desc .form_g .label {
     text-align: left;font-size: 13px;color: #e2d7d7;margin: 0;

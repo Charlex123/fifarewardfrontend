@@ -27,10 +27,23 @@
 }
 .c_content {    
     margin: auto;padding: 105px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;margin-top: -30px;
-    overflow: hidden;background-image: url("../assets/images/footballstadium.jpg");background-position: cover;
+    overflow: hidden;min-height: 100vh;height: 100vh;width: 100%;
+}
+/* video background */
+.bg_video {
+  width: 100%;
+  min-height: 100vh;
+  height: 100vh;
+  object-fit: cover;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  z-index: -1;
 }
 .c_content .c_overlay_d {
-  position: absolute;background-color: #000000c0;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
+  position: absolute;background-color: #000000c6;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
 }
 .c_content .hero_image {
   width: 60%;position: relative;z-index: 2;
@@ -56,16 +69,18 @@
   width: 90%;margin: 80px 0 20px 60px;
 }
 .c_content .hero_h1 {
-    margin: 1rem auto;text-align: center;align-items: center;width: 60%;position: relative;z-index: 2;
+    margin: 1rem auto;text-align: center;align-items: center;width: 100%;position: relative;z-index: 2;
+    font-weight: 900;
 }
 .c_content .hero_h1 h1 {
-    font-size: 45px;font-weight: 900;color: #f1f1f1;
+    font-size: 55px;font-weight: 900;color: #f1f1f1;
 }
 .c_content .hero_h1 div {
     margin-top: 55px;
 }
 .c_content .hero_h4 {
-  font-size: 18px;color: #b4b2b2;font-family: "Poppins",sans-serif;font-weight: 600;
+  font-size: 20px;color: #b4b2b2;font-family: "Poppins",sans-serif;font-weight: 600;width: 80%;
+  text-align: center;margin: 1rem auto;text-transform: capitalize;
 }
 .c_content .hero_h1 div h2 {
     font-size: 32px;font-family: "Poppins", sans-serif;font-weight: 900;text-transform: capitalize;
@@ -86,6 +101,21 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 .c_content .hero_h1 div a.learnmore {
     color: #e2e2e2;border: none;font-family: "Poppins";font-size: 20px;border: 2px solid #e28305;border-radius: 120px;
     font-weight: 600;padding: 2px 28px 2px 28px;border-radius: 60px;margin-top: 0;
+}
+.connectworld {
+  color: #e2d7d7;width: 100%;margin: 25px auto 10px auto;
+}
+.connectworld .conn_inner {
+  width: 100%;display: flex;flex-direction: row;justify-content: space-between;
+}
+.connectworld .conn_inner .connectw {
+  width: 40%;text-align: center;margin: 10px auto;
+}
+.connectworld .conn_inner .connectw h1 {
+  font-size: 40px;text-transform: uppercase;font-weight: 900;margin-top: 50px;
+}
+.connectworld .conn_inner .conn_image {
+  width: 55%;margin-top: 40px;
 }
 .readmorebtn {
   background-color: #f1f1f1;border-radius: 120px;padding: 5px 16px;color: #1f1d1d;font-size: 13px;

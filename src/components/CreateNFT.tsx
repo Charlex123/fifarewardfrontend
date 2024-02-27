@@ -14,6 +14,8 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import styles from '../styles/createnft.module.css'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -22,10 +24,12 @@ export default function CreateItem() {
   
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
   const [marketplaceAddress] = useState<any>("0xa7c575897e0DC6005e9a24A15067b201a033c453");
+  const [contractAddress] = useState<any>("0x871a9C28F81139dCC8571b744d425FFc2c707b15");
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
   const [showloading, setShowLoading] = useState<boolean>(false);
   const [fileUrl, setFileUrl] = useState<string>("");
   const { open } = useWeb3Modal();
+  const [openaddTraits, setOpenAddTraits] = useState<boolean>(false);
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { disconnect } = useDisconnect();
@@ -36,10 +40,14 @@ export default function CreateItem() {
   const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
   const [errorMessage,seterrorMessage] = useState<string>("");
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
+  const [addtraitCount, setaddtraitCount] = useState<number>(1);
   const client = new NFTStorage({ token: nftStorageApiKey });
   const [formInput, updateFormInput] = useState({ price: '1', name: '', description: '' });
   const router = useRouter();
-
+  const [addTraitDiv,setaddTraitDiv] = useState<JSX.Element[]>([]);
+  const [traitName,setTraitName] = useState<string>("");
+  const [traitValue,setTraitValue] = useState<string>("");
+  const Traits:any[] = [];
   
   useEffect(() => {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
@@ -49,12 +57,10 @@ export default function CreateItem() {
           setUsername(username_);
           setUserId(udetails.userId);
           setIsloggedIn(true);
-          
       }
       }else {
           setIsloggedIn(false);
       }
-    
     
   },[username,userId])
 
@@ -68,52 +74,62 @@ export default function CreateItem() {
     if (!name || !description || !price || !uploadedMedia) return
     /* first, upload to IPFS */
     const nft = {
-      name:name, description:description, image: uploadedMedia
+      name:name, description:description, image: uploadedMedia, traits: Traits
     }
     try {
-      const metadata = await client.store(nft)
+      const Token = await client.store(nft)
       
       /* after file is uploaded to IPFS, return the URL to use it in the transaction */
-      console.log('nft metadata',metadata);
-      setFileUrl(metadata.url);
-      createNFT();
+      console.log('nft metadata',Token);
+      setFileUrl(Token.url);
+      console.log('file url 00--',fileUrl)
+      setTimeout(createNFT,3000)
+      
     } catch (error) {
       console.log('Error uploading file: ', error)
     }  
   }
 
   async function checkLogin() {
+    setShowBgOverlay(true);
     setShowLoading(true);
-    if(formInput.description === "" || formInput.name === "" || uploadedMedia === null || uploadedMedia  === "") {
-      setShowAlertDanger(true);
-      seterrorMessage("NFT art image, description and name are required!!");
-    }else {
-      if(username && userId) {
+
+    if(username && userId) {
+      if(formInput.description === "" || formInput.name === "" || uploadedMedia === null || uploadedMedia  === "") {
+        setShowAlertDanger(true);
+        seterrorMessage("NFT art image, description and name are required!!");
+        setShowLoading(false);
+      }else {
         if(!isConnected) {
           open()
         }else {
           uploadToIPFS();
         }
-      }else {
-        setShowBgOverlay(true);
-        setShowLoginComp(true);
       }
+    }else {
+       setShowLoginComp(true)
     }
   }
 
   async function createNFT() {
     
     if(walletProvider) {
-      const provider = new ethers.providers.Web3Provider(walletProvider as any);
-      console.log('provider',provider, 'contract address',marketplaceAddress)
-      const signer = provider.getSigner();
-
-      /* next, create the item */
-      let contract = new ethers.Contract(marketplaceAddress, NFTMarketPlace.abi, signer);
-      let transaction = await contract.createToken(fileUrl)
-      await transaction.wait();
-      setShowLoading(false);
-      router.push('../nft/mynfts')
+      try {
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        console.log('file url',fileUrl)
+        /* next, create the item */
+        // let contract = new ethers.Contract(contractAddress, NFTMarketPlace, signer);
+        // let transaction = await contract.createToken(fileUrl)
+        // await transaction.wait();
+        // setShowLoading(false);
+        // setShowBgOverlay(false);
+        // router.push('../nft/mynfts')
+      } catch (error) {
+        setShowAlertDanger(true);
+        seterrorMessage("transaction cancelled");
+        setShowLoading(false)
+      }
     }
   }
 
@@ -123,16 +139,86 @@ export default function CreateItem() {
   }
 
   const closeAlertModal = () => {
-    setShowAlertDanger(false)
+    setShowAlertDanger(false);
+    setShowBgOverlay(false)
+  }
+
+  const closeAddTaits = () => {
+    setShowBgOverlay(false);
+    setOpenAddTraits(false)
+  }
+
+  
+  const AddTraitNow = () => {
+    if(traitName && traitValue) {
+      setaddtraitCount(addtraitCount+1)
+      const newAddTraitDiv = <div className={styles.addtraits_c_ina} key={addtraitCount}>
+                              <div className={styles.addtc}>
+                                <label>Type</label>
+                                <input type='text' onChange={(e) => setTraitName(e.target.value) } placeholder='Ex. Size'/>
+                              </div>
+                              <div className={styles.addtc}>
+                                <label>Name</label>
+                                <input type='text' onChange={(e) => setTraitValue(e.target.value) }  placeholder='Ex. Large'/>
+                              </div>
+                          </div>;
+      setaddTraitDiv([...addTraitDiv, newAddTraitDiv]);
+      const traits = {traitname: traitName ,traitvalue:traitValue}
+      Traits.push(traits);
+      console.log('add trait count',addtraitCount)
+      console.log(Traits);
+      console.log(JSON.stringify(Traits))
+    }else {
+      setShowAlertDanger(true);
+      seterrorMessage('Add first trait to proceed');
+    }
+    
+  }
+
+  const AddTraits = () => {
+    setShowBgOverlay(true);
+    setOpenAddTraits(true);
   }
 
   return (
     <>
-      {showBgOverlay && <BgOverlay />}
-      {showloading && <Loading/>}
       <div className={styles.main}>
         {showloginComp && <LoginModal prop={'Create NFT'} onChange={closeLoginModal}/>}
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
+        {showBgOverlay && <BgOverlay />}
+        {showloading && <Loading/>}
+        {openaddTraits && 
+          <div className={styles.addtraits}>
+              <div className={styles.addtraits_c}>
+                <div className={styles.addtraits_h}>
+                    <div>
+                      <h1>Add Traits</h1>
+                    </div>
+                    <div>
+                      <button type='button' onClick={closeAddTaits}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                    </div>
+                </div>
+                <div className={styles.addtraits_c_in}>
+                    <div className={styles.addtraits_c_ina} key={0}>
+                        <div className={styles.addtc}>
+                          <label>Type</label>
+                          <input type='text' onChange={(e) => setTraitName(e.target.value) } placeholder='Ex. Size'/>
+                        </div>
+                        <div className={styles.addtc}>
+                          <label>Name</label>
+                          <input type='text' onChange={(e) => setTraitValue(e.target.value) }  placeholder='Ex. Large'/>
+                        </div>
+                        
+                    </div>
+                    {addTraitDiv}
+                    
+                    <div>
+                      <button className={styles.addnewtrait} onClick={AddTraitNow}>Add</button>
+                    </div>
+                </div>
+              </div>
+          </div>
+        }
         <div className={styles.main_c}>
           <div className={styles.dragdrop}>
             <DragDropImageUpload onFileUpload={handleFileUpload}/>
@@ -164,6 +250,11 @@ export default function CreateItem() {
                 onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
                 required
               />
+            </div>
+            <div className={styles.form_g}>
+              <label className={styles.label}>Traits </label>
+              <p>Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page.</p>
+              <button onClick={AddTraits} className={styles.add_traits}> + Add Trait(s)</button>
             </div>
             <div className={styles.form_g}>
               <button type='button' title='create nft' onClick={checkLogin} className={styles.create_btn}>
