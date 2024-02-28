@@ -29,7 +29,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       bool sold
   );
 
-  constructor() ERC721("FIFARewardd","FRDD") {
+  constructor() ERC721("FIFAReward","FRD") {
     owner = payable(msg.sender);
   }
 

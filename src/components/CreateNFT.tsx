@@ -16,6 +16,7 @@ import { useDisconnect } from '@web3modal/ethers5/react';
 import styles from '../styles/createnft.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { setTimeout } from 'timers';
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -27,7 +28,7 @@ export default function CreateItem() {
   const [contractAddress] = useState<any>("0x871a9C28F81139dCC8571b744d425FFc2c707b15");
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
   const [showloading, setShowLoading] = useState<boolean>(false);
-  const [fileUrl, setFileUrl] = useState<string>("");
+  const [fileUrl, setFileUrl] = useState<any>(null);
   const { open } = useWeb3Modal();
   const [openaddTraits, setOpenAddTraits] = useState<boolean>(false);
   const { walletProvider } = useWeb3ModalProvider();
@@ -78,17 +79,16 @@ export default function CreateItem() {
     }
     try {
       const Token = await client.store(nft)
-      
+      console.log('uplo media',uploadedMedia)
       /* after file is uploaded to IPFS, return the URL to use it in the transaction */
-      console.log('nft metadata',Token);
       setFileUrl(Token.url);
-      console.log('file url 00--',fileUrl)
-      setTimeout(createNFT,3000)
+      createNFT(Token.url)
       
     } catch (error) {
       console.log('Error uploading file: ', error)
     }  
   }
+
 
   async function checkLogin() {
     setShowBgOverlay(true);
@@ -111,20 +111,20 @@ export default function CreateItem() {
     }
   }
 
-  async function createNFT() {
+  async function createNFT(fileUrl:any) {
     
     if(walletProvider) {
       try {
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        console.log('file url',fileUrl)
+
         /* next, create the item */
-        // let contract = new ethers.Contract(contractAddress, NFTMarketPlace, signer);
-        // let transaction = await contract.createToken(fileUrl)
-        // await transaction.wait();
-        // setShowLoading(false);
-        // setShowBgOverlay(false);
-        // router.push('../nft/mynfts')
+        let contract = new ethers.Contract(contractAddress, NFTMarketPlace, signer);
+        let transaction = await contract.createToken(fileUrl)
+        await transaction.wait();
+        setShowLoading(false);
+        setShowBgOverlay(false);
+        router.push('../nft/mynfts')
       } catch (error) {
         setShowAlertDanger(true);
         seterrorMessage("transaction cancelled");
@@ -175,6 +175,22 @@ export default function CreateItem() {
     
   }
 
+  const SubmitTrait = () => {
+    if(traitName && traitValue) {
+      const traits = {traitname: traitName ,traitvalue:traitValue}
+      Traits.push(traits);
+      console.log('add trait count',addtraitCount)
+      console.log(Traits);
+      console.log(JSON.stringify(Traits));
+      setShowBgOverlay(false);
+      setOpenAddTraits(false);
+    }else {
+      setShowAlertDanger(true);
+      seterrorMessage('Add first trait to proceed');
+    }
+    
+  }
+
   const AddTraits = () => {
     setShowBgOverlay(true);
     setOpenAddTraits(true);
@@ -213,7 +229,10 @@ export default function CreateItem() {
                     {addTraitDiv}
                     
                     <div>
-                      <button className={styles.addnewtrait} onClick={AddTraitNow}>Add</button>
+                      <button className={styles.addnewtrait} onClick={AddTraitNow}>Add More ...</button>
+                    </div>
+                    <div>
+                      <button className={styles.addnewtrait_} onClick={SubmitTrait}>Submit</button>
                     </div>
                 </div>
               </div>
