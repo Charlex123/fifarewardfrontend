@@ -61,17 +61,14 @@ const MyNFTs: React.FC<{}> = () =>  {
                   let contract = new ethers.Contract(contractAddress, NFTMarketPlace, signer);
                   if(contract) {
                       let mintednfts = await contract.getMintedNfts();
-                      console.log('minted nfts',mintednfts);
-                      console.log('minted nfts length',mintednfts.length);
-                      let items =  mintednfts.forEach(async (element:any) => {
-                        console.log('nnnn',element[1])
+                      
+                      let items =  await mintednfts.forEach(async (element:any) => {
                         if(element[1] && element[1] !== "") {
-                          let ipfsurl = element[1].tokenURI;
+                          let ipfsurl = element[1];
                           let ipfsurlarray = ipfsurl.split('//');
-                          console.log('juolaer',ipfsurlarray);
+                          
                           let ipfsmetarray = ipfsurlarray[1].split('/');
                           const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
-                          console.log('metadata gggg',metadata.data);
                           const { name, description, traits, image } = metadata.data;
     
                           let item: NFTMetadata = {
@@ -80,18 +77,23 @@ const MyNFTs: React.FC<{}> = () =>  {
                             description: description,
                             traits: traits,
                             chainId: chainId,
-                            creator: element[1].creator,
+                            creator: element.creator,
                             address: address,
-                            hascreatedToken: element[1].hascreatedToken,
+                            hascreatedToken: element.hascreatedToken,
                             // following properties only exist if the NFT has been minted
-                            tokenId: element[1].tokenId,
-                            tokenURI: element[1].tokenURI,
+                            tokenId: element.tokenId,
+                            tokenURI: element.tokenURI,
                           }
-                          return item
+                          console.log('itma wee',item)
+                          return item;
                         }
                       });
     
-                      setNfts(items);
+                      if(items) {
+                        setNfts(items);
+                        console.log('item sss',items);
+                      }
+                      
                   }
               }
           } catch (error) {
