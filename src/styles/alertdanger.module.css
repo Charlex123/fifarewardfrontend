@@ -4,9 +4,9 @@
   position: relative;width: auto;
 }
 .closebtn {
-    position: absolute;right: 8px;top: 18px;color: white;background-color: none;z-index: 999;
+    position: absolute;right: 8px;top: 18px;color: white;background-color: none;z-index: 999;z-index: 9999999;
 }
 .alert {
-    font-size: 14px; text-align: center;font-family: 'Poppins';background: #fa4848;min-height: 40px;z-index: 99;left: 0;right: 0;
+    font-size: 14px; text-align: center;font-family: 'Poppins';background: #fa4848;min-height: 40px;z-index: 99999;left: 0;right: 0;
     margin:12px auto;padding: 8px 20px;color: #ffffff;border-radius: 120px; font-weight: lighter;position: absolute;
 }

@@ -7,6 +7,7 @@ import Loading from './Loading';
 import LoginModal from './LoginModal';
 import BgOverlay from './BgOverlay';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
+import FifaRewardToken from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import { ethers } from 'ethers';
 import DragDropImageUpload from './DragDropImageUpload';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
@@ -24,11 +25,11 @@ dotenv.config();
 export default function CreateItem() {
   
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
-  const [marketplaceAddress] = useState<any>("0xa7c575897e0DC6005e9a24A15067b201a033c453");
-  const [contractAddress] = useState<any>("0x871a9C28F81139dCC8571b744d425FFc2c707b15");
+  const [nftcontractAddress] = useState<any>("0x871a9C28F81139dCC8571b744d425FFc2c707b15");
+  const [frdcontractAddress] = useState<any>("0x598FC10105499eE4ceE730373b665F59b258bbc5");
+  
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
   const [showloading, setShowLoading] = useState<boolean>(false);
-  const [fileUrl, setFileUrl] = useState<any>(null);
   const { open } = useWeb3Modal();
   const [openaddTraits, setOpenAddTraits] = useState<boolean>(false);
   const { walletProvider } = useWeb3ModalProvider();
@@ -81,7 +82,6 @@ export default function CreateItem() {
       const Token = await client.store(nft)
       console.log('uplo media',uploadedMedia)
       /* after file is uploaded to IPFS, return the URL to use it in the transaction */
-      setFileUrl(Token.url);
       createNFT(Token.url)
       
     } catch (error) {
@@ -103,7 +103,34 @@ export default function CreateItem() {
         if(!isConnected) {
           open()
         }else {
-          uploadToIPFS();
+          // uploadToIPFS();
+          // check if user wallet address has FRD
+          try {
+            const provider = new ethers.providers.Web3Provider(walletProvider as any);
+            const signer = provider.getSigner();
+
+            console.log('signer address',signer,signer.getAddress(),signer._address,address)
+            /* next, create the item */
+            let contract = new ethers.Contract(frdcontractAddress, FifaRewardToken, signer.connectUnchecked());
+            let transaction = await contract.balanceOf(address);
+            console.log('transaction',transaction);
+            console.log('transaction',ethers.utils.formatEther(transaction));
+            if(transaction < 500) {
+              setShowAlertDanger(true);
+              seterrorMessage("You need a minimum of 500FRD (FifaRewardToken) to proceed!  ")
+              setShowLoading(false);
+              
+            }else {
+              uploadToIPFS()
+            }
+            // setShowLoading(false);
+            // setShowBgOverlay(false);
+            // router.push('../nft/mynfts')
+          } catch (error) {
+            setShowAlertDanger(true);
+            seterrorMessage(`transaction cancelled /${error}`);
+            setShowLoading(false)
+          }
         }
       }
     }else {
@@ -119,7 +146,7 @@ export default function CreateItem() {
         const signer = provider.getSigner();
 
         /* next, create the item */
-        let contract = new ethers.Contract(contractAddress, NFTMarketPlace, signer);
+        let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
         let transaction = await contract.createToken(fileUrl)
         await transaction.wait();
         setShowLoading(false);

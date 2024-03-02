@@ -10,7 +10,7 @@ import bgopt1 from '../assets/images/aibg.png';
 import bgopt2 from '../assets/images/aibg2.jpg';
 import bgopt3 from '../assets/images/aibg3.jpg';
 import bnblogo from '../assets/images/bnb-bnb-logo.png'
-import mercynft from '../assets/images/mercy.png'
+import messi from '../assets/images/messi.png.png'
 import nftbanner from '../assets/images/aibg2.jpg';
 import NFTCountdownTimer from './NftCountDownTimer';
 import { faCheckCircle, faEye, faEyeSlash, faHeart, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
@@ -49,7 +49,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                         </div>  
                     </div>
                     <div className={styles.nft_art_in}>
-                        <Image src={mercynft} alt='nft art' style={{objectFit: 'cover',width: '100%',height: '100%',marginTop: '0',borderBottomLeftRadius: '8px',borderBottomRightRadius: '8px'}}/>
+                        <Image src={messi} alt='nft art' style={{objectFit: 'cover',width: '100%',height: '100%',marginTop: '0',borderBottomLeftRadius: '8px',borderBottomRightRadius: '8px'}}/>
                     </div>
                 </div>
             </div>

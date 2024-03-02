@@ -25,8 +25,8 @@ contract FifaRewardToken is ERC20Burnable, Ownable {
     mapping(address => bool) isFeeExempt;
     mapping(address => bool) isTxLimitExempt;
 
-    constructor() ERC20("FIFAReward", "FRD") Ownable(0x9C9DfBbaa6f14e5B142365df89b8e2B627dd1bda) {
-        address admin = 0x9C9DfBbaa6f14e5B142365df89b8e2B627dd1bda;
+    constructor() ERC20("FIFAReward", "FRD") Ownable(0xa7c575897e0DC6005e9a24A15067b201a033c453) {
+        address admin = 0xa7c575897e0DC6005e9a24A15067b201a033c453;
         transferOwnership(admin);
         isFeeExempt[address(0)] = true ;
         isTxLimitExempt[address(0)] = true;

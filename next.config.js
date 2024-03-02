@@ -8,7 +8,10 @@ const nextConfig = {
   images: {
     domains: ['i.ibb.co',
     'ibb.co',
-    'imgbox.com'],
+    'imgbox.com',
+    'ipfs',
+    'nftstorage.link',
+    'ipfs.nftstorage.link'],
   },
   webpack: (config) => {
     // config.module.rules.push({
