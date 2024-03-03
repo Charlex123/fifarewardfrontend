@@ -10,12 +10,25 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
 @import url("https://fonts.googleapis.com/css?family=Caveat");
 
+
 @font-face {
   font-family: "BestermindRegular";
   src: url("../assets/fonts/Bestermind/BestermindRegular.ttf");
   src: url("../assets/fonts/Bestermind/BestermindRegular.ttf")
       format("embedded-opentype"),
     url("../assets/fonts/Bestermind/BestermindRegular.ttf") format("truetype");
+}
+
+:root {
+  --primaryFont: "Poppins", sans-serif;
+  --background-color-dark: rgb(5, 9, 11);
+  --background-color-light: #f1f1f1;
+  --text-color-dark: #e2d7d7;
+  --text-color-light: #353535;
+  --orange-color-dark: #e28305;
+  --orange-color-light: #925504;
+  /* --primaryFont: 'Montserrat', sans-serif; */
+  /* --primaryFont: 'Raleway', sans-serif; */
 }
 
 * {
@@ -28,15 +41,19 @@
 body {
   position: relative;
   box-sizing: border-box;
-  /* background: rgb(14,17,13);
-  background: linear-gradient(90deg, rgba(14,17,13,1) 0%, rgba(14,17,13,1) 100%, rgba(0,212,255,1) 100%); */
-  background: rgb(13,20,24);
-  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
   /* background-image: url("../assets/images/bbg.jpg");
   background-repeat: none;
   background-position: cover; */
   font-family: "Poppins",sans-serif !important;
   overflow-x: hidden;
+}
+.darktheme {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-light);
+}
+.lighttheme {
+  background-color: var(--background-color-light);
+  color: var(--text-color-dark);
 }
 a {
   text-decoration: none;
@@ -63,11 +80,7 @@ a {
   transition: 0.3s;
 }
 
-:root {
-  --primaryFont: "Poppins", sans-serif;
-  /* --primaryFont: 'Montserrat', sans-serif; */
-  /* --primaryFont: 'Raleway', sans-serif; */
-}
+
 button:active,button:focus,select:active,select:focus,input:active,input:focus {
   outline: none;
 }

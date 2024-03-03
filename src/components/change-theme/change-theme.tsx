@@ -16,11 +16,11 @@ const ChangeTheme = () => {
         {isDark ?
           <BsFillSunFill
             className="text-2xl text-[#8B98A5] 
-          hover:text-[#EFF3F4] hover:scale-75" />
+            hover:scale-75" />
           :
           <BsFillMoonFill
             className="text-2xl text-[#8B98A5] 
-          hover:text-[#EFF3F4] hover:scale-75" />
+            hover:scale-75" />
         }
       </button>
     </div>

@@ -1,12 +1,12 @@
 import React, { createContext, useState } from 'react';
 
-import { theDarkTheme, theLightTheme } from '../theme/theme';
+// import { theDarkTheme, theLightTheme } from '../theme/theme';
 
 export const ThemeContext = createContext()
 
 function ThemeContextProvider(props) {
     // eslint-disable-next-line
-    const [theme, setTheme] = useState(theDarkTheme);
+    const [theme, setTheme] = useState('dark');
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [isDark, setDark] = useState(true);
 
@@ -15,13 +15,8 @@ function ThemeContextProvider(props) {
     }
 
     const changeTheme = () => {
-        if (isDark) {
-            setTheme(theLightTheme);
-            setDark(false);
-        } else {
-            setTheme(theDarkTheme);
-            setDark(true);
-        }
+            setTheme(theme => (theme === 'dark' ? 'light' : 'dark'));
+            setDark(!isDark);
     }
 
     const value = { theme, drawerOpen, setHandleDrawer, changeTheme, isDark }

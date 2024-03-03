@@ -168,7 +168,7 @@ useEffect(() => {
 
   return (
     <>
-    <div className={styles.homemain}>
+    <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
       <div className={styles.overlay_d}></div>
       <div className={styles.c_content}>
         <video className={styles.bg_video} autoPlay loop muted >
@@ -308,7 +308,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className={styles.tafastaking} id="tafastaking">
+      <div className={`${styles.frdstaking} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="frdstaking">
           <h1>FIFAREWARD STAKING</h1>
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
@@ -348,7 +348,7 @@ useEffect(() => {
           </div>
       </div>
 
-      <div className={styles.abouttafa} id="abouttafa">
+      <div className={`${styles.aboutfrd} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="aboutfrd">
           <h1>ABOUT FIFAREWARD</h1>
           <p>
             FIFAREWARD is a coinage from TA (Technical Analysis), FA (Fundamental Analysis), and
@@ -400,7 +400,7 @@ useEffect(() => {
           </ul>
       </div>
 
-      <div className={styles.tafareferrals} id="referrals">
+      <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
           <h1>FIFAREWARD REFERRAL SYSTEM</h1>
           <div className={styles.referralsmain}>
               <div className={styles.referralstext}>
@@ -498,7 +498,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className={styles.freeclaim} id="freeclaim">
+      <div className={`${styles.freeclaim} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="freeclaim">
           <h1>FIFAREWARD FREE CLAIM</h1>
           <div className={styles.freeclaimmain}>
             <p>

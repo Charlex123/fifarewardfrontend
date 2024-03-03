@@ -6,6 +6,8 @@
 @import url("https://fonts.googleapis.com/css?family=Raleway");
 @import url("https://fonts.googleapis.com/css?family=Caveat");
 
+/* background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);  */
+
 .chronoh1 {
   font-size: 16px !important;font-family: "Poppins";text-transform: capitalize;font-weight: 900;padding: 0;
 }
@@ -13,17 +15,23 @@
   font-size: 13px !important;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;text-transform: capitalize;color: #18221b;font-weight: 700;
   text-align: center;margin: 0 auto;
 }
-.chronoicon {
-  color: green;
-}
 .chronotitleicon {
-  color: rgb(66, 252, 115);margin-left: 6px;
+  margin-left: 6px;
 }
 .chronotitleicon2 {
   color: orange;
 }
  .homemain {
-    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-y: hidden;z-index: 0;position: relative;
+    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-x: hidden;z-index: 0;position: relative;
+}
+.lighttheme {
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+  
+}
+.darktheme {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
 }
 .c_content {    
     margin: auto;padding: 105px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;margin-top: -30px;
@@ -103,7 +111,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     font-weight: 600;padding: 2px 28px 2px 28px;border-radius: 60px;margin-top: 0;
 }
 .connectworld {
-  color: #e2d7d7;width: 100%;margin: 25px auto 10px auto;
+  width: 100%;margin: 25px auto 10px auto;
 }
 .connectworld .conn_inner {
   width: 100%;display: flex;flex-direction: row;justify-content: space-between;
@@ -118,7 +126,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 55%;margin-top: 40px;
 }
 .readmorebtn {
-  background-color: #f1f1f1;border-radius: 120px;padding: 5px 16px;color: #1f1d1d;font-size: 13px;
+  border-radius: 120px;padding: 5px 16px;font-size: 13px;
   font-weight: 600;
 }
 .exchmain {
@@ -127,7 +135,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(17,17,25,0.9626225490196079) 0%, rgba(9,10,11,1) 0%, rgba(0,0,0,1) 0%, rgba(4,12,4,1) 0%, rgba(6,14,6,1) 0%, rgba(6,14,6,1) 100%, rgba(37,203,6,1) 100%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .exchmain h1 {
-  font-size: 36px;text-align: center;margin: 3rem auto 1rem auto;color: #f1f1f1;
+  font-size: 36px;text-align: center;margin: 3rem auto 1rem auto;
   font-weight: 800;padding-top: 3rem;
 }
 .exchmain h4 {
@@ -183,73 +191,66 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 .stkb .gov .gov_in .gov_c p {
   font-family: "Montserrat", sans-serif;color: #f1f1f1;font-size: 14px;
 }
-.tafastaking {
-  color: #f1f1f1;padding: 1rem 1rem 1rem 1rem;width: 100%;overflow: hidden;
-  background: rgb(13,20,24);
-  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
+.frdstaking {
+  padding: 1rem 1rem 1rem 1rem;width: 100%;overflow: hidden;
 }
-.tafastaking .stakingmain {
+.frdstaking .stakingmain {
   display: flex;flex-direction: row;justify-content: space-between;margin: 4rem auto 1rem auto;
 }
-.tafastaking .stakingmain .stakevesttext {
+.frdstaking .stakingmain .stakevesttext {
   width: 56%;margin: 1rem auto;
 }
-.tafastaking .stakingmain .stakevesttext h4 {
+.frdstaking .stakingmain .stakevesttext h4 {
   font-size: 18px;font-weight: 800;
 }
-.tafastaking .stakingmain .stakevesttext ul li {
+.frdstaking .stakingmain .stakevesttext ul li {
   margin: 20px 0 10px 0;font-size: 16px;
 }
-.tafastaking .stakingmain .stakevestimg {
+.frdstaking .stakingmain .stakevestimg {
   width: 40%;margin: 1rem auto;
 }
-.tafastaking .stakingmain .stakevest_img {
+.frdstaking .stakingmain .stakevest_img {
   text-align: right;width: auto;
 }
-.tafastaking h1 {
+.frdstaking h1 {
   text-align: center;margin: 0 auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
 }
-.tafastaking .stakingmain p {
+.frdstaking .stakingmain p {
   text-align: left;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
-.tafareferrals {
-  color: #f1f1f1;padding: 1rem 1rem 1rem 1rem;width: 100%;overflow: hidden;
-  background: rgb(13,20,24);
-  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
+.frdreferrals {
+  padding: 1rem 1rem 1rem 1rem;width: 100%;overflow: hidden;
 }
-.tafareferrals .referralsmain {
+.frdreferrals .referralsmain {
   display: flex;flex-direction: row;justify-content: space-between;margin: 4rem auto 1rem auto;
 }
-.tafareferrals .referralsmain .referralstext {
+.frdreferrals .referralsmain .referralstext {
   width: 56%;margin: 1rem auto;
 }
-.tafareferrals .referralsmain .referralstext h4, .tafareferrals .referralsmain .referralstext h5 {
+.frdreferrals .referralsmain .referralstext h4, .frdreferrals .referralsmain .referralstext h5 {
   font-size: 18px;font-weight: 800;margin-bottom: 15px;
 }
-.tafareferrals .referralsmain .referralstext ul li {
+.frdreferrals .referralsmain .referralstext ul li {
   margin: 20px 0 10px 0;font-size: 16px;
 }
-.tafareferrals .referralsmain .referralsimg {
+.frdreferrals .referralsmain .referralsimg {
   width: 40%;margin: 1rem auto;
 }
-.tafareferrals .referralsmain .referrals_img {
+.frdreferrals .referralsmain .referrals_img {
   text-align: right;width: auto;
 }
-.tafareferrals h1 {
+.frdreferrals h1 {
   text-align: center;margin: 2rem auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;color: #e28305;
 }
-.tafareferrals .referralsmain p {
+.frdreferrals .referralsmain p {
   text-align: left;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .freeclaim {
-  color: #f1f1f1;width: 100%;padding: 2rem 1rem 3rem 1rem;margin: 3rem auto 3rem auto;
-  background: rgb(13,20,24);
-  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
-}
+  width: 100%;padding: 2rem 1rem 3rem 1rem;margin: 3rem auto 3rem auto;}
 .freeclaim h1 {
   text-align: center;margin: 2rem auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
@@ -265,24 +266,24 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   border: none;border-radius: 120px;padding: 6px 20px 6px 20px;color: #1f1d1d;background-color: orange;
   font-weight: 900;margin: 1rem auto;text-align: center;font-size: 18px;
 }
-.abouttafa {
-  color: #f1f1f1;width: 100%;padding: 1rem 1rem 1rem 1rem;
+.aboutfrd {
+  width: 100%;padding: 1rem 1rem 1rem 1rem;
 }
-.abouttafa h1 {
+.aboutfrd h1 {
   text-align: center;margin: 2rem auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
 }
-.abouttafa p {
+.aboutfrd p {
   text-align: left;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
-.abouttafa ul {
+.aboutfrd ul {
   margin: 2rem 0;
 }
-.abouttafa ul h4 {
+.aboutfrd ul h4 {
   font-size: 22px;font-weight: 800;
 }
-.abouttafa ul li {
+.aboutfrd ul li {
   margin: 20px 0 10px 0;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .tkl {
@@ -458,22 +459,22 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     .stkb .gov .gov_in .gov_c h2 {
       font-size: 20px;margin: 0 auto;
     }
-    .tafastaking .stakingmain {
+    .frdstaking .stakingmain {
       display: block;
     }
-    .tafastaking .stakingmain .stakevesttext {
+    .frdstaking .stakingmain .stakevesttext {
       width: 100%;margin: 1rem auto;
     }
-    .tafastaking .stakingmain .stakevestimg {
+    .frdstaking .stakingmain .stakevestimg {
       width: 100%;margin: 1rem auto;
     }
-    .tafareferrals .referralsmain {
+    .frdreferrals .referralsmain {
       display: block;
     }
-    .tafareferrals .referralsmain .referralstext {
+    .frdreferrals .referralsmain .referralstext {
       width: 100%;margin: 1rem auto;
     }
-    .tafareferrals .referralsmain .referralsimg {
+    .frdreferrals .referralsmain .referralsimg {
       width: 100%;margin: 1rem auto;
     }
     .tkl .tkl_in .tkl_head h1 {
