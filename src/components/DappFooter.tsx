@@ -10,7 +10,7 @@ library.add(fas, faTwitter, faFontAwesome, faGoogle, faCheck,faCheckCircle, faCi
 const DappFooter = () => {
    return (
       <div className={footerstyles.footer}>
-         <div><div className={footerstyles.footam}>TAFAXTRA | ©2023 <br></br></div></div>
+         <div><div className={footerstyles.footam}>FifaReward | ©2024 <br></br></div></div>
       </div>
    )
 }

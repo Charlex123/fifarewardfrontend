@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext,useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -8,6 +8,7 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import Loading from "./Loading";
 import AlertMessage from "./AlertMessage";
 import regstyles from "../styles/register.module.css";
+import { ThemeContext } from '../contexts/theme-context';
 // component
 import Web3 from "web3";
 import { faLock } from '@fortawesome/free-solid-svg-icons';
@@ -16,6 +17,7 @@ import { faLock } from '@fortawesome/free-solid-svg-icons';
 library.add(faEye, faEyeSlash);
 const RegisterForm = () =>  {
 
+  const { theme } = useContext(ThemeContext);
   const router = useRouter();
 
   const [email, setEmail] = useState("");
@@ -165,70 +167,72 @@ const goBack = () => {
 
   return (
     <>
-        <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
-        <form className={regstyles.formTag} onSubmit={submitHandler}>
-        
-        {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
-        {loading && <Loading />}
-        
-        <div className={regstyles.fhead}>
-            <h3>Create Account <FontAwesomeIcon icon={faLock} /></h3>
-        </div>
-        
-        <div className={regstyles.form_group}>
-            <label className={regstyles.formlabel} htmlFor="grid-last-name">Username</label>
-            <input className={regstyles.forminput} id="grid_user_name" type="varchar" placeholder="Enter username" required
-              value={username}
-              onBlur={checkUsername}
-              onChange={(e) => setUserame(e.target.value.replace(' ', ''))}
-              />
-        </div>
+        <div className={`${regstyles.main} ${theme === 'dark' ? regstyles['darktheme'] : regstyles['lighttheme']}`}>
+            <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
+            <form className={regstyles.formTag} onSubmit={submitHandler}>
             
-        <div className={regstyles.form_group}>
-          <label className={regstyles.formlabel} htmlFor="grid-email"> Email</label>
-                <input className={regstyles.forminput} id="email" type="email" placeholder="Enter email" required
-                value={email}
-                onBlur={checkEmail}
-                onChange={(e) => setEmail(e.target.value.replace(' ', ''))}
-                />
-        </div>
+            {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
+            {loading && <Loading />}
+            
+            <div className={regstyles.fhead}>
+                <h3>Create Account <FontAwesomeIcon icon={faLock} /></h3>
+            </div>
+            
+            <div className={regstyles.form_group}>
+                <label className={regstyles.formlabel} htmlFor="grid-last-name">Username</label>
+                <input className={regstyles.forminput} id="grid_user_name" type="varchar" placeholder="Enter username" required
+                  value={username}
+                  onBlur={checkUsername}
+                  onChange={(e) => setUserame(e.target.value.replace(' ', ''))}
+                  />
+            </div>
+                
+            <div className={regstyles.form_group}>
+              <label className={regstyles.formlabel} htmlFor="grid-email"> Email</label>
+                    <input className={regstyles.forminput} id="email" type="email" placeholder="Enter email" required
+                    value={email}
+                    onBlur={checkEmail}
+                    onChange={(e) => setEmail(e.target.value.replace(' ', ''))}
+                    />
+            </div>
 
-        <div className='form-group'>
-            <label className={regstyles.formlabel} htmlFor="chromegrid-password"> Password</label>
-              <input className={regstyles.forminput} id="password" type={passwordinputType} placeholder="Enter password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value.replace(' ', ''))}
-              />
-              <button className={regstyles.passhideshowButton} onClick={togglePasswordVisiblity} type="button">{eyeIcon}</button>
-              <p className={regstyles.formpTag}>Make it as long and as crazy as you'd like</p>
-        </div>
+            <div className='form-group'>
+                <label className={regstyles.formlabel} htmlFor="chromegrid-password"> Password</label>
+                  <input className={regstyles.forminput} id="password" type={passwordinputType} placeholder="Enter password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value.replace(' ', ''))}
+                  />
+                  <button className={regstyles.passhideshowButton} onClick={togglePasswordVisiblity} type="button">{eyeIcon}</button>
+                  <p className={regstyles.formpTag}>Make it as long and as crazy as you'd like</p>
+            </div>
 
-        <div className={regstyles.form_group}>
-            <label className={regstyles.formlabel} htmlFor="grid-password">Confirm Password</label>
-              <input className={regstyles.forminput} id="confirmpassword" type={passwordinputType} placeholder="Confirm password"
-              value={confirmpassword}
-              onBlur={checkPass}
-              onChange={(e) => setConfirmPassword(e.target.value.replace(' ', ''))}
-              />
-              <button className={regstyles.passhideshowButton} onClick={togglePasswordVisiblity} type="button">{eyeIcon}</button>
-            <p className={regstyles.formpTag}>Your password is encrypted and secured, we will not disclose your password with any third</p>
-        </div>
+            <div className={regstyles.form_group}>
+                <label className={regstyles.formlabel} htmlFor="grid-password">Confirm Password</label>
+                  <input className={regstyles.forminput} id="confirmpassword" type={passwordinputType} placeholder="Confirm password"
+                  value={confirmpassword}
+                  onBlur={checkPass}
+                  onChange={(e) => setConfirmPassword(e.target.value.replace(' ', ''))}
+                  />
+                  <button className={regstyles.passhideshowButton} onClick={togglePasswordVisiblity} type="button">{eyeIcon}</button>
+                <p className={regstyles.formpTag}>Your password is encrypted and secured, we will not disclose your password with any third</p>
+            </div>
 
-        <div className={regstyles.form_group}>
-            <label className={regstyles.formlabel} htmlFor="grid-password">SponsorID</label>
-              <input className={regstyles.forminput} id="sponsor" type="text" placeholder="Sponsor"
-              value={sponsorId}
-              onChange={(e) => setSponsorId(e.target.value)}
-              />
+            <div className={regstyles.form_group}>
+                <label className={regstyles.formlabel} htmlFor="grid-password">SponsorID</label>
+                  <input className={regstyles.forminput} id="sponsor" type="text" placeholder="Sponsor"
+                  value={sponsorId}
+                  onChange={(e) => setSponsorId(e.target.value)}
+                  />
+            </div>
+            
+            <div className={regstyles.btns}>
+              <button className={regstyles.registerButton} type="submit">
+                Register
+              </button>
+              <div className={regstyles.alink}>Already have account? <a href='/signin' rel='noopener noreferrer'>Sign In</a></div>
+            </div>
+          </form>
         </div>
-        
-        <div className={regstyles.btns}>
-          <button className={regstyles.registerButton} type="submit">
-            Register
-          </button>
-          <div className={regstyles.alink}>Already have account? <a href='/signin' rel='noopener noreferrer'>Sign In</a></div>
-        </div>
-      </form>
     </>
   );
 }

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 
 const CountdownTimer = ({time}:any) => {
-
-  const [timeRemaining, setTimeRemaining] = useState(time); // 30 days in seconds
+  const timer_ = time * 86400;
+  const [timeRemaining, setTimeRemaining] = useState(timer_); // days in seconds
 
   useEffect(() => {
     const interval = setInterval(() => {

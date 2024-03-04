@@ -48,7 +48,7 @@ const Dapp:React.FC<{}> = () =>  {
   // Replace 'YOUR_WALLET_ADDRESS' with the BSC wallet address you want to track
   const walletAddressToTrack = '0x5951d5Cb5cFb9022B5ab5e9848fD1454C6dA7842';
 
-  const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
+  const { theme } = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
@@ -107,8 +107,6 @@ const Dapp:React.FC<{}> = () =>  {
    }, 1500);
  };
 
-  
-
   const closeDappConAlerted = () => {
     setisWalletAddressUpdated(!isWalletAddressUpdated);
   }
@@ -136,7 +134,7 @@ const Dapp:React.FC<{}> = () =>  {
           "Content-type": "application/json"
       }
       }  
-      const {data} = await axios.post("https://fifreward .onrender.com/api/users/getwalletaddress/", {
+      const {data} = await axios.post("http://localhost:9000/api/users/getwalletaddress/", {
         username
       }, config);
       setWalletAddress(data.message);
@@ -156,7 +154,7 @@ getWalletAddress();
             "Content-type": "application/json"
         }
         }  
-        const {data} = await axios.post("https://fifreward .onrender.com/api/users/getsponsorwalletaddress", {
+        const {data} = await axios.post("http://localhost:9000/api/users/getsponsorwalletaddress", {
           userObjId,
         }, config);
         if(data.message === "You do not have a sponsor") {
@@ -187,7 +185,7 @@ getWalletAddress();
               "Content-type": "application/json"
           }
           }  
-          const {data} = await axios.post("https://fifreward .onrender.com/api/users/updatewalletaddress/", {
+          const {data} = await axios.post("http://localhost:9000/api/users/updatewalletaddress/", {
             walletaddress,
             username
           }, config);
@@ -331,7 +329,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
   return (
     <>
         <DappNav/>
-        <div className={dappstyles.main_w}>
+        <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>
               <div className={`${dappstyles.sidebar} ${sideBarToggleCheck}`}>
                   <nav className={dappsidebarstyles.sidebar}>
@@ -375,11 +373,12 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               </div>
               <div className={`${dappstyles.main} ${sideBarToggleCheck}`}>
               <div className={dappstyles.con_btns}>
-              {!isConnected ? (
-                <button title='connect wallet' type='button' onClick={() => open()} className={dappstyles.connect}>Connect Wallet</button>
+                {/* {!isConnected ? (
+                <button title="connect wallet" type="button" onClick={() => open()} className={dappstyles.connect}>Connect Wallet</button>
                 ) : (
-                <button title='disconnect wallet' type='button' onClick={() => disconnect()} className={dappstyles.connected}> Disconnect </button>
-                )}
+                <button title="disconnect wallet" type="button" onClick={() => disconnect()} className={dappstyles.connected}> Disconnect </button>
+                )} */}
+                
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
                 <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 

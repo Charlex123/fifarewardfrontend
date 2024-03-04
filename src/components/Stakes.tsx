@@ -43,7 +43,7 @@ const Dapp = () =>  {
   const FRDAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
   const StakeAddress = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
 
-  const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
+  const { theme} = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
@@ -56,16 +56,17 @@ const Dapp = () =>  {
   const [dappConnector,setDappConnector] = useState(false);
   const [wAlert,setWAlert] = useState(false);
 
-  const [signature, setSignature] = useState("");
   const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [network, setNetwork] = useState(undefined);
   const [message, setMessage] = useState("");
+  const [earningprofitpercent, setEarningProfitPercent] = useState<number>(0);
   const [signedMessage, setSignedMessage] = useState("");
   const [verified, setVerified] = useState();
   const [walletaddress, setWalletAddress] = useState("NA"); 
-  const [stakeAmount, setstakeAmount] = useState(50);
-  const [stakeDuration, setstakeDuration] = useState<any>(2592000);
+  const [stakeAmount, setstakeAmount] = useState<number>(50);
+  const [stakeduration, setstakeduration] = useState<any>(180);
+  
   const [showTimer, setShowTimer] = useState(false);
   const [showWithdrawStake, setShowWithdrawStake] = useState(false);
   
@@ -127,8 +128,17 @@ const handleCopyClick = () => {
     setWAlert(!wAlert);
   }
 
+  let currentstakeprofitPercent: number = 0;
+  const calculateprofitPercent = async () => {
+    let stkamt = stakeAmount;
+    let stkdur = stakeduration;
+    currentstakeprofitPercent += 0.05;
+    setEarningProfitPercent(currentstakeprofitPercent);
+  }
+
   const handleStakeDuration = (e:any) => {
-    setstakeDuration(e.target.value)
+    setstakeduration(e.target.value)
+    calculateprofitPercent()
   }
 
   // define contract data
@@ -156,7 +166,7 @@ const handleCopyClick = () => {
       // setShowTimer(!showTimer);
       const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
-      const FRDContract = new ethers.Contract(FRDAddress, FRDAbi.abi, signer);
+      const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
       const reslt = await FRDContract.approve(StakeAddress,stakeAmount);
       if(reslt) {
         StakeFRD();
@@ -223,9 +233,9 @@ const handleCopyClick = () => {
   
   useEffect(() => {
     
-    localStorage.setItem('staketimer',stakeDuration);
+    localStorage.setItem('staketimer',stakeduration);
 
-    setstakeDuration(localStorage.getItem('staketimer')!)
+    setstakeduration(localStorage.getItem('staketimer')!)
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
     if(udetails && udetails !== null && udetails !== "") {
@@ -246,7 +256,7 @@ const handleCopyClick = () => {
             "Content-type": "application/json"
         }
         }  
-        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/getwalletaddress/", {
+        const {data} = await axios.post("http://localhost:9000/api/users/getwalletaddress/", {
           username
         }, config);
         setWalletAddress(data.message);
@@ -296,7 +306,7 @@ const handleCopyClick = () => {
   };
   
   
- }, [userId, router,username,address,chainId,isConnected,walletaddress,stakeDuration,wAlert,showTimer,walletProvider])
+ }, [userId, router,username,address,chainId,isConnected,walletaddress,stakeduration,wAlert,showTimer,walletProvider])
 
 
  // Function to toggle the navigation menu
@@ -346,7 +356,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               </div>
             </div>
           </>) }
-        <div className={dappstyles.main_w}>
+        <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>
               <div className={`${dappstyles.sidebar} ${sideBarToggleCheck}`}>
                   <nav className={dappsidebarstyles.sidebar}>
@@ -407,17 +417,19 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                     <div>Connected Wallet: <span style={{color: 'orange'}}>{walletaddress}</span></div>
                 </div>
 
-                <div className={dappstyles.stake}>
-                    <div className={dappstyles.stake_mod}>
-                        <div className={dappstyles.top}><h1>Stake Your FRD</h1></div>
+                <div className={`${dappstyles.stake}`}>
+                    <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
+                        <div className={dappstyles.top}><h1>Stake FRD</h1></div>
                         <div className={dappstyles.s_m}>
-                          <h3>Stake FRD to earn 2% profit daily</h3>
-                          <div className={dappstyles.s_m_in}>
+                          <h3>Stake FRD to earn unlimited profit daily</h3>
+                          {!showTimer && 
+                                <>
+                                  <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock}/> <CountdownTimer time={stakeduration} /></div>
+                                </>
+                              }
+                          <div className={dappstyles.s_m_in }>
                               <div className={dappstyles.s_m_inna}>
-                                <div className={dappstyles.s_m_in_c}>
-                                    <div className={dappstyles.s_a}>Stake Amount <div>{stakeAmount} FRD</div></div>
-                                    <div className={dappstyles.s_b}>Bonus <div>2% Daily</div></div>
-                                </div>
+                                <div><label>Stake Amount</label><span className={dappstyles.stkamt_p}> {stakeAmount.toLocaleString()} FRD</span></div>
                                 <div className={dappstyles.amountprog}>
                                   <input title='input'
                                     type="range"
@@ -427,13 +439,29 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                     step={1}
                                     value={stakeAmount}
                                     onChange={handleChange}
-                                    style={{ width: '100%',height: '5px', cursor: 'pointer' }}
+                                    style={{ width: '100%',height: '5px', cursor: 'pointer', backgroundColor: 'orange' , color: 'orange'}}
                                   />
                                 </div>
                               </div>
                               <div className={dappstyles.s_m_inna}>
-                                <h3>Stake Duration</h3>
+                                <div><label>Stake Duration</label><span className={dappstyles.stkdur_p}> {stakeduration} Days</span></div>
+                                <div className={dappstyles.amountprog}>
+                                  <input title='input'
+                                    type="range"
+                                    id="horizontalInput"
+                                    min={180}
+                                    max={10000}
+                                    step={1}
+                                    value={stakeduration}
+                                    onChange={handleStakeDuration}
+                                    style={{ width: '100%',height: '5px', cursor: 'pointer', backgroundColor: 'orange', color: 'orange' }}
+                                  />
+                                </div>
                                 <div className={dappstyles.s_m_in_c}>
+                                    <div className={dappstyles.s_a}>Expected Earning</div>
+                                    <div className={dappstyles.s_b}> {earningprofitpercent}% daily</div>
+                                </div>
+                                {/* <div className={dappstyles.s_m_in_c}>
                                     <div className={dappstyles.s_a}>
                                       <select title='select' onChange={handleStakeDuration}>
                                         <option value="">Select Duration</option>
@@ -443,16 +471,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                         <option value="1000">1000 Days</option>
                                       </select>
                                     </div>
-                                </div>
+                                </div> */}
                               </div>
 
-                              {showTimer && 
-                                <>
-                                  {/* <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock}/> <CountdownTimer time={stakeDuration} /></div> */}
-                                </>
-                              }
-
-                              <div className={dappstyles.interest_returns}>
+                              {/* <div className={dappstyles.interest_returns}>
                                 <ul>
                                   <li>
                                     <div className={dappstyles.ir_c}>
@@ -480,7 +502,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                     </div>
                                   </li>
                                 </ul>
-                              </div>
+                              </div> */}
 
                               <div className={dappstyles.cw_btn_div}>
                                   {wAlert && (

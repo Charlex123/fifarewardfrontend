@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 // material
 import axios from 'axios';
 import loginmodalstyles from '../styles/loginmodal.module.css'
@@ -6,6 +6,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash  } from "@fortawesome/free-regular-svg-icons";
 import { faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { ThemeContext } from '../contexts/theme-context';
 // component
 import Loading from './Loading';
 import LogInSuccessModal from './LoginSuccessModal';
@@ -19,6 +20,7 @@ interface ChildProps {
 }
 const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
   
+  const { theme } = useContext(ThemeContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, seterrorMessage] = useState("");
@@ -102,7 +104,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
   }
   return (
     <>
-        <div className={loginmodalstyles.loginmodalmain} id="loginmodalid">
+        <div className={`${loginmodalstyles.loginmodalmain} ${theme === 'dark' ? loginmodalstyles['darktheme'] : loginmodalstyles['lighttheme']}`} id="loginmodalid">
             <div className={loginmodalstyles.loginmodalmainin}>
                 <div className={loginmodalstyles.closebtn}><button type='button' title='button'>{<FontAwesomeIcon icon={faXmark} onClick={closeModal} />}</button></div>
                 <form className={loginmodalstyles.formTag} onSubmit={submitHandler}>

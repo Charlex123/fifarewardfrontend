@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import {useRouter} from 'next/navigation'
 // material
 import axios from 'axios';
@@ -10,6 +10,7 @@ import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 // component
 import Loading from './Loading';
 import AlertMessage from './AlertMessage';
+import { ThemeContext } from '../contexts/theme-context';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 
 // ----------------------------------------------------------------------
@@ -18,7 +19,7 @@ library.add(faEye, faEyeSlash);
 export default function LoginForm() {
   
   const router = useRouter();
-
+  const { theme } = useContext(ThemeContext);
   const [email, setEmail] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [errorMessage, seterrorMessage] = useState("");
@@ -101,7 +102,7 @@ export default function LoginForm() {
   
   return (
     <>
-        <div>
+        <div className={`${loginstyles.main} ${theme === 'dark' ? loginstyles['darktheme'] : loginstyles['lighttheme']}`}>
           <a href='/' rel='noopener noreferrer' className={loginstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back to home</a>
           <form className={loginstyles.formTag} onSubmit={submitHandler}>
           {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}

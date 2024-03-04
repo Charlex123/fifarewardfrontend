@@ -159,6 +159,9 @@ function Navbar() {
                 <div className={styles.nav_container_p}>
                 <ul className={styles.upa}>
                     <li>
+                      <a href='/dapp' rel='noopener noreferrer' className={styles.si}>Reward Points</a>
+                    </li>
+                    <li>
                       <a href='/dapp' rel='noopener noreferrer' className={styles.si}>Dapp</a>
                     </li>
                     <li>

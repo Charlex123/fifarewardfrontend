@@ -27,6 +27,8 @@
   --text-color-light: #353535;
   --orange-color-dark: #e28305;
   --orange-color-light: #925504;
+  --border-dark: 1px solid #f1f1f1;
+  --border-light: 1px solid #c7c5c57c;
   /* --primaryFont: 'Montserrat', sans-serif; */
   /* --primaryFont: 'Raleway', sans-serif; */
 }
@@ -50,6 +52,7 @@ body {
 .darktheme {
   background-color: var(--background-color-dark);
   color: var(--text-color-light);
+  border: 1px solid
 }
 .lighttheme {
   background-color: var(--background-color-light);

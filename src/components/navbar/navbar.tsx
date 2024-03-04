@@ -111,10 +111,14 @@ function Navbar() {
                             <li><a href='/whitepaper' rel='noopener noreferrer' > <FontAwesomeIcon icon={faAngleRight} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
                         </ul>
                     </li> */}
+                    {isLoggedIn &&
+                        <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
+                    }
                     <li><a href='/nft' rel='noopener noreferrer'>NFT Market Place</a></li>
                     <li><a href='/aichat' rel='noopener noreferrer'>Football AI</a></li>
                     <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li>
+                    <li><a href='/api' rel='noopener noreferrer'>Api Services</a></li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} onMouseOut={toggleIconDown2}>
                         Features {dropdwnIcon2}
                         <ul>
