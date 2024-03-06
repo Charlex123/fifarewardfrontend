@@ -9,8 +9,17 @@ import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 
 contract FRDStaking is ReentrancyGuard {
 
+    error createTokenFirst();
+    error biddingTimeHasPassed();
+    error minimumbiddingAmount();
+    error priceMustBeGreaterThanZero();
+    error Unauthorized();
+    error InvalidAmount();
+    error royaltyPercentageMustBeLessThan500();
+    error adminfeePercentageMustBeLessThan500();
+
     using SafeMath for uint256;
-    uint256 private stakeIds;
+    uint256 private _stakeIds;
     address staker = msg.sender;
     address stakedeployer;
     uint timeNow = block.timestamp;
@@ -56,6 +65,7 @@ contract FRDStaking is ReentrancyGuard {
     mapping(address => uint256) private _balanceOf;
     mapping(address => Users) private userDetails;
     mapping(address => Stakes) private MyStakes;
+    mapping(uint256 => Stakes) private MyStakeIds;
     mapping(address => Referrals) private referrals;
     address[] public userAddresses;
     mapping (address => bool) public stakedUsers;
@@ -96,7 +106,8 @@ contract FRDStaking is ReentrancyGuard {
         // This used to consume all gas in old EVM versions, but not anymore.
         // It is often a good idea to use 'require' to check if functions are called correctly.
         // As a second argument, you can also provide an explanation about what went wrong.
-        require(msg.sender == stakedeployer, "Caller is not owner");
+        if(msg.sender == stakedeployer)
+            revert Unauthorized();
         _;
     }
 
@@ -145,67 +156,66 @@ contract FRDStaking is ReentrancyGuard {
         
     }
 
-    function stake(uint stake_amount, uint stake_duration) external nonReentrant {
-        require(staker != address(0), "Staker cannot be a zero address");
-        require(stake_amount > 0, "Amount must be greater than 0");
+    function stake(uint stake_amount, uint stake_duration, uint profitpercent) external nonReentrant {
+        if(staker == address(0))
+            revert Unauthorized();
+        if(stake_amount <= 0) 
+            revert InvalidAmount();
         require(FifaRewardTokenContract.allowance(msg.sender, address(this)) >= stake_amount,
              "Token transfer not approved");
         require(FifaRewardTokenContract.balanceOf(msg.sender) >= stake_amount, "Insufficient FifaRewardToken balance");
 
         userDetails[msg.sender].hasStake = true;
 
-        if(stake_duration == 30 || stake_duration == 90 || stake_duration == 365 || stake_duration == 1000) {
         
-            uint interest_RatePerDay;
+        uint interest_RatePerDay = stake_amount.mul(profitpercent);
 
-            if(stake_duration == 30) {
-                interest_RatePerDay = stake_amount.mul(2).div(100);
-            }
-            else if(stake_duration == 90) {
-                interest_RatePerDay = stake_amount.mul(22).div(1000);
-            }
-            else if(stake_duration == 365) {
-                interest_RatePerDay = stake_amount.mul(3).div(100);
-            }
-            else if(stake_duration == 1000) {
-                interest_RatePerDay = stake_amount.mul(35).div(1000);
-            }
+        // if(stake_duration == 30) {
+        //     interest_RatePerDay = stake_amount.mul(2).div(100);
+        // }
+        // else if(stake_duration == 90) {
+        //     interest_RatePerDay = stake_amount.mul(22).div(1000);
+        // }
+        // else if(stake_duration == 365) {
+        //     interest_RatePerDay = stake_amount.mul(3).div(100);
+        // }
+        // else if(stake_duration == 1000) {
+        //     interest_RatePerDay = stake_amount.mul(35).div(1000);
+        // }
 
-            stakeIds += 1;
-            uint256 stakeId = stakeIds;
+        _stakeIds += 1;
+        uint256 stakeId = _stakeIds;
 
-            MyStakes[staker] = Stakes({
-                stakeId: stakeId,
-                rewardTime: timeNow + stake_duration * 1 days,
-                stakeDuration: stake_duration,
-                stakeAmount: stake_amount,
-                currentstakeReward: stake_amount,
-                stakeRewardPerDay: interest_RatePerDay,
-                totalstakeReward: interest_RatePerDay.mul(stake_duration),
-                totalReward: stake_amount.add(userDetails[msg.sender].userStakes[msg.sender].totalstakeReward),
-                isActive: true,
-                stakerAddress: msg.sender
-            });
+        MyStakes[staker] = Stakes({
+            stakeId: stakeId,
+            rewardTime: timeNow + stake_duration * 1 days,
+            stakeDuration: stake_duration,
+            stakeAmount: stake_amount,
+            currentstakeReward: stake_amount,
+            stakeRewardPerDay: interest_RatePerDay,
+            totalstakeReward: interest_RatePerDay.mul(stake_duration),
+            totalReward: stake_amount.add(userDetails[msg.sender].userStakes[msg.sender].totalstakeReward),
+            isActive: true,
+            stakerAddress: msg.sender
+        });
 
-            userDetails[msg.sender].stakeCount++;
-            userDetails[msg.sender].hasStake = true;
-            
-            uint stakerewardperDay = userDetails[msg.sender].userStakes[msg.sender].stakeRewardPerDay;
-            uint total_reward = userDetails[msg.sender].userStakes[msg.sender].totalReward;
-            uint totalstake_reward = userDetails[msg.sender].userStakes[msg.sender].totalstakeReward;
-            userDetails[msg.sender].stakeCount++;
-            stakedUsers[msg.sender] = true;
-            userAddresses.push(msg.sender);
-            
-            // transfer tokens to contract
-            FifaRewardTokenContract.transferFrom(msg.sender, address(this), stake_amount);
-            // updateusertokenbalance
-            _balanceOf[msg.sender] += stake_amount;
-            
-            emit StakedEvent(staker, stake_duration, stake_amount, stakerewardperDay, totalstake_reward, total_reward, true, true);
-        }else {
-            revert("invalid stake period");
-        }
+        userDetails[msg.sender].stakeCount++;
+        userDetails[msg.sender].hasStake = true;
+        
+        uint stakerewardperDay = userDetails[msg.sender].userStakes[msg.sender].stakeRewardPerDay;
+        uint total_reward = userDetails[msg.sender].userStakes[msg.sender].totalReward;
+        uint totalstake_reward = userDetails[msg.sender].userStakes[msg.sender].totalstakeReward;
+        userDetails[msg.sender].stakeCount++;
+        stakedUsers[msg.sender] = true;
+        userAddresses.push(msg.sender);
+        
+        // transfer tokens to contract
+        FifaRewardTokenContract.transferFrom(msg.sender, address(this), stake_amount);
+        // updateusertokenbalance
+        _balanceOf[msg.sender] += stake_amount;
+        
+        emit StakedEvent(staker, stake_duration, stake_amount, stakerewardperDay, totalstake_reward, total_reward, true, true);
+    
 
         
      }
@@ -217,65 +227,64 @@ contract FRDStaking is ReentrancyGuard {
     function calcReward() public view returns (uint totaluserreward_) {
         require(msg.sender != address(0),"Zero addresses are not accepted");
         
-        if(hasStaked(msg.sender) == false){
-         revert("No active stake found");
-        }else {
-            // get user stake duration 
-            uint userstakereward = userDetails[msg.sender].userStakes[msg.sender].totalReward;
-            uint totaluserreward;
-            // check if user has referrals
-            if(userDetails[msg.sender].userReferrals[msg.sender].allreferrals.length > 0) {
-                // get sum of ref bonuses
-                uint totalfirstgenrefbonus = 0;
-                uint totalsecondgenrefbonus = 0;
-                uint totalthirdgenrefbonus = 0;
+        // if(hasStaked(msg.sender) == false){
+        //  revert("No active stake found");
+        // }else {
+        // get user stake duration 
+        uint userstakereward = userDetails[msg.sender].userStakes[msg.sender].totalReward;
+        uint totaluserreward;
+        // check if user has referrals
+        if(userDetails[msg.sender].userReferrals[msg.sender].allreferrals.length > 0) {
+            // get sum of ref bonuses
+            uint totalfirstgenrefbonus = 0;
+            uint totalsecondgenrefbonus = 0;
+            uint totalthirdgenrefbonus = 0;
 
-                if(userDetails[msg.sender].userReferrals[msg.sender].firstgenReferrals.length > 0) {
-                // check for first level generation referrals
-                    for(uint8 i = 0; i <= userDetails[msg.sender].userReferrals[msg.sender].firstgenReferrals.length; i++) {
-                        address firstgenref = userDetails[msg.sender].userReferrals[msg.sender].firstgenReferrals[i];
-                        // check if referral has active stake
-                        if(userDetails[firstgenref].hasStake == true) {
-                            // get referral stake amount
-                            uint256 firstgenrefstakeAmt = userDetails[firstgenref].userStakes[msg.sender].stakeAmount;
-                            uint firstgenrefbonus = firstgenrefstakeAmt.mul(5).div(1000);
-                            totalfirstgenrefbonus += firstgenrefbonus;
-                        }
+            if(userDetails[msg.sender].userReferrals[msg.sender].firstgenReferrals.length > 0) {
+            // check for first level generation referrals
+                for(uint8 i = 0; i <= userDetails[msg.sender].userReferrals[msg.sender].firstgenReferrals.length; i++) {
+                    address firstgenref = userDetails[msg.sender].userReferrals[msg.sender].firstgenReferrals[i];
+                    // check if referral has active stake
+                    if(userDetails[firstgenref].hasStake == true) {
+                        // get referral stake amount
+                        uint256 firstgenrefstakeAmt = userDetails[firstgenref].userStakes[msg.sender].stakeAmount;
+                        uint firstgenrefbonus = firstgenrefstakeAmt.mul(5).div(1000);
+                        totalfirstgenrefbonus += firstgenrefbonus;
                     }
                 }
-                if(userDetails[msg.sender].userReferrals[msg.sender].secondgenReferrals.length > 0) {
-                // check for first level generation referrals
-                    for(uint8 i = 0; i <= userDetails[msg.sender].userReferrals[msg.sender].secondgenReferrals.length; i++) {
-                        address secondgenref = userDetails[msg.sender].userReferrals[msg.sender].secondgenReferrals[i];
-                        // check if referral has active stake
-                        if(userDetails[secondgenref].hasStake == true) {
-                            // get referral stake amount
-                            uint256 secondgenrefstakeAmt = userDetails[secondgenref].userStakes[msg.sender].stakeAmount;
-                            uint secondgenrefbonus = secondgenrefstakeAmt.mul(5).div(1000);
-                            totalsecondgenrefbonus += secondgenrefbonus;
-                        }
-                    }
-                }
-                if(userDetails[msg.sender].userReferrals[msg.sender].thirdgenReferrals.length > 0) {
-                // check for first level generation referrals
-                    for(uint8 i = 0; i <= userDetails[msg.sender].userReferrals[msg.sender].thirdgenReferrals.length; i++) {
-                        address thirdgenref = userDetails[msg.sender].userReferrals[msg.sender].thirdgenReferrals[i];
-                        // check if referral has active stake
-                        if(userDetails[thirdgenref].hasStake == true) {
-                            // get referral stake amount
-                            uint256 thirdgenrefstakeAmt = userDetails[thirdgenref].userStakes[msg.sender].stakeAmount;
-                            uint thirdgenrefbonus = thirdgenrefstakeAmt.mul(5).div(1000);
-                            totalthirdgenrefbonus += thirdgenrefbonus;
-                        }
-                    }
-                }
-            totaluserreward = userstakereward.add(totalfirstgenrefbonus).add(totalsecondgenrefbonus).add(totalthirdgenrefbonus);
-            totaluserreward_ = totaluserreward;
-            uint tRewards = totaluserreward_;
-            return tRewards;
-            }else {
-                return  userstakereward;
             }
+            if(userDetails[msg.sender].userReferrals[msg.sender].secondgenReferrals.length > 0) {
+            // check for first level generation referrals
+                for(uint8 i = 0; i <= userDetails[msg.sender].userReferrals[msg.sender].secondgenReferrals.length; i++) {
+                    address secondgenref = userDetails[msg.sender].userReferrals[msg.sender].secondgenReferrals[i];
+                    // check if referral has active stake
+                    if(userDetails[secondgenref].hasStake == true) {
+                        // get referral stake amount
+                        uint256 secondgenrefstakeAmt = userDetails[secondgenref].userStakes[msg.sender].stakeAmount;
+                        uint secondgenrefbonus = secondgenrefstakeAmt.mul(5).div(1000);
+                        totalsecondgenrefbonus += secondgenrefbonus;
+                    }
+                }
+            }
+            if(userDetails[msg.sender].userReferrals[msg.sender].thirdgenReferrals.length > 0) {
+            // check for first level generation referrals
+                for(uint8 i = 0; i <= userDetails[msg.sender].userReferrals[msg.sender].thirdgenReferrals.length; i++) {
+                    address thirdgenref = userDetails[msg.sender].userReferrals[msg.sender].thirdgenReferrals[i];
+                    // check if referral has active stake
+                    if(userDetails[thirdgenref].hasStake == true) {
+                        // get referral stake amount
+                        uint256 thirdgenrefstakeAmt = userDetails[thirdgenref].userStakes[msg.sender].stakeAmount;
+                        uint thirdgenrefbonus = thirdgenrefstakeAmt.mul(5).div(1000);
+                        totalthirdgenrefbonus += thirdgenrefbonus;
+                    }
+                }
+            }
+        totaluserreward = userstakereward.add(totalfirstgenrefbonus).add(totalsecondgenrefbonus).add(totalthirdgenrefbonus);
+        totaluserreward_ = totaluserreward;
+        uint tRewards = totaluserreward_;
+        return tRewards;
+        }else {
+            return  userstakereward;
         }
     }
 
@@ -431,10 +440,20 @@ contract FRDStaking is ReentrancyGuard {
         }           
     }
 
-    function getContractBalance() external view returns (uint256) {
+    function getContractBalance() public view isOwner returns (uint256) {
         return address(this).balance;
     }
 
+    function getUserStakeCount() public view returns(uint) {
+        uint totalStakeIds = _stakeIds;
+        uint stakeCount = 0;
 
+        for(uint i = 0; i < totalStakeIds; i++) {
+            if(MyStakeIds[i+1].stakerAddress == msg.sender) {
+            stakeCount += 1;
+            }
+        }
+        return stakeCount;
+    }
 
 }

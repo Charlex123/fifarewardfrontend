@@ -56,17 +56,19 @@ const Dapp = () =>  {
   const [dappConnector,setDappConnector] = useState(false);
   const [wAlert,setWAlert] = useState(false);
 
-  const [error, setError] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
   const [network, setNetwork] = useState(undefined);
-  const [message, setMessage] = useState("");
-  const [earningprofitpercent, setEarningProfitPercent] = useState<number>(0);
-  const [signedMessage, setSignedMessage] = useState("");
-  const [verified, setVerified] = useState();
+  const [earningprofitpercent, setEarningProfitPercent] = useState<any>(0);
   const [walletaddress, setWalletAddress] = useState("NA"); 
-  const [stakeAmount, setstakeAmount] = useState<number>(50);
+  const [stakeAmount, setstakeAmount] = useState<any>(500);
   const [stakeduration, setstakeduration] = useState<any>(180);
-  
+  const [currentstakeprofitPercent,setCurrentstakeprofitPercent] = useState<any>(0);
+  const [isDragging, setIsDragging] = useState<boolean>(false);
+  const [initialValues, setInitialValues] = useState<number[]>([]);
+  // const [deltaX, setDeltaX] = useState(0);
+  // const [draggedRangeIndex, setDraggedRangeIndex] = useState<number | null>(null);
+
+
   const [showTimer, setShowTimer] = useState(false);
   const [showWithdrawStake, setShowWithdrawStake] = useState(false);
   
@@ -79,12 +81,8 @@ const Dapp = () =>  {
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
   
-  const handleChange = (event:any) => {
-    const newValue = event.target.value;
-    setstakeAmount(newValue);
-};
-
-const handleCopyClick = () => {
+  
+  const handleCopyClick = () => {
    // Create a temporary textarea element
    const textArea = document.createElement('textarea');
    
@@ -127,32 +125,20 @@ const handleCopyClick = () => {
   const closeWAlert = () => {
     setWAlert(!wAlert);
   }
-
-  let currentstakeprofitPercent: number = 0;
-  const calculateprofitPercent = async () => {
-    let stkamt = stakeAmount;
-    let stkdur = stakeduration;
-    currentstakeprofitPercent += 0.05;
-    setEarningProfitPercent(currentstakeprofitPercent);
-  }
-
-  const handleStakeDuration = (e:any) => {
-    setstakeduration(e.target.value)
-    calculateprofitPercent()
-  }
-
-  // define contract data
   
   const StakeFRD = async () => {
     try {
       // setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider as any)
-      const signer = provider.getSigner();
-      console.log('stakes provider',provider);
-      console.log('stakes signer',provider);
-      const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
-      const reslt = await StakeContract.stake(StakeAddress,stakeAmount);
-      console.log(reslt)
+      if(walletProvider) {
+        const provider = new ethers.providers.Web3Provider(walletProvider as any)
+        const signer = provider.getSigner();
+        console.log('stakes provider',provider);
+        console.log('stakes signer',provider);
+        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const reslt = await StakeContract.stake(StakeAddress,stakeAmount);
+        console.log(reslt)
+      }
+        
     } catch (error:any) {
       console.log(error)
     }
@@ -164,12 +150,14 @@ const handleCopyClick = () => {
     try {
       setWAlert(!wAlert);
       // setShowTimer(!showTimer);
-      const provider = new ethers.providers.Web3Provider(walletProvider as any)
-      const signer = provider.getSigner();
-      const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
-      const reslt = await FRDContract.approve(StakeAddress,stakeAmount);
-      if(reslt) {
-        StakeFRD();
+      if(walletProvider) {
+          const provider = new ethers.providers.Web3Provider(walletProvider as any)
+          const signer = provider.getSigner();
+          const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
+          const reslt = await FRDContract.approve(StakeAddress,stakeAmount);
+          if(reslt) {
+            StakeFRD();
+        }
       }
     } catch (error:any) {
       setDappConnector(true);
@@ -182,16 +170,18 @@ const handleCopyClick = () => {
     
     try {
       // setShowTimer(!showTimer);
-      setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider as any)
-      const signer = provider.getSigner();
-      const stakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
-      const reslt = await stakeContract.hasStake(signer);
-      if(reslt === true) {
-        setShowTimer(true)
-        StakeFRD()
-      }else if(reslt === false) {
-        Approve()
+      if(walletProvider) {
+        setWAlert(!wAlert);
+        const provider = new ethers.providers.Web3Provider(walletProvider as any)
+        const signer = provider.getSigner();
+        const stakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const reslt = await stakeContract.hasStake(signer);
+        if(reslt === true) {
+          setShowTimer(true)
+          StakeFRD()
+        }else if(reslt === false) {
+          Approve()
+        }
       }
     } catch (error) {
       console.log("Check has wallet");
@@ -203,12 +193,14 @@ const handleCopyClick = () => {
 
   const calculateReward = async () => {
     try {
-      setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider as any);
-      const signer = provider.getSigner();
-      const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
-      const reslt = await StakeContract.calcReward();
-      console.log('calc reward error',reslt);
+      if(walletProvider) {
+        setWAlert(!wAlert);
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const reslt = await StakeContract.calcReward();
+        console.log('calc reward error',reslt);
+      }
     }catch(error) {
       setDappConnector(true);
       setErrorMessage("No active stake found");
@@ -218,12 +210,14 @@ const handleCopyClick = () => {
 
   const Withdraw = async () => {
     try {
-      setWAlert(!wAlert);
-      const provider = new ethers.providers.Web3Provider(walletProvider as any);
-      const signer = provider.getSigner();
-      const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
-      const reslt = await StakeContract.withdrawStake();
-      console.log("Account Balance: ", reslt);
+      if(walletProvider) {
+        setWAlert(!wAlert);
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const reslt = await StakeContract.withdrawStake();
+        console.log("Account Balance: ", reslt);
+      }
     } catch (error) {
       setDappConnector(true);
       setErrorMessage("You must have stake to withdraw");
@@ -266,7 +260,6 @@ const handleCopyClick = () => {
   }
   getWalletAddress();
   
-  
   // Function to handle window resize
   const handleResize = () => {
       // Check the device width and update isNavOpen accordingly
@@ -306,7 +299,7 @@ const handleCopyClick = () => {
   };
   
   
- }, [userId, router,username,address,chainId,isConnected,walletaddress,stakeduration,wAlert,showTimer,walletProvider])
+ }, [userId, router,username,address,chainId,isConnected,walletaddress,stakeduration,wAlert,showTimer,walletProvider,isDragging,initialValues])
 
 
  // Function to toggle the navigation menu
@@ -315,22 +308,32 @@ const handleCopyClick = () => {
     setIsSideBarToggled(!isSideBarToggled);
   };
 
-  // const toggleIconUp1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
-  // }
-  // const toggleIconUp2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
-  // }
   const toggleIconUp3 = () => {
       setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
-  // const toggleIconDown1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
-  // }
-  // const toggleIconDown2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
-  // }
+  const calculateprofitPercent = async (percntagechange:any) => {
+    let nep = parseFloat(percntagechange).toFixed(1);
+    console.log('new pppoiiiii',nep)
+    let newp = nep;
+    setCurrentstakeprofitPercent(newp);
+    setEarningProfitPercent(newp);
+  }
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = parseInt(event.target.value);
+    // setstakeAmount(newValue);
+  };
+
+  const handleStakeDuration = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const newMaxValue = parseInt(event.target.value);
+
+    const percentageChange = ((newMaxValue - stakeduration) / (2360 - 180)) * 100;
+    console.log('percent change',percentageChange);
+    setstakeduration(newMaxValue);
+    setstakeAmount(stakeAmount + Math.round((50000 - 500) * percentageChange / 100));
+    calculateprofitPercent(percentageChange)
+  };
 
   const toggleIconDown3 = () => {
       setDropdownIcon3(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
@@ -424,7 +427,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                           <h3>Stake FRD to earn unlimited profit daily</h3>
                           {!showTimer && 
                                 <>
-                                  <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock}/> <CountdownTimer time={stakeduration} /></div>
+                                  <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={stakeduration} /></div>
                                 </>
                               }
                           <div className={dappstyles.s_m_in }>
@@ -433,8 +436,8 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                 <div className={dappstyles.amountprog}>
                                   <input title='input'
                                     type="range"
-                                    id="horizontalInput"
-                                    min={50}
+                                    id="horizontalInputforamount"
+                                    min={500}
                                     max={50000}
                                     step={1}
                                     value={stakeAmount}
@@ -444,14 +447,14 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                 </div>
                               </div>
                               <div className={dappstyles.s_m_inna}>
-                                <div><label>Stake Duration</label><span className={dappstyles.stkdur_p}> {stakeduration} Days</span></div>
+                                <div><label>Stake Duration</label><span className={dappstyles.stkdur_p}> {stakeduration.toLocaleString()} Days</span> <span className={dappstyles.stkdur_y}> {(stakeduration/365).toFixed(1)} Years</span></div>
                                 <div className={dappstyles.amountprog}>
                                   <input title='input'
                                     type="range"
-                                    id="horizontalInput"
+                                    id="horizontalInputforstake"
                                     min={180}
-                                    max={10000}
-                                    step={1}
+                                    max={2360}
+                                    step={2}
                                     value={stakeduration}
                                     onChange={handleStakeDuration}
                                     style={{ width: '100%',height: '5px', cursor: 'pointer', backgroundColor: 'orange', color: 'orange' }}

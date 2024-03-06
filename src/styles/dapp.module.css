@@ -12,7 +12,7 @@
     background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(13,20,24,1) 14%, rgba(19,28,28,1) 29%, rgba(28,28,46,1) 44%, rgba(24,28,45,1) 49%, rgba(18,27,43,1) 54%, rgba(19,28,28,1) 64%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .staketimer {
-    color: #010101;font-size: 14px;font-weight: 700;margin: 1rem auto;background-color: #e3a204 ;border-radius: 120px;
+    color: #010101;font-size: 12px;font-weight: 700;margin: 1rem auto;background-color: #e3a204 ;border-radius: 120px;
     width: fit-content;padding: 4px 12px;display: flex;
 }
 .lighttheme {
@@ -136,10 +136,14 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .stkamt_p {
     background-color: #f8d170db;border-radius: 8px;margin-left: 5px;
-    font-size: 10px;padding: 1px 4px 1px 4px;color: #2c2b2b;font-weight: 600;
+    font-size: 11px;padding: 1px 4px 1px 4px;color: #2c2b2b;font-weight: 600;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .stkdur_p {
     background-color: #70dff8db;border-radius: 8px;margin-left: 5px;
+    font-size: 11px;padding: 1px 4px 1px 4px;color: #2c2b2b;font-weight: 600;
+}
+.main .stake .stake_mod .s_m_in .s_m_inna .stkdur_y {
+    background-color: #f89070db;border-radius: 8px;margin-left: 5px;
     font-size: 10px;padding: 1px 4px 1px 4px;color: #2c2b2b;font-weight: 600;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .s_m_in_c {
