@@ -20,7 +20,7 @@ contract FRDStaking is ReentrancyGuard {
     error referralAlreadyExits();
     error sponsorMustHaveActiveStakeToRefer();
     error YouMustHaveActiveStakeToWithdraw();
-    error MinWithdrawNotReached();
+    error AmountIsLessThanMinimumWithdrawAmount();
 
     using SafeMath for uint256;
     uint256 private _stakeIds;
@@ -28,6 +28,10 @@ contract FRDStaking is ReentrancyGuard {
     uint256 private _userIds;
     address staker = msg.sender;
     address stakedeployer;
+    uint withFeePercent = 5;
+    uint amtToWIthdraw;
+    uint amtRemaining;
+    
     uint timeNow = block.timestamp;
     IERC20 public FifaRewardTokenContract;
 
@@ -448,26 +452,36 @@ contract FRDStaking is ReentrancyGuard {
                 uint refCount = userDetailsById[_userId].refCount;
                 uint stakeReward = MyStakeIds[_stakeId].totalstakeReward;
                 uint totalstakeReward = MyStakeIds[_stakeId].totalReward;
-                uint amtavailableforWith = 0;
                 uint minstaketime = 180 * 1 days;
                 uint stakeduration = MyStakeIds[_stakeId].stakeDuration;
                 uint minstakedur = timeNow.add(minstaketime);
                 uint minwithAmt = getMinWithdrawAmount(_stakeId);
-
-                if(timeNow > minstakedur) {
+                uint withFee = withFeePercent.div(100);
+                if(timeNow > minstakedur && timeNow < stakeduration) {
                     if(_withdrawAmt < minwithAmt) {
-                        revert MinWithdrawNotReached();
+                        revert AmountIsLessThanMinimumWithdrawAmount();
+                    }else {
+                        
+                        if(refCount > 0) {
+                            uint refbonus = getuserRefBonus(msg.sender);
+                            totalReward = stakeReward.add(refbonus);
+                            amtToWIthdraw = _withdrawAmt.sub(withFee);
+                            amtRemaining = stakeReward.sub(amtToWIthdraw);
+                        }else {
+                            amtToWIthdraw = _withdrawAmt.sub(withFee);
+                            amtRemaining = stakeReward.sub(amtToWIthdraw);
+                        }
                     }
-                    amtavailableforWith = 0;
                 }else if(timeNow > stakeduration) {
-
+                    // amtToWIthdraw = 
+                    if(refCount > 0) {
+                        uint refbonus = getuserRefBonus(msg.sender);
+                        totalReward = totalstakeReward.add(refbonus);
+                    }else {
+                        totalReward = totalstakeReward;
+                    }
                 }
-                if(refCount > 0) {
-                    uint refbonus = getuserRefBonus(msg.sender);
-                    totalReward = totalstakeReward.add(refbonus);
-                }else {
-                    totalReward = totalstakeReward;
-                }
+                
             }else {
                 revert YouMustHaveActiveStakeToWithdraw();
             }
