@@ -165,6 +165,9 @@ function Navbar() {
                       <a href='/dapp' rel='noopener noreferrer' className={styles.si}>Dapp</a>
                     </li>
                     <li>
+                      <a href='/betting' rel='noopener noreferrer' className={styles.si}>Betting</a>
+                    </li>
+                    <li>
                       <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={styles.buytafa}>BUY FRD</a>
                     </li>
                     <li>

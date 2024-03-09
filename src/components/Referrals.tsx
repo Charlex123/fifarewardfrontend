@@ -186,8 +186,9 @@ getWalletAddress();
       // const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.bnbchain.org:8545')
       const signer = provider.getSigner(address);
+      const refbonus:number = 1;
       const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
-      const reslt = await StakeContract.addReferrer(sponsorWalletAddress);
+      const reslt = await StakeContract.addReferrer(sponsorWalletAddress,refbonus);
       console.log("Account Balance: ", reslt);
     }
 
