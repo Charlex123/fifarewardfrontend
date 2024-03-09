@@ -7,6 +7,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./SafeMath.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "hardhat/console.sol";
 
 contract FRDBetting is ReentrancyGuard {
 
@@ -17,12 +18,17 @@ contract FRDBetting is ReentrancyGuard {
     error Unauthorized();
     error betParticipantComplete();
     error InvalidAmount();
+    error referralAlreadyExits();
+    error sponsorMustHaveActiveBetToRefer();
     error BetClosed();
+    error AccountNotRegistered();
     
     using SafeMath for uint256;
     uint timeNow = block.timestamp;
     IERC20 public FifaRewardTokenContract;
     uint256 private _betIds;
+    uint256 private _refIds;
+    uint256 private _userIds;
     address private betdeployer;
     address[] private emptyArr;
     Bets[] betsArray;
@@ -31,6 +37,17 @@ contract FRDBetting is ReentrancyGuard {
         FifaRewardTokenContract = IERC20(_FifaRewardTokenAddress);
         betdeployer = msg.sender; 
     } 
+
+    struct Users {
+        uint userId;
+        bool hasbetd;
+        uint betCount;
+        bool hasActiveBet;
+        uint refCount;
+        bool registered;
+        bool wasReferred;
+        address walletaddress;
+    }
 
     struct Bets {
         uint betId;
@@ -50,12 +67,27 @@ contract FRDBetting is ReentrancyGuard {
         address[] betlosers;
     }
 
+    struct Referrals {
+        uint refId;
+        uint sponsorUserId;
+        uint referralUserId;
+        address referral;
+        address sponsor;
+        uint refbonus;
+        address[] referrals;
+    }
+
     mapping(address => uint256) private _balanceOf;
-    mapping(uint256 => Bets) private Beter;
+    mapping(uint256 => Bets) private BetIds;
     mapping(address => Bets) private Bet;
+    mapping(address => Users) private userDetails;
+    mapping(uint256 => Users) private userDetailsById;
+    mapping(address => Referrals) private referrals;
+    mapping(uint256 => Referrals) private referralsbyId;
     
     event OpenBets(address indexed betopener, address participant,string username, uint betamount, uint betId, uint matchId, string matchfixture, string prediction, string bettingteam);
     event JoinBett(address indexed betopener,address participant, string username, uint betamount, uint betId, uint matchId, string matchd, string prediction, string bettingteam);
+    event AddReferral(uint indexed refId,uint sponsorUserId, uint referralUserId, address referral, address sponsor, address[] referrals);
 
     function myTokenBalance() public view returns(uint) {
         return _balanceOf[msg.sender];
@@ -80,6 +112,122 @@ contract FRDBetting is ReentrancyGuard {
     function compareStrings(string memory a, string memory b) internal pure returns (bool) {
         return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
     }
+    
+    function getUserId(address _useraddress) public view returns(uint) {
+        uint allusersCount = _userIds;
+        if(_useraddress == address(0)) {
+            revert Unauthorized();
+        }else {
+            uint _uId;
+            for(uint i = 0; i < allusersCount; i++) {
+                if(userDetailsById[i+1].walletaddress == _useraddress) {
+                    _uId = userDetailsById[i+1].userId;
+                }
+            }
+            return _uId;
+        }
+    }
+
+    function getuserRefIdBySponsor(address _useraddress, address _sponsor) public view returns(uint) {
+        uint allrefsCount = _refIds;
+        if(_useraddress == address(0)) {
+            revert Unauthorized();
+        }else {
+            uint _refId;
+            for(uint i = 0; i < allrefsCount; i++) {
+                if(referralsbyId[i+1].referral == _useraddress && referralsbyId[i+1].sponsor == _sponsor) {
+                    _refId = referralsbyId[i+1].refId;
+                }
+            }
+            return _refId;
+        }
+    }
+
+    function getuserRefId(address _useraddress) public view returns(uint) {
+        uint allrefsCount = _refIds;
+        if(_useraddress == address(0)) {
+            revert Unauthorized();
+        }else {
+            uint _refId;
+            for(uint i = 0; i < allrefsCount; i++) {
+                if(referralsbyId[i+1].referral == _useraddress) {
+                    _refId = referralsbyId[i+1].refId;
+                }
+            }
+            return _refId;
+        }
+    }
+
+    function getuserReferrals(address _useraddress) public view returns (address[] memory) {
+        
+        // get userId
+        uint _userId = getUserId(_useraddress);
+        //get user refId
+        // uint _refId = getuserRefId(_useraddress);
+
+        // Check if the user exists and has referrals
+        if(userDetailsById[_userId].registered == false) {
+            revert AccountNotRegistered();
+        }
+
+        // if(userDetailsById[_userId].refCount )
+        uint allrefCount = _refIds;
+        uint refCount = userDetailsById[_userId].refCount;
+        // uint currentIndex = 0;
+        
+        address[] memory userReferrals = new address[](refCount);
+
+        uint currentIndex = 0;
+
+        // Iterate through all referrals to find the ones related to the user
+        for(uint i = 0; i < allrefCount; i++) {
+            if(referralsbyId[i+1].sponsor == _useraddress) {
+                userReferrals[currentIndex] = referralsbyId[i+1].referral;
+                currentIndex++;
+            }
+        }
+
+        return userReferrals;
+    }
+
+    function getuserbetId(address _useraddress) public view returns(uint) {
+        uint allbetsCount = _betIds;
+        if(_useraddress == address(0)) {
+            revert Unauthorized();
+        }else {
+            uint _betId;
+            for(uint i = 0; i < allbetsCount; i++) {
+                if(BetIds[i+1].participant == _useraddress) {
+                    _betId = BetIds[i+1].betId;
+                }
+            }
+            return _betId;
+        }
+    }
+
+    function getuserRefBonus(address _useraddress) public view returns(uint totalrefbonus) {
+        // get user referrals
+        address[] memory userReferrals = getuserReferrals(_useraddress);
+        uint refCount = userReferrals.length;
+        uint[] memory betAmounts = new uint[](refCount);
+        uint[] memory _refbonus_ = new uint[](refCount);
+        // Check active bets for each referral and sum their bet amounts
+        uint totalrefBonus = 0;
+        uint _refBonus = 0;
+        for(uint j = 0; j < refCount; j++) {
+            // get user bet & referral Id 
+            uint refbetId = getuserbetId(userReferrals[j]);
+            uint refId = getuserRefId(userReferrals[j]);
+            if (compareStrings(BetIds[refbetId].betstatus,"open")) {
+                betAmounts[j] = BetIds[refbetId].betamount;
+                _refbonus_[j] = referralsbyId[refId].refbonus;
+                _refBonus = betAmounts[j].mul(_refbonus_[j]);
+
+                totalrefBonus += _refBonus;
+            }
+        }
+        return totalrefBonus;
+    }
 
     function OpenBet(uint betamount, uint matchId,string memory username, string memory matchfixture, string memory prediction, string memory bettingteam, uint totalbetparticipantscount, uint remainingparticipantscount) external nonReentrant {
         
@@ -96,7 +244,7 @@ contract FRDBetting is ReentrancyGuard {
         address[] storage _participants = Bet[msg.sender].participants;
         _participants.push(msg.sender);
 
-        Beter[betId] = Bets({
+        BetIds[betId] = Bets({
             betId : betId,
             matchId : matchId,
             username: username,
@@ -116,8 +264,6 @@ contract FRDBetting is ReentrancyGuard {
         });
 
         
-        Bet[msg.sender].participants.push(msg.sender);
-
         _balanceOf[msg.sender] -= betamount;
         FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
         
@@ -138,14 +284,14 @@ contract FRDBetting is ReentrancyGuard {
         address[] storage _participants = Bet[betopener].participants;
         _participants.push(msg.sender);
 
-        if(Beter[betId].remainingparticipantscount == 0) {
+        if(BetIds[betId].remainingparticipantscount == 0) {
             revert betParticipantComplete();
-        }else if(!compareStrings(Beter[betId].betstatus,"closed")){
+        }else if(!compareStrings(BetIds[betId].betstatus,"closed")){
             revert BetClosed();
         }else{
-            uint256 remainingparticipantscount = Beter[betId].totalbetparticipantscount - 1;
+            uint256 remainingparticipantscount = BetIds[betId].totalbetparticipantscount - 1;
 
-            Beter[betId] = Bets({
+            BetIds[betId] = Bets({
                 betId : betId,
                 matchId : matchId,
                 username: username,
@@ -157,7 +303,7 @@ contract FRDBetting is ReentrancyGuard {
                 remainingparticipantscount: remainingparticipantscount,
                 prediction : prediction,
                 bettingteam : bettingteam,
-                betstatus : Beter[betId].betstatus,
+                betstatus : BetIds[betId].betstatus,
                 participants: _participants,
                 betwinners: emptyArr,
                 betlosers: emptyArr
@@ -172,7 +318,7 @@ contract FRDBetting is ReentrancyGuard {
     }
 
     function getBetParticipants(uint betId) external  view returns (address[] memory) {
-        return Beter[betId].participants;    
+        return BetIds[betId].participants;    
     }
 
     function loadAllBets() external view returns (Bets[] memory) {
@@ -182,7 +328,7 @@ contract FRDBetting is ReentrancyGuard {
         Bets[] memory bets = new Bets[](betsCount);
         for (uint i = 0; i < betsCount; i++) {
             uint currentId = i + 1;
-            Bets storage currentBet = Beter[currentId];
+            Bets storage currentBet = BetIds[currentId];
             bets[currentIndex] = currentBet;
             currentIndex += 1;
         }
@@ -196,14 +342,14 @@ contract FRDBetting is ReentrancyGuard {
         // uint currentIndex = 0;
 
         // for(uint i=0; i< betsCount; i++) {
-        //     if(Beter[_betId].betId == _betId && Beter[_betId].matchId == _matchId) {
+        //     if(BetIds[_betId].betId == _betId && BetIds[_betId].matchId == _matchId) {
         //         searchbetCount += 1;
         //     }
         // }
-        address participant = Beter[_betId].participant;
-        string memory username = Beter[_betId].username;
-        string memory prediction = Beter[_betId].prediction;
-        string memory bettingteam = Beter[_betId].bettingteam;
+        address participant = BetIds[_betId].participant;
+        string memory username = BetIds[_betId].username;
+        string memory prediction = BetIds[_betId].prediction;
+        string memory bettingteam = BetIds[_betId].bettingteam;
         return (participant, username, prediction, bettingteam);
     }
 
@@ -212,7 +358,7 @@ contract FRDBetting is ReentrancyGuard {
         uint betCount = 0;
 
         for(uint i = 0; i < totalBetIds; i++) {
-            if(Beter[i+1].participant == msg.sender) {
+            if(BetIds[i+1].participant == msg.sender) {
                 betCount += 1;
             }
         }
@@ -225,7 +371,7 @@ contract FRDBetting is ReentrancyGuard {
         uint currentIndex = 0;
 
         for(uint i=0; i < betsCount; i++) {
-            if(Beter[i+1].participant == walletaddress) {
+            if(BetIds[i+1].participant == walletaddress) {
                 searchbetCount += 1;
             }
         }
@@ -233,7 +379,7 @@ contract FRDBetting is ReentrancyGuard {
         Bets[] memory bets = new Bets[](betsCount);
         for (uint i = 0; i < betsCount; i++) {
             uint currentId = i + 1;
-            Bets storage currentBet = Beter[currentId];
+            Bets storage currentBet = BetIds[currentId];
             bets[currentIndex] = currentBet;
             currentIndex += 1;
         }
@@ -249,13 +395,13 @@ contract FRDBetting is ReentrancyGuard {
         uint searchbetCount = 0;
 
         for(uint i=0; i < betsCount; i++) {
-            if(Beter[i+1].matchId == _matchId) {
+            if(BetIds[i+1].matchId == _matchId) {
                 searchbetCount += 1;
             }
         }
 
         for (uint i = 0; i < betsCount; i++) {
-            Beter[i+1].betstatus = "closed";
+            BetIds[i+1].betstatus = "closed";
         }
     }
 
@@ -266,8 +412,8 @@ contract FRDBetting is ReentrancyGuard {
         Bets[] memory bets = new Bets[](betsCount);
         for (uint i = 0; i < betsCount; i++) {
             uint currentId = i + 1;
-            if(compareStrings(Beter[currentId].betstatus, "closed")) {
-                Bets storage currentBet = Beter[currentId];
+            if(compareStrings(BetIds[currentId].betstatus, "closed")) {
+                Bets storage currentBet = BetIds[currentId];
                 bets[currentIndex] = currentBet;
                 currentIndex += 1;
             }
@@ -282,8 +428,8 @@ contract FRDBetting is ReentrancyGuard {
         Bets[] memory bets = new Bets[](betsCount);
         for (uint i = 0; i < betsCount; i++) {
             uint currentId = i + 1;
-            if(compareStrings(Beter[currentId].betstatus, "open")) {
-                Bets storage currentBet = Beter[currentId];
+            if(compareStrings(BetIds[currentId].betstatus, "open")) {
+                Bets storage currentBet = BetIds[currentId];
                 bets[currentIndex] = currentBet;
                 currentIndex += 1;
             }
@@ -298,8 +444,8 @@ contract FRDBetting is ReentrancyGuard {
         Bets[] memory bets = new Bets[](betsCount);
         for (uint i = 0; i < betsCount; i++) {
             uint currentId = i + 1;
-            if(Beter[currentId].betamount >= _betamount) {
-                Bets storage currentBet = Beter[currentId];
+            if(BetIds[currentId].betamount >= _betamount) {
+                Bets storage currentBet = BetIds[currentId];
                 bets[currentIndex] = currentBet;
                 currentIndex += 1;
             }
@@ -312,13 +458,13 @@ contract FRDBetting is ReentrancyGuard {
         uint searchbetCount = 0;
 
         for(uint i=0; i < betsCount; i++) {
-            if(Beter[i+1].matchId == _matchId) {
+            if(BetIds[i+1].matchId == _matchId) {
                 searchbetCount += 1;
             }
         }
 
         for (uint i = 0; i < betsCount; i++) {
-            Beter[i+1].betstatus = "closed";
+            BetIds[i+1].betstatus = "closed";
         }
     }
 
@@ -327,13 +473,13 @@ contract FRDBetting is ReentrancyGuard {
         uint searchbetCount = 0;
 
         for(uint i=0; i < betsCount; i++) {
-            if(Beter[i+1].matchId == _matchId) {
+            if(BetIds[i+1].matchId == _matchId) {
                 searchbetCount += 1;
             }
         }
 
         for (uint i = 0; i < betsCount; i++) {
-            Beter[i+1].betstatus = "closed";
+            BetIds[i+1].betstatus = "closed";
         }
     }
 }
