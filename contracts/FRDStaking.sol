@@ -8,6 +8,10 @@ import "./SafeMath.sol";
 import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "hardhat/console.sol";
 
+interface IBEP20 {
+    function transfer(address _to, uint256 _value) external returns (bool);
+}
+
 contract FRDStaking is ReentrancyGuard {
 
     error createTokenFirst();
@@ -21,6 +25,7 @@ contract FRDStaking is ReentrancyGuard {
     error sponsorMustHaveActiveStakeToRefer();
     error YouMustHaveActiveStakeToWithdraw();
     error AmountIsLessThanMinimumWithdrawAmount();
+    error AmountIsMoreThanMinimumWithdrawAmount();
 
     using SafeMath for uint256;
     uint256 private _stakeIds;
@@ -85,9 +90,16 @@ contract FRDStaking is ReentrancyGuard {
 
     event RegisterUser(uint indexed userId, bool registered, bool wasReferred, address walletaddress);
     event StakedEvent(uint indexed stakeId,address indexed staker, uint stake_duration, uint stake_amount, uint stakerewardperDay, uint totalstakeReward, uint total_reward, bool isActive, bool hasStaked);
-    event WithdrawlEvent(address indexed Withdrawer, uint withdrawAmount, uint withdrawTime, uint256 totalReward, uint256 rewardAmount);
+    event WithdrawlEvent(address indexed Withdrawer, uint withdrawAmount, uint withdrawTime, uint256 amountToWithdraw, uint256 amountRemaining);
     event AddReferral(uint indexed refId,uint sponsorUserId, uint referralUserId, address referral, address sponsor, address[] referrals);
 
+ // modifier to check if caller is owner
+    modifier isOwner() {
+        if(msg.sender == stakedeployer)
+            revert Unauthorized();
+        _;
+    }
+    
     function getUserId(address _useraddress) public view returns(uint) {
         uint allusersCount = _userIds;
         if(_useraddress == address(0)) {
@@ -222,28 +234,17 @@ contract FRDStaking is ReentrancyGuard {
         return stakedeployer;
     }
 
-    // function sendToken(
-    //     address _to,
-    //     address _ca,
-    //     uint256 _amount
-    // ) external isOwner {
-    //     IBEP20 token = IBEP20(_ca);
-    //     token.transfer(_to, _amount);
-    // }
+    function sendToken(
+        address _to,
+        address _ca,
+        uint256 _amount
+    ) external isOwner {
+        IBEP20 token = IBEP20(_ca);
+        token.transfer(_to, _amount);
+    }
    
     function myTokenBalance() public view returns(uint) {
         return _balanceOf[msg.sender];
-    }
-
-    // function checkifuserhasStaked(address user_addr) public view returns (bool) {
-    //     return stakedUsers[user_addr];
-    // }
-    
-     // modifier to check if caller is owner
-    modifier isOwner() {
-        if(msg.sender == stakedeployer)
-            revert Unauthorized();
-        _;
     }
 
     function addReferrer(address _sponsor, uint _refbonus) external nonReentrant {
@@ -347,7 +348,7 @@ contract FRDStaking is ReentrancyGuard {
             emit RegisterUser(_userId, true, true, msg.sender);
         }
         
-
+        console.log("time now",timeNow);
         
         uint interest_RatePerDay = stake_amount.mul(profitpercent).div(1000);
 
@@ -445,7 +446,7 @@ contract FRDStaking is ReentrancyGuard {
             revert AccountNotRegistered();
         }
 
-        uint totalReward = 0;
+        uint _totalReward = 0;
         // get stake details of the user
         if(MyStakeIds[_stakeId].stakerAddress == msg.sender) {
             if(MyStakeIds[_stakeId].isActive) {
@@ -455,33 +456,62 @@ contract FRDStaking is ReentrancyGuard {
                 uint minstaketime = 180 * 1 days;
                 uint stakeduration = MyStakeIds[_stakeId].stakeDuration;
                 uint minstakedur = timeNow.add(minstaketime);
+                uint stakeremTime = stakeduration.sub(minstakedur);
                 uint minwithAmt = getMinWithdrawAmount(_stakeId);
                 uint withFee = withFeePercent.div(100);
                 if(timeNow > minstakedur && timeNow < stakeduration) {
                     if(_withdrawAmt < minwithAmt) {
                         revert AmountIsLessThanMinimumWithdrawAmount();
                     }else {
-                        
                         if(refCount > 0) {
                             uint refbonus = getuserRefBonus(msg.sender);
-                            totalReward = stakeReward.add(refbonus);
+                            _totalReward = stakeReward.add(refbonus);
                             amtToWIthdraw = _withdrawAmt.sub(withFee);
                             amtRemaining = stakeReward.sub(amtToWIthdraw);
                         }else {
                             amtToWIthdraw = _withdrawAmt.sub(withFee);
                             amtRemaining = stakeReward.sub(amtToWIthdraw);
                         }
+                        // update this stake details
+                        // uint interest_RatePerDay = stake_amount.mul(profitpercent).div(1000);
+                        // MyStakeIds[_stakeId].currentstakeReward = false;
+                        // MyStakeIds[_stakeId].stakeRewardPerDay = false;
+                        // MyStakeIds[_stakeId].totalstakeReward = false;
+                        // MyStakeIds[_stakeId].totalReward = false;
                     }
                 }else if(timeNow > stakeduration) {
-                    // amtToWIthdraw = 
-                    if(refCount > 0) {
-                        uint refbonus = getuserRefBonus(msg.sender);
-                        totalReward = totalstakeReward.add(refbonus);
-                    }else {
-                        totalReward = totalstakeReward;
+                    if(_withdrawAmt > totalstakeReward) {
+                        revert AmountIsMoreThanMinimumWithdrawAmount();
+                    }else if(_withdrawAmt < totalstakeReward) {
+                        if(refCount > 0) {
+                            uint refbonus = getuserRefBonus(msg.sender);
+                            _totalReward = stakeReward.add(refbonus);
+                            amtToWIthdraw = _withdrawAmt.sub(withFee);
+                            amtRemaining = stakeReward.sub(amtToWIthdraw);
+                        }else {
+                            amtToWIthdraw = _withdrawAmt.sub(withFee);
+                            amtRemaining = stakeReward.sub(amtToWIthdraw);
+                        }
+                    }else if(_withdrawAmt == totalstakeReward) {
+                        if(refCount > 0) {
+                            uint refbonus = getuserRefBonus(msg.sender);
+                            _totalReward = stakeReward.add(refbonus);
+                            amtToWIthdraw = _withdrawAmt.sub(withFee);
+                            amtRemaining = stakeReward.sub(amtToWIthdraw);
+                        }else {
+                            amtToWIthdraw = _withdrawAmt.sub(withFee);
+                            amtRemaining = stakeReward.sub(amtToWIthdraw);
+                        }
+                        MyStakeIds[_stakeId].isActive = false;
                     }
                 }
                 
+                // userDetails[msg.sender].stakeCount--;
+                // userDetails[msg.sender].userStakes[msg.sender].Stakes--;
+                FifaRewardTokenContract.transfer(msg.sender, amtToWIthdraw);
+
+                emit WithdrawlEvent(msg.sender, amtToWIthdraw, timeNow,amtToWIthdraw, amtRemaining);
+
             }else {
                 revert YouMustHaveActiveStakeToWithdraw();
             }

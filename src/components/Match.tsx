@@ -12,7 +12,8 @@ import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
-import FixtureByDate from './FixtureByDate'
+import FixtureByDate from './FixtureByDate';
+import LiveFixtures from './LiveFixtures';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -386,6 +387,17 @@ const loadfixturesbyDate = async (date:string) => {
   }
 }
 
+const loadliveFixtures = async (live:string) => {
+  try {
+    console.log('load leagues by date',live)
+    const newleagueComponent = <LiveFixtures live={live} />;
+    setLoadedLeagueData(true);
+    setLeagueComponent([...leaguecomponent, newleagueComponent]);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const toggleShowCalendar = () => {
   setShowCalendar(!showcalender)
 }
@@ -732,7 +744,7 @@ const loadSearchResults = async () => {
           <div className={matchstyle.betmain}>
               <div className={matchstyle.betmain_top}>
                 <div className={matchstyle.betmain_top_in}>
-                  <div className={matchstyle.live}><button type='button' title='button' onClick={() => loadfixturesbyDate('live')}>Live</button></div>
+                  <div className={matchstyle.live}><button type='button' title='button' onClick={() => loadliveFixtures('live')}>Live</button></div>
                   <div className={matchstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(today_dm)}><div className={matchstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
                   <div className={matchstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrow_dm)}><div className={matchstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
                   <div className={matchstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrow_dm)}><div className={matchstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>

@@ -15,6 +15,7 @@ import LeagueFixtures from './LeagueFixtures';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoadFixturesSearchResults from './LoadFixturesSearchResults';
 import FixtureByDate from './FixtureByDate'
+import LiveFixtures from './LiveFixtures';
 import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faMagnifyingGlass, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +26,95 @@ dotenv.config();
 
 type DateValuePiece = Date | null;
 
-type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
+// type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
+
+interface KeyWordSearch {
+  league: {
+    name: string,
+    country: string
+  }
+}
+// types.ts
+interface Fixture {
+  fixture: {
+      id: number;
+      referee: string | null;
+      timezone: string;
+      date: string;
+      timestamp: number;
+      periods: {
+          first: number;
+          second: number;
+      };
+      venue: {
+          id: number | null;
+          name: string;
+          city: string;
+      };
+      status: {
+          long: string;
+          short: string;
+          elapsed: number;
+      };
+  };
+  league: {
+      id: number;
+      name: string;
+      country: string;
+      logo: string;
+      flag: string;
+      season: number;
+      round: string;
+  };
+  teams: {
+      home: {
+        id: number;
+        name: string;
+        logo: string;
+        winner: boolean | null;
+      };
+      away: {
+        id: number;
+        name: string;
+        logo: string;
+        winner: boolean | null;
+      };
+  };
+  goals: {
+      home: number;
+      away: number;
+  };
+  score: {
+    halftime: { home: number; away: number };
+    fulltime: { home: number; away: number };
+    extratime: { home: number | null; away: number | null };
+    penalty: { home: number | null; away: number | null };
+  };
+  __v: number;
+}
+
+interface League {
+  leagueId: number;
+  leagueName: string;
+  leagueCountry: string;
+  fixtures: Fixture[];
+}
+interface Country {
+  _id: string;
+  leagues: League[];
+} 
+
+interface CountriesLeagues {
+  leagueId: number,
+  leagueName: string,
+  totalFixtures: number
+} 
+
+interface Countries {
+  _id: string,
+  leagues: CountriesLeagues[],
+  totalFixturesInCountry: number
+} 
 
 const LoadBetData:React.FC<{}> = () => {
 
@@ -43,15 +132,17 @@ const LoadBetData:React.FC<{}> = () => {
   const [nextthree_dm,setNextThree_dm] = useState<any>();
   const [nextfour_d,setNextFour_d] = useState<any>();
   const [nextfour_dm,setNextFour_dm] = useState<any>();
-  const [datevalue, onChange] = useState<DateValue>(new Date());
+  const [datevalue, setNewDateValue] = useState<any>(new Date());
   const [showcalender, setShowCalendar] = useState<boolean>(false);
   const [loadedlaguedata,setLoadedLeagueData] = useState<any>(false);
-  const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
+  const [countryfixturesdata, setCountryFixturesdata] = useState<Countries[]>([]);
   const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 
   const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
   const [showloginComp,setShowLoginComp] = useState<boolean>(false);
+  const [istodaysfixturesLoaded,setIsTodaysFixturesLoaded] = useState<boolean>(false);
+  const [todaysfixtures,setTodaysFixtures] = useState<League[]>();
   const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<string>("");  
@@ -65,94 +156,6 @@ const LoadBetData:React.FC<{}> = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   const router = useRouter();
-
-  interface KeyWordSearch {
-    league: {
-      name: string,
-      country: string
-    }
-  }
-  // types.ts
-  interface Fixture {
-    fixture: {
-        id: number;
-        referee: string | null;
-        timezone: string;
-        date: string;
-        timestamp: number;
-        periods: {
-            first: number;
-            second: number;
-        };
-        venue: {
-            id: number | null;
-            name: string;
-            city: string;
-        };
-        status: {
-            long: string;
-            short: string;
-            elapsed: number;
-        };
-    };
-    league: {
-        id: number;
-        name: string;
-        country: string;
-        logo: string;
-        flag: string;
-        season: number;
-        round: string;
-    };
-    teams: {
-        home: {
-          id: number;
-          name: string;
-          logo: string;
-          winner: boolean | null;
-        };
-        away: {
-          id: number;
-          name: string;
-          logo: string;
-          winner: boolean | null;
-        };
-    };
-    goals: {
-        home: number;
-        away: number;
-    };
-    score: {
-      halftime: { home: number; away: number };
-      fulltime: { home: number; away: number };
-      extratime: { home: number | null; away: number | null };
-      penalty: { home: number | null; away: number | null };
-    };
-    __v: number;
-  }
-
-  interface League {
-    leagueId: number;
-    leagueName: string;
-    fixtures: Fixture[];
-  }
-  interface Country {
-    _id: string;
-    leagues: League[];
-  } 
-
-  interface CountriesLeagues {
-    leagueId: number,
-    leagueName: string,
-    totalFixtures: number
-  } 
-
-  interface Countries {
-    _id: string,
-    leagues: CountriesLeagues[],
-    totalFixturesInCountry: number
-  } 
-    
 
   useEffect(() => {
     try {
@@ -192,6 +195,8 @@ const LoadBetData:React.FC<{}> = () => {
         setNextThree_dm(nextthree_dm_);
         setNextFour_d(nextfour_d_);
         setNextFour_dm(nextfour_dm_);
+        console.log("today ",today_dm);
+        console.log("tomorrow ",tomorrow_dm);
       }
       getDates()
 
@@ -209,15 +214,44 @@ const LoadBetData:React.FC<{}> = () => {
             }
           }  
           const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
-          setCountryFixturesdata(data);
+          setCountryFixturesdata(data.fixtures);
           setwindowloadgetbetruntimes(1);
-          setShowLoading(false)
+          setTotalPages(data.totalPages);
+          setShowLoading(false);
+          console.log("country fixures",data);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
       };
   
       fetchData();
+
+      const fetchTodayFixtures = async () => {
+        const todaysdate = moment(today_dm).toDate();
+        console.log(" t date",todaysdate);
+        try {
+          setShowLoading(true);
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadtodaysfixtures/", {
+            todaysdate,
+            currentPage,
+            limit
+          }, config);
+          setTodaysFixtures(data.fixtures);
+          setwindowloadgetbetruntimes(1);
+          setIsTodaysFixturesLoaded(true);
+          setShowLoading(false);
+          console.log("todays fixures",data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchTodayFixtures();
     }else {
   
     }
@@ -276,6 +310,31 @@ const loadfixturesbyDate = async (date:string) => {
   try {
     console.log('load leagues by date',date)
     const newleagueComponent = <FixtureByDate date={date} />;
+    setLoadedLeagueData(true);
+    setLeagueComponent([...leaguecomponent, newleagueComponent]);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const onChangeCalenderDate = async (datev:any) => {
+  try {
+
+    console.log('load leagues by calender date',datev)
+    setNewDateValue(datev)
+    const newleagueComponent = <FixtureByDate date={datevalue} />;
+    setLoadedLeagueData(true);
+    setLeagueComponent([...leaguecomponent, newleagueComponent]);
+    setShowCalendar(false);
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+const loadliveFixtures = async (live:string) => {
+  try {
+    console.log('load leagues by date',live)
+    const newleagueComponent = <LiveFixtures live={live} />;
     setLoadedLeagueData(true);
     setLeagueComponent([...leaguecomponent, newleagueComponent]);
   } catch (error) {
@@ -421,7 +480,7 @@ const placeBet = (divId:any) => {
     targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
   }
 }
-
+console.log("date calender value",datevalue);
 const closePBET = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
@@ -466,7 +525,7 @@ const goBack = () => {
 }
 
 // Import your JSON data here
-const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
+// const countryfixturescount: Countries[] = countryfixturesdata.fixtures;
 
 const getKeyWordSearchN = async (keyword:any) => {
   // search database and return documents with similar keywords
@@ -515,6 +574,24 @@ const FilterByClosedBets = async () => {
 const FilterByOpenBets = async () => {
 
 }
+
+ // Function to render page numbers
+ const renderPageNumbers = () => {
+  let pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(
+      <button className={bettingstyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+        {i}
+      </button>
+    );
+  }
+  return pages;
+};
+
+  const gotoPage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
+
   return (
     <>
     {showloading && <Loading/>}
@@ -613,7 +690,7 @@ const FilterByOpenBets = async () => {
             } */}
             {countryfixturesdata ? <div>
               <div className={bettingstyle.fb}><h3>By Country</h3></div>
-              {countryfixturescount.map(country => (
+              {countryfixturesdata.map(country => (
                 <div key={country._id}>
                   <ul>
                     <li>
@@ -646,7 +723,7 @@ const FilterByOpenBets = async () => {
           <div className={bettingstyle.betmain}>
               <div className={bettingstyle.betmain_top}>
                 <div className={bettingstyle.betmain_top_in}>
-                  <div className={bettingstyle.live}><button type='button' title='button' onClick={() => loadfixturesbyDate('live')}>Live</button></div>
+                  <div className={bettingstyle.live}><button type='button' title='button' onClick={() => loadliveFixtures('live')}>Live</button></div>
                   <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(today_dm)}><div className={bettingstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
                   <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrow_dm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
                   <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrow_dm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
@@ -657,7 +734,7 @@ const FilterByOpenBets = async () => {
                 {
                   showcalender && (
                   <div className={bettingstyle.calndar}>
-                    <Calendar onChange={onChange} value={datevalue} showWeekNumbers />
+                    <Calendar onChange={onChangeCalenderDate} value={datevalue} showWeekNumbers />
                   </div>
                   )
                 }
@@ -665,9 +742,9 @@ const FilterByOpenBets = async () => {
               </div>
               <div className={bettingstyle.betwrap}>
                   <div className={bettingstyle.betwrapin} id='betwrapin'>
-                  {countryfixturesdata ? 
+                  {istodaysfixturesLoaded ? 
                     <div>
-                      {/* {betdata.map(country => (country.leagues.map(league => (
+                      {/* {todaysfixtures.map(country => (country.leagues.map(league => (
                         <div className={bettingstyle.league_wrap}>
                           <div className={bettingstyle.tgle} >
                             <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
@@ -762,6 +839,62 @@ const FilterByOpenBets = async () => {
                           </div>
                         </div>
                       ))))} */}
+                      {todaysfixtures?.map((league,index:number) => (
+                      <div className={bettingstyle.league_wrap} key={index}>
+                        <div className={bettingstyle.tgle} >
+                          <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
+                          <div className={bettingstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                          <div className={bettingstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                        </div>
+                        <div className={bettingstyle.league_wrap_in} >
+                          {league.fixtures.map(fixture => (
+                            <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={fixture?.fixture.id}>
+                              <div className={bettingstyle.fixt}>
+                                <div className={bettingstyle.fixt_d_o}>
+                                  <div className={bettingstyle.fixt_d}>
+                                    <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
+                                  </div>
+                                  <div className={bettingstyle.dd}>
+                                      <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                      <div className={bettingstyle.fid}>ID: {fixture?.fixture.id}</div>
+                                  </div>
+                                </div>
+
+                                <div className={bettingstyle.fixt_tm}>
+                                  <div className={bettingstyle.teams}>
+                                    <div>{`${fixture.teams.home.name}`}</div>
+                                    <div className={bettingstyle.vs}>Vs</div>
+                                    <div>{`${fixture.teams.away.name}`}</div>
+                                  </div>
+                                </div>
+                                <div className={bettingstyle.openbet}>
+                                  <div>
+                                    <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                  </div>
+                                </div>
+                            </div>
+                            </a>
+                          ))}
+                          {todaysfixtures?.length > 0 && 
+                            <div className={bettingstyle.paginate_btns}>
+                              <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                                {'<<'}
+                              </button>
+                              <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                                {'<'}
+                              </button>
+                              {renderPageNumbers()}
+                              <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                                {'>'}
+                              </button>
+                              <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                                {'>>'}
+                              </button>
+                            </div>
+                          }
+                        </div>
+                      </div>
+                    ))}
                     </div>
                   : <div> <Loading/> </div>
                   }

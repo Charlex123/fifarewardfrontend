@@ -13,7 +13,7 @@ dotenv.config();
 // component
 
 type MyComponentProps = {
-  date: string;
+  date: string | Date;
 };
 interface Fixture {
     fixture: {
@@ -72,27 +72,41 @@ interface Fixture {
   }
 
 const LoadLeagueFixtures:React.FC<MyComponentProps> = ({date}) => {
-  console.log()
+  
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
-  (async (leagueid) => {
-    try {
-      const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-      }  
-      const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures", {
-        date
-      }, config);
-      setIsleagueLoaded(true)
-      setFixturesd(data.leaguefixtures);
-      // console.log('fix id ures',fixturesd)
-    } catch (error) {
-      console.log(error)
-    }
-  })(date)
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
+  const [limit] = useState<number>(10);
+  const [totalPages, setTotalPages] = useState(0);
 
+  useEffect(() => {
+    if(windowloadgetbetruntimes == 0) {
+      (async (date) => {
+        const fixturedate = moment(date).toDate();
+        try {
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures", {
+            fixturedate,
+            currentPage,
+            limit
+          }, config);
+          setIsleagueLoaded(true)
+          setFixturesd(data.leaguefixtures);
+          setTotalPages(data.totalPages);
+          setwindowloadgetbetruntimes(1);
+          // console.log('fix id ures',fixturesd)
+        } catch (error) {
+          console.log(error)
+        }
+      })(date)
+    }
+  
+  })
 
   const toggleFixtures = (divId:any) => {
   
@@ -197,7 +211,24 @@ const LoadLeagueFixtures:React.FC<MyComponentProps> = ({date}) => {
     }
   }
   
+  // Function to render page numbers
+ const renderPageNumbers = () => {
+  let pages = [];
+  for (let i = 1; i <= totalPages; i++) {
+    pages.push(
+      <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+        {i}
+      </button>
+    );
+  }
+  return pages;
+};
+
+  const gotoPage = (pageNumber: number) => {
+    setCurrentPage(pageNumber);
+  };
   
+
 return (
     <>
       <div className={leaguefixturestyle.main}>
@@ -246,6 +277,24 @@ return (
                         </div>
                       </div>
                     ))}
+
+                    {fixturesd!.length > 0 && 
+                      <div className={leaguefixturestyle.paginate_btns}>
+                        <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                          {'<<'}
+                        </button>
+                        <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                          {'<'}
+                        </button>
+                        {renderPageNumbers()}
+                        <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                          {'>'}
+                        </button>
+                        <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                          {'>>'}
+                        </button>
+                      </div>
+                    }
                 </div> : 
                 <div><Loading /></div>
               }
