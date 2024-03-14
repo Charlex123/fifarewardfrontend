@@ -12,7 +12,7 @@ import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
-import FixtureByDate from './FixtureByDate';
+import FixtureByDate from './FixturesByDate';
 import LiveFixtures from './LiveFixtures';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';

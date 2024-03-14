@@ -64,6 +64,7 @@
 .main .main_in .leagues {
     background-color: #f1f1f1;width: 18%;margin: 0 2%;border: none;border-radius: 4px;color: #151414;
 }
+
 .main .main_in .leagues .filter {
     width: 100%;text-align: left;
 }
@@ -215,6 +216,17 @@
 }
 .main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
     display: block;cursor: pointer;
+}
+.main .betwrap .betwrapin .league_wrap .paginate_btns {
+    margin: 15px 0;padding: 15px 15px 15px 15px;width: 100%;
+}
+.main .betwrap .betwrapin .league_wrap .paginate_btns button {
+    margin: 4px 8px 4px 8px;background-color: none;padding: 2px 8px 2px 8px;border-radius: 4px;
+    border: 1px solid #929292;font-size: 14px;
+    font-weight: 600;
+}
+.main .betwrap .betwrapin .league_wrap .paginate_btns button.number {
+    margin: 4px 2px 4px 2px;border-radius: 50%;font-weight: 500;font-size: 13px;padding: 2px 8px;
 }
 .main .betwrap .betwrapin .league_wrap h3 {
     margin: 5px 0;font-size: 16px;font-weight: 800;

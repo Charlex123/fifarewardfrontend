@@ -13,7 +13,7 @@ dotenv.config();
 // component
 
 type MyComponentProps = {
-  date: string | Date;
+  date: string;
 };
 interface Fixture {
     fixture: {
@@ -71,8 +71,8 @@ interface Fixture {
     fixtures: Fixture[];
   }
 
-const LoadLeagueFixtures:React.FC<MyComponentProps> = ({date}) => {
-  
+const FixturesByDate:React.FC<MyComponentProps> = ({date}) => {
+  console.log("fixture date in fbd",date)
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -81,16 +81,17 @@ const LoadLeagueFixtures:React.FC<MyComponentProps> = ({date}) => {
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    if(windowloadgetbetruntimes == 0) {
-      (async (date) => {
-        const fixturedate = moment(date).toDate();
+    // if(windowloadgetbetruntimes == 0) {
+      (async () => {
+        const fixturedate = date;
+        console.log("fixdate mgy",date)
         try {
           const config = {
             headers: {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures", {
+          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadfixturesbydate", {
             fixturedate,
             currentPage,
             limit
@@ -99,12 +100,12 @@ const LoadLeagueFixtures:React.FC<MyComponentProps> = ({date}) => {
           setFixturesd(data.leaguefixtures);
           setTotalPages(data.totalPages);
           setwindowloadgetbetruntimes(1);
-          // console.log('fix id ures',fixturesd)
+          console.log('FIXTURES BY DATE',data);
         } catch (error) {
           console.log(error)
         }
-      })(date)
-    }
+      })()
+    // }
   
   })
 
@@ -306,4 +307,4 @@ return (
   );
 }
 
-export default LoadLeagueFixtures
+export default FixturesByDate

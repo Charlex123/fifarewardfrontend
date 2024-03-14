@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCaretDown, faChevronLeft, faXmark, faSoccerBall  } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faXmark, faSoccerBall  } from "@fortawesome/free-solid-svg-icons";
 import leaguefixturestyle from '../styles/leaguefixtures.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import moment from 'moment';
 import Loading from './Loading'
-import { faCalendar, faCalendarAlt, faFontAwesome } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
 // material
 // component
 
-type MyComponentProps = {
-  live: string;
-};
 interface Fixture {
     fixture: {
       id: number;
@@ -71,41 +66,43 @@ interface Fixture {
     fixtures: Fixture[];
   }
 
-const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
-    
+const TodaysFixtures:React.FC = () => {
+  
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
-  const [limit] = useState<number>(30);
+  const [limit] = useState<number>(10);
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     if(windowloadgetbetruntimes == 0) {
-    (async (live) => {
-      try {
-        const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-        }  
-        const {data} = await axios.post("http://localhost:9000/api/livefixtures/loadlivefixtures", {
-          live,
-          currentPage,
-          limit
-        }, config);
-        setIsleagueLoaded(true)
-        setFixturesd(data.leaguefixtures);
-        setTotalPages(data.totalPages);
-        setwindowloadgetbetruntimes(1);
-        console.log('fix id ures',data.leaguefixtures)
-      } catch (error) {
-        console.log(error)
-      }
-    })(live)
-  }
-},[])
-
+      (async () => {
+        const todaysdate = moment().format("YYYY-MM-DD");
+        console.log("mgy today's date",todaysdate)
+        try {
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadtodaysfixtures", {
+            todaysdate,
+            currentPage,
+            limit
+          }, config);
+          setIsleagueLoaded(true)
+          setFixturesd(data.leaguefixtures);
+          setTotalPages(data.totalPages);
+          setwindowloadgetbetruntimes(1);
+          console.log('Todays fix data',data);
+        } catch (error) {
+          console.log(error)
+        }
+      })()
+    }
+  
+  })
 
   const toggleFixtures = (divId:any) => {
   
@@ -210,7 +207,7 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
     }
   }
   
-    // Function to render page numbers
+  // Function to render page numbers
  const renderPageNumbers = () => {
   let pages = [];
   for (let i = 1; i <= totalPages; i++) {
@@ -227,6 +224,7 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
     setCurrentPage(pageNumber);
   };
   
+
 return (
     <>
       <div className={leaguefixturestyle.main}>
@@ -236,8 +234,8 @@ return (
               {
                 isleagueloaded ? 
                 <div>
-                    {fixturesd!.length > 0 && fixturesd?.map((league,index:number) => (
-                      <div className={leaguefixturestyle.league_wrap} key={index}>
+                    {fixturesd?.map(league => (
+                      <div className={leaguefixturestyle.league_wrap} key={league.leagueId}>
                         <div className={leaguefixturestyle.tgle} >
                           <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
                           <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
@@ -275,23 +273,24 @@ return (
                         </div>
                       </div>
                     ))}
+
                     {fixturesd!.length > 0 && 
-                        <div className={leaguefixturestyle.paginate_btns}>
-                          <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
-                            {'<<'}
-                          </button>
-                          <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
-                            {'<'}
-                          </button>
-                          {renderPageNumbers()}
-                          <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
-                            {'>'}
-                          </button>
-                          <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
-                            {'>>'}
-                          </button>
-                        </div>
-                      }
+                      <div className={leaguefixturestyle.paginate_btns}>
+                        <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                          {'<<'}
+                        </button>
+                        <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                          {'<'}
+                        </button>
+                        {renderPageNumbers()}
+                        <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                          {'>'}
+                        </button>
+                        <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                          {'>>'}
+                        </button>
+                      </div>
+                    }
                 </div> : 
                 <div><Loading /></div>
               }
@@ -303,4 +302,4 @@ return (
   );
 }
 
-export default LoadLiveFixtures
+export default TodaysFixtures

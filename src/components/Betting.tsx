@@ -14,7 +14,9 @@ import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoadFixturesSearchResults from './LoadFixturesSearchResults';
-import FixtureByDate from './FixtureByDate'
+import FixturesByDate from './FixturesByDate';
+import FixturesByCalenderDate from './FixturesByCalenderDate';
+import TodaysFixtures from './TodaysFixtures';
 import LiveFixtures from './LiveFixtures';
 import { faBasketball, faCaretDown, faChevronLeft, faCircle, faFootball, faFootballBall, faMagnifyingGlass, faSoccerBall, faTools, faX, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faBarChart, faCalendar, faCalendarAlt, faFontAwesome, faFutbol } from '@fortawesome/free-regular-svg-icons';
@@ -25,7 +27,6 @@ dotenv.config();
 // component
 
 type DateValuePiece = Date | null;
-
 // type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 
 interface KeyWordSearch {
@@ -124,14 +125,19 @@ const LoadBetData:React.FC<{}> = () => {
   const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
   const [today_d,setToday_d] = useState<any>();
   const [today_dm,setToday_dm] = useState<any>();
+  const [todaym,setTodaym] = useState<any>();
   const [tomorrow_d,setTomorrow_d] = useState<any>();
   const [tomorrow_dm,setTomorrow_dm] = useState<any>();
+  const [tomorrowm,setTomorrowm] = useState<any>();
   const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
   const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
+  const [nexttomorrowm,setNextTomorrowm] = useState<any>();
   const [nextthree_d,setNextThree_d] = useState<any>();
   const [nextthree_dm,setNextThree_dm] = useState<any>();
+  const [nextthree_daysm,setNextThree_daysm] = useState<any>();
   const [nextfour_d,setNextFour_d] = useState<any>();
   const [nextfour_dm,setNextFour_dm] = useState<any>();
+  const [nextfour_daysm,setNextFour_daysm] = useState<any>();
   const [datevalue, setNewDateValue] = useState<any>(new Date());
   const [showcalender, setShowCalendar] = useState<boolean>(false);
   const [loadedlaguedata,setLoadedLeagueData] = useState<any>(false);
@@ -149,7 +155,7 @@ const LoadBetData:React.FC<{}> = () => {
   const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
   const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limit] = useState<number>(10)  
+  const [limit] = useState<number>(20)  
   const[searchkeyword,setSearchKeyWord] = useState<string>('');
   const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
   const [showloading, setShowLoading] = useState<boolean>(false);
@@ -176,27 +182,35 @@ const LoadBetData:React.FC<{}> = () => {
       const getDates:any = () => {
         let today_d_ = "Today";
         let today_dm_ = moment().format('DD, MMM');
+        let today_m = moment().format("YYYY-MM-DD");
         let tomorrow_d_ = moment().add(1,'day').format('ddd');
         let tomorrow_dm_ = moment().add(1,'day').format('DD, MMM');
+        let tomorrow_m = moment().add(1,'day').format("YYYY-MM-DD");
         let nexttomorrow_d_ = moment().add(2,'day').format('ddd');
         let nexttomorrow_dm_ = moment().add(2,'day').format('DD, MMM');
+        let nexttomorrow_m = moment().add(2,'day').format('YYYY-MM-DD');
         let nextthree_d_ = moment().add(3,'day').format('ddd');
         let nextthree_dm_ = moment().add(3,'day').format('DD, MMM');
+        let nextthree_dm = moment().add(3,'day').format('YYYY-MM-DD');
         let nextfour_d_ = moment().add(4,'day').format('ddd');
         let nextfour_dm_ = moment().add(4,'day').format('DD, MMM');
+        let nextfour_dm = moment().add(4,'day').format('YYYY-MM-DD');
         
         setToday_d(today_d_);
         setToday_dm(today_dm_);
+        setTodaym(today_m);
         setTomorrow_d(tomorrow_d_);
         setTomorrow_dm(tomorrow_dm_);
+        setTomorrowm(tomorrow_m)
         setNextTomorrow_d(nexttomorrow_d_);
         setNextTomorrow_dm(nexttomorrow_dm_);
+        setNextTomorrowm(nexttomorrow_m)
         setNextThree_d(nextthree_d_);
         setNextThree_dm(nextthree_dm_);
+        setNextThree_daysm(nextthree_dm)
         setNextFour_d(nextfour_d_);
         setNextFour_dm(nextfour_dm_);
-        console.log("today ",today_dm);
-        console.log("tomorrow ",tomorrow_dm);
+        setNextFour_daysm(nextfour_dm)
       }
       getDates()
 
@@ -227,25 +241,10 @@ const LoadBetData:React.FC<{}> = () => {
       fetchData();
 
       const fetchTodayFixtures = async () => {
-        const todaysdate = moment(today_dm).toDate();
-        console.log(" t date",todaysdate);
         try {
-          setShowLoading(true);
-          const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-          }  
-          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadtodaysfixtures/", {
-            todaysdate,
-            currentPage,
-            limit
-          }, config);
-          setTodaysFixtures(data.fixtures);
-          setwindowloadgetbetruntimes(1);
-          setIsTodaysFixturesLoaded(true);
-          setShowLoading(false);
-          console.log("todays fixures",data);
+          const newleagueComponent = <TodaysFixtures />;
+          setLoadedLeagueData(true);
+          setLeagueComponent([newleagueComponent]);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -255,16 +254,6 @@ const LoadBetData:React.FC<{}> = () => {
     }else {
   
     }
-
-    // let searchOptions = ["Match Id","Match"];
-    // let currentSearchOptionIndex = 0;
-
-    // function rotateSearchOption() {
-    //   let searchinput = document.getElementById("search-input") as HTMLElement;
-    //   searchinput.setAttribute('placeholder','Search by '+searchOptions[currentSearchOptionIndex]);
-
-    //   currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
-    // }
 
     // setInterval(rotateSearchOption,5000);
     const handleClickOutside = (event: MouseEvent) => {
@@ -300,31 +289,31 @@ const getleagueFixtures = async (leagueid:number) => {
     try {
       const newleagueComponent = <LeagueFixtures leagueid={leagueid} />;
       setLoadedLeagueData(true);
-      setLeagueComponent([newleagueComponent, ...leaguecomponent]);
+      setLeagueComponent([newleagueComponent]);
     } catch (error) {
       console.log(error)
     }
 }
 
-const loadfixturesbyDate = async (date:string) => {
+const loadfixturesbyDate = (date:string) => {
   try {
-    console.log('load leagues by date',date)
-    const newleagueComponent = <FixtureByDate date={date} />;
+    console.log("fix date madedsf",date)
+    const newleagueComponent = <FixturesByDate date={date} />;
     setLoadedLeagueData(true);
-    setLeagueComponent([...leaguecomponent, newleagueComponent]);
+    setLeagueComponent([newleagueComponent]);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 
 const onChangeCalenderDate = async (datev:any) => {
   try {
-
-    console.log('load leagues by calender date',datev)
-    setNewDateValue(datev)
-    const newleagueComponent = <FixtureByDate date={datevalue} />;
+    console.log('load leagues by calender date',moment(datev).format("YYYY-MM-DD"));
+    setNewDateValue(datev);
+    const newcalDate = moment(datev).format("YYYY-MM-DD");
+    const newleagueComponent = <FixturesByCalenderDate date={newcalDate} />;
     setLoadedLeagueData(true);
-    setLeagueComponent([...leaguecomponent, newleagueComponent]);
+    setLeagueComponent([newleagueComponent]);
     setShowCalendar(false);
   } catch (error) {
     console.log(error)
@@ -333,10 +322,10 @@ const onChangeCalenderDate = async (datev:any) => {
 
 const loadliveFixtures = async (live:string) => {
   try {
-    console.log('load leagues by date',live)
+    console.log('load live leagues',live)
     const newleagueComponent = <LiveFixtures live={live} />;
     setLoadedLeagueData(true);
-    setLeagueComponent([...leaguecomponent, newleagueComponent]);
+    setLeagueComponent([newleagueComponent]);
   } catch (error) {
     console.log(error)
   }
@@ -480,7 +469,7 @@ const placeBet = (divId:any) => {
     targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
   }
 }
-console.log("date calender value",datevalue);
+
 const closePBET = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
@@ -724,11 +713,11 @@ const FilterByOpenBets = async () => {
               <div className={bettingstyle.betmain_top}>
                 <div className={bettingstyle.betmain_top_in}>
                   <div className={bettingstyle.live}><button type='button' title='button' onClick={() => loadliveFixtures('live')}>Live</button></div>
-                  <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(today_dm)}><div className={bettingstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
-                  <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrow_dm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrow_dm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_dm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
-                  <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_dm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
+                  <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(todaym)}><div className={bettingstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
+                  <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrowm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
+                  <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrowm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
+                  <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_daysm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
+                  <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_daysm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
                   <div className={bettingstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
                 </div>
                 {
@@ -742,9 +731,9 @@ const FilterByOpenBets = async () => {
               </div>
               <div className={bettingstyle.betwrap}>
                   <div className={bettingstyle.betwrapin} id='betwrapin'>
-                  {istodaysfixturesLoaded ? 
+                  {/* {istodaysfixturesLoaded ? 
                     <div>
-                      {/* {todaysfixtures.map(country => (country.leagues.map(league => (
+                      {todaysfixtures.map(country => (country.leagues.map(league => (
                         <div className={bettingstyle.league_wrap}>
                           <div className={bettingstyle.tgle} >
                             <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
@@ -838,7 +827,7 @@ const FilterByOpenBets = async () => {
                             ))}
                           </div>
                         </div>
-                      ))))} */}
+                      ))))}
                       {todaysfixtures?.map((league,index:number) => (
                       <div className={bettingstyle.league_wrap} key={index}>
                         <div className={bettingstyle.tgle} >
@@ -897,7 +886,7 @@ const FilterByOpenBets = async () => {
                     ))}
                     </div>
                   : <div> <Loading/> </div>
-                  }
+                  } */}
                   {loadedlaguedata &&
                     <div>
                       {leaguecomponent.map(component => component)}
