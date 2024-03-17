@@ -3,14 +3,8 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import chatbotlogo from '../assets/images/aichatbot.png';
-import successimage from '../assets/images/success1.png';
-import elipsisloading from '../assets/images/Ellipsis-1s-200px.svg';
-import bgopt1 from '../assets/images/aibg.png';
-import bgopt2 from '../assets/images/aibg2.jpg';
-import bgopt3 from '../assets/images/aibg3.jpg';
 import bnblogo from '../assets/images/bnb-bnb-logo.png'
-import messi from '../assets/images/messi.png.png'
+import messi from '../assets/images/messi.png';
 import nftbanner from '../assets/images/aibg2.jpg';
 import NFTCountdownTimer from './NftCountDownTimer';
 import { faCheckCircle, faEye, faEyeSlash, faHeart, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
