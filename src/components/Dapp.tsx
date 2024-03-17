@@ -173,7 +173,7 @@ getWalletAddress();
       // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
-      const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+      const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
       const reslt = await StakeContract.addReferrer(sponsorWalletAddress);
       console.log("Account Balance: ", reslt);
     }
