@@ -46,7 +46,7 @@ overflow: scroll;padding-bottom: 2rem;
     margin-bottom: 1rem;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li {
-    list-style: none;vertical-align: auto;margin: 35px 20px;cursor: pointer;position: relative;
+    list-style: none;vertical-align: auto;margin: 20px 20px;cursor: pointer;position: relative;
     font-size: 15px;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.drpdwnlist:hover > ul {
@@ -66,8 +66,8 @@ overflow: scroll;padding-bottom: 2rem;
   color: #e3a204 ;width: fit-content;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li a.buytafa {
-  background-color: #e3a204 ;color: #0a0a0a;padding: 6px 20px 6px 20px;border-radius: 60px;
-  font-weight: 900;font-size: 14px;
+  background-color: #e3a204 ;color: #0a0a0a;padding: 3px 12px 3px 12px;border-radius: 60px;
+  font-weight: 600;font-size: 14px;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld:hover {
   background-color: #f0eded49;border: 1px dashed #e3a204 ;color: #e3a204 ;

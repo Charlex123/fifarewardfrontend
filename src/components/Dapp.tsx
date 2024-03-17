@@ -348,18 +348,22 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                             <li>
                               <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
                             </li>
-                            <li><a href='/stakes' rel='noopener noreferrer' className={dappsidebarstyles.linka}> Stakes</a></li>
+                            <li><a href='/stakes' rel='noopener noreferrer' className={dappsidebarstyles.linka}> My Stakes</a></li>
+                            <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> Rewards</a></li>
                             <li>
                               <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>Referrals</a>
                             </li>
                             <li>
-                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>AI Q&A</a>
+                              <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}>Prediction AI</a>
                             </li>
                             <li>
-                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>My Bets</a>
+                              <a href='/bets' rel='noopener noreferrer' className={dappsidebarstyles.si}>My Bets</a>
                             </li>
                             <li>
-                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>My NFTs</a>
+                              <a href='/mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}>My NFTs</a>
+                            </li>
+                            <li>
+                              <a href='/mining' rel='noopener noreferrer' className={dappsidebarstyles.si}>Mine FRD</a>
                             </li>
                         </ul>
                         <ul className={dappsidebarstyles.upa}>

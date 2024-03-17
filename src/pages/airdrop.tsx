@@ -1,22 +1,22 @@
 import React from 'react';
-import Home from '../components/landing/Home';
 import Navbar from '../components/navbar/Navbar';
 import Footer from '../components/Footer'
 import BackToTop from '../components/back-to-top/back-to-top';
 import ChangeTheme from '../components/change-theme/change-theme';
+import Airdrop from '../components/Airdrop';
 
-function HomePage() {
+function Airdropping() {
 
   return (
     <>
       <BackToTop />
       <ChangeTheme />
       <Navbar />
-      <Home />
+      <Airdrop />
       <Footer />
     </>
   )
 }
 
 
-export default HomePage
+export default Airdropping

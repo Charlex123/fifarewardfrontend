@@ -39,11 +39,8 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   uint256 private adminfeeBasisPoints = 500; // 5% in basis points (parts per 10,000) 250/100000
   uint256 private basisPointsTotal = 10000;
 
-  event OwnerSet(address indexed oldOwner, address indexed newOwner);
   constructor() ERC721("FIFAReward","FRD") {
     owner = payable(msg.sender);
-     // 'msg.sender' is sender of current call, contract deployer for a constructor
-    emit OwnerSet(address(0), owner);
   }
 
   struct AuctionItem {
@@ -251,12 +248,6 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     https://docs.openzeppelin.com/contracts/2.x/api/payment#PullPayment 
   */
 
-  function changeOwner(address newOwner) public {
-        require(newOwner != address(0), "invalid address");
-        emit OwnerSet(owner, newOwner);
-        owner = payable(newOwner);
-    }
-
   function _allowForPull(address receiver, uint amount) private {
       credits[receiver] += amount;
   }
@@ -434,17 +425,17 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       return items;
   }
 
-  // function getUserNFTMintedCount() public view returns (uint) {
-  //     uint totalTokenIds = _tokenIds;
-  //     uint nfttokenCount = 0;
+  function getUserNFTMintedCount() public view returns (uint) {
+      uint totalTokenIds = _tokenIds;
+      uint nfttokenCount = 0;
 
-  //     for(uint i = 0; i < totalTokenIds; i++) {
-  //       if(MintedNFTIds[i+1].creator == msg.sender) {
-  //         nfttokenCount += 1;
-  //       }
-  //     }
-  //     return nfttokenCount;
-  // }
+      for(uint i = 0; i < totalTokenIds; i++) {
+        if(MintedNFTIds[i+1].creator == msg.sender) {
+          nfttokenCount += 1;
+        }
+      }
+      return nfttokenCount;
+  }
 
   /* Returns only items that a user has purchased */
   function fetchUserPurchasedNFTs() public view returns (AuctionItem[] memory) {
@@ -495,4 +486,6 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
 
 
   }
+
+
 }

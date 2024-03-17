@@ -2,6 +2,18 @@
 
 pragma solidity^0.8.9;
 
+/*
+  8888888888   88888888       888888888
+  8888888888   8888 88888     88888888888
+  8888         8888   8888    8888   88888
+  8888         8888 88888     8888    88888
+  8888888888   8888888        8888    88888
+  8888888888   8888888        8888    88888
+  8888         8888 8888      8888   88888
+  8888         8888   8888    88888888888
+  8888         8888    8888   888888888
+*/
+
 import "./FifaRewardToken.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./SafeMath.sol";
@@ -234,6 +246,11 @@ contract FRDStaking is ReentrancyGuard {
         return stakedeployer;
     }
 
+    function hasActiveStake(address _useraddress) public view returns(bool) {
+        uint _userId = getUserId(_useraddress);
+        return userDetailsById[_userId].hasActiveStake;
+    }
+
     function sendToken(
         address _to,
         address _ca,
@@ -456,7 +473,7 @@ contract FRDStaking is ReentrancyGuard {
                 uint minstaketime = 180 * 1 days;
                 uint stakeduration = MyStakeIds[_stakeId].stakeDuration;
                 uint minstakedur = timeNow.add(minstaketime);
-                uint stakeremTime = stakeduration.sub(minstakedur);
+                // uint stakeremTime = stakeduration.sub(minstakedur);
                 uint minwithAmt = getMinWithdrawAmount(_stakeId);
                 uint withFee = withFeePercent.div(100);
                 if(timeNow > minstakedur && timeNow < stakeduration) {

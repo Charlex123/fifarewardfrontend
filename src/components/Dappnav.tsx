@@ -158,14 +158,17 @@ function Navbar() {
                 {isNavOpen && (
                 <div className={styles.nav_container_p}>
                 <ul className={styles.upa}>
+                    <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
+                        <a href='/aichat' rel='noopener noreferrer' className={styles.si}>AI</a>
+                    </li>
                     <li>
-                      <a href='/dapp' rel='noopener noreferrer' className={styles.si}>Reward Points</a>
+                      <a href='/rewards' rel='noopener noreferrer' className={styles.si}>Rewards </a>
                     </li>
                     <li>
                       <a href='/dapp' rel='noopener noreferrer' className={styles.si}>Dapp</a>
                     </li>
                     <li>
-                      <a href='/betting' rel='noopener noreferrer' className={styles.si}>Betting</a>
+                      <a href='/betting' rel='noopener noreferrer' className={styles.si}>My Bets</a>
                     </li>
                     <li>
                       <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={styles.buytafa}>BUY FRD</a>
@@ -174,15 +177,10 @@ function Navbar() {
                       <a href='/referrals' rel='noopener noreferrer' className={styles.si}>Referrals</a>
                     </li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
-                        Community {dropdwnIcon3}
-                        <ul>
-                            {/* <li><a href='/' rel='noopener noreferrer' className={styles.linka}><FontAwesomeIcon icon={faTwitter} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Twitter</span></a></li> */}
-                            {/* <li><a href='/' rel='noopener noreferrer' className={styles.linka}><FontAwesomeIcon icon={faFacebook} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Facebook</span></a></li> */}
-                            <li><a href='https://t.me/tafaxtraweb' rel='noopener noreferrer' className={styles.linka}><FontAwesomeIcon icon={faTelegram} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Telegram</span></a></li>
-                            {/* <li><a href='/' rel='noopener noreferrer' className={styles.linka}><FontAwesomeIcon icon={faDiscord} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Discord</span></a></li> */}
-                            {/* <li><a href='/' rel='noopener noreferrer' className={styles.linka}><FontAwesomeIcon icon={faMedium} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Medium</span></a></li> */}
-                            {/* <li><a href='/' rel='noopener noreferrer' className={styles.linka}><FontAwesomeIcon icon={faYoutube} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>YouTube</span></a></li> */}
-                        </ul>
+                        <a href='/stakes' rel='noopener noreferrer' className={styles.si}>My Stakes</a>
+                    </li>
+                    <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
+                        <a href='/stakes' rel='noopener noreferrer' className={styles.si}>Mine FRD</a>
                     </li>
                 </ul>
                 <ul className={styles.upa}>

@@ -36,12 +36,12 @@ import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
-const Dapp = () =>  {
+const Staking = () =>  {
 
   const router = useRouter();
 
   const FRDAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
-  const StakeAddress = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
+  const StakeCA = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
 
   const { theme} = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
@@ -134,8 +134,8 @@ const Dapp = () =>  {
         const signer = provider.getSigner();
         console.log('stakes provider',provider);
         console.log('stakes signer',provider);
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
-        const reslt = await StakeContract.stake(StakeAddress,stakeAmount);
+        const StakeContract = new ethers.Contract(StakeCA, StakeAbi, signer);
+        const reslt = await StakeContract.stake(StakeCA,stakeAmount);
         console.log(reslt)
       }
         
@@ -154,7 +154,7 @@ const Dapp = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
-          const reslt = await FRDContract.approve(StakeAddress,stakeAmount);
+          const reslt = await FRDContract.approve(StakeCA,stakeAmount);
           if(reslt) {
             StakeFRD();
         }
@@ -174,7 +174,7 @@ const Dapp = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
-        const stakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const stakeContract = new ethers.Contract(StakeCA, StakeAbi, signer);
         const reslt = await stakeContract.hasStake(signer);
         if(reslt === true) {
           setShowTimer(true)
@@ -197,7 +197,7 @@ const Dapp = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const StakeContract = new ethers.Contract(StakeCA, StakeAbi, signer);
         const reslt = await StakeContract.calcReward();
         console.log('calc reward error',reslt);
       }
@@ -214,7 +214,7 @@ const Dapp = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const StakeContract = new ethers.Contract(StakeCA, StakeAbi, signer);
         const reslt = await StakeContract.withdrawStake();
         console.log("Account Balance: ", reslt);
       }
@@ -539,4 +539,4 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
   );
 }
 
-export default Dapp
+export default Staking

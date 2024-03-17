@@ -41,13 +41,13 @@ background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 99%
     display: flex;vertical-align: auto;margin-top: 20px;
 }
 .nav .nav_container .nav_container_p ul.upa {
-    display: flex;vertical-align: auto;justify-content: space-between;padding-right: 50px;margin: 0;
+    display: flex;vertical-align: auto;justify-content: space-between;padding-right: 40px;margin: 0;
 }
 .nav .nav_container .nav_container_p ul.upa {
     margin-top: 0;
 }
 .nav .nav_container .nav_container_p ul.upa li {
-    list-style: none;vertical-align: auto;margin: 5px 20px;cursor: pointer;position: relative;
+    list-style: none;vertical-align: auto;margin: 5px 10px;cursor: pointer;position: relative;
 }
 .nav .nav_container .nav_container_p ul.upa li a.linka:hover,.nav .nav_container .nav_container_p ul.upa li.drpdwnlist:hover {
   border-top: 2px solid #e3a204 ;
@@ -60,14 +60,17 @@ background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 99%
 }
 .nav .nav_container .nav_container_p ul.upa li.ld {
     list-style: none;vertical-align: auto;border: 1px solid #e3a204 ;height: fit-content;border-radius: 120px;
-    padding: 3px 18px 3px 18px;color: #e3a204 ;margin-top: 0;
+    padding: 2px 12px 2px 12px;color: #e3a204 ;margin-top: 0;
+}
+.nav .nav_container .nav_container_p ul.upa li.ld button {
+  font-size: 14px;font-weight: 500;margin: 0;
 }
 .nav .nav_container .nav_container_p ul.upa li.ld a {
   color: #e3a204 ;
 }
 .nav .nav_container .nav_container_p ul.upa li a.buytafa {
-  background-color: #e3a204 ;color: #0a0a0a;padding: 6px 20px 6px 20px;border-radius: 60px;
-  font-weight: 900;font-size: 14px;
+  background-color: #e3a204 ;color: #0a0a0a;padding: 3px 12px 3px 12px;border-radius: 60px;
+  font-weight: 600;font-size: 14px;
 }
 .nav .nav_container .nav_container_p ul.upa li.ld:hover {
   background-color: #f0eded49;border: 1px dashed #e3a204 ;color: #e3a204 ;
@@ -82,20 +85,20 @@ background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 99%
   color: #444141;border-top: none;
 }
 .nav .nav_container .nav_container_p ul.upa li.si {
-  list-style: none;vertical-align: auto;border: 1px solid #e0f7e8;height: fit-content;border-radius: 120px;
-  padding: 3px 18px 3px 18px;color: #e0f7e8;margin-top: 0;margin-left: -.5rem;margin-right: -2rem;
+  list-style: none;vertical-align: auto;height: fit-content;border-radius: 120px;
+  padding: 2px 12px 2px 12px;color: #e0f7e8;margin-top: 0;margin-left: -.5rem;margin-right: -2rem;
 }
 .nav .nav_container .nav_container_p ul.upa li.si a {
-color: #e0f7e8;
+  color: #e0f7e8;font-size: 14px !important;
 }
 .nav .nav_container .nav_container_p ul.upa li.si:hover {
-background-color: #f0eded49;border: 1px dashed #e0f7e8;color: #e0f7e8;
+  background-color: #f0eded49;border: 1px dashed #e0f7e8;color: #e0f7e8;
 }
 .nav .nav_container .nav_container_p ul.upa li.si:hover > a {
-color: #e0f7e8;
+  color: #e0f7e8;
 }
 .nav .nav_container .nav_container_p ul.upa li.ld:active {
-background-color: #f0eded49;border: 1px dashed #e3a204 ;
+  background-color: #f0eded49;border: 1px dashed #e3a204 ;
 }
 .nav .nav_container .nav_container_p ul.upa li a {
     color: #f1f1f1;font-family: "Poppins",sans-serif;text-decoration: none;font-size: 14px;

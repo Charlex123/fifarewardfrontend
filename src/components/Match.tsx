@@ -1,9 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import matchstyle from '../styles/match.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import Image from 'next/image';
+import { ethers } from 'ethers';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { useDisconnect } from '@web3modal/ethers5/react';
+import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
 import moment from 'moment';
@@ -14,6 +21,7 @@ import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
 import FixtureByDate from './FixturesByDate';
 import LiveFixtures from './LiveFixtures';
+import { ThemeContext } from '../contexts/theme-context';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -160,11 +168,22 @@ const [currentPage, setCurrentPage] = useState<number>(1);
 const [limit] = useState<number>(10);
 const [showloading, setShowLoading] = useState<boolean>(false);
 const [totalPages, setTotalPages] = useState(0);
+const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
+const [errorMessage,seterrorMessage] = useState<string>("");
 
+const [errorMessage, setErrorMessage] = useState("");
 const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
 const[searchkeyword,setSearchKeyWord] = useState<string>('');
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const router = useRouter();
+const FRDAddress = process.env.NEXT_PUBLIC_MARKETPLACE_DEV_TEST_ADDRESS;
+const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+const { open, close } = useWeb3Modal();
+const { walletProvider } = useWeb3ModalProvider();
+const { address, chainId, isConnected } = useWeb3ModalAccount();
+const { disconnect } = useDisconnect();
+
+const {theme} = useContext(ThemeContext);
 
   useEffect(() => {
     try {
@@ -296,51 +315,68 @@ const router = useRouter();
 },[countryfixturesdata,router.query.match,matchidparam,username])
 
 
-const handleFormSubmit = async (e:any) => {
+const handleOpenBetForm = async (e:any) => {
     try {
         if(username && username !== null && username !== undefined && username !== '') {
-            let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
-            let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
-            if(betAmount && (parseInt(betAmount) < 50000)) {
-                inputAlertDiv.innerHTML = "You can't bet below 50,000FRD";
-                return;
-            }
-            if(betprediction && betprediction !== '' && betprediction !== null && betprediction !== undefined) {
-              selectAlertDiv.innerHTML = "";    
+            if(!isConnected) {
+              open()
             }else {
-                selectAlertDiv.innerHTML = "Select prediction first";
-                return;
-            }
-
-            if(bettingteam && bettingteam !== '' && bettingteam !== null && bettingteam !== undefined) {
-              selectAlertDiv.innerHTML = "";
-            }else {
-              selectAlertDiv.innerHTML = "Select team first";
-                return;
-            }
-            
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
+              try {
+                const provider = new ethers.providers.Web3Provider(walletProvider as any);
+                const signer = provider.getSigner();
+    
+                console.log('signer address',signer,signer.getAddress(),signer._address,address)
+                /* next, create the item */
+                let contract = new ethers.Contract(BettingCA, FRDAddress, signer);
+                
+                let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
+                let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
+                if(betAmount && (parseInt(betAmount) < 50000)) {
+                    inputAlertDiv.innerHTML = "You can't bet below 50,000FRD";
+                    return;
                 }
-            }  
-            const {data} = await axios.post("http://localhost:9000/api/users/openbet", {
-                betAmount,
-                betParticipantsCount,
-                matchidparam,
-                matchparam,
-                bettingteam,
-                betprediction,
-                username,
-                userId
-            }, config);
-            if(data !== null) {
-                console.log('bet data',data)
-                let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-                hiw_bgoverlay.style.display = 'block';
-                let pDiv = e.parentElement.parentElement.parentElement;
-                pDiv.style.display = 'none';
-                setBetOpenSuccess(true);
+                if(betprediction && betprediction !== '' && betprediction !== null && betprediction !== undefined) {
+                  selectAlertDiv.innerHTML = "";    
+                }else {
+                    selectAlertDiv.innerHTML = "Select prediction first";
+                    return;
+                }
+
+                if(bettingteam && bettingteam !== '' && bettingteam !== null && bettingteam !== undefined) {
+                  selectAlertDiv.innerHTML = "";
+                }else {
+                  selectAlertDiv.innerHTML = "Select team first";
+                    return;
+                }
+                
+                const config = {
+                    headers: {
+                        "Content-type": "application/json"
+                    }
+                }  
+                const {data} = await axios.post("http://localhost:9000/api/users/openbet", {
+                    betAmount,
+                    betParticipantsCount,
+                    matchidparam,
+                    matchparam,
+                    bettingteam,
+                    betprediction,
+                    username,
+                    userId
+                }, config);
+                if(data !== null) {
+                    console.log('bet data',data)
+                    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+                    hiw_bgoverlay.style.display = 'block';
+                    let pDiv = e.parentElement.parentElement.parentElement;
+                    pDiv.style.display = 'none';
+                    setBetOpenSuccess(true);
+                }
+              } catch (error) {
+                setShowAlertDanger(true);
+                seterrorMessage(`transaction cancelled /${error}`);
+                setShowLoading(false)
+              }
             }
         }else {
             let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
@@ -876,7 +912,7 @@ const loadSearchResults = async () => {
                                             <small id='partpntsalert'></small>
                                         </div>
                                         <div className={matchstyle.form_g}>
-                                            <button type='button' onClick={(e) => handleFormSubmit(e.target)} title='button'>Open Bet Now</button>
+                                            <button type='button' onClick={(e) => handleOpenBetForm(e.target)} title='button'>Open Bet Now</button>
                                         </div>
                                     </form>
                                     </div>
