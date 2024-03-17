@@ -360,32 +360,33 @@ const handleOpenBetForm = async (e:any) => {
                   setShowLoading(false);
                   
                 }else {
+                  let bCOpenBet = Betcontract.OpenBet();
                 }
                 
                 
-                const config = {
-                    headers: {
-                        "Content-type": "application/json"
-                    }
-                }  
-                const {data} = await axios.post("http://localhost:9000/api/users/openbet", {
-                    betAmount,
-                    betParticipantsCount,
-                    matchidparam,
-                    matchparam,
-                    bettingteam,
-                    betprediction,
-                    username,
-                    userId
-                }, config);
-                if(data !== null) {
-                    console.log('bet data',data)
-                    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-                    hiw_bgoverlay.style.display = 'block';
-                    let pDiv = e.parentElement.parentElement.parentElement;
-                    pDiv.style.display = 'none';
-                    setBetOpenSuccess(true);
-                }
+                // const config = {
+                //     headers: {
+                //         "Content-type": "application/json"
+                //     }
+                // }  
+                // const {data} = await axios.post("http://localhost:9000/api/users/openbet", {
+                //     betAmount,
+                //     betParticipantsCount,
+                //     matchidparam,
+                //     matchparam,
+                //     bettingteam,
+                //     betprediction,
+                //     username,
+                //     userId
+                // }, config);
+                // if(data !== null) {
+                //     console.log('bet data',data)
+                //     let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+                //     hiw_bgoverlay.style.display = 'block';
+                //     let pDiv = e.parentElement.parentElement.parentElement;
+                //     pDiv.style.display = 'none';
+                //     setBetOpenSuccess(true);
+                // }
               } catch (error) {
                 setShowAlertDanger(true);
                 seterrorMessage(`transaction cancelled /${error}`);

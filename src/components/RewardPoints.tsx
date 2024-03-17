@@ -134,7 +134,7 @@ const Rewards = () =>  {
         const signer = provider.getSigner();
         console.log('stakes provider',provider);
         console.log('stakes signer',provider);
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
         const reslt = await StakeContract.stake(StakeAddress,stakeAmount);
         console.log(reslt)
       }
@@ -174,7 +174,7 @@ const Rewards = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
-        const stakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const stakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
         const reslt = await stakeContract.hasStake(signer);
         if(reslt === true) {
           setShowTimer(true)
@@ -197,7 +197,7 @@ const Rewards = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
         const reslt = await StakeContract.calcReward();
         console.log('calc reward error',reslt);
       }
@@ -214,7 +214,7 @@ const Rewards = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi.abi, signer);
+        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
         const reslt = await StakeContract.withdrawStake();
         console.log("Account Balance: ", reslt);
       }
