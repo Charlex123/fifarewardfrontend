@@ -171,13 +171,12 @@ const [totalPages, setTotalPages] = useState(0);
 const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
 const [errorMessage,seterrorMessage] = useState<string>("");
 
-const [errorMessage, setErrorMessage] = useState("");
 const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
 const[searchkeyword,setSearchKeyWord] = useState<string>('');
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const router = useRouter();
-const FRDAddress = process.env.NEXT_PUBLIC_MARKETPLACE_DEV_TEST_ADDRESS;
-const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+const FRDAddress = "0x344db0698433Eb0Ca2515d02C7dBAf21be07C295";
+const BettingCA = "0x2F40124B8bb0cC6B315F593c569b2fb183fa1B8f";
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const { address, chainId, isConnected } = useWeb3ModalAccount();
@@ -327,8 +326,10 @@ const handleOpenBetForm = async (e:any) => {
     
                 console.log('signer address',signer,signer.getAddress(),signer._address,address)
                 /* next, create the item */
-                let contract = new ethers.Contract(BettingCA, FRDAddress, signer);
-                
+                let FRDcontract = new ethers.Contract(FRDAddress, FRDAbi, signer);
+                let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
+
+
                 let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
                 let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
                 if(betAmount && (parseInt(betAmount) < 50000)) {

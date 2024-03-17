@@ -283,7 +283,7 @@
     background-color: #e28305;width: fit-content;padding: 2px 4px;margin-left: 5px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet {
-    position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
+    position: absolute;z-index: 9;background-color: #000000de;padding: 10px 24px 10px 24px;
     border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: -380px;display: none;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet .pbet_x {
