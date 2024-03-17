@@ -25,8 +25,8 @@ dotenv.config();
 export default function CreateItem() {
   
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
-  const [nftcontractAddress] = useState<any>("0x871a9C28F81139dCC8571b744d425FFc2c707b15");
-  const [frdcontractAddress] = useState<any>("0x598FC10105499eE4ceE730373b665F59b258bbc5");
+  const [nftcontractAddress] = useState<any>("0x01c37074610aFF3a3B75Cc6ba3Ed4ea896A339fb");
+  const [frdcontractAddress] = useState<any>("0x344db0698433Eb0Ca2515d02C7dBAf21be07C295");
   
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
   const [showloading, setShowLoading] = useState<boolean>(false);

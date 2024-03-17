@@ -329,7 +329,11 @@ const handleOpenBetForm = async (e:any) => {
                 let FRDcontract = new ethers.Contract(FRDAddress, FRDAbi, signer);
                 let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
 
-
+                let transaction = await FRDcontract.balanceOf(address);
+                console.log('transaction',transaction);
+                console.log('transaction',ethers.utils.formatEther(transaction));
+                let frdBal = ethers.utils.formatEther(transaction);
+                
                 let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
                 let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
                 if(betAmount && (parseInt(betAmount) < 50000)) {
@@ -349,6 +353,15 @@ const handleOpenBetForm = async (e:any) => {
                   selectAlertDiv.innerHTML = "Select team first";
                     return;
                 }
+
+                if(transaction < betAmount) {
+                  setShowAlertDanger(true);
+                  seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!  `)
+                  setShowLoading(false);
+                  
+                }else {
+                }
+                
                 
                 const config = {
                     headers: {
