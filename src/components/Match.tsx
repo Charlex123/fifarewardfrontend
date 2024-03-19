@@ -16,11 +16,14 @@ import footballb from '../assets/images/footaballb.jpg';
 import moment from 'moment';
 import Calendar from 'react-calendar';
 import Loading from './Loading';
+import AlertDanger from './AlertDanger';
+import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
 import FixtureByDate from './FixturesByDate';
 import LiveFixtures from './LiveFixtures';
+import { Fixture } from './FixtureMetadata';
 import { ThemeContext } from '../contexts/theme-context';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
@@ -47,63 +50,7 @@ const MatchData:React.FC<{}> = () => {
     }
   }
 
-interface Fixture {
-  fixture: {
-      id: number;
-      referee: string | null;
-      timezone: string;
-      date: string;
-      timestamp: number;
-      periods: {
-          first: number;
-          second: number;
-      };
-      venue: {
-          id: number | null;
-          name: string;
-          city: string;
-      };
-      status: {
-          long: string;
-          short: string;
-          elapsed: number;
-      };
-  };
-  league: {
-      id: number;
-      name: string;
-      country: string;
-      logo: string;
-      flag: string;
-      season: number;
-      round: string;
-  };
-  teams: {
-      home: {
-        id: number;
-        name: string;
-        logo: string;
-        winner: boolean | null;
-      };
-      away: {
-        id: number;
-        name: string;
-        logo: string;
-        winner: boolean | null;
-      };
-  };
-  goals: {
-      home: number;
-      away: number;
-  };
-  score: {
-    halftime: { home: number; away: number };
-    fulltime: { home: number; away: number };
-    extratime: { home: number | null; away: number | null };
-    penalty: { home: number | null; away: number | null };
-  };
-  __v: number;
-}
+
 // interface League {
 //   leagueId: number;
 //   leagueName: string;
@@ -164,25 +111,21 @@ const[betprediction,setBetPrediction] = useState<string>('');
 const[betAmount,setBetAmount] = useState<string>('50000');
 const[betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
-const [currentPage, setCurrentPage] = useState<number>(1);
 const [limit] = useState<number>(10);
 const [showloading, setShowLoading] = useState<boolean>(false);
-const [totalPages, setTotalPages] = useState(0);
 const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
-const [errorMessage,seterrorMessage] = useState<string>("");
+const [errorMessage,seterrorMessage] = useState<any>();
 
+const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
 const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
 const[searchkeyword,setSearchKeyWord] = useState<string>('');
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const router = useRouter();
 const FRDAddress = "0x344db0698433Eb0Ca2515d02C7dBAf21be07C295";
-const BettingCA = "0x2F40124B8bb0cC6B315F593c569b2fb183fa1B8f";
+const BettingCA = "0xF2e49F91b63a25a122a9f9533Ba06ECD1022BEBf";
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const { address, chainId, isConnected } = useWeb3ModalAccount();
-const { disconnect } = useDisconnect();
-
-const {theme} = useContext(ThemeContext);
 
   useEffect(() => {
     try {
@@ -313,6 +256,49 @@ const {theme} = useContext(ThemeContext);
   
 },[countryfixturesdata,router.query.match,matchidparam,username])
 
+const openBetC = async () => {
+  if(walletProvider) {
+    try {
+        const provider = new ethers.providers.Web3Provider(walletProvider as any)
+        const signer = provider.getSigner();
+        let rembetparticipantscount = parseInt(betParticipantsCount) - 1;
+        let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
+        const amt = betAmount + "000000000000000000";
+        const tamount = ethers.BigNumber.from(amt);
+        let bCOpenBet = Betcontract.OpenBet(tamount,matchidparam,username,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount);
+        console.log("bc open bet",bCOpenBet)
+        if(bCOpenBet) {
+          setBetOpenSuccess(true);
+        }
+        
+        // router.push('../betting/openbetslists');
+      } catch (error) {
+        setShowAlertDanger(true);
+        seterrorMessage(error)
+        setShowLoading(false);
+      }
+  }
+}
+
+const Approve = async () => {
+  try {
+    if(walletProvider) {
+      
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
+        const amt = betAmount + "000000000000000000";
+        const tamount = ethers.BigNumber.from(amt);
+        const reslt = await FRDContract.approve(BettingCA,tamount);
+        
+        if(reslt) {
+          openBetC();
+        }
+    }
+  } catch (error:any) {
+    seterrorMessage("Connect Wallet First");
+  }
+}
 
 const handleOpenBetForm = async (e:any) => {
     try {
@@ -321,19 +307,21 @@ const handleOpenBetForm = async (e:any) => {
               open()
             }else {
               try {
+                setShowLoading(true);
                 const provider = new ethers.providers.Web3Provider(walletProvider as any);
                 const signer = provider.getSigner();
     
                 console.log('signer address',signer,signer.getAddress(),signer._address,address)
                 /* next, create the item */
                 let FRDcontract = new ethers.Contract(FRDAddress, FRDAbi, signer);
-                let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
-
-                let transaction = await FRDcontract.balanceOf(address);
-                console.log('transaction',transaction);
-                console.log('transaction',ethers.utils.formatEther(transaction));
-                let frdBal = ethers.utils.formatEther(transaction);
                 
+                // const tamount = ethers.BigNumber.from("5000000000000000000000000");
+                // let fundwalletaddress = FRDcontract.transfer("0x6df7E51F284963b33CF7dAe442E5719da69c312d",tamount);
+                // console.log("fundwalletaddress result",fundwalletaddress);
+                // return;
+                let transaction = await FRDcontract.balanceOf(address);
+                
+                let frdBal = ethers.utils.formatEther(transaction);
                 let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
                 let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
                 if(betAmount && (parseInt(betAmount) < 50000)) {
@@ -354,39 +342,14 @@ const handleOpenBetForm = async (e:any) => {
                     return;
                 }
 
-                if(transaction < betAmount) {
+                if(frdBal < betAmount) {
                   setShowAlertDanger(true);
-                  seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!  `)
+                  seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!`)
                   setShowLoading(false);
-                  
                 }else {
-                  let bCOpenBet = Betcontract.OpenBet();
+                  Approve();
                 }
                 
-                
-                // const config = {
-                //     headers: {
-                //         "Content-type": "application/json"
-                //     }
-                // }  
-                // const {data} = await axios.post("http://localhost:9000/api/users/openbet", {
-                //     betAmount,
-                //     betParticipantsCount,
-                //     matchidparam,
-                //     matchparam,
-                //     bettingteam,
-                //     betprediction,
-                //     username,
-                //     userId
-                // }, config);
-                // if(data !== null) {
-                //     console.log('bet data',data)
-                //     let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-                //     hiw_bgoverlay.style.display = 'block';
-                //     let pDiv = e.parentElement.parentElement.parentElement;
-                //     pDiv.style.display = 'none';
-                //     setBetOpenSuccess(true);
-                // }
               } catch (error) {
                 setShowAlertDanger(true);
                 seterrorMessage(`transaction cancelled /${error}`);
@@ -394,35 +357,41 @@ const handleOpenBetForm = async (e:any) => {
               }
             }
         }else {
-            let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-            hiw_bgoverlay.style.display = 'block';
+            setShowBgOverlay(true);
             setShowLoginComp(true);
             e.parentElement.parentElement.parentElement.style.display = 'none';
             console.log('showlogincomp',showloginComp)
         }
 
         
-        console.log('submit handle ran')
     } catch (error) {
       console.log(error)
     }
 }
   
 const showloginCompNow = () => {
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = 'block';
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'block';
+    setShowBgOverlay(true);
     setShowLoginComp(true);
 }
 
 const closeLoginModal = () => {
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = 'none';
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'none';
+    setShowBgOverlay(false);
     setShowLoginComp(false);
 }
 
+const closeAlertModal = () => {
+  setShowAlertDanger(false);
+  setShowBgOverlay(false)
+}
+
 const closeActionModalComp = () => {
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = 'none';
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'none';
+    setShowBgOverlay(true);
     setBetOpenSuccess(false);
     router.push('openbetslists');
 }
@@ -534,12 +503,12 @@ const firstopenHIW = (divId:any) => {
 
 const openHIWE = (divId:any) => {
   let hiwdiv = document.querySelector('#howitworks') as HTMLElement;
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  console.log('hiw div',hiwdiv)
-  console.log('hiw overlay',hiw_bgoverlay)
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // console.log('hiw div',hiwdiv)
+  // console.log('hiw overlay',hiw_bgoverlay)
   hiwdiv.style.display = (hiwdiv.style.display === 'block') ? 'none' : 'block';
-  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
-
+  // hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
+  setShowBgOverlay(!BgOverlay);
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
 
@@ -560,7 +529,7 @@ const openHIWE = (divId:any) => {
 
 const placeBet = (divId:any) => {
 
-  let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
 
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
@@ -568,21 +537,24 @@ const placeBet = (divId:any) => {
     if(svg !== null && svg !== undefined) {
       let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
       let targetDivP = divId.parentElement.parentElement.parentElement.parentElement;
-      bgoverlay.style.display = 'block';
+      // bgoverlay.style.display = 'block';
+      setShowBgOverlay(true);
       targetDivP.style.display = 'none';
       targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
     }
     if(path !== null && path !== undefined) {
       let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
       let targetDivP = divId.parentElement.parentElement.parentElement.parentElement.parentElement;
-      bgoverlay.style.display = 'block';
+      // bgoverlay.style.display = 'block';
+      setShowBgOverlay(true);
       targetDivP.style.display = 'none';
       targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
     }
   }else {
     let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
     let targetDivP = divId.parentElement.parentElement.parentElement;
-    bgoverlay.style.display = 'block';
+    // bgoverlay.style.display = 'block';
+    setShowBgOverlay(true);
     targetDivP.style.display = 'none';
     targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
   }
@@ -592,14 +564,14 @@ const closePBET = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
   
-  let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
 
   if(svg !== null && svg !== undefined) {
-    bgoverlay.style.display = 'none';
+    // bgoverlay.style.display = 'none';
     divId.parentElement.parentElement.style.display = 'none';
   }
   if(path !== null && path !== undefined) {
-    bgoverlay.style.display = 'none';
+    // bgoverlay.style.display = 'none';
     divId.parentElement.parentElement.parentElement.style.display = 'none';
   }
 }
@@ -684,8 +656,8 @@ const loadSearchResults = async () => {
 
   return (
     <>
-    <div className={matchstyle.hiw_overlay} id="hiw_overlay"></div>
       <div className={matchstyle.main}>
+      {showBgOverlay && <BgOverlay />}
       <div className={matchstyle.search} >
             <div>
               <form>
@@ -714,7 +686,7 @@ const loadSearchResults = async () => {
                 <LoginModal prop={'Open Bet'} onChange={closeLoginModal}/>
             </div>
         }
-
+        {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
         {betopensuccess && 
             <ActionSuccessModal prop='Bet' onChange={closeActionModalComp}/>
         }
@@ -903,7 +875,7 @@ const loadSearchResults = async () => {
                                             <div>
                                                 <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
                                                     <option value='Win'>Win</option>
-                                                    <option value='Draw'>Draw</option>
+                                                    <option value='Lose'>Lose</option>
                                                 </select>
                                             </div>
                                             <small id='predictionalert'></small>

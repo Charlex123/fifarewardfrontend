@@ -56,7 +56,7 @@ const Rewards = () =>  {
   const [dappConnector,setDappConnector] = useState(false);
   const [wAlert,setWAlert] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, seterrorMessage] = useState("");
   const [network, setNetwork] = useState(undefined);
   const [earningprofitpercent, setEarningProfitPercent] = useState<any>(0);
   const [walletaddress, setWalletAddress] = useState("NA"); 
@@ -161,7 +161,7 @@ const Rewards = () =>  {
       }
     } catch (error:any) {
       setDappConnector(true);
-      setErrorMessage("Connect Wallet First");
+      seterrorMessage("Connect Wallet First");
     }
     
   }
@@ -186,7 +186,7 @@ const Rewards = () =>  {
     } catch (error) {
       console.log("Check has wallet");
       setDappConnector(true);
-      setErrorMessage("Connect Wallet First");
+      seterrorMessage("Connect Wallet First");
     }
     
   }
@@ -203,7 +203,7 @@ const Rewards = () =>  {
       }
     }catch(error) {
       setDappConnector(true);
-      setErrorMessage("No active stake found");
+      seterrorMessage("No active stake found");
     }
     
   }
@@ -220,7 +220,7 @@ const Rewards = () =>  {
       }
     } catch (error) {
       setDappConnector(true);
-      setErrorMessage("You must have stake to withdraw");
+      seterrorMessage("You must have stake to withdraw");
     }
   }
 

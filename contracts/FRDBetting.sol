@@ -2,18 +2,6 @@
 
 pragma solidity^0.8.9;
 
-/*
-  8888888888   88888888       888888888
-  8888888888   8888 88888     88888888888
-  8888         8888   8888    8888   88888
-  8888         8888 88888     8888    88888
-  8888888888   8888888        8888    88888
-  8888888888   8888888        8888    88888
-  8888         8888 8888      8888   88888
-  8888         8888   8888    88888888888
-  8888         8888    8888   888888888
-*/
-
 import "./FifaRewardToken.sol";
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
@@ -276,7 +264,7 @@ contract FRDBetting is ReentrancyGuard {
         });
 
         
-        _balanceOf[msg.sender] -= betamount;
+        _balanceOf[msg.sender] += betamount;
         FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
         
         emit OpenBets(msg.sender,msg.sender,username, betamount, betId, matchId, matchfixture, prediction, bettingteam);
@@ -322,7 +310,7 @@ contract FRDBetting is ReentrancyGuard {
 
             });
 
-            _balanceOf[msg.sender] -= betamount;
+            _balanceOf[msg.sender] += betamount;
             FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
             
             emit JoinBett(betopener, msg.sender, username, betamount, betId, matchId, matchfixture, prediction, bettingteam);

@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCaretDown, faChevronLeft, faXmark, faSoccerBall  } from "@fortawesome/free-solid-svg-icons";
+
+import { faCaretDown, faXmark, faSoccerBall  } from "@fortawesome/free-solid-svg-icons";
 import leaguefixturestyle from '../styles/leaguefixtures.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import moment from 'moment';
-import Loading from './Loading'
-import { faCalendar, faCalendarAlt, faFontAwesome } from '@fortawesome/free-regular-svg-icons';
+import Loading from './Loading';
+import { Fixture } from './FixtureMetadata';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
 // material
@@ -15,61 +15,13 @@ dotenv.config();
 type MyComponentProps = {
   date: string;
 };
-interface Fixture {
-    fixture: {
-      id: number;
-      referee: string | null;
-      timezone: string;
-      date: string;
-      timestamp: number;
-      periods: {
-          first: number;
-          second: number;
-      };
-      venue: {
-          id: number | null;
-          name: string;
-          city: string;
-      };
-      status: {
-          long: string;
-          short: string;
-          elapsed: number;
-      }
-    }
-    teams: {
-        home: {
-          id: number;
-          name: string;
-          logo: string;
-          winner: boolean | null;
-        };
-        away: {
-          id: number;
-          name: string;
-          logo: string;
-          winner: boolean | null;
-        };
-    };
-    goals: {
-        home: number;
-        away: number;
-    };
-    score: {
-      halftime: { home: number; away: number };
-      fulltime: { home: number; away: number };
-      extratime: { home: number | null; away: number | null };
-      penalty: { home: number | null; away: number | null };
-    };
-    __v: number;
-  }
-  
-  interface League {
-    leagueName: string;
-    leagueId: number;
-    leagueCountry: string;
-    fixtures: Fixture[];
-  }
+
+interface League {
+  leagueName: string;
+  leagueId: number;
+  leagueCountry: string;
+  fixtures: Fixture[];
+}
 
 const FixturesByCalenderDate:React.FC<MyComponentProps> = ({date}) => {
   console.log("fixture date in fbd",date)
