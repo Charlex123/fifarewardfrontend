@@ -69,7 +69,7 @@ struct Users {
         address private betdeployer;
         string creationType;
         address[] private emptyArr;
-        address public feeWallet = 0x6df7E51F284963b33CF7dAe442E5719da69c312d;
+        address public feeWallet = 0xbCCEb2145266639E0C39101d48B79B6C694A84Dc;
         uint uId;
         uint256 bId;
         Bets[] betsArray;
@@ -480,7 +480,7 @@ struct Users {
             
         }
 
-        function paybetWinners (uint _betId,address[] memory betwinners, uint paypercent) internal nonReentrant {
+        function paybetWinners (uint _betId,address[] memory betwinners, uint paypercent) public nonReentrant {
             if(msg.sender == address(0)) {
                 revert Unauthorized();
             }
