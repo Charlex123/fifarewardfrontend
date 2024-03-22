@@ -69,6 +69,7 @@ struct Users {
         address private betdeployer;
         string creationType;
         address[] private emptyArr;
+        address public feeWallet = 0x6df7E51F284963b33CF7dAe442E5719da69c312d;
         uint uId;
         uint256 bId;
         Bets[] betsArray;
@@ -448,7 +449,7 @@ struct Users {
                         if(BetIds[currentId].matchId == _matchId) {
                             if(compareStrings(BetIds[currentId].prediction, betresult)) {
                                 BetIds[currentId].betwinners.push(BetIds[currentId].participant);
-                                paybetWinners(currentId,BetIds[currentId].betwinners);
+                                paybetWinners(currentId,BetIds[currentId].betwinners,20);
                             }else {
                                 BetIds[currentId].betlosers.push(BetIds[currentId].participant);
                             }
@@ -464,10 +465,9 @@ struct Users {
             }
             uint _betamount = BetIds[_betId].betamount;
             for(uint p = 0; p < betpartners.length; p++) {
-                BetIds[_betId].participants[p];
-                _balanceOf[msg.sender] -= _betamount;
-                FifaRewardTokenContract.transferFrom( address(this),msg.sender, _betamount);
-                
+                address betP = BetIds[_betId].participants[p];
+                _balanceOf[betP] -= _betamount;
+                FifaRewardTokenContract.transferFrom( address(this),betP, _betamount);
             }
 
             uint betsCount = _betIds;
@@ -480,22 +480,30 @@ struct Users {
             
         }
 
-        function paybetWinners (uint _betId,address[] memory betwinners) internal nonReentrant {
+        function paybetWinners (uint _betId,address[] memory betwinners, uint paypercent) internal nonReentrant {
             if(msg.sender == address(0)) {
                 revert Unauthorized();
             }
-            
+            uint _betamount = BetIds[_betId].betamount;
+            uint payfee = _betamount * paypercent.div(100);
+            uint winnerPay = _betamount - payfee;
+            uint mulitWinnersPay = winnerPay.div(3);
+
             if(BetIds[_betId].totalbetparticipantscount == 2) {
                 for(uint bw = 0; bw < betwinners.length; bw++) {
-                    BetIds[_betId].betwinners[bw];
+                    address betWinner = BetIds[_betId].betwinners[bw];
+                    _balanceOf[betWinner] -= winnerPay;
+                    FifaRewardTokenContract.transferFrom( address(this),betWinner, winnerPay);
                 }
             }else {
                 for(uint bw = 0; bw < betwinners.length; bw++) {
                     BetIds[_betId].betwinners[bw];
+                    address betWinner = BetIds[_betId].betwinners[bw];
+                    _balanceOf[betWinner] -= mulitWinnersPay;
+                    FifaRewardTokenContract.transferFrom( address(this),betWinner, mulitWinnersPay);
                 }
             }
             
-
             uint betsCount = _betIds;
 
             for(uint i=0; i < betsCount; i++) {
