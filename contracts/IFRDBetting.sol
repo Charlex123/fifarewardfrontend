@@ -1,0 +1,42 @@
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.9;
+
+import "./FRDBetting.sol";
+
+interface IFRDBetting {
+    
+    function getUserId(address _useraddress) external view returns(uint);
+
+    function getuserRefIdBySponsor(address _useraddress, address _sponsor) external view returns(uint);
+
+    function getuserbetIds(address _useraddress) external view returns(uint[] memory);
+
+    function getuserRefId(address _useraddress) external view returns(uint);
+
+    function getuserReferrals(address _useraddress) external view returns (address[] memory);
+
+    function getReferralsMapping(uint256 _referralId) external view returns (Referrals memory);
+
+    function getBetsMapping(uint256 _betId) external view returns (Bets memory);
+
+    function getAllBetIdsCount() external  view returns (uint);
+
+    function getAllRefIdsCount() external view returns (uint);
+
+    function getAllUserIdsCount() external view returns (uint);
+
+    // function getBetsArray() external view returns (Bets[] memory);
+
+    function getuserbetId(address _useraddress) external view returns(uint);
+
+    function getuserRefBonus(address _useraddress) external view returns(uint);
+
+    function getBetParticipants(uint betId) external view returns (address[] memory);
+
+    function getBetConditions(uint256 _betId) external  view returns (address, string memory, string memory, string memory);
+
+    function getCount(address _useraddress) external view returns (uint);
+    
+    function getBetByAddress(address walletaddress) external view returns(Bets[] memory);
+
+}

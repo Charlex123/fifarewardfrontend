@@ -22,8 +22,10 @@ dotenv.config();
  */
 module.exports = {
   defaultNetwork: "testnet",
-  allowUnlimitedContractSize: true,
   networks: {
+    hardhat: {
+      allowUnlimitedContractSize: true,
+    },
     localhost: {
       allowUnlimitedContractSize: true,
       url: "http://127.0.0.1:8545"
@@ -98,7 +100,7 @@ module.exports = {
   settings: {
     optimizer: {
       enabled: true,
-      runs: 200
+      runs: 1
     }
    }
   },

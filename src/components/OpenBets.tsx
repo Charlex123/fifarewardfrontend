@@ -4,28 +4,26 @@ import openbetsstyle from '../styles/openbets.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
 import Image from 'next/image';
+import { ethers } from 'ethers';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { BigNumber } from "ethers";
+import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
+import { Bets } from './BetsMetadata';
 import footballb from '../assets/images/footaballb.jpg';
 import AlertDanger from './AlertDanger';
 import footballg from '../assets/images/footballg.jpg';
 import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
+import BgOverlay from './BgOverlay';
 import LoginModal from './LoginModal';
 import { faCircle, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
 // material
 // component
-
-const OpenBets:React.FC<{}> = () => {
-  // types.ts
-
-const [username, setUsername] = useState<string>("");
-const [userId, setUserId] = useState<string>("");  
-const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
-const [showloginComp,setShowLoginComp] = useState<boolean>(false);
-const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
-
-const router = useRouter();
 
 interface KeyWordSearch {
   match: string,
@@ -43,45 +41,44 @@ interface Betconditions {
   betcondition: betcondition[]
 }
 
-interface Bets {
-  betid: number,
-  betamount: number,
-  match: string,
-  matchid: number,
-  userId: number,
-  openedby: string,
-  betcondition: {
-    bettingteam: string,
-    prediction: string,
-  }
-  totalparticipantscount: number,
-  participantscount: number,
-  participants: string,
-  remainingparticipantscount: number,
-  betstatus: string,
-  betresult: string,
-  betwinners: string,
-  betlosers: string,
-  createddate: Date
-}
+
+const OpenBets:React.FC<{}> = () => {
+  // types.ts
+
+const [username, setUsername] = useState<string>("");
+const [userId, setUserId] = useState<string>("");  
+const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
+const [showloginComp,setShowLoginComp] = useState<boolean>(false);
+const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
+
+const router = useRouter();
+
+
 const inputRef = useRef<HTMLInputElement>(null);
 const [betData,setBetData] = useState<Bets[]>([]);
 const [currentPage, setCurrentPage] = useState<number>(1);
 const [limit] = useState<number>(10)
 const [totalPages, setTotalPages] = useState(0);
-const [errorMessage, seterrorMessage] = useState("");
+const [errorMessage, seterrorMessage] = useState<any>();
 const [error, setError] = useState<boolean>(false);
 const [showloading, setShowLoading] = useState<boolean>(false);
-const[bettingteam,setBettingTeam] = useState<string>('');
-const[searchkeyword,setSearchKeyWord] = useState<string>('');
-const[betprediction,setBetPrediction] = useState<string>('');
+const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
+const [bettingteam,setBettingTeam] = useState<string>('');
+const [searchkeyword,setSearchKeyWord] = useState<string>('');
+const [betprediction,setBetPrediction] = useState<string>('');
 const [isBetDataLoaded, setIsBetDataLoaded] = useState<boolean>(false);
+const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
 const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
 const [betconditions,setBetConditions] = useState<Betconditions[]>([]);
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const [showbetconditions, setShowBetConditions] = useState<boolean>(false);
 const [filterbetAmount, setfilterbetamount] = useState<number>(50000);
+const FRDAddress = "0x344db0698433Eb0Ca2515d02C7dBAf21be07C295";
+const BettingCA = "0xF2e49F91b63a25a122a9f9533Ba06ECD1022BEBf";
+const { open, close } = useWeb3Modal();
+const { walletProvider } = useWeb3ModalProvider();
+const { address, chainId, isConnected } = useWeb3ModalAccount();
 
 useEffect(() => {
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
@@ -96,24 +93,50 @@ useEffect(() => {
   
   if(windowloadgetbetruntimes == 0) {
     const fetchData = async () => {
-      try {
-        setShowLoading(true);
-        // Your asynchronous code here
-        const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-        }  
-        const {data} = await axios.get(`http://localhost:9000/api/bets/loadbets/${currentPage}/${limit}`, config);
-        if(data !== null && data !== undefined) {
-            setBetData(data.loadbets);
-            setTotalPages(data.totalPages);
-            setIsBetDataLoaded(true);
-            setwindowloadgetbetruntimes(1);
+      if(!isConnected) {
+        open();
+        router.reload();
+      }else {
+        if(walletProvider) {
+          try {
+            setShowLoading(true);
+            const provider = new ethers.providers.Web3Provider(walletProvider as any)
+            const signer = provider.getSigner();
+            let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
+            let loadBets = await Betcontract.loadAllBets();
+            
+            await loadBets.forEach(async (element:any) => {
+                console.log(" loaded bets",element)
+                let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+                let item: Bets = {
+                  betId: element.betId,
+                  matchId: element.matchId,
+                  username: element.username,
+                  matchfixture: element.matchfixture,
+                  openedBy: element.openedBy,
+                  participant: element.participant,
+                  betamount: betAmt,
+                  totalbetparticipantscount: element.totalbetparticipantscount,
+                  remainingparticipantscount: element.remainingparticipantscount,
+                  prediction: element.prediction,
+                  bettingteam: element.bettingteam,
+                  betstatus: element.betstatus,
+                  participants: element.participants,
+                  betwinners: element.betwinners,
+                  betlosers: element.betlosers,
+                }
+                betData.push(item);
+                setBetData(betData);
+                setShowLoading(false);
+                // console.log("bet data",betData)
+                return item;
+            });
+          } catch (error) {
+            setShowAlertDanger(true);
+            seterrorMessage(error);
             setShowLoading(false);
+          }
         }
-      } catch (error) {
-        console.error('Error fetching data:', error);
       }
     };
 
@@ -121,6 +144,7 @@ useEffect(() => {
   }else {
 
   }
+
   
   let searchOptions = ["Bet Id","Match Id","Match","Username","Opened Bets"];
   let currentSearchOptionIndex = 0;
@@ -153,14 +177,64 @@ useEffect(() => {
   
 },[betData,limit,currentPage])
 
+// const openBetC = async () => {
+//   if(walletProvider) {
+//     try {
+//         const provider = new ethers.providers.Web3Provider(walletProvider as any)
+//         const signer = provider.getSigner();
+//         // let rembetparticipantscount = parseInt(betParticipantsCount) - 1;
+//         let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
+//         const amt = betAmount + "000000000000000000";
+//         const tamount = ethers.BigNumber.from(amt);
+//         let bCOpenBet = await Betcontract.OpenBet(tamount,matchidparam,username,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount,{ gasLimit: 1000000 });
+        
+//         bCOpenBet.wait().then(async (receipt:any) => {
+//           // console.log(receipt);
+//           if (receipt && receipt.status == 1) {
+//              // transaction success.
+//              setShowLoading(false);
+//              setBetOpenSuccess(true);
+//           }
+//        })
+//       } catch (error) {
+//         setShowAlertDanger(true);
+//         seterrorMessage(error);
+//         setShowLoading(false);
+//       }
+//   }
+// }
+
+// const Approve = async (e:any) => {
+//   try {
+//     e.parentElement.parentElement.parentElement.style.display = 'none';
+//     if(walletProvider) {
+//         setShowLoading(true);
+//         const provider = new ethers.providers.Web3Provider(walletProvider as any);
+//         const signer = provider.getSigner();
+//         const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
+//         const amt = betAmount + "000000000000000000";
+//         const tamount = ethers.BigNumber.from(amt);
+//         const reslt = await FRDContract.approve(BettingCA,tamount);
+        
+//         if(reslt) {
+//           openBetC();
+//         }
+//     }
+//   } catch (error:any) {
+//     seterrorMessage("Connect Wallet First");
+//   }
+// }
+
   const JoinBet = (e: any) => {
     if(username && username !== null && username !== undefined && username !== '') {
-      let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-      hiw_bgoverlay.style.display = 'block';
+      // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+      // hiw_bgoverlay.style.display = 'block';
+      setShowBgOverlay(true);
       e.parentElement.parentElement.nextElementSibling.firstElementChild.style.display = 'block';
     }else {
-      let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-      hiw_bgoverlay.style.display = 'block';
+      // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+      // hiw_bgoverlay.style.display = 'block';
+      setShowBgOverlay(true);
       setShowLoginComp(true);
       e.parentElement.parentElement.parentElement.style.display = 'none';
       console.log('showlogincomp',showloginComp)
@@ -227,8 +301,9 @@ useEffect(() => {
             
             if(data !== null) {
                 console.log('bet data',data)
-                let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-                hiw_bgoverlay.style.display = 'block';
+                // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+                // hiw_bgoverlay.style.display = 'block';
+                setShowBgOverlay(true);
                 let pDiv = e.parentElement.parentElement.parentElement;
                 pDiv.style.display = 'none';
                 setBetOpenSuccess(true);
@@ -245,14 +320,16 @@ useEffect(() => {
 }
 
 const closeLoginModal = () => {
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = 'none';
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'none';
+    setShowBgOverlay(false);
     setShowLoginComp(false);
 }
 
 const closeActionModalComp = () => {
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = 'none';
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'none';
+    setShowBgOverlay(false);
     setBetOpenSuccess(false);
     router.push('openbets');
 }
@@ -269,14 +346,14 @@ const closePBET = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
   
-  let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
 
   if(svg !== null && svg !== undefined) {
-    bgoverlay.style.display = 'none';
+    setShowBgOverlay(false);
     divId.parentElement.parentElement.style.display = 'none';
   }
   if(path !== null && path !== undefined) {
-    bgoverlay.style.display = 'none';
+    setShowBgOverlay(false);
     divId.parentElement.parentElement.parentElement.style.display = 'none';
   }
 }
@@ -292,8 +369,9 @@ const Cancel = (e:any) => {
 const closeHIWE = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
+  setShowBgOverlay(!showBgOverlay);
   if(svg !== null && svg !== undefined) {
     divId.parentElement.parentElement.parentElement.style.display = 'none';
   }
@@ -316,8 +394,9 @@ const closeHIWE = (divId:any) => {
 };
 
 const showloginCompNow = () => {
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = 'block';
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // hiw_bgoverlay.style.display = 'block';
+  setShowBgOverlay(true);
   setShowLoginComp(true);
 }
 
@@ -385,8 +464,9 @@ const viewBetDetails = async(e:any,betId:number) => {
       betId
   }, config);
   if(data) {
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = 'block';
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'block';
+    setShowBgOverlay(true);
     console.log('bet conditions data',data.betconditions)
     setShowBetConditions(true);
     setShowLoading(false);
@@ -397,8 +477,9 @@ const viewBetDetails = async(e:any,betId:number) => {
 const closeBetCondtns = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = 'none';
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // hiw_bgoverlay.style.display = 'none';
+  setShowBgOverlay(false);
   setShowBetConditions(false);
 }
 
@@ -473,12 +554,17 @@ const FilterByOpenBets = async () => {
   }
 }
 
+const toggleAddress = (e:any) => {
+  let fulladdress = e.previousElementSibling as HTMLSpanElement;
+  fulladdress.style.display = (fulladdress.style.display === 'block') ? 'none' : 'block';
+}
 
   return (
     <>
     {showloading && <Loading/>}
     {error && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
-    <div className={openbetsstyle.hiw_overlay} id="hiw_overlay"></div>
+    {/* <div className={openbetsstyle.hiw_overlay} id="hiw_overlay"></div> */}
+    {showBgOverlay && <BgOverlay />}
       <div className={openbetsstyle.main}>
         <div className={openbetsstyle.search}>
           <div>
@@ -638,7 +724,7 @@ const FilterByOpenBets = async () => {
               <table>
                 <thead>
                   <tr>
-                    <th>S/N</th>
+                    {/* <th>S/N</th> */}
                     <th>Bet Id</th>
                     <th>Match Id</th>
                     <th>Bet Amount</th>
@@ -654,15 +740,15 @@ const FilterByOpenBets = async () => {
                 <tbody>
                   {betData.map((openbet, index) => (
                     <tr key={index}>
-                      <td><div className={openbetsstyle.div}>{index+1}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.betid}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.matchid}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.betamount}{<span className={openbetsstyle.amtunit}>FRD</span>}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.openedby}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.totalparticipantscount}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.participantscount}</div></td>
-                      <td><div className={openbetsstyle.div}>({openbet.participants}) <div className={openbetsstyle.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betid)}> view bet details </button></div></div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.remainingparticipantscount}</div></td>
+                      {/* <td><div className={openbetsstyle.div}>{index+1}</div></td> */}
+                      <td><div className={openbetsstyle.div}>{openbet.betId.toString()}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.matchId.toString()}</div></td>
+                      <td><div className={openbetsstyle.div}>{(openbet.betamount.toString())}{<span className={openbetsstyle.amtunit}>FRD</span>}</div></td>
+                      <td><div className={openbetsstyle.divaddress}><span>{openbet.openedBy.substring(0,8)+'...'}</span><span className={openbetsstyle.fulladdr}>{openbet.openedBy}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.totalbetparticipantscount.toString()}</div></td>
+                      <td><div className={openbetsstyle.div}>{(openbet.totalbetparticipantscount.toNumber()) - (openbet.remainingparticipantscount.toNumber())}</div></td>
+                      <td><div className={openbetsstyle.div}>({openbet.participants}) <div className={openbetsstyle.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())}> view bet details </button></div></div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.remainingparticipantscount.toString()}</div></td>
                       <td className={openbetsstyle.stat}><div className={openbetsstyle.div}>{openbet.betstatus == 'open' ? <span className={openbetsstyle.betstatusopened}>{openbet.betstatus}</span> : <span className={openbetsstyle.betstatusclosed}>{openbet.betstatus}</span>}</div></td>
                       {openbet.betstatus === 'open' 
                       ? 
@@ -682,7 +768,7 @@ const FilterByOpenBets = async () => {
                                               Bet Id
                                           </div>
                                           <div className={openbetsstyle.betdet}>
-                                            {openbet.betid}
+                                            {openbet.betId.toString()}
                                           </div>
                                       </div>
                                     </li>
@@ -692,7 +778,7 @@ const FilterByOpenBets = async () => {
                                               Match Id
                                           </div>
                                           <div className={openbetsstyle.betdet}>
-                                            {openbet.matchid}
+                                            {openbet.matchId.toString()}
                                           </div>
                                       </div>
                                     </li>
@@ -702,7 +788,7 @@ const FilterByOpenBets = async () => {
                                               Match
                                           </div>
                                           <div className={openbetsstyle.betdet}>
-                                            {openbet.match}
+                                            {openbet.matchfixture}
                                           </div>
                                       </div>
                                     </li>
@@ -712,7 +798,7 @@ const FilterByOpenBets = async () => {
                                               Max no of participants
                                           </div>
                                           <div className={openbetsstyle.betdet}>
-                                            {openbet.totalparticipantscount}
+                                            {openbet.totalbetparticipantscount.toString()}
                                           </div>
                                       </div>
                                     </li>
@@ -722,7 +808,7 @@ const FilterByOpenBets = async () => {
                                               Remaining Participants
                                           </div>
                                           <div className={openbetsstyle.betdet}>
-                                            {openbet.remainingparticipantscount}
+                                            {openbet.remainingparticipantscount.toString()}
                                           </div>
                                       </div>
                                     </li>
@@ -742,8 +828,8 @@ const FilterByOpenBets = async () => {
                                   <label>Which team are you betting on?</label>
                                   <div>
                                       <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
-                                          <option value={openbet.match.split('vs')[0]}>{openbet.match.split('vs')[0]}</option>
-                                          <option value={openbet.match.split('vs')[1]}>{openbet.match.split('vs')[1]}</option>
+                                          <option value={openbet.matchfixture.split('vs')[0]}>{openbet.matchfixture.split('vs')[0]}</option>
+                                          <option value={openbet.matchfixture.split('vs')[1]}>{openbet.matchfixture.split('vs')[1]}</option>
                                       </select>
                                   </div>
                                   <small id='teamalert'></small>
@@ -758,12 +844,12 @@ const FilterByOpenBets = async () => {
                                   </div>
                               </div>
                               <div className={openbetsstyle.form_g}>
-                                  <p>You are joining this bet with {openbet.betamount}FRD</p>
+                                  <p>You are joining this bet with {openbet.betamount.toString()}FRD</p>
                               </div>
                               <div className={openbetsstyle.error_alert}></div>
                               <div className={openbetsstyle.form_btn}>
                                   <div>
-                                    <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betid,openbet.betamount,openbet.matchid,openbet.participantscount,openbet.openedby,openbet.betstatus,openbet.totalparticipantscount,openbet.participants,openbet.remainingparticipantscount)} title='button'>Confirm</button>
+                                    <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betId.toNumber(),openbet.betamount,openbet.matchId.toNumber(),openbet.totalbetparticipantscount.toNumber(),openbet.openedBy,openbet.betstatus,openbet.totalbetparticipantscount.toNumber(),openbet.participants,openbet.remainingparticipantscount.toNumber())} title='button'>Confirm</button>
                                   </div>
                                   <div>
                                     <button type='button' className={openbetsstyle.cancel_btn} onClick={(e) => Cancel(e.target)} title='button'>Cancel</button>

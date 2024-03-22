@@ -172,6 +172,7 @@
 }
 .main .openbetmain table {
     width: 100%;margin: 0 auto 10px auto;background-color: #ffffff;padding: 5px 5px 5px 5px;
+    font-size: 14px;
 }
 .main .openbetmain table tbody {
     width: 100%;
@@ -186,6 +187,18 @@
 .main .openbetmain table tbody tr td .div {
     margin-top: 2px;margin-bottom: 2px;padding: 3px;background-color: #f5f4f4;text-align: left;
     text-transform: capitalize;
+}
+.main .openbetmain table tbody tr td .divaddress {
+    margin-top: 2px;margin-bottom: 2px;padding: 3px;background-color: #f5f4f4;text-align: left;
+    text-transform: capitalize;position: relative;
+}
+.main .openbetmain table tbody tr td .divaddress button {
+    font-size: 11px;text-align: right;background-color: #ffffff;padding: 0 4px;
+    border-radius: 8px;border: 1px solid #0000005d;
+}
+.main .openbetmain table tbody tr td .divaddress .fulladdr {
+    position: absolute;background-color: #ffffff;left: 0;top: 0;padding: 0 3px;
+    border-radius: 4px;border: 1px solid #c6c4c4;display: none;
 }
 .main .openbetmain table tbody tr td .bdet button {
     margin-top: 2px;margin-bottom: 2px;padding: 2px 6px 2px 6px;background-color: #ffffff;text-align: center;

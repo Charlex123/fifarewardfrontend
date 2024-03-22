@@ -8,5 +8,5 @@
 }
 .alert {
     font-size: 14px; text-align: center;font-family: 'Poppins';background: #fa4848;min-height: 40px;z-index: 99999;left: 0;right: 0;
-    margin:12px auto;padding: 8px 20px;color: #ffffff;border-radius: 120px; font-weight: lighter;position: absolute;
+    margin:12px auto;padding: 8px 20px;color: #ffffff;border-radius: 120px; font-weight: lighter;position: fixed;top: 5%;
 }

@@ -1,11 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:100);
-
 .spinner {
-  position: absolute;
+  position: fixed;
   margin: auto;
   left: 0;
   right: 0;
-  z-index: 9;
+  z-index: 99999;
   display: inline-block;
   width: 60px;
   height: 60px;
@@ -15,7 +14,6 @@
   animation: spin .5s ease-in-out infinite;
   -webkit-animation: spin .5s ease-in-out infinite;
 }
-
 @keyframes spin {
   to { -webkit-transform: rotate(360deg); }
 }

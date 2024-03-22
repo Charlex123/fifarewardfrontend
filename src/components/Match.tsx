@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import matchstyle from '../styles/match.module.css'
 import axios from 'axios';
@@ -8,23 +8,18 @@ import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
 import moment from 'moment';
-import Calendar from 'react-calendar';
 import Loading from './Loading';
 import AlertDanger from './AlertDanger';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
-import FixtureByDate from './FixturesByDate';
-import LiveFixtures from './LiveFixtures';
 import { Fixture } from './FixtureMetadata';
-import { ThemeContext } from '../contexts/theme-context';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,9 +27,9 @@ dotenv.config();
 // material
 // component
 
-type DateValuePiece = Date | null;
+// type DateValuePiece = Date | null;
 
-type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
+// type DateValue = DateValuePiece | [DateValuePiece, DateValuePiece];
 
 const MatchData:React.FC<{}> = () => {
   // types.ts
@@ -78,17 +73,6 @@ const divRef = useRef<HTMLDivElement>(null);
 const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
 const [calendarIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCalendarAlt}/>);
 const [drpdwnIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCaretDown}/>);
-const [today_d,setToday_d] = useState<any>();
-const [today_dm,setToday_dm] = useState<any>();
-const [tomorrow_d,setTomorrow_d] = useState<any>();
-const [tomorrow_dm,setTomorrow_dm] = useState<any>();
-const [nexttomorrow_d,setNextTomorrow_d] = useState<any>();
-const [nexttomorrow_dm,setNextTomorrow_dm] = useState<any>();
-const [nextthree_d,setNextThree_d] = useState<any>();
-const [nextthree_dm,setNextThree_dm] = useState<any>();
-const [nextfour_d,setNextFour_d] = useState<any>();
-const [nextfour_dm,setNextFour_dm] = useState<any>();
-const [datevalue, onChange] = useState<DateValue>(new Date());
 const [showcalender, setShowCalendar] = useState<boolean>(false);
 const [loadedlaguedata,setLoadedLeagueData] = useState<boolean>(false);
 const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
@@ -108,17 +92,16 @@ const[matchidparam,setMatchIdParam] = useState<string>('');
 const[matchData,setMatchData] = useState<Fixture>();
 const[bettingteam,setBettingTeam] = useState<string>('');
 const[betprediction,setBetPrediction] = useState<string>('');
-const[betAmount,setBetAmount] = useState<string>('50000');
-const[betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
+const [betAmount,setBetAmount] = useState<string>('50000');
+const [betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
-const [limit] = useState<number>(10);
 const [showloading, setShowLoading] = useState<boolean>(false);
 const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
 const [errorMessage,seterrorMessage] = useState<any>();
 
 const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
 const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
-const[searchkeyword,setSearchKeyWord] = useState<string>('');
+const [searchkeyword,setSearchKeyWord] = useState<string>('');
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const router = useRouter();
 const FRDAddress = "0x344db0698433Eb0Ca2515d02C7dBAf21be07C295";
@@ -140,35 +123,10 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             }
         }
         
-        const getDates:any = () => {
-            let today_d_ = "Today";
-            let today_dm_ = moment().format('DD, MMM');
-            let tomorrow_d_ = moment().add(1,'day').format('ddd');
-            let tomorrow_dm_ = moment().add(1,'day').format('DD, MMM');
-            let nexttomorrow_d_ = moment().add(2,'day').format('ddd');
-            let nexttomorrow_dm_ = moment().add(2,'day').format('DD, MMM');
-            let nextthree_d_ = moment().add(3,'day').format('ddd');
-            let nextthree_dm_ = moment().add(3,'day').format('DD, MMM');
-            let nextfour_d_ = moment().add(4,'day').format('ddd');
-            let nextfour_dm_ = moment().add(4,'day').format('DD, MMM');
-            
-            setToday_d(today_d_);
-            setToday_dm(today_dm_);
-            setTomorrow_d(tomorrow_d_);
-            setTomorrow_dm(tomorrow_dm_);
-            setNextTomorrow_d(nexttomorrow_d_);
-            setNextTomorrow_dm(nexttomorrow_dm_);
-            setNextThree_d(nextthree_d_);
-            setNextThree_dm(nextthree_dm_);
-            setNextFour_d(nextfour_d_);
-            setNextFour_dm(nextfour_dm_);
-        }
-        getDates()
 
         if(windowloadgetbetruntimes == 0) {
           const fetchData = async () => {
             try {
-              setShowLoading(true);
               const config = {
                 headers: {
                     "Content-type": "application/json"
@@ -215,44 +173,44 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
       console.log(error)
     }
 
-    let searchOptions = ["Team","Match"];
-    let currentSearchOptionIndex = 0;
+    // let searchOptions = ["Team","Match"];
+    // let currentSearchOptionIndex = 0;
 
-    function rotateSearchOption() {
-      let searchinput = document.getElementById("search-input") as HTMLElement;
-      searchinput.setAttribute('placeholder','Search by '+searchOptions[currentSearchOptionIndex]);
+    // function rotateSearchOption() {
+    //   let searchinput = document.getElementById("search-input") as HTMLElement;
+    //   searchinput.setAttribute('placeholder','Search by '+searchOptions[currentSearchOptionIndex]);
 
-      currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
-    }
+    //   currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
+    // }
 
-    setInterval(rotateSearchOption,2000);
+    // setInterval(rotateSearchOption,2000);
 
 // setInterval(rotateSearchOption,5000);
-  const handleClickOutside = (event: MouseEvent) => {
-    const inputElement = inputRef.current;
-    const divElement = divRef.current;
-    // Check if the clicked element is the input or inside the specific div
-    if (
-      inputElement &&
-      !inputElement.contains(event.target as Node) &&
-      divElement &&
-      !divElement.contains(event.target as Node)
-    ) {
-      // Close the event associated with the input
-      setShowSearchOptions(false)
-      console.log('Clicked outside the input and specific div. Close the event!');
-    }
-  };
+const handleClickOutside = (event: MouseEvent) => {
+  const inputElement = inputRef.current;
+  const divElement = divRef.current;
+  // Check if the clicked element is the input or inside the specific div
+  if (
+    inputElement &&
+    !inputElement.contains(event.target as Node) &&
+    divElement &&
+    !divElement.contains(event.target as Node)
+  ) {
+    // Close the event associated with the input
+    setShowSearchOptions(false)
+    console.log('Clicked outside the input and specific div. Close the event!');
+  }
+};
 
 
-  // Add event listener to the body
-  document.body.addEventListener('click', handleClickOutside);
+// Add event listener to the body
+document.body.addEventListener('click', handleClickOutside);
 
-  return () => {
-    // Clean up the event listener when the component is unmounted
-    document.body.removeEventListener('click', handleClickOutside);
-    // clearInterval(intervalId);
-  };
+return () => {
+  // Clean up the event listener when the component is unmounted
+  document.body.removeEventListener('click', handleClickOutside);
+  // clearInterval(intervalId);
+};
   
 },[countryfixturesdata,router.query.match,matchidparam,username])
 
@@ -265,13 +223,16 @@ const openBetC = async () => {
         let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
-        let bCOpenBet = Betcontract.OpenBet(tamount,matchidparam,username,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount);
-        console.log("bc open bet",bCOpenBet)
-        if(bCOpenBet) {
-          setBetOpenSuccess(true);
-        }
+        let bCOpenBet = await Betcontract.OpenBet(tamount,matchidparam,username,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount,{ gasLimit: 1000000 });
         
-        // router.push('../betting/openbetslists');
+        bCOpenBet.wait().then(async (receipt:any) => {
+          // console.log(receipt);
+          if (receipt && receipt.status == 1) {
+             // transaction success.
+             setShowLoading(false);
+             setBetOpenSuccess(true);
+          }
+       })
       } catch (error) {
         setShowAlertDanger(true);
         seterrorMessage(error)
@@ -280,10 +241,11 @@ const openBetC = async () => {
   }
 }
 
-const Approve = async () => {
+const Approve = async (e:any) => {
   try {
+    e.parentElement.parentElement.parentElement.style.display = 'none';
     if(walletProvider) {
-      
+        setShowLoading(true);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
         const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
@@ -302,12 +264,13 @@ const Approve = async () => {
 
 const handleOpenBetForm = async (e:any) => {
     try {
+        setShowLoading(true);
         if(username && username !== null && username !== undefined && username !== '') {
             if(!isConnected) {
               open()
             }else {
               try {
-                setShowLoading(true);
+                
                 const provider = new ethers.providers.Web3Provider(walletProvider as any);
                 const signer = provider.getSigner();
     
@@ -341,13 +304,14 @@ const handleOpenBetForm = async (e:any) => {
                   selectAlertDiv.innerHTML = "Select team first";
                     return;
                 }
-
-                if(frdBal < betAmount) {
+                console.log("frdBal gg",parseInt(frdBal));
+                console.log("betAmount gg",parseInt(betAmount));
+                if(parseInt(frdBal) < parseInt(betAmount)) {
                   setShowAlertDanger(true);
                   seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!`)
                   setShowLoading(false);
                 }else {
-                  Approve();
+                  Approve(e);
                 }
                 
               } catch (error) {
@@ -385,7 +349,7 @@ const closeLoginModal = () => {
 
 const closeAlertModal = () => {
   setShowAlertDanger(false);
-  setShowBgOverlay(false)
+  // setShowBgOverlay(false)
 }
 
 const closeActionModalComp = () => {
@@ -394,32 +358,6 @@ const closeActionModalComp = () => {
     setShowBgOverlay(true);
     setBetOpenSuccess(false);
     router.push('openbetslists');
-}
-
-const loadfixturesbyDate = async (date:string) => {
-  try {
-    console.log('load leagues by date',date)
-    const newleagueComponent = <FixtureByDate date={date} />;
-    setLoadedLeagueData(true);
-    setLeagueComponent([...leaguecomponent, newleagueComponent]);
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const loadliveFixtures = async (live:string) => {
-  try {
-    console.log('load leagues by date',live)
-    const newleagueComponent = <LiveFixtures live={live} />;
-    setLoadedLeagueData(true);
-    setLeagueComponent([...leaguecomponent, newleagueComponent]);
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-const toggleShowCalendar = () => {
-  setShowCalendar(!showcalender)
 }
 
 const toggleFixtures = (divId:any) => {
@@ -658,6 +596,7 @@ const loadSearchResults = async () => {
     <>
       <div className={matchstyle.main}>
       {showBgOverlay && <BgOverlay />}
+      {showloading && <Loading/>}
       <div className={matchstyle.search} >
             <div>
               <form>
@@ -730,63 +669,9 @@ const loadSearchResults = async () => {
         {/* how it works div starts */}
 
         <div className={matchstyle.main_in}>
-          <div className={matchstyle.leagues}>
-            <div className={matchstyle.gf}><h3>Games</h3></div>
-            {countryfixturesdata ? <div>
-              <div className={matchstyle.fb}><h3>By Country</h3></div>
-              {countryfixturescount.map(country => (
-                <div key={country._id}>
-                  <ul>
-                    <li>
-                       <div className={matchstyle.leagued}>
-                          <div>
-                            {country.leagues.map(league => (
-                              <div className={matchstyle.lde} key={league.leagueId}>
-                                <div className={matchstyle.ldef}>
-                                  <input title='title' type='checkbox' disabled className={matchstyle.mchkbox} id={country._id}/>
-                                  <span className={matchstyle.chkbox}>&nbsp;&nbsp;</span> <span>{league.leagueName}</span>
-                                </div>
-                                <div className={matchstyle.ldes}>
-                                  ({league.totalFixtures})
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      <div className={matchstyle.lita} >
-                        <div>{country._id}</div>
-                        <div>{country.totalFixturesInCountry}</div>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-            ))}
-
-            </div>: <div> <Loading /> </div>}
-          </div>
           <div className={matchstyle.betmain}>
-              <div className={matchstyle.betmain_top}>
-                <div className={matchstyle.betmain_top_in}>
-                  <div className={matchstyle.live}><button type='button' title='button' onClick={() => loadliveFixtures('live')}>Live</button></div>
-                  <div className={matchstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(today_dm)}><div className={matchstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
-                  <div className={matchstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrow_dm)}><div className={matchstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                  <div className={matchstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrow_dm)}><div className={matchstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                  <div className={matchstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_dm)}><div className={matchstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
-                  <div className={matchstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_dm)}><div className={matchstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
-                  <div className={matchstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
-                </div>
-                {
-                  showcalender && (
-                  <div className={matchstyle.calndar}>
-                    <Calendar onChange={onChange} value={datevalue} showWeekNumbers />
-                  </div>
-                  )
-                }
-                
-              </div>
               <div className={matchstyle.betwrap}>
                   <div className={matchstyle.betwrapin} id='betwrapin'>
-                  
                   {ismatchdataLoaded &&
                     <div>
                         <div className={matchstyle.league_wrap}>

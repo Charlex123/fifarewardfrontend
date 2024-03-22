@@ -76,41 +76,41 @@ const MyNFTs: React.FC<{}> = () =>  {
                   let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
                   if(contract) {
                       let mintednfts = await contract.getMintedNfts();
-                      console.log('der',mintednfts)
-                      await mintednfts.forEach(async (element:any) => {
-                        if(element[1] && element[1] !== "") {
-                          let ipfsurl = element[1];
-                          let ipfsurlarray = ipfsurl.split('//');
+                      console.log("hello p",mintednfts);
+                      // await mintednfts.forEach(async (element:any) => {
+                      //   if(element[1] && element[1] !== "") {
+                      //     let ipfsurl = element[1];
+                      //     let ipfsurlarray = ipfsurl.split('//');
                           
-                          let ipfsmetarray = ipfsurlarray[1].split('/');
-                          const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
-                          const { name, description, traits, image } = metadata.data;
-                          console.log('imgae ',image)
-                          let img = image.split('/');
+                      //     let ipfsmetarray = ipfsurlarray[1].split('/');
+                      //     const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
+                      //     const { name, description, traits, image } = metadata.data;
+                      //     console.log('imgae ',image)
+                      //     let img = image.split('/');
                           
-                          const image_ = `https://${ipfsmetarray[0]}.ipfs.nftstorage.link/${img[3]}`;
-                          console.log('ffff',image_)
-                          console.log('ffff metadata',`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`)
-                          let item: NFTMetadata = {
-                            name: name,
-                            image: image_,
-                            description: description,
-                            traits: traits,
-                            chainId: chainId,
-                            creator: element.creator,
-                            address: address,
-                            hascreatedToken: element.hascreatedToken,
-                            // following properties only exist if the NFT has been minted
-                            tokenId: element.tokenId,
-                            tokenURI: element.tokenURI,
-                          }
-                          myNFTs.push(item);
-                          setmyNFTS(myNFTs);
-                          setNFTLoaded(true);
-                          console.log('myNFTs ssss---',myNFTs)
-                          return item;
-                        }
-                      });
+                      //     const image_ = `https://${ipfsmetarray[0]}.ipfs.nftstorage.link/${img[3]}`;
+                      //     console.log('ffff',image_)
+                      //     console.log('ffff metadata',`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`)
+                      //     let item: NFTMetadata = {
+                      //       name: name,
+                      //       image: image_,
+                      //       description: description,
+                      //       traits: traits,
+                      //       chainId: chainId,
+                      //       creator: element.creator,
+                      //       address: address,
+                      //       hascreatedToken: element.hascreatedToken,
+                      //       // following properties only exist if the NFT has been minted
+                      //       tokenId: element.tokenId,
+                      //       tokenURI: element.tokenURI,
+                      //     }
+                      //     myNFTs.push(item);
+                      //     setmyNFTS(myNFTs);
+                      //     setNFTLoaded(true);
+                      //     console.log('myNFTs ssss---',myNFTs)
+                      //     return item;
+                      //   }
+                      // });
     
                       
                   }
