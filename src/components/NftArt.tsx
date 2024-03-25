@@ -91,11 +91,6 @@ const NFTArt: React.FC<{}> = () =>  {
                       
                       await mintednfts.forEach(async (element:any) => {
                         if(element[1] && element[1] !== "") {
-                          let ipfsurl = element[2];
-                          let ipfsurlarray = ipfsurl.split('//');
-                          
-                          let ipfsmetarray = ipfsurlarray[1].split('/');
-                          const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
                           let item: NFTBidMetadata = {
                             tokenId: element.tokenId,
                             itemId: element.itemId,
