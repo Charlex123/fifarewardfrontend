@@ -195,7 +195,6 @@ const MyNFTs: React.FC<{}> = () =>  {
       getMyListedNFTs();
 
       }
-
           
     },[username,userId,windowloadgetbetruntimes])
   
@@ -381,7 +380,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                 {nftLoaded && mylistedNFTs.length > 0 && mylistedNFTs?.map((mylistedNFT:NFTFullMetadata,index:number) => (
                     <div key={index} className={styles.nft_options_}>
                       <div className={styles.nft_options__} key={index}>
-                          <a href='/nft/'>
+                          <a href={`/nft/${mylistedNFT.name.replace(/[ ]+/g, "-")}/${mylistedNFT.tokenId!.toString()}`}>
                             <Image src={mylistedNFT.image} width={100} priority height={100}  style={{objectFit:'cover',width: '100%',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
                             <div className={styles.nft_head}>
                                 <div className={styles.nft_pfh}><h2>{mylistedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>

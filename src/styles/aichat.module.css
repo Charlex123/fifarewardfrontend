@@ -1,16 +1,24 @@
 .main {
-    width: 100%;margin-top: 100px;margin-bottom: 0;background-image: url("../assets/images/aibg3.jpg");
-    padding: 12px 12px 12px 12px;position: relative;background-size: cover;background-repeat: no-repeat;
+    width: 100%;margin-top: 0;margin-bottom: 0;
+    padding: 120px 12px 120px 12px;position: relative;
 }
-.main_bg_overlay {
+/* .main_bg_overlay {
     position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
+} */
+.lighttheme {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+}
+.darktheme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
 }
 .main h1 {
     font-family: "Poppins",sans-serif;font-size: 35px;text-align: center;
     font-weight: 800;color: #e3a204;position: relative;z-index: 9;margin: 1rem auto;
 }
 .main .intro_p {
-    color: #e2d7d7;z-index: 9;position: relative;width: 70%;margin: 1rem auto 2rem auto;text-align: center;
+    z-index: 9;position: relative;width: 70%;margin: 1rem auto 2rem auto;text-align: center;
 }
 .main .intro_p p {
     font-family: "Poppins", sans-serif;font-size: 18px;
@@ -26,7 +34,7 @@
     font-size: 14px;font-weight: 600;text-align: center;margin: 1rem auto;
 }
 .main .settings .img_sel h2 {
-    background-color: #000000d3;width: fit-content;padding: 4px 50px;
+    width: fit-content;padding: 4px 50px;
 }
 .main .settings .settings_in {
     position: relative;z-index: 9;
@@ -35,7 +43,7 @@
     display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-evenly;align-items: flex-start;
 }
 .main .settings .bg_option .bg_options_ {
-    width: 140px;height: 150px;margin: 5px 5px 5px 5px;border-radius: 8px;background-color: #8c88882a;
+    width: 140px;height: 150px;margin: 5px 5px 5px 5px;border-radius: 8px;
 }
 .main .settings .bg_option .bg_options_ .bg_opt_text {
     margin: 5px auto 20px auto;text-align: center;font-size: 12px;font-family: "Poppins";font-weight: 900;
@@ -48,7 +56,7 @@
     background-repeat: no-repeat;
 }
 .card {
-    background-color: transparent !important;position : relative;z-index: 9;background-color: red;height: 100%;
+    background-color: transparent !important;position : relative;z-index: 9;height: 100%;
 }
 .red_back {
     margin: 1rem;z-index: 11;position: relative;

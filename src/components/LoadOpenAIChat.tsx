@@ -1,16 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import chatbotlogo from '../assets/images/aichatbot.png';
 import successimage from '../assets/images/success1.png';
-import elipsisloading from '../assets/images/Ellipsis-1s-200px.svg';
-import bgopt1 from '../assets/images/aibg.png';
-import bgopt2 from '../assets/images/aibg2.jpg';
-import bgopt3 from '../assets/images/aibg3.jpg';
-import { faCheckCircle, faEye, faEyeSlash, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faChevronLeft, faLocationArrow, faLocationPin, faMicrophone, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { ThemeContext } from '../contexts/theme-context';
+import { faEye, faEyeSlash, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
+import { faLocationArrow, faMicrophone, faXmark  } from "@fortawesome/free-solid-svg-icons";
 // material
 import styles from "../styles/aichat.module.css";
 import dotenv from 'dotenv';
@@ -20,6 +17,8 @@ dotenv.config();
 library.add(faEye, faEyeSlash);
 const LoadOpenAI: React.FC<{}> = () =>  {
 
+  const [showloading, setShowLoading] = useState<boolean>(false);
+  const { theme } = useContext(ThemeContext);
  
   useEffect(() => {
     
@@ -27,7 +26,7 @@ const LoadOpenAI: React.FC<{}> = () =>  {
   
   return (
     <>
-      <div className={styles.main}>
+      <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         <div className={styles.main_bg_overlay}></div>
           <div>
             <div>

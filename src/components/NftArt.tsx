@@ -193,7 +193,7 @@ const NFTArt: React.FC<{}> = () =>  {
   
   return (
     <>
-      <div className={styles.main}>
+      <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         <div className={styles.main_bg_overlay}></div>
           
           <div className={styles.main_c}>

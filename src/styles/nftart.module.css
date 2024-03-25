@@ -1,16 +1,24 @@
 .main {
-    width: 100%;margin-top: 100px;margin-bottom: 0;background-color: rgba(55, 55, 55, 0.94);
-    padding: 12px 12px 12px 12px;position: relative;background-size: cover;background-repeat: no-repeat;
+    width: 100%;margin-top: 0;margin-bottom: 0;
+    padding: 120px 12px 120px 12px;position: relative;
 }
-.main_bg_overlay {
+/* .main_bg_overlay {
     position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
+} */
+.lighttheme {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+}
+.darktheme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
 }
 .main_c {
     width: 100%;display: flex;flex-direction: row;justify-content: space-between;margin-top: 50px;margin-bottom: 150px;
     flex-wrap: wrap;
 }
 .main .nft_art {
-    width: 38%;position: relative;z-index: 9;color: #e2d7d7;height: inherit;
+    width: 38%;position: relative;z-index: 9;height: inherit;
 }
 .nft_art_bg_overlay {
     position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
@@ -19,14 +27,14 @@
     padding: 0;border-top-right-radius: 8px;border-top-left-radius: 8px;
 }
 .main .nft_art .nft_art_ .nft_art_top {
-    height: 40px;width: 100%;background-color: #504e4edf;border-top-right-radius: 8px;border-top-left-radius: 8px;
+    height: 40px;width: 100%;border-top-right-radius: 8px;border-top-left-radius: 8px;
     position: relative;z-index: 9;
 }
 .main .nft_art .nft_art_top .nft_op {
     display: flex;justify-content: space-between;width: 100%;padding: 7px 10px 3px 10px;
 }
 .main .nft_art .img_sel h2 {
-    background-color: #010000df;width: fit-content;padding: 4px 50px;margin: 15px auto 50px auto;text-align: center;
+    width: fit-content;padding: 4px 50px;margin: 15px auto 50px auto;text-align: center;
     font-size: 40px;
 }
 .main .nft_art .nft_art_in {
@@ -40,7 +48,7 @@
     font-weight: 800;color: #e28305;position: relative;z-index: 9;margin: 0 auto 1rem 2rem;
 }
 .main .nft_auctn .intro_p {
-    color: #e2d7d7;z-index: 9;position: relative;width: 70%;margin: 1rem auto 2rem 2rem;text-align: left;
+    z-index: 9;position: relative;width: 70%;margin: 1rem auto 2rem 2rem;text-align: left;
 }
 .main .nft_auctn .intro_p p {
     font-family: "Poppins", sans-serif;font-size: 18px;
@@ -49,13 +57,13 @@
     font-family: "PT Sans", sans-serif;font-size: 18px;color: #e28305;
 }
 .main .nft_auctn .nft_auctbuy {
-    border-radius: 8px;color: white;border-radius: 8px;border: 1px solid #6d6b6bc5;
+    border-radius: 8px;border-radius: 8px;border: 1px solid #6d6b6bc5;
 }
 .main .nft_auctn .sales_p {
     padding: 10px 20px;
 }
 .main .nft_auctn .timer {
-    color: #e2d7d7;padding: 10px 20px;
+    padding: 10px 20px;
 }
 .main .nft_auctn .nft_p {
     margin-top: 50px;border-top: 1px solid #6d6b6bc5;
@@ -64,16 +72,16 @@
     margin-top: 5px;
 }
 .main .nft_auctn .nft_p .cp .cp_in {
-    font-family: "Montserrat";font-size: 12px;padding: 10px 20px;color: #e0dcdcdf;
+    font-family: "Montserrat";font-size: 12px;padding: 10px 20px;
 }
 .main .nft_auctn .nft_p .ap {
-    font-family: "Poppins",sans-serif;font-size: 28px;padding: 10px 1px 10px 20px;color: #fafafaff;
+    font-family: "Poppins",sans-serif;font-size: 28px;padding: 10px 1px 10px 20px;
 }
 .main .nft_auctn .nft_p .ap .ap_inp {
-    font-family: "Montserrat";font-size: 14px;padding: 5px 3px;color: #e0dcdcdf;
+    font-family: "Montserrat";font-size: 14px;padding: 5px 3px;
 }
 .main .nft_auctn .nft_p .b_btns {
-    padding: 0;border-radius: 4px;background-color: antiquewhite;
+    padding: 0;border-radius: 4px;
     margin: 10px 20px;position: relative;width: 25%;
 }
 .main .nft_auctn .nft_p .b_btns .b_btn1 {
@@ -86,7 +94,7 @@
     border-bottom-right-radius: 4px;
 } 
 .main .nft_auctn .nft_det {
-    border-radius: 8px;color: white;border-radius: 8px;border: 1px solid #6d6b6bc5;margin-top: 30px;
+    border-radius: 8px;border-radius: 8px;border: 1px solid #6d6b6bc5;margin-top: 30px;
 }
 .main .nft_auctn .nft_det .det_p {
     border-bottom: 1px solid #6d6b6bc5;
@@ -110,7 +118,7 @@
     padding: 10px 20px;
 }
 .main .nft_desc {
-    width: 38%;color: #e2d7d7;border: 1px solid #6d6b6bc5;margin: 2rem 0;border-radius: 8px;
+    width: 38%;border: 1px solid #6d6b6bc5;margin: 2rem 0;border-radius: 8px;
     position: relative;z-index: 9;
 }
 .main .nft_desc .descp {
@@ -120,10 +128,10 @@
     border-top: 1px solid #6d6b6bc5;padding: 10px 10px;
 }
 .main .nft_desc .descp_m .by {
-    color: #e0dcdcdf !important;margin-left: 0;font-size: 14px;
+    margin-left: 0;font-size: 14px;
 }
 .main .nft_desc .descp_m .fr {
-    color: #e2d7d7 !important;margin-left: 0;font-size: 24px;font-weight: 900;
+    margin-left: 0;font-size: 24px;font-weight: 900;
 }
 .main .nft_desc .descp_m .descp_m_in {
     padding: 10px 0;
@@ -132,7 +140,7 @@
     font-size: 14px;line-height: 22px;
 }
 .err-alat {
-padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "Poppins";border-radius: 8px;background: rgba(120, 224, 143, 1);
+    padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "Poppins";border-radius: 8px;background: rgba(120, 224, 143, 1);
 }
 .div_overlay {
     position:fixed; z-index: 50; background-color: rgba(55, 55, 55, 0.94);overflow-y: auto; 
