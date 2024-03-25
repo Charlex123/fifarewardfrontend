@@ -28,7 +28,7 @@
 }
 .forminput {
     border-radius: 12px;width: 100% !important;height: 40px;padding: .2rem .8rem;
-    border: none;
+    border: none;color: #000000;
 }
 .formlabel {
     margin-top: 1rem;padding: .6rem 0;font-family: "Montserrat";font-size: 14px;

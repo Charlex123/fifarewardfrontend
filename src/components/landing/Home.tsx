@@ -8,7 +8,6 @@ import Image from 'next/image';
 import styles from '../../styles/landing.module.css'
 import { useState, useEffect } from 'react';
 import Typed from 'react-typed';
-import Heroimg from '../../assets/images/herobg.png';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import stadiumbg from '../../assets/images/footballstadium.jpg';
@@ -57,7 +56,7 @@ const [currentStakeRMTextIndex, setCurrentStakeRMTextIndex] = useState(0);
 const [currentRefRMTextIndex, setCurrentRefRMTextIndex] = useState(0);
 const [currentAboutRMTextIndex, setCurrentAboutRMTextIndex] = useState(0);
 const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
-const { theme, drawerOpen } = useContext(ThemeContext);
+const { theme } = useContext(ThemeContext);
 const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
 const [buttonText, setButtonText] = useState("Copy");
 const [username, setUsername] = useState<string>("");
@@ -172,7 +171,7 @@ useEffect(() => {
       <div className={styles.overlay_d}></div>
       <div className={styles.c_content}>
         <video className={styles.bg_video} autoPlay loop muted >
-          <source src="./matchbg.mp4" type="video/mp4"></source>
+          <source src="./fifarewardvideo.mp4" type="video/mp4"></source>
         </video>
         <div className={styles.c_overlay_d}></div>
           <div className={styles.hero_h1}>

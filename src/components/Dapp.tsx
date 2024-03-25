@@ -233,7 +233,7 @@ getWalletAddress();
     // Function to handle window resize
     const handleResize = () => {
       // Check the device width and update isNavOpen accordingly
-      if (window.innerWidth <= 990) {
+      if (window.innerWidth <= 1100) {
       setNavOpen(false);
       setSideBarToggle(true);
       setIsSideBarToggled(true);

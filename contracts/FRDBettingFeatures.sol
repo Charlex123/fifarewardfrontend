@@ -11,9 +11,11 @@ contract FRDBettingFeatures is ReentrancyGuard {
 
     using SafeMath for uint256;
     IFRDBetting private FRDBettingContract;
+    address admin;
 
     constructor(address _frdBettingAddress) {
         FRDBettingContract = IFRDBetting(_frdBettingAddress);
+        admin = msg.sender;
     }
 
     function compareStrings(string memory a, string memory b) internal pure returns (bool) {
@@ -87,6 +89,13 @@ contract FRDBettingFeatures is ReentrancyGuard {
         return bets;
     }
 
+    function closeBet(uint _betId) public {
+        if(msg.sender != admin && msg.sender != address(0)) {
+            revert Unauthorized();
+        }
+        FRDBettingContract.closeBet(_betId);
+    }
+
     function searchBetByAddress(address walletaddress) internal view returns(Bets[] memory) {
         return FRDBettingContract.getBetByAddress(walletaddress);
     }
@@ -102,4 +111,5 @@ contract FRDBettingFeatures is ReentrancyGuard {
     function getUserRefCount(address _useraddress) external view returns(uint) {
         return FRDBettingContract.getCount(_useraddress);
     }
+
 }

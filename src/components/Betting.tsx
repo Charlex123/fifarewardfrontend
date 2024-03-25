@@ -12,6 +12,7 @@ import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
 import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
+import BgOverlay from './BgOverlay';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoadFixturesSearchResults from './LoadFixturesSearchResults';
 import FixturesByDate from './FixturesByDate';
@@ -19,7 +20,7 @@ import FixturesByCalenderDate from './FixturesByCalenderDate';
 import TodaysFixtures from './TodaysFixtures';
 import LiveFixtures from './LiveFixtures';
 import { Fixture } from './FixtureMetadata';
-import { faCaretDown, faCircle, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCircle, faL, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
@@ -88,6 +89,7 @@ const LoadBetData:React.FC<{}> = () => {
 
   const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
+  const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
   const [showloginComp,setShowLoginComp] = useState<boolean>(false);
   const [istodaysfixturesLoaded,setIsTodaysFixturesLoaded] = useState<boolean>(false);
   const [todaysfixtures,setTodaysFixtures] = useState<League[]>();
@@ -280,8 +282,9 @@ const toggleShowCalendar = () => {
 const closeHIWE = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
+  setShowBgOverlay(!showBgOverlay);
   if(svg !== null && svg !== undefined) {
     divId.parentElement.parentElement.parentElement.style.display = 'none';
   }
@@ -295,21 +298,24 @@ const setLoadOpenBetsDataStatus = () => {
 }
 
 const closeActionModalComp = () => {
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = 'none';
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // hiw_bgoverlay.style.display = 'none';
+  setShowBgOverlay(false);
   setBetOpenSuccess(false);
   router.push('openbets');
 }
 
 const closeLoginModal = () => {
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = 'none';
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // hiw_bgoverlay.style.display = 'none';
+  setShowBgOverlay(false);
   setShowLoginComp(false);
 }
 
 const showloginCompNow = () => {
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = 'block';
+  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+  // hiw_bgoverlay.style.display = 'block';
+  setShowBgOverlay(true);
   setShowLoginComp(true);
 }
 
@@ -388,7 +394,8 @@ const FilterByOpenBets = async () => {
   return (
     <>
     {showloading && <Loading/>}
-    <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div>
+    {/* <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div> */}
+    {showBgOverlay && <BgOverlay />}
       <div className={bettingstyle.main}>
         <div className={bettingstyle.search} >
             <div>

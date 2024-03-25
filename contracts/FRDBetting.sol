@@ -48,9 +48,7 @@ struct Users {
         address[] referrals;
     }
 
-    contract FRDBetting is ReentrancyGuard {
-
-        error priceMustBeGreaterThanZero();
+    error priceMustBeGreaterThanZero();
         error Unauthorized();
         error betParticipantComplete();
         error InvalidAmount();
@@ -59,6 +57,10 @@ struct Users {
         error BetClosed();
         error AccountNotRegistered();
         error DuplicateBetNotAllowed();
+        
+
+    contract FRDBetting is ReentrancyGuard {
+
         
         using SafeMath for uint256;
         uint timeNow = block.timestamp;
@@ -202,32 +204,32 @@ struct Users {
         }
 
         function getuserRefBonus(address _useraddress) public view returns(uint totalrefbonus) {
-        // get user referrals
-        address[] memory userReferrals = getuserReferrals(_useraddress);
-        uint refCount = userReferrals.length;
-        uint[] memory betAmounts = new uint[](refCount);
-        uint[] memory _refbonus_ = new uint[](refCount);
-        // Check active bets for each referral and sum their bet amounts
-        uint totalrefBonus = 0;
-        uint _refBonus = 0;
-        for(uint j = 0; j < refCount; j++) {
-            // get user bet & referral Id 
-            uint refId = getuserRefId(userReferrals[j]);
-            uint[] memory refbetIds = getuserbetIds(userReferrals[j]);
-            for(uint refbet = 0; refbet < refbetIds.length; refbet++) {
-                if (compareStrings(BetIds[refbet + 1].betstatus,"open")) {
-                    betAmounts[j] = BetIds[refbet + 1].betamount;
-                    _refbonus_[j] = referralsbyId[refId].refbonus;
-                    _refBonus = betAmounts[j].mul(_refbonus_[j]);
+            // get user referrals
+            address[] memory userReferrals = getuserReferrals(_useraddress);
+            uint refCount = userReferrals.length;
+            uint[] memory betAmounts = new uint[](refCount);
+            uint[] memory _refbonus_ = new uint[](refCount);
+            // Check active bets for each referral and sum their bet amounts
+            uint totalrefBonus = 0;
+            uint _refBonus = 0;
+            for(uint j = 0; j < refCount; j++) {
+                // get user bet & referral Id 
+                uint refId = getuserRefId(userReferrals[j]);
+                uint[] memory refbetIds = getuserbetIds(userReferrals[j]);
+                for(uint refbet = 0; refbet < refbetIds.length; refbet++) {
+                    if (compareStrings(BetIds[refbet + 1].betstatus,"open")) {
+                        betAmounts[j] = BetIds[refbet + 1].betamount;
+                        _refbonus_[j] = referralsbyId[refId].refbonus;
+                        _refBonus = betAmounts[j].mul(_refbonus_[j]);
 
-                    totalrefBonus += _refBonus;
+                        totalrefBonus += _refBonus;
+                    }
                 }
+                
+                
             }
-            
-            
+            return totalrefBonus;
         }
-        return totalrefBonus;
-    }
 
         function addReferrer(address _sponsor, uint _refbonus) external nonReentrant {
             require(_sponsor != address(0), "Invalid");
@@ -308,7 +310,9 @@ struct Users {
             if(betamount <= 0) {
                 revert InvalidAmount();
             }
-            require(FifaRewardTokenContract.balanceOf(msg.sender) >= betamount, "IFB");
+            if(_balanceOf[msg.sender] < betamount) {
+                require(FifaRewardTokenContract.balanceOf(msg.sender) >= betamount, "IFB");
+            }
             
             userDetails[msg.sender].hasplacedBet = true;
             // check if user is already registered
@@ -372,9 +376,11 @@ struct Users {
 
             });
             
+            if(_balanceOf[msg.sender] < betamount) {
+                _balanceOf[msg.sender] += betamount;
+                FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
+            }
             
-            _balanceOf[msg.sender] += betamount;
-            FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
             emit BetEvent(betopener, msg.sender, username, betamount, bId, matchId, matchfixture, prediction, bettingteam, creationType);
             // emit OpenBets(msg.sender,msg.sender,username, betamount, betId, matchId, matchfixture, prediction, bettingteam);
         }
@@ -428,8 +434,14 @@ struct Users {
             return _userIds;
         }
 
-        function closeBet(uint _betId) external {
-            BetIds[_betId].betstatus = "closed";
+        function closeBet(uint _betId) internal {
+            uint betsCount = _betIds;
+            
+            for(uint i=0; i < betsCount; i++) {
+                if(BetIds[i+1].betId == _betId) {
+                    BetIds[i+1].betstatus = "closed";
+                }
+            }
         }
 
         function getBetWinners (uint _betId) external view returns (address[] memory){
@@ -444,7 +456,7 @@ struct Users {
                 uint currentId = i + 1;
                 if(compareStrings(BetIds[currentId].betstatus, "open")) {
                     if(BetIds[currentId].remainingparticipantscount != 0) {
-                        refundBet (currentId,BetIds[currentId].participants);
+                        closeBet(currentId);
                     }else {
                         if(BetIds[currentId].matchId == _matchId) {
                             if(compareStrings(BetIds[currentId].prediction, betresult)) {
@@ -459,35 +471,15 @@ struct Users {
             }
         }
 
-        function refundBet (uint _betId,address[] memory betpartners) internal nonReentrant {
-            if(msg.sender == address(0)) {
-                revert Unauthorized();
-            }
-            uint _betamount = BetIds[_betId].betamount;
-            for(uint p = 0; p < betpartners.length; p++) {
-                address betP = BetIds[_betId].participants[p];
-                _balanceOf[betP] -= _betamount;
-                FifaRewardTokenContract.transferFrom( address(this),betP, _betamount);
-            }
-
-            uint betsCount = _betIds;
-
-            for(uint i=0; i < betsCount; i++) {
-                if(BetIds[i+1].betId == _betId) {
-                    BetIds[i+1].betstatus = "closed";
-                }
-            }
-            
-        }
-
         function paybetWinners (uint _betId,address[] memory betwinners, uint paypercent) public nonReentrant {
             if(msg.sender == address(0)) {
                 revert Unauthorized();
             }
+            uint betwinnercount = betwinners.length;
             uint _betamount = BetIds[_betId].betamount;
             uint payfee = _betamount * paypercent.div(100);
             uint winnerPay = _betamount - payfee;
-            uint mulitWinnersPay = winnerPay.div(3);
+            uint mulitWinnersPay = winnerPay.div(betwinnercount);
 
             if(BetIds[_betId].totalbetparticipantscount == 2) {
                 for(uint bw = 0; bw < betwinners.length; bw++) {
@@ -504,12 +496,6 @@ struct Users {
                 }
             }
             
-            uint betsCount = _betIds;
-
-            for(uint i=0; i < betsCount; i++) {
-                if(BetIds[i+1].betId == _betId) {
-                    BetIds[i+1].betstatus = "closed";
-                }
-            }
+            closeBet(_betId);
         }
     }

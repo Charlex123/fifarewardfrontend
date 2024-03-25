@@ -1,11 +1,12 @@
-import { useEffect, useState } from 'react'
-import Image from 'next/image'
+import { useEffect, useState, useContext } from 'react'
+// import Image from 'next/image'
 import { NFTStorage, File } from 'nft.storage'
 import { useRouter } from 'next/router';
 import AlertDanger from './AlertDanger';
 import Loading from './Loading';
 import LoginModal from './LoginModal';
 import BgOverlay from './BgOverlay';
+import ActionSuccessModal from './ActionSuccess';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
 import FifaRewardToken from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import { ethers } from 'ethers';
@@ -14,10 +15,12 @@ import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
+import { ThemeContext } from '../contexts/theme-context';
 import styles from '../styles/createnft.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { setTimeout } from 'timers';
+import { connected } from 'process';
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -27,7 +30,9 @@ export default function CreateItem() {
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
   const [nftcontractAddress] = useState<any>("0x01c37074610aFF3a3B75Cc6ba3Ed4ea896A339fb");
   const [frdcontractAddress] = useState<any>("0x344db0698433Eb0Ca2515d02C7dBAf21be07C295");
-  
+  const { theme } = useContext(ThemeContext);
+  const [betactionsuccess,setActionSuccess] = useState<boolean>(false);
+
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
   const [showloading, setShowLoading] = useState<boolean>(false);
   const { open } = useWeb3Modal();
@@ -102,6 +107,8 @@ export default function CreateItem() {
       }else {
         if(!isConnected) {
           open()
+          setShowBgOverlay(false);
+          setShowLoading(false);
         }else {
           // uploadToIPFS();
           // check if user wallet address has FRD
@@ -113,14 +120,14 @@ export default function CreateItem() {
             /* next, create the item */
             let contract = new ethers.Contract(frdcontractAddress, FifaRewardToken, signer.connectUnchecked());
             let transaction = await contract.balanceOf(address);
-            console.log('transaction',transaction);
-            console.log('transaction',ethers.utils.formatEther(transaction));
-            if(transaction < 500) {
+            let frdBal = ethers.utils.formatEther(transaction);
+            if(parseInt(frdBal) < 500) {
               setShowAlertDanger(true);
               seterrorMessage("You need a minimum of 500FRD (FifaRewardToken) to proceed!  ")
               setShowLoading(false);
               
             }else {
+              console.log("upload Ipfs ran")
               uploadToIPFS()
             }
             // setShowLoading(false);
@@ -202,6 +209,13 @@ export default function CreateItem() {
     
   }
 
+  const closeActionModalComp = () => {
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'none';
+    setShowBgOverlay(false);
+    setActionSuccess(false);
+  }
+
   const SubmitTrait = () => {
     if(traitName && traitValue) {
       const traits = {traitname: traitName ,traitvalue:traitValue}
@@ -209,8 +223,9 @@ export default function CreateItem() {
       console.log('add trait count',addtraitCount)
       console.log(Traits);
       console.log(JSON.stringify(Traits));
-      setShowBgOverlay(false);
+      setShowBgOverlay(true);
       setOpenAddTraits(false);
+      setActionSuccess(true);
     }else {
       setShowAlertDanger(true);
       seterrorMessage('Add first trait to proceed');
@@ -225,11 +240,14 @@ export default function CreateItem() {
 
   return (
     <>
-      <div className={styles.main}>
+      <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         {showloginComp && <LoginModal prop={'Create NFT'} onChange={closeLoginModal}/>}
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
         {showBgOverlay && <BgOverlay />}
         {showloading && <Loading/>}
+        {betactionsuccess && 
+            <ActionSuccessModal prop='Add Traits' onChange={closeActionModalComp}/>
+        }
         {openaddTraits && 
           <div className={styles.addtraits}>
               <div className={styles.addtraits_c}>

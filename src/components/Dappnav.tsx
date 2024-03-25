@@ -54,7 +54,7 @@ function Navbar() {
         // Function to handle window resize
         const handleResize = () => {
             // Check the device width and update isNavOpen accordingly
-            if (window.innerWidth <= 990) {
+            if (window.innerWidth <= 1100) {
             setNavOpen(false);
             } else {
             setNavOpen(true);
@@ -168,7 +168,10 @@ function Navbar() {
                       <a href='/dapp' rel='noopener noreferrer' className={styles.si}>Dapp</a>
                     </li>
                     <li>
-                      <a href='/betting' rel='noopener noreferrer' className={styles.si}>My Bets</a>
+                      <a href='/betting/mybets' rel='noopener noreferrer' className={styles.si}>My Bets</a>
+                    </li>
+                    <li>
+                      <a href='/nft/mynfts' rel='noopener noreferrer' className={styles.si}>My NFTs</a>
                     </li>
                     <li>
                       <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={styles.buytafa}>BUY FRD</a>

@@ -25,6 +25,7 @@ interface IFRDBetting {
 
     function getAllUserIdsCount() external view returns (uint);
 
+    function closeBet(uint _betId) external; 
     // function getBetsArray() external view returns (Bets[] memory);
 
     function getuserbetId(address _useraddress) external view returns(uint);

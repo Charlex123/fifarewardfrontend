@@ -1,14 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import bnblogo from '../assets/images/bnb-bnb-logo.png'
 import messi from '../assets/images/messi.png';
-import nftbanner from '../assets/images/aibg2.jpg';
+import { ThemeContext } from '../contexts/theme-context';
 import NFTCountdownTimer from './NftCountDownTimer';
+import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
+import axios from 'axios';
+import { ethers } from 'ethers';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { useDisconnect } from '@web3modal/ethers5/react';
+import { NFTBidMetadata } from './NFTBidMetadata';
+import { NFTFullMetadata } from './NFTFullMetadata';
 import { faCheckCircle, faEye, faEyeSlash, faHeart, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faAlignJustify, faCartPlus, faCartShopping, faChevronLeft, faCircleCheck, faLocationArrow, faLocationPin, faMicrophone, faTag, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faAlignJustify, faCartPlus, faCartShopping, faChevronLeft, faCircleCheck, faTag, faXmark  } from "@fortawesome/free-solid-svg-icons";
 // material
 import styles from "../styles/nftart.module.css";
 import dotenv from 'dotenv';
@@ -16,12 +25,176 @@ dotenv.config();
 // component
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
-const NFTMarketPlace: React.FC<{}> = () =>  {
+const NFTArt: React.FC<{}> = () =>  {
+
+    const [showloading, setShowLoading] = useState<boolean>(false);
+    const { open } = useWeb3Modal();
+    const { walletProvider } = useWeb3ModalProvider();
+    const { address, chainId, isConnected } = useWeb3ModalAccount();
+    const { disconnect } = useDisconnect();
+    const [username, setUsername] = useState<string>("");
+    const [nftLoaded,setNFTLoaded] = useState<boolean>(false);
+    const [userId, setUserId] = useState<number>();
+    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
+    const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
+    const [errorMessage,seterrorMessage] = useState<string>("");
+    const [showListNFTDiv,setShowListNFTDiv] = useState<boolean>(false);
+    const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
+    const [listingItemTokenId,setListingItemTokenId] = useState<any>(null);
+    const [nftItemPrice, setNftItemPrice] = useState<string>("");
+    const [bidduration, setBidDuration] = useState<any>(0);
+    const [reservedbuyer, setReservedBuyer] = useState<any>("0x0000000000000000000000000000000000000000");
+    const [minbidamount, setMinBidAmount] = useState<any>(0);
+    const [salesroyaltyfee, setSalesRoyaltyFee] = useState<any>(2);
+    const { theme } = useContext(ThemeContext);
+    const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
+    const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
+    
+    const [nftcontractAddress] = useState<any>("0x01c37074610aFF3a3B75Cc6ba3Ed4ea896A339fb");
+
+    const [itemBids,setItemBids] = useState<NFTBidMetadata[]>([]);
+
+    const [mylistedNFTs,setmyListedNFTS] = useState<NFTFullMetadata[]>([]);
+
+    const router = useRouter();
 
  
   useEffect(() => {
-    
-  })
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+        if(udetails && udetails !== null && udetails !== "") {
+        const username_ = udetails.username;  
+        if(username_) {
+            setUsername(username_);
+            setUserId(udetails.userId);
+            setIsloggedIn(true);
+            }
+            if(!isConnected) {
+              open();
+
+            }
+        }else {
+            setIsloggedIn(false);
+        }
+
+      if(windowloadgetbetruntimes <= 0) {
+        const getMyUnlistedNFTs = async () => {
+          try {
+              setShowLoading(true);
+              if(walletProvider) {
+                  const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+                  const signer = provider.getSigner();
+                  /* next, create the item */
+                  let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+                  
+                  if(contract) {
+                      let mintednfts = await contract.getMintedNfts();
+                      
+                      await mintednfts.forEach(async (element:any) => {
+                        if(element[1] && element[1] !== "") {
+                          let ipfsurl = element[2];
+                          let ipfsurlarray = ipfsurl.split('//');
+                          
+                          let ipfsmetarray = ipfsurlarray[1].split('/');
+                          const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
+                          let item: NFTBidMetadata = {
+                            tokenId: element.tokenId,
+                            itemId: element.itemId,
+                            tokenURI: element.tokenUrI,
+                            biddingId: element.biddingId,
+                            biddingtime: element.biddingtime,
+                            bidderaddress: element.bidderaddress,
+                            creator: element.creator,
+                            owner: element.owner,
+                            biddingprice: element.biddingprice,
+                            biddingsuccess: element.biddingsuccess,
+                            wasitempurchased: element.wasitempurchased
+                          }
+                          itemBids.push(item);
+                          setItemBids(itemBids);
+                          setNFTLoaded(true);
+                          setShowLoading(false);
+                          setwindowloadgetbetruntimes(1);
+                          console.log('itemBids ssss---',itemBids)
+                          return item;
+                        }
+                      });
+                      
+                  }
+              }
+          } catch (error) {
+              console.error('Error creating Web3Provider:', error);
+              // Handle or rethrow the error as needed
+          }
+          
+      }
+      getMyUnlistedNFTs();
+
+        const getMyListedNFTs = async () => {
+          try {
+              setShowLoading(true);
+              if(walletProvider) {
+                  const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+                  const signer = provider.getSigner();
+                  /* next, create the item */
+                  let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+                  
+                  if(contract) {
+                      let listednfts = await contract.fetchItemsCreated();
+                      console.log("listed nfts",listednfts)
+                      await listednfts.forEach(async (element:any) => {
+                        if(element[1] && element[1] !== "") {
+                          let ipfsurl = element[2];
+                          let ipfsurlarray = ipfsurl.split('//');
+                          
+                          let ipfsmetarray = ipfsurlarray[1].split('/');
+                          const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
+                          const { name, description, traits, image } = metadata.data;
+                          let img = image.split('//');
+                          const image_ = `https://nftstorage.link/ipfs/${img[1]}`;
+                          console.log("image_",image_)
+                          let item: NFTFullMetadata = {
+                            name: name,
+                            image: image_,
+                            description: description,
+                            traits: traits,
+                            chainId: chainId,
+                            creator: element.creator,
+                            address: address,
+                            hascreatedToken: element.hascreatedToken,
+                            // following properties only exist if the NFT has been minted
+                            tokenId: element.tokenId,
+                            tokenURI: element.tokenURI,
+                            price: element.sellingprice,
+                            seller: element.seller,
+                            itemId: element.itemId,
+                            biddingduration: element.biddingduration,
+                            minbidamount: element.minbidamount,
+                            sold: element.sold,
+                          }
+                          mylistedNFTs.push(item);
+                          setmyListedNFTS(mylistedNFTs);
+                          setNFTLoaded(true);
+                          setShowLoading(false);
+                          setwindowloadgetbetruntimes(1);
+                          console.log('mylistedNFTs ssss---',mylistedNFTs)
+                          return item;
+                        }
+                      });
+                      
+                  }
+              }
+          } catch (error) {
+              console.error('Error creating Web3Provider:', error);
+              // Handle or rethrow the error as needed
+          }
+          
+      }
+      getMyListedNFTs();
+
+      }
+
+          
+    },[username,userId,windowloadgetbetruntimes])
   
   return (
     <>
@@ -155,4 +328,4 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   );
 }
 
-export default NFTMarketPlace
+export default NFTArt
