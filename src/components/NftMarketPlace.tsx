@@ -47,7 +47,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   const [nftItemPrice, setNftItemPrice] = useState<string>("");
   const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
   
-  const [nftcontractAddress] = useState<any>("0x01c37074610aFF3a3B75Cc6ba3Ed4ea896A339fb");
+  const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
 
   const [listedNFTs,setListedNFTS] = useState<NFTFullMetadata[]>([]);
   

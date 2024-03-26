@@ -1,0 +1,521 @@
+{
+  "_format": "hh-sol-artifact-1",
+  "contractName": "IFRDBetting",
+  "sourceName": "contracts/IFRDBetting.sol",
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_betId",
+          "type": "uint256"
+        }
+      ],
+      "name": "closeBet",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllBetIdsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllRefIdsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "getAllUserIdsCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "walletaddress",
+          "type": "address"
+        }
+      ],
+      "name": "getBetByAddress",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "betId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "matchId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "username",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "matchfixture",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "openedBy",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "participant",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "betamount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalbetparticipantscount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "remainingparticipantscount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "prediction",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "bettingteam",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "betstatus",
+              "type": "string"
+            },
+            {
+              "internalType": "address[]",
+              "name": "participants",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "betwinners",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "betlosers",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct Bets[]",
+          "name": "",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_betId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBetConditions",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        },
+        {
+          "internalType": "string",
+          "name": "",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "betId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBetParticipants",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_betId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getBetsMapping",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "betId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "matchId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "username",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "matchfixture",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "openedBy",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "participant",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "betamount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "totalbetparticipantscount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "remainingparticipantscount",
+              "type": "uint256"
+            },
+            {
+              "internalType": "string",
+              "name": "prediction",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "bettingteam",
+              "type": "string"
+            },
+            {
+              "internalType": "string",
+              "name": "betstatus",
+              "type": "string"
+            },
+            {
+              "internalType": "address[]",
+              "name": "participants",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "betwinners",
+              "type": "address[]"
+            },
+            {
+              "internalType": "address[]",
+              "name": "betlosers",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct Bets",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "getCount",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "_referralId",
+          "type": "uint256"
+        }
+      ],
+      "name": "getReferralsMapping",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "refId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "sponsorUserId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "referralUserId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "referral",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "sponsor",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "refbonus",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "referrals",
+              "type": "address[]"
+            }
+          ],
+          "internalType": "struct Referrals",
+          "name": "",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "getUserId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "getuserRefBonus",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "getuserRefId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_sponsor",
+          "type": "address"
+        }
+      ],
+      "name": "getuserRefIdBySponsor",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "getuserReferrals",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "getuserbetId",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_useraddress",
+          "type": "address"
+        }
+      ],
+      "name": "getuserbetIds",
+      "outputs": [
+        {
+          "internalType": "uint256[]",
+          "name": "",
+          "type": "uint256[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "linkReferences": {},
+  "deployedLinkReferences": {}
+}

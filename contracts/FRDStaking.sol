@@ -2,6 +2,18 @@
 
 pragma solidity^0.8.9;
 
+/*
+  8888888888   88888888       888888888
+  8888888888   8888 88888     88888888888
+  8888         8888   8888    8888   88888
+  8888         8888 88888     8888    88888
+  8888888888   8888888        8888    88888
+  8888888888   8888888        8888    88888
+  8888         8888 8888      8888   88888
+  8888         8888   8888    88888888888
+  8888         8888    8888   888888888
+*/
+
 import "./FifaRewardToken.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "./SafeMath.sol";
@@ -93,7 +105,7 @@ contract FRDStaking is ReentrancyGuard {
     event WithdrawlEvent(address indexed Withdrawer, uint withdrawAmount, uint withdrawTime, uint256 amountToWithdraw, uint256 amountRemaining);
     event AddReferral(uint indexed refId,uint sponsorUserId, uint referralUserId, address referral, address sponsor, address[] referrals);
 
- // modifier to check if caller is owner
+    // modifier to check if caller is owner
     modifier isOwner() {
         if(msg.sender == stakedeployer)
             revert Unauthorized();
@@ -257,8 +269,8 @@ contract FRDStaking is ReentrancyGuard {
     }
 
     function addReferrer(address _sponsor, uint _refbonus) external nonReentrant {
-        require(_sponsor != address(0), "Sponsor cannot be a zero address");
-        require(_sponsor != msg.sender, "You cannot refer yourself");
+        require(_sponsor != address(0), "Invalid address");
+        require(_sponsor != msg.sender, "YCRY");
         
          
         uint _sponsoruserId = getUserId(_sponsor);
@@ -331,7 +343,7 @@ contract FRDStaking is ReentrancyGuard {
             revert InvalidAmount();
         require(FifaRewardTokenContract.allowance(msg.sender, address(this)) >= stake_amount,
              "Token transfer not approved");
-        require(FifaRewardTokenContract.balanceOf(msg.sender) >= stake_amount, "Insufficient FifaRewardToken balance");
+        require(FifaRewardTokenContract.balanceOf(msg.sender) >= stake_amount, "IFB");
 
         userDetails[msg.sender].hasStaked = true;
         // check if user is already registered
@@ -398,7 +410,7 @@ contract FRDStaking is ReentrancyGuard {
 
     
     function calcReward(uint _stakeId) public view returns (uint reward) {
-        require(msg.sender != address(0),"Zero addresses are not accepted");
+        require(msg.sender != address(0),"Invalid addresses");
         
         // get userId
         uint _userId = getUserId(msg.sender);
@@ -453,7 +465,7 @@ contract FRDStaking is ReentrancyGuard {
     }
 
     function withdrawStake(uint _stakeId, uint _withdrawAmt) external nonReentrant {
-        require(msg.sender != address(0),"Zero addresses are not accepted");
+        require(msg.sender != address(0),"Invlid addresses");
         
         // get userId
         uint _userId = getUserId(msg.sender);

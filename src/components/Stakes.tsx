@@ -40,8 +40,8 @@ const Staking = () =>  {
 
   const router = useRouter();
 
-  const FRDAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
-  const StakeCA = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
+  const FRDAddress = "0x344db0698433Eb0Ca2515d02C7dBAf21be07C295";
+  const StakeCA = "0x07cb8A891E67af801BE05E8Ea84dC9a651F9c4AF";
 
   const { theme} = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);

@@ -19,31 +19,7 @@ import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 import "hardhat/console.sol";
 
-contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
-  
-  error createTokenFirst();
-  error biddingTimeHasPassed();
-  error minimumbiddingAmount();
-  error priceMustBeGreaterThanZero();
-  error Unauthorized();
-  error royaltyPercentageMustBeLessThan500();
-  error adminfeePercentageMustBeLessThan500();
-
-  uint256 private _tokenIds;
-  uint256 private _itemIds;
-  uint private _biddingIds;
-  uint256 private _itemsSold;
-  uint256 private timenow = block.timestamp;
-  address payable owner;
-  address private zeroAddress = 0x0000000000000000000000000000000000000000;
-  uint256 private adminfeeBasisPoints = 500; // 5% in basis points (parts per 10,000) 250/100000
-  uint256 private basisPointsTotal = 10000;
-
-  constructor() ERC721("FIFAReward","FRD") {
-    owner = payable(msg.sender);
-  }
-
-  struct AuctionItem {
+struct AuctionItem {
     uint256 tokenId;
     uint itemId;
     string tokenURI;
@@ -67,7 +43,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     bool hascreatedToken;
   }
 
-  struct Bids {
+  struct Bid {
     uint256 tokenId;
     uint itemId;
     string tokenURI;
@@ -81,6 +57,29 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     bool wasitempurchased;
   }
 
+contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
+  
+  error createTokenFirst();
+  error biddingTimeHasPassed();
+  error minimumbiddingAmount();
+  error priceMustBeGreaterThanZero();
+  error Unauthorized();
+  error royaltyPercentageMustBeLessThan500();
+  error adminfeePercentageMustBeLessThan500();
+
+  uint256 private _tokenIds;
+  uint256 private _itemIds;
+  uint private _biddingIds;
+  uint256 private _itemsSold;
+  uint256 private timenow = block.timestamp;
+  address payable owner;
+  address private zeroAddress = 0x0000000000000000000000000000000000000000;
+  uint256 private adminfeeBasisPoints = 500; // 5% in basis points (parts per 10,000) 250/100000
+  uint256 private basisPointsTotal = 10000;
+
+  constructor() ERC721("FIFAReward","FRD") {
+    owner = payable(msg.sender);
+  }
 
   event NFTMinted(uint256 indexed tokenId, string tokenURI, address creator, address owner);
 
@@ -114,7 +113,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   );
 
   mapping(uint256 => AuctionItem) private idToAuctionItem;
-  mapping(uint256 => Bids) private biddingItem;
+  mapping(uint256 => Bid) private biddingItem;
   mapping(address => NFTMints) private MintedNFTs;
   mapping(uint256 => NFTMints) private MintedNFTIds;
   mapping(address => uint) private credits;
@@ -214,7 +213,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       itemId : itemId,
       tokenId : tokenId_,
       tokenURI: tokenurl,
-      biddingduration: biddingduration_,
+      biddingduration: timenow + (biddingduration_ * 1 days),
       minbidamount: minbidamt,
       sellingprice : sellingprice_,
       salesroyaltyFeeBasisPoints: salesroyaltyFeeBasisPoints_,
@@ -258,8 +257,8 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       }
       uint amount = credits[msg.sender];
 
-      require(amount > 0, "There are no credits in this recipient address");
-      require(address(this).balance >= amount, "There are no credits in this contract address");
+      require(amount > 0, "No bal");
+      require(address(this).balance >= amount, "Insuff Bal");
 
       credits[msg.sender] = 0;
 
@@ -276,17 +275,20 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
 
   function bidNFT(uint256 tokenId_, uint256 itemId_,uint256 biddingprice_) external payable nonReentrant {
     uint256  minbidamnt = idToAuctionItem[itemId_].minbidamount;
+    console.log("time now",timenow);
+    console.log("bid duration",idToAuctionItem[itemId_].biddingduration);
     if(timenow > idToAuctionItem[itemId_].biddingduration) {
       revert biddingTimeHasPassed();
-    }else if(biddingprice_ < minbidamnt) {
+    }
+    if(biddingprice_ < minbidamnt) {
       revert minimumbiddingAmount();
-    }else{
-      _biddingIds += 1;
+    }
+    _biddingIds += 1;
       uint256 biddingId_ = _biddingIds;
       string memory tokenurl = MintedNFTIds[tokenId_].tokenURI;
       address creator_ = idToAuctionItem[itemId_].creator;
       address owner_ = idToAuctionItem[itemId_].owner;
-      biddingItem[itemId_] = Bids({
+      biddingItem[biddingId_] = Bid({
         itemId : itemId_,
         tokenId : tokenId_,
         tokenURI: tokenurl,
@@ -313,53 +315,49 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
         true,
         false
       );
-    }
     
   }
 
-  /* Unlists an item previously listed for sale and transfer back to the creator */
-  function unListAuctionItem(
-    uint256 itemId
-  ) public payable nonReentrant {
-    uint tokenId = idToAuctionItem[itemId].tokenId;
-    if(msg.sender != idToAuctionItem[itemId].owner) 
-      revert Unauthorized();
-    idToAuctionItem[itemId].sold = false;
-    idToAuctionItem[itemId].owner = payable(msg.sender);
-    // idToAuctionItem[itemId].seller = payable(msg.sender);
-    _transfer(address(this), msg.sender, tokenId);
-
+  // Function to retrieve Bids by ID
+  function getBidsMapping(uint256 _bidId) external view returns (Bid memory) {
+      return biddingItem[_bidId];
   }
 
-/* Unlists an item previously listed for sale and transfer back to the creator */
-  function ListBackAuctionItem(
-    uint256 itemId
-  ) public payable nonReentrant {
-    uint tokenId = idToAuctionItem[itemId].tokenId;
-    if(msg.sender != idToAuctionItem[itemId].owner) 
-      revert Unauthorized();
-    idToAuctionItem[itemId].sold = false;
-    idToAuctionItem[itemId].owner = payable(address(this));
-    _transfer(msg.sender, address(this), tokenId);
-
+// Function to retrieve Items by ID
+  function getNFTAuctionItemsMapping(uint256 _itemId) external view returns (AuctionItem memory) {
+    return idToAuctionItem[_itemId];
   }
 
-  /* Unlists an item previously listed for sale and transfer back to the creator */
-  function changeItemAuctionPrice(
-    uint256 itemId, 
-    uint256 newminbidamount, 
-    uint256 newsellingprice
-  ) public payable nonReentrant {
-    uint tokenId = idToAuctionItem[itemId].tokenId;
-    if(msg.sender != idToAuctionItem[itemId].owner) 
-      revert Unauthorized();
-    idToAuctionItem[itemId].minbidamount = newminbidamount;
-    idToAuctionItem[itemId].sellingprice = newsellingprice;
-    idToAuctionItem[itemId].owner = payable(address(this));
-    _transfer(msg.sender, address(this), tokenId);
-    emit updateBiddingPrice(tokenId, itemId, newminbidamount, newsellingprice);
+// Function to retrieve NFTMints by ID
+  function getNFTMintsMapping(uint256 _tokenId) external view returns (NFTMints memory) {
+    return MintedNFTIds[_tokenId];
+  }
+  
+  function loadAllBids() external  view returns (Bid[] memory) {
+      uint allbiddingCount = _biddingIds;
+      uint currentIndex = 0;
+
+      Bid[] memory _bidsArray = new Bid[](allbiddingCount);
+      for (uint i = 0; i < allbiddingCount; i++) {
+        uint currentId = i + 1;
+          Bid storage currentBid = biddingItem[currentId];
+          _bidsArray[currentIndex] = currentBid;
+          currentIndex += 1;
+      }
+      return _bidsArray;
   }
 
+  function getAllBidIdsCount() external view returns (uint) {
+      return _biddingIds;
+  }
+
+  function getAllItemIdsCount() external view returns (uint) {
+      return _itemIds;
+  }
+
+  function getAllNFTMintsCount() external view returns (uint) {
+    return _tokenIds;
+  }
 
   /* Creates the sale of a marketplace item */
   /* Transfers ownership of the item, as well as funds between parties */
@@ -391,7 +389,23 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       _transfer(address(this), bidder_buyer, tokenId);
   }
 
-  /* Returns all market items */
+ /* Unlists an item previously listed for sale and transfer back to the creator */
+    function changeItemAuctionPrice(
+      uint256 itemId, 
+      uint256 newminbidamount, 
+      uint256 newsellingprice
+    ) public payable nonReentrant {
+      uint tokenId = idToAuctionItem[itemId].tokenId;
+      if(msg.sender != idToAuctionItem[itemId].owner) 
+        revert Unauthorized();
+      idToAuctionItem[itemId].minbidamount = newminbidamount;
+      idToAuctionItem[itemId].sellingprice = newsellingprice;
+      idToAuctionItem[itemId].owner = payable(address(this));
+      _transfer(msg.sender, address(this), tokenId);
+      emit updateBiddingPrice(tokenId, itemId, newminbidamount, newsellingprice);
+    }
+
+  // /* Returns all market items */
   function adminremoveAuctionItem(uint itemId) public {
     if(msg.sender != owner) {
       revert Unauthorized();
@@ -401,91 +415,31 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     idToAuctionItem[itemId].sold = true;
   }
 
-  /* Returns all unsold market items */
-  function fetchUnSoldAuctionItems() public view returns (AuctionItem[] memory) {
-      uint itemCount = _tokenIds;
-      uint unsoldItemCount = 0;
-      uint currentIndex = 0;
+    /* Unlists an item previously listed for sale and transfer back to the creator */
+    function unListAuctionItem(
+      uint256 itemId
+    ) public payable nonReentrant {
+      uint tokenId = idToAuctionItem[itemId].tokenId;
+      if(msg.sender != idToAuctionItem[itemId].owner) 
+        revert Unauthorized();
+      idToAuctionItem[itemId].sold = false;
+      idToAuctionItem[itemId].owner = payable(msg.sender);
+      // idToAuctionItem[itemId].seller = payable(msg.sender);
+      _transfer(address(this), msg.sender, tokenId);
 
-      for (uint i = 0; i < itemCount; i++) {
-        if (idToAuctionItem[i + 1].sold == false && idToAuctionItem[i + 1].owner == address(this)) {
-          unsoldItemCount += 1;
-        }
-      }
-
-      AuctionItem[] memory items = new AuctionItem[](unsoldItemCount);
-      for (uint i = 0; i < unsoldItemCount; i++) {
-        if (idToAuctionItem[i + 1].owner == address(this)) {
-          uint currentId = i + 1;
-          AuctionItem storage currentItem = idToAuctionItem[currentId];
-          items[currentIndex] = currentItem;
-          currentIndex += 1;
-        }
-      }
-      return items;
-  }
-
-  function getUserNFTMintedCount() public view returns (uint) {
-      uint totalTokenIds = _tokenIds;
-      uint nfttokenCount = 0;
-
-      for(uint i = 0; i < totalTokenIds; i++) {
-        if(MintedNFTIds[i+1].creator == msg.sender) {
-          nfttokenCount += 1;
-        }
-      }
-      return nfttokenCount;
-  }
-
-  /* Returns only items that a user has purchased */
-  function fetchUserPurchasedNFTs() public view returns (AuctionItem[] memory) {
-    uint totalItemCount = _itemIds;
-    uint itemCount = 0;
-    uint currentIndex = 0;
-
-    for (uint i = 0; i < totalItemCount; i++) {
-      if(idToAuctionItem[i + 1].owner == msg.sender) {
-        itemCount += 1;
-      }
     }
 
-    AuctionItem[] memory items = new AuctionItem[](itemCount);
-    for (uint i = 0; i < totalItemCount; i++) {
-      if(idToAuctionItem[i + 1].owner == msg.sender) {
-        uint currentId = i + 1;
-        AuctionItem storage currentItem = idToAuctionItem[currentId];
-        items[currentIndex] = currentItem;
-        currentIndex += 1;
-      }
+  /* Unlists an item previously listed for sale and transfer back to the creator */
+    function ListBackAuctionItem(
+      uint256 itemId
+    ) public payable nonReentrant {
+      uint tokenId = idToAuctionItem[itemId].tokenId;
+      if(msg.sender != idToAuctionItem[itemId].owner) 
+        revert Unauthorized();
+      idToAuctionItem[itemId].sold = false;
+      idToAuctionItem[itemId].owner = payable(address(this));
+      _transfer(msg.sender, address(this), tokenId);
+
     }
-    return items;
-  }
-
-  /* Returns only items a user has created */
-  function fetchItemsCreated() public view returns (AuctionItem[] memory) {
-    uint totalItemCount = _tokenIds;
-    uint itemCount = 0;
-    uint currentIndex = 0;
-
-    for (uint i = 0; i < totalItemCount; i++) {
-      if(idToAuctionItem[i + 1].creator == msg.sender) {
-        itemCount += 1;
-      }
-    }
-
-    AuctionItem[] memory items = new AuctionItem[](itemCount);
-    for (uint i = 0; i < totalItemCount; i++) {
-      if (idToAuctionItem[i + 1].creator == msg.sender) {
-        uint currentId = i + 1;
-        AuctionItem storage currentItem = idToAuctionItem[currentId];
-        items[currentIndex] = currentItem;
-        currentIndex += 1;
-      }
-    }
-    return items;
-
-
-  }
-
 
 }
