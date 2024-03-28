@@ -50,7 +50,8 @@ const NFTArt: React.FC<{}> = () =>  {
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
     const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
     
-    const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
+    const NFTCA = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_CA;
+    const NFTFeatureCA = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
 
     const [itemBids,setItemBids] = useState<NFTBidMetadata[]>([]);
 
@@ -84,7 +85,7 @@ const NFTArt: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+                  let contract = new ethers.Contract(NFTCA!, NFTMarketPlace, signer);
                   
                   if(contract) {
                       let mintednfts = await contract.getMintedNfts();
@@ -131,7 +132,7 @@ const NFTArt: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+                  let contract = new ethers.Contract(NFTCA!, NFTMarketPlace, signer);
                   
                   if(contract) {
                       let listednfts = await contract.fetchItemsCreated();
@@ -154,7 +155,7 @@ const NFTArt: React.FC<{}> = () =>  {
                             traits: traits,
                             chainId: chainId,
                             creator: element.creator,
-                            address: address,
+                            owner: element.owner,
                             hascreatedToken: element.hascreatedToken,
                             // following properties only exist if the NFT has been minted
                             tokenId: element.tokenId,

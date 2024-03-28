@@ -11,6 +11,7 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { BigNumber } from "ethers";
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
+import BettingFeatureAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import { Bets } from './BetsMetadata';
 import footballb from '../assets/images/footaballb.jpg';
 import AlertDanger from './AlertDanger';
@@ -74,8 +75,9 @@ const [betconditions,setBetConditions] = useState<Betconditions[]>([]);
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const [showbetconditions, setShowBetConditions] = useState<boolean>(false);
 const [filterbetAmount, setfilterbetamount] = useState<number>(50000);
-const FRDAddress = "0x344db0698433Eb0Ca2515d02C7dBAf21be07C295";
-const BettingCA = "0xF2e49F91b63a25a122a9f9533Ba06ECD1022BEBf";
+const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
+const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const { address, chainId, isConnected } = useWeb3ModalAccount();
@@ -102,7 +104,7 @@ useEffect(() => {
             setShowLoading(true);
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
-            let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
+            let Betcontract = new ethers.Contract(BettingFeaturesCA!, BettingAbi, signer);
             let loadBets = await Betcontract.loadAllBets();
             
             await loadBets.forEach(async (element:any) => {
