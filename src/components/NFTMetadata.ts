@@ -7,7 +7,7 @@ export interface NFTMetadata {
     traits: any,
     chainId: any,
     creator: string,
-    address: any,
+    owner: any,
     hascreatedToken: boolean,
     // following properties only exist if the NFT has been minted
     tokenId?: string,

@@ -1,46 +1,55 @@
 .main {
     width: 100%;padding: 0;margin: 0;text-align: center;
-    color: #151414;font-size: 14px;background-color: #ffffff;position: relative;
+    color: #151414;font-size: 14px;background-color: transparent;position: relative;
+}
+.main .notfound_p {
+    width: 100%;margin: auto;text-align: center;
+}
+.main .notfound {
+    text-align: center;font-family: "Montserrat",sans-serif;margin: 20px auto;
 }
 .main .betwrap .betwrapin .league_wrap {
-    margin: 20px 0;background-color: #e2d7d7;
+    margin: 20px 0 10px 0;background-color: #ffffff;border: 2px solid #f1f1f1;
 }
 .main .betwrap .betwrapin .league_wrap .tgle {
-    background-color: #686867;width: 100%;position: relative;
-    border: none;cursor: pointer;width: 100%;padding: 1px;
+    background-color: #f1f1f1;width: 100%;position: relative;
+    border: none;cursor: pointer;width: 100%;padding: 1px;color: #151414;
 }
 .main .betwrap .betwrapin .league_wrap .tgle h3 {
-    color: #ffffff;
+    color: #151414;font-size: 14px;
 }
 .main .betwrap .betwrapin .league_wrap .tgle .drpdwn {
     position: absolute;top: 4px;right: 25px;cursor: pointer;
 }
 .main .betwrap .betwrapin .league_wrap .tgle .closeicon {
-    position: absolute;top: 4px;right: 5px;cursor: pointer;color: #ffffff;
+    position: absolute;top: 4px;right: 5px;cursor: pointer;color: #151414;
+}
+.main .betwrap .betwrapin .league_wrap .league_wrap_in {
+    background-color: #ffffff;border-bottom: 2px solid #e2d7d7;
 }
 .main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
     display: block;cursor: pointer;
 }
-.main .betwrap .betwrapin .league_wrap .league_wrap_in .paginate_btns {
+.main .paginate_btns {
     margin: 15px 0;padding: 15px 15px 15px 15px;width: 100%;
 }
-.main .betwrap .betwrapin .league_wrap .league_wrap_in .paginate_btns button {
-    margin: 4px 8px 4px 8px;background-color: none;padding: 2px 8px 2px 8px;border-radius: 4px;
-    border: 1px solid #929292;font-size: 14px;
+.main .paginate_btns button {
+    margin: 4px 8px 4px 8px;background-color: none;padding: 0 3px 0 3px;border-radius: 4px;
+    border: 1px solid #929292;font-size: 12px;
     font-weight: 600;
 }
-.main .betwrap .betwrapin .league_wrap .league_wrap_in .paginate_btns button.number {
-    margin: 4px 2px 4px 2px;border-radius: 50%;font-weight: 500;font-size: 13px;padding: 2px 8px;
+.main .paginate_btns button.number {
+    margin: 4px 2px 4px 2px;border-radius: 50%;font-weight: 500;font-size: 13px;padding: 0 3px;
 }
 .main .betwrap .betwrapin .league_wrap h3 {
     margin: 5px 0;font-size: 16px;font-weight: 800;
 }
 .main .betwrap .betwrapin .league_wrap .fixt {
-    border-bottom: 1px solid #ffffff;margin: 0 0 5px 0;border-radius: 4px;
-    background-color: #e2d7d7;cursor: pointer;
+    border-bottom: 2px solid #f1f1f1;margin: 0 0 5px 0;border-radius: 4px;
+    background-color: #ffffff;cursor: pointer;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o {
-    display: flex;justify-content: space-between;padding: 3px;font-size: 15px;font-weight: 700;
+    display: flex;justify-content: space-between;padding: 3px;font-size: 13px;font-weight: 600;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o span {
     font-size: 12px;margin: auto 5px;background-color: #4f4848bd;

@@ -23,10 +23,15 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import axios from 'axios';
 import AlertMessage from './AlertMessage';
+import RewardsBadge from './RewardsBadge';
+import ReferralLink from './ReferralLink';
 import { ThemeContext } from '../contexts/theme-context';
 import FooterNavBar from './FooterNav';
 import DappNav from './Dappnav';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
+import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
+const dotenv = require("dotenv");
+
 import DappFooter from './DappFooter';
 import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
@@ -35,18 +40,18 @@ import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
+dotenv.config();
 
 const Dapp:React.FC<{}> = () =>  {
 
   const router = useRouter();
-  const TAFAAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
-  const StakeAddress = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
+  const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
+  const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
 
+  console.log("stake ca", StakeCA)
   // Replace 'YOUR_API_KEY' with your BscScan API key
-  const apiKey = process.env.BSCSCAN_APIKEY;
+  const apiKey = process.env.NEXT_PUBLIC_BSCSCAN_APIKEY;
 
-  // Replace 'YOUR_WALLET_ADDRESS' with the BSC wallet address you want to track
-  const walletAddressToTrack = '0x5951d5Cb5cFb9022B5ab5e9848fD1454C6dA7842';
 
   const { theme } = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
@@ -61,52 +66,15 @@ const Dapp:React.FC<{}> = () =>  {
   const [walletaddress, setWalletAddress] = useState<any>("NA");  
   const [isWalletAddressUpdated,setisWalletAddressUpdated] = useState(false);
 
-  const [signature, setSignature] = useState("");
-  const [error, setError] = useState(false);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [network, setNetwork] = useState(undefined);
-  const [message, setMessage] = useState("");
-  const [signedMessage, setSignedMessage] = useState("");
   const [sponsorWalletAddress, setsponsorWalletAddress] = useState("");
   const [userObjId, setUserObjId] = useState(""); // Initial value
-  const [verified, setVerified] = useState();
   
   const { open } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-  const { disconnect } = useDisconnect();
+  // const { disconnect } = useDisconnect();
 
-  const [referralLink, setreferralLink] = useState('');
-  const [buttonText, setButtonText] = useState("Copy");
-
-  const handleCopyClick = () => {
-   // Create a temporary textarea element
-   const textArea = document.createElement('textarea');
-   
-   // Set the value of the textarea to the text you want to copy
-   textArea.value = referralLink;
-
-   // Append the textarea to the document
-   document.body.appendChild(textArea);
-
-   // Select the text inside the textarea
-   textArea.select();
-
-   // Execute the copy command
-   document.execCommand('copy');
-
-   // Remove the temporary textarea
-   document.body.removeChild(textArea);
-
-   // Set the state to indicate that the text has been copied
-   setButtonText("Copied");
-
-   // Reset the state after a brief period (optional)
-   setTimeout(() => {
-      setButtonText("Copy");
-   }, 1500);
- };
-
+  
   const closeDappConAlerted = () => {
     setisWalletAddressUpdated(!isWalletAddressUpdated);
   }
@@ -119,7 +87,6 @@ const Dapp:React.FC<{}> = () =>  {
         setUsername(username_);
         setUserId(udetails.userId)
         setUserObjId(udetails._id)
-        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
       }
     }else {
       router.push(`/signin`);
@@ -173,7 +140,7 @@ getWalletAddress();
       // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
       const provider = new ethers.providers.Web3Provider(walletProvider as any)
       const signer = provider.getSigner();
-      const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
+      const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
       const reslt = await StakeContract.addReferrer(sponsorWalletAddress);
       console.log("Account Balance: ", reslt);
     }
@@ -387,11 +354,13 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
                 <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
               </button>
-                <div className={dappstyles.reflink}>
-                    <div className={dappstyles.reflinkdex}>Ref Link: <input title="input" value={referralLink} onChange={(e) => setreferralLink(e.target.value)} /><button type='button' onClick={handleCopyClick}>{buttonText}</button> </div>
-                    <div><small>Share referral link to earn more tokens!</small></div>
-                    <div>Connected Wallet: <span style={{color: 'orange'}}>{walletaddress}</span></div>
-                </div>
+
+              <div>
+                <RewardsBadge />
+              </div>
+              <div>
+                <ReferralLink />
+              </div>
 
                 <div className={dappstyles.head}>
                     <div className={dappstyles.uname}><span>Hi, {username}</span></div>

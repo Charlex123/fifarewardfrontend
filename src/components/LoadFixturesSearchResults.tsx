@@ -26,37 +26,38 @@ const LoadFixturesSearchResults:React.FC<Props> = ({searchkeyword}) => {
     fixtures: Fixture[];
   }
 
+  const [showloading, setShowLoading] = useState<boolean>(false);
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [limit] = useState<number>(10);
   const [totalPages, setTotalPages] = useState(0);
-  const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
 
   useEffect(() => {
-    if(windowloadgetbetruntimes == 0) {
-      (async (searchkeyword) => {
-        try {
-          const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-          }  
-          const {data} = await axios.post("http://localhost:9000/api/fixtures/searchfixturesresults", {
-            searchkeyword,
-            currentPage,
-            limit
-          }, config);
-          setIsleagueLoaded(true);
-          setTotalPages(data.totalPages);
-          setFixturesd(data.leaguefixtures);
-          console.log('data  0000', data)
-        } catch (error) {
-          console.log(error)
-        }
-      })(searchkeyword)
-    }
-  },[searchkeyword])
+  
+    (async (searchkeyword) => {
+      try {
+        setShowLoading(true);
+        const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+        }  
+        const {data} = await axios.post("http://localhost:9000/api/fixtures/searchfixturesresults", {
+          searchkeyword,
+          currentPage,
+          limit
+        }, config);
+        setIsleagueLoaded(true);
+        setTotalPages(data.totalPages);
+        setFixturesd(data.leaguefixtures);
+        setShowLoading(false);
+      } catch (error) {
+        console.log(error)
+      }
+    })(searchkeyword)
+      
+  },[searchkeyword,currentPage,limit])
 
   const toggleFixtures = (divId:any) => {
   
@@ -180,6 +181,7 @@ const LoadFixturesSearchResults:React.FC<Props> = ({searchkeyword}) => {
   
 return (
     <>
+    {showloading && <Loading />}
       <div className={leaguefixturestyle.main}>
         <div className={leaguefixturestyle.main_in}>
           <div className={leaguefixturestyle.betwrap}>
@@ -187,61 +189,70 @@ return (
               {
                 isleagueloaded ? 
                 <div>
-                    {fixturesd?.map((league,index) => (
-                      <div className={leaguefixturestyle.league_wrap} key={index}>
-                        <div className={leaguefixturestyle.tgle} >
-                          <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                          <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                          <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                        </div>
-                        <div className={leaguefixturestyle.league_wrap_in} >
-                          {league.fixtures.map((fixture, index) => (
-                            <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={index}>
-                              <div className={leaguefixturestyle.fixt}>
-                                <div className={leaguefixturestyle.fixt_d_o}>
-                                  <div className={leaguefixturestyle.fixt_d}>
-                                    <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
-                                  </div>
-                                  <div className={leaguefixturestyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
-                                  </div>
-                                </div>
-
-                                <div className={leaguefixturestyle.fixt_tm}>
-                                  <div className={leaguefixturestyle.teams}>
-                                    <div>{`${fixture.teams.home.name}`}</div>
-                                    <div className={leaguefixturestyle.vs}>Vs</div>
-                                    <div>{`${fixture.teams.away.name}`}</div>
-                                  </div>
-                                </div>
-                                <div className={leaguefixturestyle.openbet}>
-                                  <div>
-                                    <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
-                                  </div>
-                                </div>
+                    {
+                      fixturesd!.length > 0 ?
+                      <div>
+                        {fixturesd?.map((league,index) => (
+                          <div className={leaguefixturestyle.league_wrap} key={index}>
+                            <div className={leaguefixturestyle.tgle} >
+                              <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
+                              <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                              <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
                             </div>
-                            </a>
-                          ))}
-                          <div className={leaguefixturestyle.paginate_btns}>
-                            <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
-                              {'<<'}
-                            </button>
-                            <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
-                              {'<'}
-                            </button>
-                            {renderPageNumbers()}
-                            <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
-                              {'>'}
-                            </button>
-                            <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
-                              {'>>'}
-                            </button>
+                            <div className={leaguefixturestyle.league_wrap_in} >
+                              {league.fixtures.map((fixture, index) => (
+                                <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={index}>
+                                  <div className={leaguefixturestyle.fixt}>
+                                    <div className={leaguefixturestyle.fixt_d_o}>
+                                      <div className={leaguefixturestyle.fixt_d}>
+                                        <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
+                                      </div>
+                                      <div className={leaguefixturestyle.dd}>
+                                          <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                          <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
+                                      </div>
+                                    </div>
+
+                                    <div className={leaguefixturestyle.fixt_tm}>
+                                      <div className={leaguefixturestyle.teams}>
+                                        <div>{`${fixture.teams.home.name}`}</div>
+                                        <div className={leaguefixturestyle.vs}>Vs</div>
+                                        <div>{`${fixture.teams.away.name}`}</div>
+                                      </div>
+                                    </div>
+                                    <div className={leaguefixturestyle.openbet}>
+                                      <div>
+                                        <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                      </div>
+                                    </div>
+                                </div>
+                                </a>
+                              ))}
+                              <div className={leaguefixturestyle.paginate_btns}>
+                                <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                                  {'<<'}
+                                </button>
+                                <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                                  {'<'}
+                                </button>
+                                {renderPageNumbers()}
+                                <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                                  {'>'}
+                                </button>
+                                <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                                  {'>>'}
+                                </button>
+                              </div>
+                            </div>
                           </div>
-                        </div>
+                        ))}
+                      </div> :
+                      <div className={leaguefixturestyle.notfound_p}>
+                        <div className={leaguefixturestyle.notfound}>No fixtures found at the moment, please check back later </div>
                       </div>
-                    ))}
+                    }
                 </div> : 
+                
                 <div><Loading /></div>
               }
             </div>

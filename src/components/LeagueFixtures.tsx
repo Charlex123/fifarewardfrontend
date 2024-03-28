@@ -25,37 +25,39 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
     fixtures: Fixture[];
   }
 
+  const [showloading, setShowLoading] = useState<boolean>(false);
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
   const [limit] = useState<number>(10);
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
-    if(windowloadgetbetruntimes == 0) {
-      (async (leagueid) => {
-        try {
-          const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-          }  
-          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures/", {
-            leagueid,
-            currentPage,
-            limit
-          }, config);
-          setIsleagueLoaded(true);
-          setTotalPages(data.totalPages);
-          setFixturesd(data.leaguefixtures);
-          setwindowloadgetbetruntimes(1)
-        } catch (error) {
-          console.log(error)
-        }
-      })(leagueid)
-    }
-  })
+    
+    (async (leagueid) => {
+
+      try {
+        setShowLoading(true);
+        const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+        }  
+        const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures/", {
+          leagueid,
+          currentPage,
+          limit
+        }, config);
+        setIsleagueLoaded(true);
+        setTotalPages(data.totalPages);
+        setFixturesd(data.leaguefixtures);
+        setShowLoading(false);
+      } catch (error) {
+        console.log(error)
+      }
+    })(leagueid)
+    
+  },[leagueid,currentPage,limit])
 
   const toggleFixtures = (divId:any) => {
   
@@ -90,88 +92,67 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
     }
   }
   
-  const closeHIWDiv = (divId:any) => {
-    console.log('huo',divId);
-    console.log('huo pareant',divId.parentElement.parentElement);
-    let svg = divId.getAttribute('data-icon');
-    let path = divId.getAttribute('fill');
-    if(svg !== null && svg !== undefined) {
-      divId.parentElement.parentElement.style.display = 'none';
-    }
-    if(path !== null && path !== undefined) {
-      divId.parentElement.parentElement.parentElement.style.display = 'none';
-    }
-  }
+  const renderPageNumbers = () => {
+    let pages = [];
   
-  const closeHIWE = (divId:any) => {
-    let svg = divId.getAttribute('data-icon');
-    let path = divId.getAttribute('fill');
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
-    if(svg !== null && svg !== undefined) {
-      divId.parentElement.parentElement.parentElement.style.display = 'none';
-    }
-    if(path !== null && path !== undefined) {
-      divId.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
-    }
-  }
+    let startPage, endPage;
   
-  const firstopenHIW = (divId:any) => {
-    let svg = divId.getAttribute('data-icon');
-    let path = divId.getAttribute('fill');
-    if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
-      if(svg !== null && svg !== undefined) {
-        let targetDiv = divId.parentElement.parentElement.parentElement.firstElementChild;
-        targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
+    // Calculate start and end pages to display
+    if (totalPages <= 7) {
+      startPage = 1;
+      endPage = totalPages;
+    } else {
+      if (currentPage <= 4) {
+        startPage = 1;
+        endPage = 7;
+      } else if (currentPage >= totalPages - 3) {
+        startPage = totalPages - 6;
+        endPage = totalPages;
+      } else {
+        startPage = currentPage - 1;
+        endPage = currentPage + 1;
       }
-      if(path !== null && path !== undefined) {
-        let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.firstElementChild;
-        targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-      }
-    }else {
-      let targetDiv = divId.parentElement.parentElement.firstElementChild;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
     }
-  }
   
-  const openHIWE = (divId:any) => {
-    let hiwdiv = document.querySelector('#howitworks') as HTMLElement;
-    let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    console.log('hiw div',hiwdiv)
-    console.log('hiw overlay',hiw_bgoverlay)
-    hiwdiv.style.display = (hiwdiv.style.display === 'block') ? 'none' : 'block';
-    hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
-  
-    let svg = divId.getAttribute('data-icon');
-    let path = divId.getAttribute('fill');
-  
-    if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
-      if(svg !== null && svg !== undefined) {
-        let targetDiv = divId.parentElement.parentElement.parentElement.parentElement;
-        targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
+    // Display first 2 pages if not displayed already
+    if (startPage > 2) {
+      for (let i = 1; i <= 2; i++) {
+        pages.push(
+          <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+            {i}
+          </button>
+        );
       }
-      if(path !== null && path !== undefined) {
-        let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.parentElement;
-        targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
+      if (startPage > 3) {
+        pages.push(<span key="startDots">...</span>);
       }
-    }else {
-      let targetDiv = divId.parentElement.parentElement.parentElement;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
     }
-  }
-
-   // Function to render page numbers
- const renderPageNumbers = () => {
-  let pages = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(
-      <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
-        {i}
-      </button>
-    );
-  }
-  return pages;
-};
+  
+    // Display pages
+    for (let i = startPage; i <= endPage; i++) {
+      pages.push(
+        <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+          {i}
+        </button>
+      );
+    }
+  
+    // Display last 2 pages if not displayed already
+    if (endPage < totalPages - 1) {
+      if (endPage < totalPages - 2) {
+        pages.push(<span key="endDots">...</span>);
+      }
+      for (let i = totalPages - 1; i <= totalPages; i++) {
+        pages.push(
+          <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+            {i}
+          </button>
+        );
+      }
+    }
+  
+    return pages;
+  };
 
   const gotoPage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -180,6 +161,7 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
   
 return (
     <>
+      {showloading && <Loading />}
       <div className={leaguefixturestyle.main}>
         <div className={leaguefixturestyle.main_in}>
           <div className={leaguefixturestyle.betwrap}>
@@ -187,63 +169,68 @@ return (
               {
                 isleagueloaded ? 
                 <div>
-                    {fixturesd?.map((league,index) => (
-                      <div className={leaguefixturestyle.league_wrap} key={index}>
-                        <div className={leaguefixturestyle.tgle} >
-                          <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                          <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                          <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                        </div>
-                        <div className={leaguefixturestyle.league_wrap_in} >
-                          {league.fixtures.map((fixture, index) => (
-                            <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={index}>
-                              <div className={leaguefixturestyle.fixt} key={index}>
-                                <div className={leaguefixturestyle.fixt_d_o}>
-                                  <div className={leaguefixturestyle.fixt_d}>
-                                    <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
-                                  </div>
-                                  <div className={leaguefixturestyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
-                                  </div>
-                                </div>
-
-                                <div className={leaguefixturestyle.fixt_tm}>
-                                  <div className={leaguefixturestyle.teams}>
-                                    <div>{`${fixture.teams.home.name}`}</div>
-                                    <div className={leaguefixturestyle.vs}>Vs</div>
-                                    <div>{`${fixture.teams.away.name}`}</div>
-                                  </div>
-                                </div>
-                                <div className={leaguefixturestyle.openbet}>
-                                  <div>
-                                    <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
-                                  </div>
-                                </div>
+                    {fixturesd!.length > 0 ? 
+                      <div>
+                        {fixturesd?.map((league,index) => (
+                          <div className={leaguefixturestyle.league_wrap} key={index}>
+                            <div className={leaguefixturestyle.tgle} >
+                              <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
+                              <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                              <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
                             </div>
-                            </a>
-                          ))}
+                            <div className={leaguefixturestyle.league_wrap_in} >
+                              {league.fixtures.map((fixture, index) => (
+                                <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={index}>
+                                  <div className={leaguefixturestyle.fixt} key={index}>
+                                    <div className={leaguefixturestyle.fixt_d_o}>
+                                      <div className={leaguefixturestyle.fixt_d}>
+                                        <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
+                                      </div>
+                                      <div className={leaguefixturestyle.dd}>
+                                          <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                          <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
+                                      </div>
+                                    </div>
 
-                          {fixturesd.length > 0 && 
-                            <div className={leaguefixturestyle.paginate_btns}>
-                              <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
-                                {'<<'}
-                              </button>
-                              <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
-                                {'<'}
-                              </button>
-                              {renderPageNumbers()}
-                              <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
-                                {'>'}
-                              </button>
-                              <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
-                                {'>>'}
-                              </button>
+                                    <div className={leaguefixturestyle.fixt_tm}>
+                                      <div className={leaguefixturestyle.teams}>
+                                        <div>{`${fixture.teams.home.name}`}</div>
+                                        <div className={leaguefixturestyle.vs}>Vs</div>
+                                        <div>{`${fixture.teams.away.name}`}</div>
+                                      </div>
+                                    </div>
+                                    <div className={leaguefixturestyle.openbet}>
+                                      <div>
+                                        <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                      </div>
+                                    </div>
+                                </div>
+                                </a>
+                              ))}
+                              <div className={leaguefixturestyle.paginate_btns}>
+                                <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                                  {'<<'}
+                                </button>
+                                <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                                  {'<'}
+                                </button>
+                                {renderPageNumbers()}
+                                <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                                  {'>'}
+                                </button>
+                                <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                                  {'>>'}
+                                </button>
+                              </div>
+
                             </div>
-                          }
-                        </div>
+                          </div>
+                        ))}
+                      </div>  :
+                      <div className={leaguefixturestyle.notfound_p}>
+                        <div className={leaguefixturestyle.notfound}>No fixtures found at the moment, please check back later </div>
                       </div>
-                    ))}
+                  }
                 </div> : 
                 <div><Loading /></div>
               }

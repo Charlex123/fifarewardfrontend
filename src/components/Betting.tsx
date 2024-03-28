@@ -53,6 +53,16 @@ interface CountriesLeagues {
   leagueName: string,
   totalFixtures: number
 } 
+interface LeagueC {
+  id: number,
+  name: string,
+  country: string
+}
+
+interface CupLeagues {
+  count: number,
+  league: LeagueC[],
+}
 
 interface Countries {
   _id: string,
@@ -85,21 +95,18 @@ const LoadBetData:React.FC<{}> = () => {
   const [showcalender, setShowCalendar] = useState<boolean>(false);
   const [loadedlaguedata,setLoadedLeagueData] = useState<any>(false);
   const [countryfixturesdata, setCountryFixturesdata] = useState<Countries[]>([]);
+  const [cupfixturesdata, setCupFixturesdata] = useState<CupLeagues[]>([]);
   const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
+  const [loadcount, setLoadCount] = useState<number>(0);
 
-  const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
   const [showloginComp,setShowLoginComp] = useState<boolean>(false);
-  const [istodaysfixturesLoaded,setIsTodaysFixturesLoaded] = useState<boolean>(false);
-  const [todaysfixtures,setTodaysFixtures] = useState<League[]>();
   const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<string>("");  
   const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
   const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
-  const [currentPage, setCurrentPage] = useState<number>(1);
-  const [limit] = useState<number>(20)  
   const[searchkeyword,setSearchKeyWord] = useState<string>('');
   const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
   const [showloading, setShowLoading] = useState<boolean>(false);
@@ -162,7 +169,8 @@ const LoadBetData:React.FC<{}> = () => {
     {
       console.log(error)
     }
-    if(windowloadgetbetruntimes == 0) {
+    
+    if(loadcount <= 0) {
       const fetchData = async () => {
         try {
           setShowLoading(true);
@@ -173,9 +181,9 @@ const LoadBetData:React.FC<{}> = () => {
           }  
           const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
           setCountryFixturesdata(data.fixtures);
-          setwindowloadgetbetruntimes(1);
           setTotalPages(data.totalPages);
           setShowLoading(false);
+          setLoadCount(1);
           console.log("country fixures",data);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -184,19 +192,37 @@ const LoadBetData:React.FC<{}> = () => {
   
       fetchData();
 
+      const fetchcupLeagues = async () => {
+        try {
+          setShowLoading(true);
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadcupfixtures/", config);
+          setCupFixturesdata(data.fixtures);
+          setShowLoading(false);
+          setLoadCount(1);
+          console.log("cup fixures",data);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchcupLeagues();
+
       const fetchTodayFixtures = async () => {
         try {
           const newleagueComponent = <TodaysFixtures />;
           setLoadedLeagueData(true);
-          setLeagueComponent([newleagueComponent]);
+          setLeagueComponent([newleagueComponent].map((component, index) => React.cloneElement(component, { key: index })));
         } catch (error) {
           console.error('Error fetching data:', error);
         }
       };
   
       fetchTodayFixtures();
-    }else {
-  
     }
 
     // setInterval(rotateSearchOption,5000);
@@ -227,13 +253,29 @@ const LoadBetData:React.FC<{}> = () => {
     };
 
   
-},[countryfixturesdata,isbetDataLoaded])
+},[countryfixturesdata,isbetDataLoaded,totalPages,showloading])
 
-const getleagueFixtures = async (leagueid:number) => {
+const getleagueFixtures = async (leagueid:number, event:any) => {
     try {
+      
+      if(event.target.getAttribute("title") == "div") {
+        let el = event.target.firstElementChild.firstElementChild.nextElementSibling;
+        el.style.backgroundColor = (el.style.backgroundColor === "#ffffff") ? "lightblue" : "#ffffff";
+      }
+      else if(event.target.getAttribute("title") == "span_") {
+        event.target.style.backgroundColor = (event.target.style.backgroundColor === "#ffffff") ? "lightblue" : "#ffffff";
+      }
+      else if(event.target.getAttribute("title") == "span___") {
+        console.log(" prev el sibl",event.target.previousElementSibling)
+        event.target.previousElementSibling.style.backgroundColor = (event.target.previousElementSibling.style.backgroundColor === "#ffffff") ? "lightblue" : "#ffffff";
+      }
+
       const newleagueComponent = <LeagueFixtures leagueid={leagueid} />;
       setLoadedLeagueData(true);
-      setLeagueComponent([newleagueComponent]);
+      setLeagueComponent([
+        newleagueComponent,
+        ...leaguecomponent.map((component, index) => React.cloneElement(component, { key: index }))
+      ]);
     } catch (error) {
       console.log(error)
     }
@@ -244,7 +286,10 @@ const loadfixturesbyDate = (date:string) => {
     console.log("fix date madedsf",date)
     const newleagueComponent = <FixturesByDate date={date} />;
     setLoadedLeagueData(true);
-    setLeagueComponent([newleagueComponent]);
+    setLeagueComponent([
+      newleagueComponent,
+      ...leaguecomponent.map((component, index) => React.cloneElement(component, { key: index }))
+    ]);
   } catch (error) {
     console.log(error);
   }
@@ -257,7 +302,10 @@ const onChangeCalenderDate = async (datev:any) => {
     const newcalDate = moment(datev).format("YYYY-MM-DD");
     const newleagueComponent = <FixturesByCalenderDate date={newcalDate} />;
     setLoadedLeagueData(true);
-    setLeagueComponent([newleagueComponent]);
+    setLeagueComponent([
+      newleagueComponent,
+      ...leaguecomponent.map((component, index) => React.cloneElement(component, { key: index }))
+    ]);
     setShowCalendar(false);
   } catch (error) {
     console.log(error)
@@ -269,7 +317,10 @@ const loadliveFixtures = async (live:string) => {
     console.log('load live leagues',live)
     const newleagueComponent = <LiveFixtures live={live} />;
     setLoadedLeagueData(true);
-    setLeagueComponent([newleagueComponent]);
+    setLeagueComponent([
+      newleagueComponent,
+      ...leaguecomponent.map((component, index) => React.cloneElement(component, { key: index }))
+    ]);
   } catch (error) {
     console.log(error)
   }
@@ -349,7 +400,10 @@ const loadSearchResults = async () => {
   try {
     const newfixtureComponent = <LoadFixturesSearchResults searchkeyword={searchkeyword} />;
     setLoadedLeagueData(true);
-    setLeagueComponent([newfixtureComponent, ...leaguecomponent]);
+    setLeagueComponent([
+      newfixtureComponent,
+      ...leaguecomponent.map((component, index) => React.cloneElement(component, { key: index }))
+    ]);
   } catch (error) {
     console.log(error)
   }
@@ -366,34 +420,9 @@ const handleInputClick = () => {
   console.log('Input clicked. Do something!');
 };
 
-const FilterByClosedBets = async () => {
-  
-}
-
-const FilterByOpenBets = async () => {
-
-}
-
- // Function to render page numbers
- const renderPageNumbers = () => {
-  let pages = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(
-      <button className={bettingstyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
-        {i}
-      </button>
-    );
-  }
-  return pages;
-};
-
-  const gotoPage = (pageNumber: number) => {
-    setCurrentPage(pageNumber);
-  };
-
   return (
     <>
-    {showloading && <Loading/>}
+    {/* {showloading && <Loading/>} */}
     {/* <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div> */}
     {showBgOverlay && <BgOverlay />}
       <div className={bettingstyle.main}>
@@ -488,19 +517,32 @@ const FilterByOpenBets = async () => {
               </div>
             </div> 
             } */}
-            {countryfixturesdata ? <div>
-              <div className={bettingstyle.fb}><h3>By Country</h3></div>
-              {countryfixturesdata.map(country => (
-                <div key={country._id}>
+            {cupfixturesdata ? <div>
+              <div className={bettingstyle.fb}><h3>By Leagues/Cups</h3></div>
+              {cupfixturesdata.map((league,index) => (
+                <div key={index}>
                   <ul>
                     <li>
-                       <div className={bettingstyle.leagued}>
+                        <div className={bettingstyle.lita} onClick={(e) => getleagueFixtures(league.league.id,e)}>
+                          <div>{league.league.name}</div>
+                          <div>{league.count}</div>
+                        </div>
+                    </li>
+                  </ul>
+                </div>
+            ))}
+              <div className={bettingstyle.fb}><h3>By Country</h3></div>
+              {countryfixturesdata.map((country,index) => (
+                <div key={index}>
+                  <ul>
+                    <li>
+                        <div className={bettingstyle.leagued}>
                           <div>
-                            {country.leagues.map(league => (
-                              <div className={bettingstyle.lde} onClick={() => getleagueFixtures(league.leagueId)} key={league.leagueId}>
+                            {country.leagues.map((league,index) => (
+                              <div className={bettingstyle.lde} onClick={(e) => getleagueFixtures(league.leagueId,e)} title="div"  key={index}>
                                 <div className={bettingstyle.ldef}>
-                                  <input title='title' type='checkbox' className={bettingstyle.mchkbox} id={country._id}/>
-                                  <span className={bettingstyle.chkbox}>&nbsp;&nbsp;</span> <span>{league.leagueName}</span>
+                                  <input type='checkbox' title="input" className={bettingstyle.mchkbox} id={country._id} />
+                                  <span className={bettingstyle.chkbox} onClick={(e) => getleagueFixtures(league.leagueId,e)} title="span_">&nbsp;&nbsp;</span> <span onClick={(e) => getleagueFixtures(league.leagueId,e)} title="span___">{league.leagueName}</span>
                                 </div>
                                 <div className={bettingstyle.ldes}>
                                   ({league.totalFixtures})
@@ -509,10 +551,10 @@ const FilterByOpenBets = async () => {
                             ))}
                           </div>
                         </div>
-                      <div className={bettingstyle.lita} >
-                        <div>{country._id}</div>
-                        <div>{country.totalFixturesInCountry}</div>
-                      </div>
+                        <div className={bettingstyle.lita} >
+                          <div>{country._id}</div>
+                          <div>{country.totalFixturesInCountry}</div>
+                        </div>
                     </li>
                   </ul>
                 </div>

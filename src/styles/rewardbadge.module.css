@@ -1,0 +1,14 @@
+.rewardsbagde {
+    width: 100%;text-align: right;margin: 10px 0 10px 10px;align-items: flex-end;
+}
+.rewardsbagde .rwdb {
+    width: 300px;align-content: flex-end;text-align: right;background-color: #252525c2;
+    align-items: end;align-self: last baseline;border-radius: 4px;padding: 2px 6px 6px 6px;
+
+}
+.rewardsbagde .rwdbadge {
+    display: flex;flex-wrap: nowrap;flex-direction: row;justify-content: space-around;align-items: flex-end;
+}
+.rewardsbagde .rwdbadge div {
+    font-size: 14px;font-family: "Montserrat",sans-serif;width: max-content;
+}

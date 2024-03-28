@@ -1,4 +1,4 @@
-import React, { useContext,useState,useEffect } from 'react';
+import React, { useContext,useState,useEffect, useRef } from 'react';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -10,9 +10,10 @@ import { useRouter } from 'next/router';
 import { ThemeContext } from '../contexts/theme-context';
 import axios from 'axios';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
+import NFTMarketPlaceFeaturesContractAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ethers } from 'ethers';
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { faCircleCheck, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faCheck, faCircleCheck, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
@@ -28,10 +29,12 @@ dotenv.config();
 library.add(faEye, faEyeSlash);
 const MyNFTs: React.FC<{}> = () =>  {
 
+    const divRef = useRef<HTMLDivElement>(null);
     const [showloading, setShowLoading] = useState<boolean>(false);
+    const [showchangepriceModal, setShowChangePriceModal] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
-    const { address, chainId, isConnected } = useWeb3ModalAccount();
+    const { chainId, isConnected } = useWeb3ModalAccount();
     const { disconnect } = useDisconnect();
     const [username, setUsername] = useState<string>("");
     const [nftLoaded,setNFTLoaded] = useState<boolean>(false);
@@ -50,8 +53,14 @@ const MyNFTs: React.FC<{}> = () =>  {
     const { theme } = useContext(ThemeContext);
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
     const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
+
+    const [_itemId, set_ItemId] = useState<number>();
+    const [newbidduration,setNewBidDuration] = useState<number>();
+    const [newItemPrice, setNewItemPrice] = useState<string>("");
+    const [newminbidamount, setNewMinBidAmount] = useState<any>(0);
     
     const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
+    const [nftfeaturescontractAddress] = useState<any>("0x18B2Be8468B276F0A643b8d922Ebb3C7cE137DF8");
 
     const [myunlistedNFTs,setmyUnlistedNFTS] = useState<NFTMetadata[]>([]);
 
@@ -88,7 +97,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                   
                   if(contract) {
                       let mintednfts = await contract.getMintedNfts();
-                      
+                      console.log(" unlisted nfts",mintednfts)
                       await mintednfts.forEach(async (element:any) => {
                         if(element[1] && element[1] !== "") {
                           let ipfsurl = element[1];
@@ -106,7 +115,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                             traits: traits,
                             chainId: chainId,
                             creator: element.creator,
-                            address: address,
+                            owner: element.owner,
                             hascreatedToken: element.hascreatedToken,
                             // following properties only exist if the NFT has been minted
                             tokenId: element.tokenId,
@@ -139,11 +148,11 @@ const MyNFTs: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+                  let contract = new ethers.Contract(nftfeaturescontractAddress, NFTMarketPlaceFeaturesContractAbi, signer);
                   
                   if(contract) {
                       let listednfts = await contract.fetchItemsCreated();
-                      console.log("listed nfts",listednfts)
+                      
                       await listednfts.forEach(async (element:any) => {
                         if(element[1] && element[1] !== "") {
                           let ipfsurl = element[2];
@@ -162,7 +171,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                             traits: traits,
                             chainId: chainId,
                             creator: element.creator,
-                            address: address,
+                            owner: element.owner,
                             hascreatedToken: element.hascreatedToken,
                             // following properties only exist if the NFT has been minted
                             tokenId: element.tokenId,
@@ -209,7 +218,7 @@ const MyNFTs: React.FC<{}> = () =>  {
           let transaction = contract.createAuctionItem(listingItemTokenId,nftItemPrice,bidduration,reservedbuyer,minbidamount,salesroyaltyfee );
           console.log(transaction.hash);
           if(transaction) {
-            setActionSuccess(true);
+            // setActionSuccess(true);
           }
         } catch (error) {
           console.log("t error",error);
@@ -223,20 +232,97 @@ const MyNFTs: React.FC<{}> = () =>  {
       
     }
 
+    const unlistItem = async (itemId:string) => {
+      const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+      const signer = provider.getSigner();
+      
+        try {
+          setShowLoading(true);
+          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+          let transaction = contract.unListAuctionItem(itemId);
+          console.log(transaction.hash);
+          if(transaction) {
+            // setActionSuccess(true);
+          }
+        } catch (error) {
+          console.log("t error",error);
+          setShowAlertDanger(true);
+          seterrorMessage("Transaction failed, try again");
+        }
+      
+    }
+
+    const listbackItem = async (itemId:string) => {
+      const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+      const signer = provider.getSigner();
+      
+        try {
+          setShowLoading(true);
+          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+          let transaction = contract.ListBackAuctionItem(itemId);
+          console.log(transaction.hash);
+          if(transaction) {
+            // setActionSuccess(true);
+          }
+        } catch (error) {
+          console.log("t error",error);
+          setShowAlertDanger(true);
+          seterrorMessage("Transaction failed, try again");
+        }
+      
+    }
+
+    const updateBiddingOptions = async () => {
+      const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+      const signer = provider.getSigner();
+      
+        try {
+          setShowLoading(true);
+          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+          let transaction = contract.updateBiddingOptions();
+          console.log(transaction.hash);
+          if(transaction) {
+            // setActionSuccess(true);
+          }
+        } catch (error) {
+          console.log("t error",error);
+          setShowAlertDanger(true);
+          seterrorMessage("Transaction failed, try again");
+        }
+      
+    }
+
     const toggleAddr = (e:any) => {
       e.previousElementSibling.style.display = (e.previousElementSibling.style.display === 'block') ? 'none' : 'block';
     }
 
+    const changeitemPrice = async ( event: React.MouseEvent) => {
+      event.preventDefault();
+        setShowBgOverlay(true);
+        setShowChangePriceModal(true);
+        setTimeout(function() {
+          if(divRef.current) {
+            divRef.current.focus()
+          }
+        }, 2000);
+    }
+
     const openListItemDiv = (tokenid: any, event: React.MouseEvent) => {
-      event.preventDefault(); // Prevent the default behavior of the event
+      event.preventDefault();
       setListingItemTokenId(tokenid);
       setShowBgOverlay(true);
       setShowListNFTDiv(true);
+      setTimeout(function() {
+        if(divRef.current) {
+          divRef.current.focus()
+        }
+      }, 2000);
     }
 
     const closeListItemModalDiv = () => {
       setShowBgOverlay(false);
-      setShowListNFTDiv(false)
+      setShowListNFTDiv(false);
+      setShowChangePriceModal(false);
     }
 
     const closeAlertModal = () => {
@@ -260,9 +346,52 @@ const MyNFTs: React.FC<{}> = () =>  {
     {nftactionsuccess && 
         <ActionSuccessModal prop='NFT Item Auction ' onChange={closeActionModalComp}/>
     }
+     
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+        {showchangepriceModal && 
+          <div className={styles.listnftitem} ref={divRef} tabIndex={-1}>
+            <div className={styles.listnftitem_c}>
+              <div className={styles.listnftitem_h}>
+                  <div>
+                    
+                  </div>
+                  <div>
+                    <h1>Update Item Bidding Options </h1>
+                  </div>
+                  <div>
+                    <button type='button' onClick={closeListItemModalDiv}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                  </div>
+              </div>
+              <div className={styles.listnftitem_c_in}>
+                  <div className={styles.listnftitem_c_ina}>
+                      <div className={styles.list_tc}>
+                        <label>NFT item id</label>
+                        <input type='text' value={listingItemTokenId} readOnly/>
+                      </div>
+                      <div className={styles.list_tc}>
+                        <label>New listing price(BNB/MATIC)</label>
+                        <input type='text' onChange={(e) => setNftItemPrice(e.target.value) } placeholder='200BNB'/>
+                      </div>
+                  </div>
+                  <div className={styles.listnftitem_c_ina}>
+                      <div className={styles.list_tc}>
+                        <label>New bidding duration(days)</label>
+                        <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
+                      </div>
+                      <div className={styles.list_tc}>
+                        <label>New min. bid amount</label>
+                        <input type='number' onChange={(e) => setMinBidAmount(e.target.value) } placeholder='1'/>
+                      </div>
+                  </div>
+                  <div>
+                    <button className={styles.createlistitem_} onClick={updateBiddingOptions}>Update Bidding Options</button>
+                  </div>
+              </div>
+            </div>
+        </div>
+        }
         {showListNFTDiv && 
-          <div className={styles.listnftitem}>
+          <div className={styles.listnftitem} ref={divRef} tabIndex={-1}>
             <div className={styles.listnftitem_c}>
               <div className={styles.listnftitem_h}>
                   <div>
@@ -282,7 +411,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='text' value={listingItemTokenId} readOnly/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>Listing price(BNB)</label>
+                        <label>Listing price(BNB/MATIC)</label>
                         <input type='text' onChange={(e) => setNftItemPrice(e.target.value) } placeholder='200BNB'/>
                       </div>
                   </div>
@@ -292,7 +421,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>Min. bid Amount</label>
+                        <label>Min. bid amount</label>
                         <input type='number' onChange={(e) => setMinBidAmount(e.target.value) } placeholder='1'/>
                       </div>
                   </div>
@@ -337,7 +466,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                 </div>
 
                 <div className={styles.nft_option}>
-                {nftLoaded && myunlistedNFTs.length > 0 && myunlistedNFTs?.map((myunlistedNFT:NFTMetadata,index:number) => (
+                {nftLoaded && myunlistedNFTs.length > 0 ? myunlistedNFTs?.map((myunlistedNFT:NFTMetadata,index:number) => (
                     <div key={index} className={styles.nft_options_}>
                       <div className={styles.nft_options__} key={index}>
                           <Image src={myunlistedNFT.image} width={100} height={100} priority style={{objectFit:'cover',width: '100%',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
@@ -348,18 +477,21 @@ const MyNFTs: React.FC<{}> = () =>  {
                                 </div>
                                 <div className={styles.nft_addbtn}>
                                     <div className={styles.nft_addr}>
-                                      <span>{myunlistedNFT.address.substring(0, 8)+' ...'}</span>
-                                      <span className={styles.c_nft_addr}>{myunlistedNFT.address}</span>
+                                      <span>{myunlistedNFT.creator.substring(0, 8)+' ...'}</span>
+                                      <span className={styles.c_nft_addr}>{myunlistedNFT.creator}</span>
                                       <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
                                     </div>
                                     <div className={styles.nft_list}>
-                                      <button className={styles.listnft} onClick={(e) => openListItemDiv(myunlistedNFT.tokenId,e)}>List NFT</button>
+                                      {myunlistedNFT.owner == myunlistedNFT.creator ? <button type='button' className={styles.listnft} onClick={(e) => openListItemDiv(myunlistedNFT.tokenId,e)}>List NFT</button> : ""}
                                   </div>
                                 </div>
                             </div>
                       </div>
                     </div>
-                  ))}
+                  )) : 
+                  <div className={styles.notfound_p}>
+                    <div className={styles.notfound}>No items were found</div>
+                  </div>}
                 </div>
               </div>
             </div>
@@ -377,24 +509,26 @@ const MyNFTs: React.FC<{}> = () =>  {
                 </div>
 
                 <div className={styles.nft_option}>
-                {nftLoaded && mylistedNFTs.length > 0 && mylistedNFTs?.map((mylistedNFT:NFTFullMetadata,index:number) => (
+                {nftLoaded && mylistedNFTs.length > 0 ? mylistedNFTs?.map((mylistedNFT:NFTFullMetadata,index:number) => (
                     <div key={index} className={styles.nft_options_}>
                       <div className={styles.nft_options__} key={index}>
                           <a href={`/nft/${mylistedNFT.name.replace(/[ ]+/g, "-")}/${mylistedNFT.tokenId!.toString()}`}>
                             <Image src={mylistedNFT.image} width={100} priority height={100}  style={{objectFit:'cover',width: '100%',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
-                            <div className={styles.nft_head}>
+                          </a>
+                          <div className={styles.nft_head}>
+                              <a href={`/nft/${mylistedNFT.name.replace(/[ ]+/g, "-")}/${mylistedNFT.tokenId!.toString()}`}>
                                 <div className={styles.nft_pfh}><h2>{mylistedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
                                 <div className={styles.nft_desc}>
                                     <span>{mylistedNFT.description.substring(0, 40)+' ...'}</span>
                                 </div>
                                 <div className={styles.nft_addbtn}>
                                     <div className={styles.nft_addr}>
-                                      <span>{mylistedNFT.address.substring(0, 8)+' ...'}</span>
-                                      <span className={styles.c_nft_addr}>{mylistedNFT.address}</span>
+                                      <span>{mylistedNFT.owner.substring(0, 8)+' ...'}</span>
+                                      <span className={styles.c_nft_addr}>{mylistedNFT.owner}</span>
                                       <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
                                     </div>
                                     <div className={styles.nft_list}>
-                                      <span className={styles.listed}>Listed</span> 
+                                      <span className={styles.listed}>Listed {<FontAwesomeIcon icon={faCheck} style={{color:'#e3a204'}}/>}</span> 
                                     </div>
                                 </div>
                                 <div className={styles.nft_list_p}>
@@ -410,14 +544,25 @@ const MyNFTs: React.FC<{}> = () =>  {
                                 </div>
                                 <div className={styles.nft_list_p}>
                                   <div>
-                                    <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{mylistedNFT.biddingduration?.toNumber()} Days</span>
+                                    <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor(mylistedNFT.biddingduration?.toNumber()/86400000)} Days</span>
                                   </div>
                                 </div>
-                            </div>
-                          </a>
+                              </a>
+                              <div className={styles.nft_list_b}>
+                                <div>
+                                  {mylistedNFT.owner == mylistedNFT.creator ? <button className={styles.listedp} type='button' onClick={() => unlistItem(mylistedNFT.itemId!.toString())}>Unlist</button> : <button className={styles.listedp} type='button' onClick={() => listbackItem(mylistedNFT.itemId!.toString())}>Unlist</button>} 
+                                </div>
+                                <div>
+                                  <button className={styles.listedp} type='button' onClick={(e) => changeitemPrice(e)}>Update Bid Price</button> 
+                                </div>
+                              </div>
+                          </div>
                       </div>
                     </div>
-                  ))}
+                  )) : 
+                  <div className={styles.notfound_p}>
+                    <div className={styles.notfound}>No items were found</div>
+                  </div>}
                 </div>
               </div>
             </div>

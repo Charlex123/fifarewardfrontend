@@ -113,7 +113,12 @@
     margin: 0 auto 10px auto;text-align: center;font-size: 14px;font-family: "Poppins",sans-serif;font-weight: 900;
     background-color: #e28305;border-radius: 16px;padding: 3px 22px 0 22px;width: fit-content;color: #000000;
 }
-
+.main .settings .notfound_p {
+    width: 100%;margin: auto;text-align: center;
+}
+.main .settings .notfound {
+    text-align: center;font-family: "Montserrat",sans-serif;margin: 20px auto;
+}
 .err-alat {
 padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "Poppins";border-radius: 8px;background: rgba(120, 224, 143, 1);
 }

@@ -28,7 +28,7 @@ dotenv.config();
 export default function CreateItem() {
   
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
-  const [nftcontractAddress] = useState<any>("0x01c37074610aFF3a3B75Cc6ba3Ed4ea896A339fb");
+  const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
   const [frdcontractAddress] = useState<any>("0x344db0698433Eb0Ca2515d02C7dBAf21be07C295");
   const { theme } = useContext(ThemeContext);
   const [betactionsuccess,setActionSuccess] = useState<boolean>(false);
@@ -37,6 +37,7 @@ export default function CreateItem() {
   const [showloading, setShowLoading] = useState<boolean>(false);
   const { open } = useWeb3Modal();
   const [openaddTraits, setOpenAddTraits] = useState<boolean>(false);
+  const [showtrait, setshowTraits] = useState<boolean>(false);
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { disconnect } = useDisconnect();
@@ -156,6 +157,7 @@ export default function CreateItem() {
         let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
         let transaction = await contract.createToken(fileUrl)
         await transaction.wait();
+        console.log(" nft creation transaction",transaction)
         setShowLoading(false);
         setShowBgOverlay(false);
         router.push('../nft/mynfts')
@@ -196,6 +198,7 @@ export default function CreateItem() {
                                 <input type='text' onChange={(e) => setTraitValue(e.target.value) }  placeholder='Ex. Large'/>
                               </div>
                           </div>;
+      setshowTraits(true);
       setaddTraitDiv([...addTraitDiv, newAddTraitDiv]);
       const traits = {traitname: traitName ,traitvalue:traitValue}
       Traits.push(traits);
@@ -319,7 +322,14 @@ export default function CreateItem() {
               <label className={styles.label}>Traits </label>
               <p>Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page.</p>
               <button onClick={AddTraits} className={styles.add_traits}> + Add Trait(s)</button>
+              {showtrait && Traits.map((trait,index) => (
+                <div key={index}>
+                  <div>{trait.name}</div>
+                  <div>{trait.value}</div>
+                </div>
+              ))}
             </div>
+
             <div className={styles.form_g}>
               <button type='button' title='create nft' onClick={checkLogin} className={styles.create_btn}>
                 Create NFT

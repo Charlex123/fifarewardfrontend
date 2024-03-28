@@ -12,6 +12,7 @@ import ActionSuccessModal from './ActionSuccess';
 import { ThemeContext } from '../contexts/theme-context';
 import axios from 'axios';
 import NFTMarketPlaceContractAbi from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
+import NFTMarketPlaceFeaturesContractAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ethers } from 'ethers';
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useWeb3Modal } from '@web3modal/ethers5/react';
@@ -46,8 +47,10 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
   const [nftItemPrice, setNftItemPrice] = useState<string>("");
   const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
+  // const [connectedCount, setConnectedCount] = useState<number>(0);
   
   const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
+  const [nftfeaturescontractAddress] = useState<any>("0x18B2Be8468B276F0A643b8d922Ebb3C7cE137DF8");
 
   const [listedNFTs,setListedNFTS] = useState<NFTFullMetadata[]>([]);
   
@@ -64,7 +67,16 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
         }
         console.log('is connected',isConnected)
         if(!isConnected) {
-          open()
+          open();
+        }else {
+          // setShowLoading(false);
+          // console.log("connected count",connectedCount);
+          // if(connectedCount <= 0) {
+          //   setConnectedCount(1);
+          //   router.reload();
+          // }else {
+          //   //
+          // }
         }
     }else {
         setIsloggedIn(false);
@@ -78,7 +90,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                 const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                 const signer = provider.getSigner();
                 /* next, create the item */
-                let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlaceContractAbi, signer);
+                let contract = new ethers.Contract(nftfeaturescontractAddress, NFTMarketPlaceFeaturesContractAbi, signer);
                 console.log("contract",contract)
                 if(contract) {
                     let listednfts = await contract.fetchUnSoldAuctionItems();
@@ -100,14 +112,14 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                           description: description,
                           traits: traits,
                           chainId: chainId,
+                          seller: element.seller,
                           creator: element.creator,
-                          address: address,
+                          owner: element.owner,
                           hascreatedToken: element.hascreatedToken,
                           // following properties only exist if the NFT has been minted
                           tokenId: element.tokenId,
                           tokenURI: element.tokenURI,
                           price: element.sellingprice,
-                          seller: element.seller,
                           itemId: element.itemId,
                           biddingduration: element.biddingduration,
                           minbidamount: element.minbidamount,
@@ -122,7 +134,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                         return item;
                       }
                     });
-                    
+                    setShowLoading(false);
                 }
             }
         } catch (error) {
@@ -186,7 +198,7 @@ const closeActionModalComp = () => {
               <div className={styles.settings_in}>
                 
                 <div className={styles.nft_option}>
-                {nftLoaded && listedNFTs.length > 0 && listedNFTs?.map((listedNFT:NFTFullMetadata,index:number) => (
+                {nftLoaded && listedNFTs.length > 0 ? listedNFTs?.map((listedNFT:NFTFullMetadata,index:number) => (
                     <div key={index} className={styles.nft_options_}>
                       <div className={styles.nft_options__} key={index}>
                           <a href={`/nft/${listedNFT.name.replace(/[ ]+/g, "-")}/${listedNFT.tokenId!.toString()}`}>
@@ -198,8 +210,8 @@ const closeActionModalComp = () => {
                                 </div>
                                 <div className={styles.nft_addbtn}>
                                     <div className={styles.nft_addr}>
-                                      <span>{listedNFT.address.substring(0, 8)+' ...'}</span>
-                                      <span className={styles.c_nft_addr}>{listedNFT.address}</span>
+                                      <span>{listedNFT.owner.substring(0, 8)+' ...'}</span>
+                                      <span className={styles.c_nft_addr}>{listedNFT.owner}</span>
                                       <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
                                     </div>
                                     <div className={styles.nft_list}>
@@ -226,7 +238,13 @@ const closeActionModalComp = () => {
                           </a>
                       </div>
                     </div>
-                  ))}
+                  )) : 
+                  <div className={styles.notfound_p}>
+                    <div className={styles.notfound}>
+                      No NFT data was found
+                    </div>
+                  </div>
+                  }
                   
                   
 
