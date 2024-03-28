@@ -617,7 +617,7 @@ const loadSearchResults = async () => {
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         {isparamsLoaded && <div className={matchstyle.breadcrum}>
-          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam.replace(/-/g, ' ')} {'>'} {leagueparam.replace(/-/g, ' ')} {'>'} {matchparam.replace(/-/g, ' ')}</a>
+          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam?.replace(/-/g, ' ')} {'>'} {leagueparam?.replace(/-/g, ' ')} {'>'} {matchparam?.replace(/-/g, ' ')}</a>
         </div> }
 
         {showloginComp && 
@@ -694,9 +694,9 @@ const loadSearchResults = async () => {
 
                                 <div className={matchstyle.fixt_tm}>
                                     <div className={matchstyle.teams}>
-                                    <div>{`${matchData?.teams.home.name}`}</div>
+                                    <div>{`${matchData?.teams.home.name}`} {matchData?.goals.home != null ? (matchData?.goals.home) : ''}</div>
                                     <div className={matchstyle.vs}>Vs</div>
-                                    <div>{`${matchData?.teams.away.name}`}</div>
+                                    <div>{`${matchData?.teams.away.name}`} {matchData?.goals.away != null ? (matchData?.goals.away) : ''}</div>
                                     </div>
                                 </div>
                                 <div className={matchstyle.openbet}>

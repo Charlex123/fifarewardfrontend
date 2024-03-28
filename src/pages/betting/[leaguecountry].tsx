@@ -1,22 +1,22 @@
 import React from 'react';
 import BackToTop from '../../components/back-to-top/back-to-top';
 import ChangeTheme from '../../components/change-theme/change-theme';
-import LoadBets from '../../components/Betting';
+import CountryFixtures from '../../components/CountryFixtures';
 import BettingNavbar from '../../components/navbar/BettingNavBar';
 import Footer from '../../components/Footer';
 import FooterNavBar from '../../components/FooterNav';
-function Betting() {
+function Country() {
 
   return (
     <>
         <BettingNavbar/>
         <BackToTop />
         <ChangeTheme />
-        <LoadBets />
+        <CountryFixtures />
         <FooterNavBar />
         <Footer/>
     </>
   )
 }
 
-export default Betting
+export default Country

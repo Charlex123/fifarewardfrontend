@@ -30,8 +30,6 @@ import FooterNavBar from './FooterNav';
 import DappNav from './Dappnav';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
-const dotenv = require("dotenv");
-
 import DappFooter from './DappFooter';
 import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
@@ -40,10 +38,12 @@ import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
-dotenv.config();
+
 
 const Dapp:React.FC<{}> = () =>  {
 
+  // const dotenv = require("dotenv");
+  // dotenv.config();
   const router = useRouter();
   const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;

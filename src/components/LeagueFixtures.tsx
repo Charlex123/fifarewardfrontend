@@ -35,7 +35,7 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
   useEffect(() => {
     
     (async (leagueid) => {
-
+      console.log("current page",currentPage)
       try {
         setShowLoading(true);
         const config = {
@@ -51,6 +51,7 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
         setIsleagueLoaded(true);
         setTotalPages(data.totalPages);
         setFixturesd(data.leaguefixtures);
+        console.log("fix",data.leaguefixtures)
         setShowLoading(false);
       } catch (error) {
         console.log(error)
@@ -167,7 +168,7 @@ return (
           <div className={leaguefixturestyle.betwrap}>
             <div className={leaguefixturestyle.betwrapin} id='betwrapin'>
               {
-                isleagueloaded ? 
+                isleagueloaded &&
                 <div>
                     {fixturesd!.length > 0 ? 
                       <div>
@@ -194,9 +195,9 @@ return (
 
                                     <div className={leaguefixturestyle.fixt_tm}>
                                       <div className={leaguefixturestyle.teams}>
-                                        <div>{`${fixture.teams.home.name}`}</div>
+                                        <div>{`${fixture.teams.home.name}`} {fixture.goals.home != null ? (fixture.goals.home) : ''}</div>
                                         <div className={leaguefixturestyle.vs}>Vs</div>
-                                        <div>{`${fixture.teams.away.name}`}</div>
+                                        <div>{`${fixture.teams.away.name}`} {fixture.goals.away != null ? (fixture.goals.away) : ''}</div>
                                       </div>
                                     </div>
                                     <div className={leaguefixturestyle.openbet}>
@@ -227,12 +228,17 @@ return (
                           </div>
                         ))}
                       </div>  :
-                      <div className={leaguefixturestyle.notfound_p}>
-                        <div className={leaguefixturestyle.notfound}>No fixtures found at the moment, please check back later </div>
+                      <div className={leaguefixturestyle.league_wrap}>
+                        <div className={leaguefixturestyle.tgle} >
+                          <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                          <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                        </div>
+                        <div className={leaguefixturestyle.notfound_p}>
+                          <div className={leaguefixturestyle.notfound}>No league fixtures found at the moment, please check back later </div>
+                        </div>
                       </div>
                   }
-                </div> : 
-                <div><Loading /></div>
+                </div> 
               }
             </div>
           </div>
