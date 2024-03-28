@@ -2,7 +2,6 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import matchstyle from '../styles/match.module.css'
 import axios from 'axios';
-import dotenv from 'dotenv';
 import Image from 'next/image';
 import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
@@ -10,6 +9,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
+import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
 import moment from 'moment';
@@ -23,7 +23,6 @@ import { Fixture } from './FixtureMetadata';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-dotenv.config();
 // material
 // component
 
@@ -104,8 +103,10 @@ const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
 const [searchkeyword,setSearchKeyWord] = useState<string>('');
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const router = useRouter();
-const FRDAddress = "0x344db0698433Eb0Ca2515d02C7dBAf21be07C295";
-const BettingCA = "0xc6258D0E776d9139dbFC847B81E4F9C49F8cFB3B";
+const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
+const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+const BettingFeatureCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
+console.log("b ca",BettingCA)
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const { address, chainId, isConnected } = useWeb3ModalAccount();
@@ -220,7 +221,7 @@ const openBetC = async () => {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
         let rembetparticipantscount = parseInt(betParticipantsCount) - 1;
-        let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
+        let Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
         let bCOpenBet = await Betcontract.OpenBet(tamount,matchidparam,username,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount,{ gasLimit: 1000000 });
@@ -248,7 +249,7 @@ const Approve = async (e:any) => {
         setShowLoading(true);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
         const reslt = await FRDContract.approve(BettingCA,tamount);
@@ -276,7 +277,7 @@ const handleOpenBetForm = async (e:any) => {
     
                 console.log('signer address',signer,signer.getAddress(),signer._address,address)
                 /* next, create the item */
-                let FRDcontract = new ethers.Contract(FRDAddress, FRDAbi, signer);
+                let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
                 
                 // const tamount = ethers.BigNumber.from("5000000000000000000000000");
                 // let fundwalletaddress = FRDcontract.transfer("0x6df7E51F284963b33CF7dAe442E5719da69c312d",tamount);

@@ -61,7 +61,7 @@ interface LeagueC {
 
 interface CupLeagues {
   count: number,
-  league: LeagueC[],
+  league: LeagueC,
 }
 
 interface Countries {

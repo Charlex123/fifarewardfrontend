@@ -61,7 +61,7 @@ interface LeagueC {
 
 interface CupLeagues {
   count: number,
-  league: LeagueC[],
+  league: LeagueC,
 }
 
 interface Countries {
@@ -113,6 +113,8 @@ const CountryFixtures:React.FC<{}> = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   const router = useRouter();
+  const countryparam = router.query[0];
+  console.log("countryparam",countryparam)
 
   useEffect(() => {
     try {
@@ -225,6 +227,7 @@ const CountryFixtures:React.FC<{}> = () => {
       fetchTodayFixtures();
     }
 
+    
     // setInterval(rotateSearchOption,5000);
     const handleClickOutside = (event: MouseEvent) => {
       const inputElement = inputRef.current;
@@ -452,7 +455,7 @@ const handleInputClick = () => {
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         <div className={bettingstyle.breadcrum}>
-          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a>
+          {/* <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}`}>{countryparam?.replace(/-/g, ' ')}</a> */}
         </div>
         {showloginComp && 
             <div>
