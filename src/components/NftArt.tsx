@@ -16,8 +16,8 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { NFTBidMetadata } from './NFTBidMetadata';
 import { NFTFullMetadata } from './NFTFullMetadata';
-import { faCheckCircle, faEye, faEyeSlash, faHeart, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faAlignJustify, faCartPlus, faCartShopping, faChevronLeft, faCircleCheck, faTag, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEyeSlash, faHeart, } from "@fortawesome/free-regular-svg-icons";
+import { faAlignJustify, faCartShopping, faCircleCheck, faTag, faXmark  } from "@fortawesome/free-solid-svg-icons";
 // material
 import styles from "../styles/nftart.module.css";
 import dotenv from 'dotenv';
