@@ -16,6 +16,7 @@ import moment from 'moment';
 import Loading from './Loading';
 import AlertDanger from './AlertDanger';
 import BgOverlay from './BgOverlay';
+import { Bets } from './BetsMetadata';
 import ActionSuccessModal from './ActionSuccess';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
@@ -70,9 +71,6 @@ interface Countries {
 const inputRef = useRef<HTMLInputElement>(null);
 const divRef = useRef<HTMLDivElement>(null);
 const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
-const [calendarIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCalendarAlt}/>);
-const [drpdwnIcon] = useState<JSX.Element>(<FontAwesomeIcon icon={faCaretDown}/>);
-const [showcalender, setShowCalendar] = useState<boolean>(false);
 const [loadedlaguedata,setLoadedLeagueData] = useState<boolean>(false);
 const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
 const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
@@ -81,6 +79,7 @@ const [userId, setUserId] = useState<string>("");
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 const [showloginComp,setShowLoginComp] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
+const [betData,setBetData] = useState<Bets[]>([]);
 
 const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
 const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
@@ -105,7 +104,7 @@ const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>
 const router = useRouter();
 const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
 const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
-const BettingFeatureCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
+const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
 console.log("b ca",BettingCA)
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
@@ -124,7 +123,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             }
         }
         
-
+        
         if(windowloadgetbetruntimes == 0) {
           const fetchData = async () => {
             try {
@@ -174,6 +173,55 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
       console.log(error)
     }
 
+    const fetchPlacedBets = async () => {
+      if(!isConnected) {
+        open();
+        // router.reload();
+      }else {
+        if(walletProvider) {
+          try {
+            setShowLoading(true);
+            const provider = new ethers.providers.Web3Provider(walletProvider as any)
+            const signer = provider.getSigner();
+            let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingAbi, signer);
+            let loadBets = await BetFeaturescontract.loadAllBets();
+            console.log("loadBets",loadBets)
+            // await loadBets.forEach(async (element:any) => {
+            //     console.log(" loaded bets",element)
+            //     let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+            //     let item: Bets = {
+            //       betId: element.betId,
+            //       matchId: element.matchId,
+            //       username: element.username,
+            //       matchfixture: element.matchfixture,
+            //       openedBy: element.openedBy,
+            //       participant: element.participant,
+            //       betamount: betAmt,
+            //       totalbetparticipantscount: element.totalbetparticipantscount,
+            //       remainingparticipantscount: element.remainingparticipantscount,
+            //       prediction: element.prediction,
+            //       bettingteam: element.bettingteam,
+            //       betstatus: element.betstatus,
+            //       participants: element.participants,
+            //       betwinners: element.betwinners,
+            //       betlosers: element.betlosers,
+            //     }
+            //     betData.push(item);
+            //     setBetData(betData);
+            //     setShowLoading(false);
+            //     console.log("bet data",betData)
+            //     return item;
+            // });
+          } catch (error) {
+            setShowAlertDanger(true);
+            seterrorMessage(error);
+            setShowLoading(false);
+          }
+        }
+      }
+    };
+
+    fetchPlacedBets();
     // let searchOptions = ["Team","Match"];
     // let currentSearchOptionIndex = 0;
 

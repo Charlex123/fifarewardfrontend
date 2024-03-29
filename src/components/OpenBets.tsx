@@ -93,22 +93,23 @@ useEffect(() => {
       }
   }
   
-  if(windowloadgetbetruntimes == 0) {
+  // if(windowloadgetbetruntimes == 0) {
     const fetchData = async () => {
       if(!isConnected) {
         open();
-        router.reload();
       }else {
         if(walletProvider) {
           try {
+            console.log(" hop in")
             setShowLoading(true);
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
-            let Betcontract = new ethers.Contract(BettingFeaturesCA!, BettingAbi, signer);
-            let loadBets = await Betcontract.loadAllBets();
-            
+            let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingAbi, signer);
+            console.log(" test a",BetFeaturescontract)
+            let loadBets = await BetFeaturescontract.loadAllBets();
+            console.log(" loaded bets",loadBets)
             await loadBets.forEach(async (element:any) => {
-                console.log(" loaded bets",element)
+                
                 let betAmt = Math.ceil((element.betamount.toString())/(10**18));
                 let item: Bets = {
                   betId: element.betId,
@@ -143,9 +144,9 @@ useEffect(() => {
     };
 
     fetchData();
-  }else {
+  // }else {
 
-  }
+  // }
 
   
   let searchOptions = ["Bet Id","Match Id","Match","Username","Opened Bets"];

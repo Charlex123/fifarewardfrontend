@@ -10,25 +10,11 @@ import { faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
-import dappconalertstyles from "../styles/dappconnalert.module.css";
-import dappsidebarstyles from '../styles/dappsidebar.module.css';
-// component
-import { useWeb3React } from "@web3-react/core";
-import { ethers } from 'ethers';
-import ws from 'ws';
-import { useWeb3Modal } from '@web3modal/ethers5/react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
-import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
-import axios from 'axios';
-import AlertMessage from './AlertMessage';
 import { ThemeContext } from '../contexts/theme-context';
-import FooterNavBar from './FooterNav';
-import DappNav from './Dappnav';
-import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
-import DappFooter from './DappFooter';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import axios from 'axios';
+import { fas, faCheck, faCheckCircle,faAlignJustify } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
@@ -38,6 +24,7 @@ library.add(faEye, faEyeSlash);
 const ReferralLink:React.FC<{}> = () =>  {
 
   const router = useRouter();
+  const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<number>();  
   const [walletaddress, setWalletAddress] = useState<any>("NA");  
@@ -77,9 +64,11 @@ const ReferralLink:React.FC<{}> = () =>  {
    }, 1500);
  };
 
+ console.log("ref u address", address)
   
   useEffect(() => {
-    
+    setWalletAddress(address);
+
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
@@ -93,6 +82,26 @@ const ReferralLink:React.FC<{}> = () =>  {
       router.push(`/signin`);
     }
 
+    if(address) {
+        async function updateWalletAddress() {
+          try {
+            const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+            }  
+            const {data} = await axios.post("http://localhost:9000/api/users/updatewalletaddress/", {
+              walletaddress,
+              username
+            }, config);
+            console.log('update wallet data', data.message);
+            // setisWalletAddressUpdated(!isWalletAddressUpdated);
+          } catch (error) {
+            console.log(error)
+          }
+      }
+      updateWalletAddress();
+    }
     
   async function getWalletAddress() {
     
@@ -117,9 +126,9 @@ getWalletAddress();
 
   return (
     <>
-        <div className={dappstyles.reflink}>
+        <div className={`${dappstyles.reflink} ${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']}`} >
             <div className={dappstyles.reflinkdex}>Ref Link: <input title="input" value={referralLink} readOnly /><button type='button' onClick={handleCopyClick}>{buttonText}</button> </div>
-            <div><small>Share referral link to earn more tokens!</small></div>
+            <div><small>Share referral link to earn more FRD!</small></div>
             <div>Connected Wallet: <span style={{color: 'orange'}}>{walletaddress}</span></div>
         </div>
     </>

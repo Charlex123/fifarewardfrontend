@@ -6,15 +6,10 @@ import logo from '../assets/images/logo.png';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { providers } from "ethers";
-import { useWeb3React } from "@web3-react/core";
-import { ethers } from 'ethers';
-import { useWeb3Modal } from '@web3modal/ethers5/react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
-import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import ConnectWallet from './ConnectWalletButton';
+import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFontAwesome, } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 
@@ -25,25 +20,11 @@ function Navbar() {
     const [isNavOpen, setNavOpen] = useState(false);
     const [scrolling, setScrolling] = useState(false);
     const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
-    const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
     const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
-
-    // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
-    const { open, close } = useWeb3Modal();
-
-    const { address, chainId, isConnected } = useWeb3ModalAccount();
-    const { walletProvider } = useWeb3ModalProvider();
-    const { disconnect } = useDisconnect();
 
     const router = useRouter();
 
   
-    const [signature, setSignature] = useState("");
-    const [error, setError] = useState("");
-    const [network, setNetwork] = useState(undefined);
-    const [message, setMessage] = useState("");
-    const [signedMessage, setSignedMessage] = useState("");
-    const [verified, setVerified] = useState();
 
     
     useEffect(() => {
@@ -113,18 +94,12 @@ function Navbar() {
     const toggleIconUp1 = () => {
         setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
     }
-    const toggleIconUp2 = () => {
-        setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
-    }
     const toggleIconUp3 = () => {
         setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
     }
 
     const toggleIconDown1 = () => {
         setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
-    }
-    const toggleIconDown2 = () => {
-        setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
     }
 
     const toggleIconDown3 = () => {
@@ -170,6 +145,9 @@ function Navbar() {
                     <li>
                       <a href='/rewards' rel='noopener noreferrer' className={styles.si}>Rewards </a>
                     </li>
+                    <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
+                        <a href='/stakes' rel='noopener noreferrer' className={styles.si}> Stakes</a>
+                    </li>
                     <li>
                       <a href='/gaming' rel='noopener noreferrer' className={styles.si}>Gaming</a>
                     </li>
@@ -179,23 +157,17 @@ function Navbar() {
                     <li>
                       <a href='/nft/mynfts' rel='noopener noreferrer' className={styles.si}> NFTs</a>
                     </li>
-                    <li>
-                      <a href='/referrals' rel='noopener noreferrer' className={styles.si}>Referrals</a>
-                    </li>
-                    <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
-                        <a href='/stakes' rel='noopener noreferrer' className={styles.si}> Stakes</a>
-                    </li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
                         <a href='/stakes' rel='noopener noreferrer' className={styles.si}>Mine FRD</a>
                     </li>
+                    <li>
+                      <a href='/referrals' rel='noopener noreferrer' className={styles.si}>Referrals</a>
+                    </li>
+                    
+                    
                 </ul>
                 <ul className={styles.upa}>
-                    <li className={styles.ld}>
-                        {!isConnected ? (
-                        <button onClick={() => open()}>Connect Wallet</button>
-                        ) : (
-                        <button onClick={() => disconnect()} className={styles.connected}><span>connected</span>Disconnect</button>
-                        )}</li>
+                        <ConnectWallet />
                     <li className={styles.si}><button onClick={logout} type='button'>Logout</button></li>
                 </ul>
                 </div>)

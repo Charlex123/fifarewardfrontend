@@ -3,33 +3,41 @@
 @import url("https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 .sidebar {
-    height: 100%;align-items: center;vertical-align: auto;position: relative;top: 0;left: 0;width: 100%;padding-top: 0;
+    height: 100%;align-items: center;vertical-align: auto;position: relative;top: 0;left: 0;width: 100%;padding-top: 0;margin-top: 4px;
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+99,0.65+99,0+100 */
-background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,1) 99%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+/* background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,1) 99%,rgba(0,0,0,0) 100%); W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 overflow: scroll;padding-bottom: 2rem;
 }
-.overlay_dapp {
+/* .overlay_dapp {
   background-color: rgba(58, 57, 57, 0.089);z-index: 99;position: fixed;top: 0;right: 0;bottom: 0;left: 0;display: none;
+} */
+.darkmod {
+  border: 1px solid #f1f1f13c;border-radius: 0;background-color: #16131376;
+  color: var(--text-color-dark);
+}
+.lightmod {
+  border: 1px solid #96939386;background-color: #252525c2;border-radius: 0;
+  color: var(--text-color-dark);
 }
 .sidebar .sidebar_toggle_btn {
   margin-left: 15px;margin-top: 15px;background-color: transparent !important;border: none;
-  color: #ffffff !important;z-index: 999;position: absolute;top: 0;right: 0;display: none;font-size: 22px;
+  z-index: 999;position: absolute;top: 0;right: 0;display: none;font-size: 22px;
 }
 .sidebar .sidebar_toggle_btn .toggle_icon {
-  color: #f1f1f1;font-size: 28px;z-index: 99;
+  font-size: 28px;z-index: 99;
 }
 .sidebar .sidebar_toggle_btn .user_icon {
-  color: #ffffff;font-size: 14px !important;
+  font-size: 14px !important;
 }
 .sidebar .sidebar_container {
     display: block;width: 100%;
-    font-family: "Poppins",sans-serif;color: rgb(230, 224, 224);height: inherit;
+    font-family: "Poppins",sans-serif;height: inherit;
     margin: auto;z-index: 0;top: 0;right: 0;left: 0;padding-bottom: 2rem;margin-bottom: 2rem;
 }
-.sidebar .sidebar_container.scrolled {
-  background: rgb(13,20,24);
-  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
-}
+/* .sidebar .sidebar_container.scrolled { */
+  /* background: rgb(13,20,24); */
+  /* background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
+/* } */
 .sidebar .sidebar_container .logo {
   margin-top: 20px;margin-left: 15px;
 }
@@ -53,7 +61,7 @@ overflow: scroll;padding-bottom: 2rem;
   display: block;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li .sidebarlisttoggle {
-    color: #e6e3e3;font-size: 9px;margin-bottom: 2px;
+    font-size: 9px;margin-bottom: 2px;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li a.toplink {
     background-color: #c2c5c3;color: #0a0a0a;padding: 4px 20px;border-radius: 60px;
@@ -73,7 +81,7 @@ overflow: scroll;padding-bottom: 2rem;
   background-color: #f0eded49;border: 1px dashed #e3a204 ;color: #e3a204 ;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld:hover > a {
-  color: #7af8a6;
+  color: #676767df;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li.ld:active {
   background-color: #f0eded49;border: 1px dashed #e3a204 ;
@@ -95,7 +103,7 @@ color: #e0f7e8;
 background-color: #f0eded49;border: 1px dashed #e3a204 ;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li a {
-    color: #f1f1f1;font-family: "Poppins",sans-serif;text-decoration: none;font-size: 14px;
+    font-family: "Poppins",sans-serif;text-decoration: none;font-size: 14px;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li ul {
   position: relative;width: 100%;

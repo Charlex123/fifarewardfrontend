@@ -1,10 +1,9 @@
-import { useEffect, useState, useContext } from 'react';
+import { useEffect, useState , useContext} from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Image from 'next/image';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
+import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 // import DappSideBar from './Dappsidebar';
 // material
 
@@ -12,34 +11,25 @@ import { faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-
 // import AlertMessage from "./AlertMessage";
 import styles from "../styles/rewardbadge.module.css";
 // component
-import { useWeb3React } from "@web3-react/core";
 import { ethers } from 'ethers';
-import ws from 'ws';
-import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
-import axios from 'axios';
-import AlertMessage from './AlertMessage';
-import { ThemeContext } from '../contexts/theme-context';
 import bronzemedal from '../assets/images/medal.png'
-import FooterNavBar from './FooterNav';
-import DappNav from './Dappnav';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
-import BettingFeatureAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
+import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
-import DappFooter from './DappFooter';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { fas, faCheck, faCheckCircle,faAlignJustify } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-
+import { ThemeContext } from '../contexts/theme-context';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
 
-const RewardsCount:React.FC<{}> = () =>  {
+const RewardsBadge:React.FC<{}> = () =>  {
 
   const router = useRouter();
+  const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<number>();  
   const [stakecount, setStakeCount] = useState<number>(0);
@@ -53,8 +43,8 @@ const RewardsCount:React.FC<{}> = () =>  {
   const { walletProvider } = useWeb3ModalProvider();
 
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
-  const BettingFeatureCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
-  const NFTFeatureCA = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
+  const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
+  const NFTFeaturesCA = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
   
   useEffect(() => {
     
@@ -98,7 +88,7 @@ const RewardsCount:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const BettingFeatureContract = new ethers.Contract(BettingFeatureCA!, BettingFeatureAbi, signer);
+          const BettingFeatureContract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
           const reslt = await BettingFeatureContract.getUserBetCount(address);
           setBetCount(reslt);
           console.log(reslt)
@@ -118,7 +108,7 @@ const RewardsCount:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const NFTFeatureContract = new ethers.Contract(NFTFeatureCA!, FRDNFTFeaturesAbi, signer);
+          const NFTFeatureContract = new ethers.Contract(NFTFeaturesCA!, FRDNFTFeaturesAbi, signer);
           const reslt = await NFTFeatureContract.getUserNFTMintedCount();
           setBetCount(reslt);
           console.log(reslt)
@@ -135,20 +125,21 @@ const RewardsCount:React.FC<{}> = () =>  {
 
   return (
     <>
-        <div className={styles.rewardsbagde}>
+        <div className={`${styles.rewardsbagde} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
           <div className={styles.rwdb}>
             <div className={styles.rwdbadge}>
-                <div>
-                  Minted NFTs {nftcount.toString()}
+                <div className={styles.d1}>
+                  <span>Minted NFTs:</span> <span className={styles.rwd_c}>{nftcount.toString()}</span>
                 </div>
-                <div>
-                  Bets {betcount.toString()}
+                <div className={styles.d2}>
+                  <span>Bets:</span> <span className={styles.rwd_c}>{betcount.toString()}</span>
                 </div>
-                <div>
-                  Stakes {stakecount.toString()}
+                <div className={styles.d3}>
+                  <span>Bets:</span> <span className={styles.rwd_c}>{stakecount.toString()}</span>
                 </div>
-                <div className={styles.badge}>
-                  <Image src={bronzemedal} alt={'medal'} height={25} width = {25} />
+                <div className={styles.d4}>
+                  <Image src={bronzemedal} alt={'medal'} height={25} width = {25} style={{margin: '0 auto'}}/>
+                  <div> Badge</div>
                 </div>
             </div>
           </div>
@@ -157,4 +148,4 @@ const RewardsCount:React.FC<{}> = () =>  {
   );
 }
 
-export default RewardsCount
+export default RewardsBadge

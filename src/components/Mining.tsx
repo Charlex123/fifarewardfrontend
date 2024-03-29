@@ -1,10 +1,11 @@
+import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faClock, faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
-// import DappSideBar from './Dappsidebar';
+import DappSideBar from './Dappsidebar';
 // material
 
 // import Loading from "./Loading";
@@ -13,23 +14,25 @@ import dappstyles from "../styles/dapp.module.css";
 import dappconalertstyles from "../styles/dappconnalert.module.css";
 import dappsidebarstyles from '../styles/dappsidebar.module.css';
 // component
-import { useWeb3React } from "@web3-react/core";
 // import { providers } from "ethers";
 import axios from 'axios';
+import ConnectWallet from './ConnectWalletButton';
 import CountdownTimer from './CountDownTimer';
+import ReferralLink from './ReferralLink';
 import { ethers } from 'ethers';
-import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import { ThemeContext } from '../contexts/theme-context';
 import DappNav from './Dappnav';
 import DappFooter from './DappFooter';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import FooterNavBar from './FooterNav';
+import RewardsBadge from './RewardsBadge';
+import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFontAwesome} from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+
 
 
 
@@ -40,8 +43,8 @@ const Mining = () =>  {
 
   const router = useRouter();
 
-  const FRDAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
-  const StakeAddress = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
+  const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOY_CA;
+  const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
 
   const { theme} = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
@@ -56,7 +59,7 @@ const Mining = () =>  {
   const [dappConnector,setDappConnector] = useState(false);
   const [wAlert,setWAlert] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState("");
+  const [errorMessage, seterrorMessage] = useState("");
   const [network, setNetwork] = useState(undefined);
   const [earningprofitpercent, setEarningProfitPercent] = useState<any>(0);
   const [walletaddress, setWalletAddress] = useState("NA"); 
@@ -73,14 +76,11 @@ const Mining = () =>  {
   const [showWithdrawStake, setShowWithdrawStake] = useState(false);
   
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
-  const { open, close } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-  const { disconnect } = useDisconnect();
 
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
-  
   
   const handleCopyClick = () => {
    // Create a temporary textarea element
@@ -134,8 +134,8 @@ const Mining = () =>  {
         const signer = provider.getSigner();
         console.log('stakes provider',provider);
         console.log('stakes signer',provider);
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
-        const reslt = await StakeContract.stake(StakeAddress,stakeAmount);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const reslt = await StakeContract.stake(StakeCA,stakeAmount);
         console.log(reslt)
       }
         
@@ -143,7 +143,6 @@ const Mining = () =>  {
       console.log(error)
     }
   }
-  StakeFRD()
 
   const Approve = async () => {
     
@@ -153,43 +152,19 @@ const Mining = () =>  {
       if(walletProvider) {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
-          const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
-          const reslt = await FRDContract.approve(StakeAddress,stakeAmount);
+          const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+          const reslt = await FRDContract.approve(StakeCA,stakeAmount);
           if(reslt) {
             StakeFRD();
         }
       }
     } catch (error:any) {
       setDappConnector(true);
-      setErrorMessage("Connect Wallet First");
+      seterrorMessage("Connect Wallet First");
     }
     
   }
 
-  const checkhasStake = async () => {
-    
-    try {
-      // setShowTimer(!showTimer);
-      if(walletProvider) {
-        setWAlert(!wAlert);
-        const provider = new ethers.providers.Web3Provider(walletProvider as any)
-        const signer = provider.getSigner();
-        const stakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
-        const reslt = await stakeContract.hasStake(signer);
-        if(reslt === true) {
-          setShowTimer(true)
-          StakeFRD()
-        }else if(reslt === false) {
-          Approve()
-        }
-      }
-    } catch (error) {
-      console.log("Check has wallet");
-      setDappConnector(true);
-      setErrorMessage("Connect Wallet First");
-    }
-    
-  }
 
   const calculateReward = async () => {
     try {
@@ -197,13 +172,13 @@ const Mining = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
         const reslt = await StakeContract.calcReward();
         console.log('calc reward error',reslt);
       }
     }catch(error) {
       setDappConnector(true);
-      setErrorMessage("No active stake found");
+      seterrorMessage("No active stake found");
     }
     
   }
@@ -214,13 +189,13 @@ const Mining = () =>  {
         setWAlert(!wAlert);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
         const reslt = await StakeContract.withdrawStake();
         console.log("Account Balance: ", reslt);
       }
     } catch (error) {
       setDappConnector(true);
-      setErrorMessage("You must have stake to withdraw");
+      seterrorMessage("You must have stake to withdraw");
     }
   }
 
@@ -362,179 +337,64 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>
               <div className={`${dappstyles.sidebar} ${sideBarToggleCheck}`}>
-                  <nav className={dappsidebarstyles.sidebar}>
-                    {!isSideBarToggled && (
-                      <div className={dappsidebarstyles.overlay_dapp}></div>
-                    )}
-                    <button title='togglebtn' className={dappsidebarstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                      <FontAwesomeIcon icon={faXmarkCircle} size='lg' className={dappsidebarstyles.navlisttoggle}/> 
-                    </button>
-                      <div className={dappsidebarstyles.sidebar_container}>
-                        <div className={dappsidebarstyles.sidebar_container_p}>
-                        <ul className={dappsidebarstyles.upa}>
-                            <li>
-                              <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}>Dapp</a>
-                            </li>
-                            <li>
-                              <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
-                            </li>
-                            <li><a href='/stakes' rel='noopener noreferrer' className={dappsidebarstyles.linka}>My Stakes</a></li>
-                            <li>
-                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>Referrals</a>
-                            </li>
-                            <li className={dappsidebarstyles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
-                                Community {dropdwnIcon3}
-                                <ul>
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faTwitter} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Twitter</span></a></li> */}
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faFacebook} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Facebook</span></a></li> */}
-                                    <li className={dappsidebarstyles.lista}><a href='https://t.me/tafaxtraweb' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faTelegram} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Telegram</span></a></li>
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faDiscord} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Discord</span></a></li> */}
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faMedium} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>Medium</span></a></li> */}
-                                    {/* <li className={dappsidebarstyles.lista}><a href='/' rel='noopener noreferrer' className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faYoutube} size='lg' className={dappsidebarstyles.sidebardrbdwnbrandicon}/> <span className={dappsidebarstyles.brnd}>YouTube</span></a></li> */}
-                                </ul>
-                            </li>
-                        </ul>
-                        <ul className={dappsidebarstyles.upa}>
-                            <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
-                            <li><button type='button' onClick={logout} className={dappsidebarstyles.linka}>Logout</button></li>
-                        </ul>
-                        
-                        </div>
-                    </div>
-                </nav>
+                  <DappSideBar onChange={toggleSideBar}/>
               </div>
               <div className={`${dappstyles.main} ${sideBarToggleCheck}`}>
               <div className={dappstyles.con_btns}>
-              {!isConnected ? (
-                <button onClick={() => open()} className={dappstyles.connect}> Connect Wallet </button>
-                ) : (
-                <button onClick={() => disconnect()} className={dappstyles.connected}> Disconnect </button>
-                )}
+                  <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
                 <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
               </button>
-                <div className={dappstyles.reflink}>
-                    <div className={dappstyles.reflinkdex}>Ref Link: <input title='input' value={referralLink} onChange={(e) => setreferralLink(e.target.value)} /><button type='button' onClick={handleCopyClick}>{buttonText}</button> </div>
-                    <div><small>Share referral link to earn more tokens!</small></div>
-                    <div>Connected Wallet: <span style={{color: 'orange'}}>{walletaddress}</span></div>
-                </div>
+              <div>
+                <RewardsBadge />
+              </div>
+              <div>
+                <ReferralLink />
+              </div>
 
-                <div className={`${dappstyles.stake}`}>
-                    <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
-                        <div className={dappstyles.top}><h1>Stake FRD</h1></div>
-                        <div className={dappstyles.s_m}>
-                          <h3>Stake FRD to earn unlimited profit daily</h3>
-                          {!showTimer && 
-                                <>
-                                  <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={stakeduration} /></div>
-                                </>
-                              }
-                          <div className={dappstyles.s_m_in }>
-                              <div className={dappstyles.s_m_inna}>
-                                <div><label>Stake Amount</label><span className={dappstyles.stkamt_p}> {stakeAmount.toLocaleString()} FRD</span></div>
-                                <div className={dappstyles.amountprog}>
-                                  <input title='input'
-                                    type="range"
-                                    id="horizontalInputforamount"
-                                    min={500}
-                                    max={50000}
-                                    step={1}
-                                    value={stakeAmount}
-                                    onChange={handleChange}
-                                    style={{ width: '100%',height: '5px', cursor: 'pointer', backgroundColor: 'orange' , color: 'orange'}}
-                                  />
-                                </div>
-                              </div>
-                              <div className={dappstyles.s_m_inna}>
-                                <div><label>Stake Duration</label><span className={dappstyles.stkdur_p}> {stakeduration.toLocaleString()} Days</span> <span className={dappstyles.stkdur_y}> {(stakeduration/365).toFixed(1)} Years</span></div>
-                                <div className={dappstyles.amountprog}>
-                                  <input title='input'
-                                    type="range"
-                                    id="horizontalInputforstake"
-                                    min={180}
-                                    max={2360}
-                                    step={2}
-                                    value={stakeduration}
-                                    onChange={handleStakeDuration}
-                                    style={{ width: '100%',height: '5px', cursor: 'pointer', backgroundColor: 'orange', color: 'orange' }}
-                                  />
-                                </div>
-                                <div className={dappstyles.s_m_in_c}>
-                                    <div className={dappstyles.s_a}>Expected Earning</div>
-                                    <div className={dappstyles.s_b}> {earningprofitpercent}% daily</div>
-                                </div>
-                                {/* <div className={dappstyles.s_m_in_c}>
-                                    <div className={dappstyles.s_a}>
-                                      <select title='select' onChange={handleStakeDuration}>
-                                        <option value="">Select Duration</option>
-                                        <option value="30">30 Days</option>
-                                        <option value="90">90 Days</option>
-                                        <option value="365">365 Days</option>
-                                        <option value="1000">1000 Days</option>
-                                      </select>
-                                    </div>
-                                </div> */}
-                              </div>
+                <div className={dappstyles.stk_h1}><h1>Mine FRD</h1></div>
+                <div className={dappstyles.stk_p}>
+                    <div className={`${dappstyles.stake}`}>
+                        <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
+                            <div className={dappstyles.top}><h1>Start Mining FRD</h1></div>
+                            <div className={dappstyles.s_m}>
+                              <h3>Earn more FRD through mining</h3>
+                              <div className={dappstyles.s_m_in }>
+                                  
+                                  <div className={dappstyles.cw_btn_div}>
+                                      {wAlert && (
+                                        <div className={dappstyles.w_alert}>
+                                          <div>Go to your connected wallet and complete transaction</div>
+                                          <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
+                                        </div>
+                                      )}
+                                      <div className={dappstyles.st_btns}>
+                                          <div>
+                                              <button type='button' className={dappstyles.stakebtn} onClick={Approve}>Stake</button>
+                                          </div>
+                                          <div>
+                                              <button type='button' className={dappstyles.calcrwd} onClick={calculateReward}>Calc Reward</button>
+                                          </div>
 
-                              {/* <div className={dappstyles.interest_returns}>
-                                <ul>
-                                  <li>
-                                    <div className={dappstyles.ir_c}>
-                                      <div>INTEREST</div> <div>FRD REWARD</div>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className={dappstyles.ir_c}>
-                                      <div>Daily</div> <div>2%</div>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className={dappstyles.ir_c}>
-                                      <div>Weekly</div><div>14%</div>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className={dappstyles.ir_c}>
-                                      <div>Monthly</div> <div>60%</div>
-                                    </div>
-                                  </li>
-                                  <li>
-                                    <div className={dappstyles.ir_c}>
-                                      <div>Yearly</div><div>730%</div>
-                                    </div>
-                                  </li>
-                                </ul>
-                              </div> */}
-
-                              <div className={dappstyles.cw_btn_div}>
-                                  {wAlert && (
-                                    <div className={dappstyles.w_alert}>
-                                      <div>Go to your connected wallet and complete transaction</div>
-                                      <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
-                                    </div>
-                                  )}
-                                  <div>
-                                      <button type='button' className={dappstyles.stakebtn} onClick={checkhasStake}>Stake</button>
-                                  </div>
-                                  <div>
-                                      <button type='button' className={dappstyles.calcrwd} onClick={calculateReward}>Calc Reward</button>
-                                  </div>
-
-                                  <div>
-                                    <button type='button' className={dappstyles.withd} onClick={Withdraw}>Withdraw</button>
+                                          <div>
+                                            <button type='button' className={dappstyles.withd} onClick={Withdraw}>Withdraw</button>
+                                          </div>
+                                      </div>
                                   </div>
                               </div>
-                          </div>
+                            </div>
                         </div>
                     </div>
                 </div>
                   {/* end of stake conntainer */}
+
               </div>
             </div>
         </div>
         {/* {isOpen && (<SelectWalletModal isOpen={isOpen} closeWeb3Modal={closeWeb3Modal} />)} */}
         <DappFooter />
+        <FooterNavBar />
     </>
   );
 }

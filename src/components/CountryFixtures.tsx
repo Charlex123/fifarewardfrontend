@@ -113,8 +113,9 @@ const CountryFixtures:React.FC<{}> = () => {
   const [totalPages, setTotalPages] = useState(0);
 
   const router = useRouter();
-  const countryparam = router.query[0];
-  console.log("countryparam",countryparam)
+  const {leaguecountry} = router.query
+  console.log("countryparam",leaguecountry)
+  const normalizedLeagueCountry = leaguecountry ? String(leaguecountry) : '';
 
   useEffect(() => {
     try {
@@ -455,7 +456,7 @@ const handleInputClick = () => {
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         <div className={bettingstyle.breadcrum}>
-          {/* <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}`}>{countryparam?.replace(/-/g, ' ')}</a> */}
+          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${normalizedLeagueCountry?.replace(/-/g, ' ')}`}>{normalizedLeagueCountry?.replace(/-/g, ' ')}</a>
         </div>
         {showloginComp && 
             <div>

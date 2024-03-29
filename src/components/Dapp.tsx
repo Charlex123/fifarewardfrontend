@@ -4,15 +4,16 @@ import { useRouter } from 'next/router';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
-// import DappSideBar from './Dappsidebar';
+import DappSideBar from './Dappsidebar';
 // material
 
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
 import dappconalertstyles from "../styles/dappconnalert.module.css";
-import dappsidebarstyles from '../styles/dappsidebar.module.css';
+import dappsidebarstyles from "../styles/dappsidebar.module.css";
 // component
+import ConnectWallet from './ConnectWalletButton';
 import { useWeb3React } from "@web3-react/core";
 import { ethers } from 'ethers';
 import Web3 from 'web3';
@@ -92,25 +93,6 @@ const Dapp:React.FC<{}> = () =>  {
       router.push(`/signin`);
     }
 
-    
-  async function getWalletAddress() {
-    
-    try {
-      const config = {
-      headers: {
-          "Content-type": "application/json"
-      }
-      }  
-      const {data} = await axios.post("http://localhost:9000/api/users/getwalletaddress/", {
-        username
-      }, config);
-      setWalletAddress(data.message);
-    } catch (error) {
-      console.log(error)
-    }
-}
-getWalletAddress();
-
   if(isConnected) {
     setWalletAddress(address)
 
@@ -145,24 +127,6 @@ getWalletAddress();
       console.log("Account Balance: ", reslt);
     }
     
-      async function updateWalletAddress() {
-        try {
-          const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-          }  
-          const {data} = await axios.post("http://localhost:9000/api/users/updatewalletaddress/", {
-            walletaddress,
-            username
-          }, config);
-          console.log('update wallet data', data.message);
-          // setisWalletAddressUpdated(!isWalletAddressUpdated);
-        } catch (error) {
-          console.log(error)
-        }
-    }
-    updateWalletAddress();
   }  
 
 // Create an EtherscanProvider with your API key
@@ -299,48 +263,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>
               <div className={`${dappstyles.sidebar} ${sideBarToggleCheck}`}>
-                  <nav className={dappsidebarstyles.sidebar}>
-                    {!isSideBarToggled && (
-                      <div className={dappsidebarstyles.overlay_dapp}></div>
-                    )}
-                    <button title='togglebtn' className={dappsidebarstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                      <FontAwesomeIcon icon={faXmarkCircle} size='lg' className={dappsidebarstyles.navlisttoggle}/> 
-                    </button>
-                      <div className={dappsidebarstyles.sidebar_container}>
-                        <div className={dappsidebarstyles.sidebar_container_p}>
-                        <ul className={dappsidebarstyles.upa}>
-                            <li>
-                              <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}>Dapp</a>
-                            </li>
-                            <li>
-                              <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
-                            </li>
-                            <li><a href='/stakes' rel='noopener noreferrer' className={dappsidebarstyles.linka}> My Stakes</a></li>
-                            <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> Rewards</a></li>
-                            <li>
-                              <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>Referrals</a>
-                            </li>
-                            <li>
-                              <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}>Prediction AI</a>
-                            </li>
-                            <li>
-                              <a href='/bets' rel='noopener noreferrer' className={dappsidebarstyles.si}>My Bets</a>
-                            </li>
-                            <li>
-                              <a href='/mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}>My NFTs</a>
-                            </li>
-                            <li>
-                              <a href='/mining' rel='noopener noreferrer' className={dappsidebarstyles.si}>Mine FRD</a>
-                            </li>
-                        </ul>
-                        <ul className={dappsidebarstyles.upa}>
-                            <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
-                            <li><button type='button' onClick={logout} className={dappsidebarstyles.linka}>Logout</button></li>
-                        </ul>
-                        
-                        </div>
-                    </div>
-                </nav>
+                <DappSideBar onChange={toggleSideBar} />
               </div>
               <div className={`${dappstyles.main} ${sideBarToggleCheck}`}>
               <div className={dappstyles.con_btns}>
@@ -349,7 +272,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 ) : (
                 <button title="disconnect wallet" type="button" onClick={() => disconnect()} className={dappstyles.connected}> Disconnect </button>
                 )} */}
-                
+                <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
                 <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
