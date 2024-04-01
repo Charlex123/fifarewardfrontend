@@ -1,6 +1,6 @@
 {
-  "name": "tafaxtra",
-  "version": "0.1.0",
+  "name": "FifaReward",
+  "version": "1.1.0",
   "private": false,
   "dependencies": {
     "@coinbase/wallet-sdk": "^3.7.2",
