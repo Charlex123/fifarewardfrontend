@@ -14,6 +14,7 @@ import dappstyles from "../styles/dapp.module.css";
 // component
 import ConnectWallet from './ConnectWalletButton';
 import ReferralLink from './ReferralLink';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { ThemeContext } from '../contexts/theme-context';
@@ -61,7 +62,7 @@ const Airdrop = () =>  {
 
 
   const [showTimer, setShowTimer] = useState(false);
-  
+  const { open } = useWeb3Modal();  
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
