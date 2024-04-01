@@ -7,7 +7,7 @@
     color: var(--text-color-dark);
 }
 .rewardsbagde {
-    width: 100%;text-align: right;margin: 10px 0 10px 10px;align-items: flex-end;
+    width: 100%;text-align: right;margin: 10px 0 10px 17px;align-items: flex-end;
 }
 .rewardsbagde .rwdb {
     width: 350px;align-content: flex-end;text-align: right;background-color: #252525c2;

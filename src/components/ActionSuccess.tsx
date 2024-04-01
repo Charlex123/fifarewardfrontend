@@ -2,6 +2,7 @@ import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import actionsuccessmodalstyles from '../styles/actionsuccessmodal.module.css'
+import Helmet from 'react-helmet'
 
 type Props = {
     prop: string,
@@ -32,6 +33,10 @@ const ActionSuccessModal:React.FC<Props> = ({prop,onChange}) => {
 
     return(
         <>
+                <Helmet>
+                    <title>Register | FifaReward </title>
+                    <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
+                </Helmet>
             <div className={actionsuccessmodalstyles.showactioncomp}>
                 <div className={actionsuccessmodalstyles.showactioncompin}>
                     <div className={actionsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FontAwesomeIcon icon={faXmark} onClick={(e) => closeActionModal()} />}</button></div>

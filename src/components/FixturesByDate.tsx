@@ -145,9 +145,9 @@ return (
 
                                     <div className={leaguefixturestyle.fixt_tm}>
                                       <div className={leaguefixturestyle.teams}>
-                                        <div>{`${fixture.teams.home.name}`} {fixture.goals.home != null ? (fixture.goals.home) : ''}</div>
+                                        <div>{`${fixture.teams.home.name}`} {fixture.goals.home != null ? '('+fixture.goals.home+')' : ''}</div>
                                         <div className={leaguefixturestyle.vs}>Vs</div>
-                                        <div>{`${fixture.teams.away.name}`} {fixture.goals.away != null ? (fixture.goals.away) : ''}</div>
+                                        <div>{`${fixture.teams.away.name}`} {fixture.goals.away != null ? '('+fixture.goals.away+')' : ''}</div>
                                       </div>
                                     </div>
                                     <div className={leaguefixturestyle.openbet}>

@@ -3,13 +3,13 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
+import { faEye, faEyeSlash, faSoccerBall, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 
 import dappsidebarstyles from "../styles/dappsidebar.module.css";
 // component
 import { ThemeContext } from '../contexts/theme-context';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark, faGaugeHigh, faGamepad, faRobot, faGifts, faHamburger, faUserGroup, faSignOut } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube, faArtstation } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
@@ -124,10 +124,6 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
 
-  const toggleIconDown3 = () => {
-      setDropdownIcon3(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
-  }
-
   const logout = () => {
     // Simulate a logout action
     localStorage.removeItem('userInfo');
@@ -139,40 +135,43 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
           {!isSideBarToggled && (
             <div className={dappsidebarstyles.overlay_dapp}></div>
           )}
-          <button title='togglebtn' className={dappsidebarstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-            <FontAwesomeIcon icon={faXmarkCircle} size='lg' className={dappsidebarstyles.navlisttoggle}/> 
+          <button title='togglebtn' className={dappsidebarstyles.sidebar_toggle_btn_} type='button' onClick={toggleSideBar}>
+            <FontAwesomeIcon icon={faXmarkCircle} size='lg' className={dappsidebarstyles.navlisttoggle_}/> 
           </button>
             <div className={dappsidebarstyles.sidebar_container}>
               <div className={dappsidebarstyles.sidebar_container_p}>
               <ul className={dappsidebarstyles.upa}>
                   <li>
-                    <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}>Dapp</a>
+                    <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faGaugeHigh}/> Dapp</a>
                   </li>
                   <li>
                     <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
                   </li>
-                  <li>
-                    <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}>Prediction AI</a>
-                  </li>
-                  <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> Rewards</a></li>
+                  {/* <li>
+                    <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}><FontAwesomeIcon icon={faRobot}/> Prediction AI</a>
+                  </li> */}
+                  <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <FontAwesomeIcon icon={faGift}/> Rewards</a></li>
                   <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
-                  <li><a href='/gaming' rel='noopener noreferrer' className={dappsidebarstyles.linka}> Gaming</a></li>
+                  <li><a href='/gaming' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <FontAwesomeIcon icon={faGamepad}/> Gaming</a></li>
                   <li>
-                    <a href='/bets' rel='noopener noreferrer' className={dappsidebarstyles.si}>Bets</a>
+                    <a href='/betting/bets' rel='noopener noreferrer' className={dappsidebarstyles.si}><FontAwesomeIcon icon={faSoccerBall}/> Bets</a>
                   </li>
                   <li>
-                    <a href='/mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}>NFTs</a>
+                    <a href='nft//mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faArtstation}/> NFTs</a>
                   </li>
                   <li>
-                    <a href='/mining' rel='noopener noreferrer' className={dappsidebarstyles.si}>Mine FRD</a>
+                    <a href='/mining' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faHamburger}/> Mine FRD</a>
                   </li>
                   <li>
-                    <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}>Referrals</a>
+                    <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faUserGroup}/> Referrals</a>
+                  </li>
+                  <li className={dappsidebarstyles.ld}>
+                    <a href='/airdrop' rel='noopener noreferrer' className={dappsidebarstyles.si}>Airdrop</a>
                   </li>
                  
               </ul>
               <ul className={dappsidebarstyles.upa}>
-                  <li><button type='button' onClick={logout} className={dappsidebarstyles.linka}>Logout</button></li>
+                  <li><button type='button' onClick={logout} className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faSignOut}/> Logout</button></li>
               </ul>
               
               </div>

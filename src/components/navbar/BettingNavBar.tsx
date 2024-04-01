@@ -7,6 +7,7 @@ import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { ethers } from 'ethers';
+import ConnectWallet from '../ConnectWalletButton';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
@@ -130,7 +131,7 @@ function Navbar() {
                 {isNavOpen && (
                 <div className={styles.nav_container_p}>
                 <ul className={styles.upa}>
-                    <li><a href='/aichat' rel='noopener noreferrer'>AI Chat</a></li>
+                    {/* <li><a href='/aichat' rel='noopener noreferrer'>AI Chat</a></li> */}
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li>
                     <li><a href='/nft' rel='noopener noreferrer'>NFT MarketPlace</a></li>
                     <li><a href='/betting/' rel='noopener noreferrer'>Betting</a></li>
@@ -142,11 +143,8 @@ function Navbar() {
                     </ul>
                 }
                 <div className={styles.con_btns}>
-                {isLoggedIn && ( !isConnected ? (
-                    <button title='connect wallet' type='button' onClick={() => open()} className={styles.connect}>Connect Wallet</button>
-                    ) : (
-                    <button title='disconnect wallet' type='button' onClick={() => disconnect()} className={styles.connected}><span>connected</span>Disconnect</button>
-                    )
+                {isLoggedIn && (
+                    <ConnectWallet />
                 )}
                 </div>
                 </div>)

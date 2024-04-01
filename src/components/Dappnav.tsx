@@ -16,11 +16,9 @@ library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircl
 
 
 function Navbar() {
-    const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
+    const { theme } = useContext(ThemeContext);
     const [isNavOpen, setNavOpen] = useState(false);
-    const [scrolling, setScrolling] = useState(false);
-    const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
-    const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
+    const [scrolling, setScrolling] = useState(false);const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
 
     const router = useRouter();
 
@@ -91,15 +89,8 @@ function Navbar() {
     setNavOpen(!isNavOpen);
     };
 
-    const toggleIconUp1 = () => {
-        setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
-    }
     const toggleIconUp3 = () => {
         setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
-    }
-
-    const toggleIconDown1 = () => {
-        setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
     }
 
     const toggleIconDown3 = () => {
@@ -139,9 +130,9 @@ function Navbar() {
                     <li>
                       <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={styles.buytafa}>BUY FRD</a>
                     </li>
-                    <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
+                    {/* <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
                         <a href='/aichat' rel='noopener noreferrer' className={styles.si}>AI</a>
-                    </li>
+                    </li> */}
                     <li>
                       <a href='/rewards' rel='noopener noreferrer' className={styles.si}>Rewards </a>
                     </li>

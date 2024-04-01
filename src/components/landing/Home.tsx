@@ -5,6 +5,7 @@ import { useContext } from 'react';
 // import {HashRouter as Router,} from "react-router-dom";
 // import Container from 'react-bootstrap/Container';
 import Image from 'next/image';
+import Helmet from 'react-helmet';
 import styles from '../../styles/landing.module.css'
 import { useState, useEffect } from 'react';
 import Typed from 'react-typed';
@@ -167,6 +168,10 @@ useEffect(() => {
 
   return (
     <>
+    <Helmet>
+        <title>FifaReward | Bet, Stake, Mine and craeate NFTs of football legends</title>
+        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
+    </Helmet>
     <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
       <div className={styles.overlay_d}></div>
       <div className={styles.c_content}>

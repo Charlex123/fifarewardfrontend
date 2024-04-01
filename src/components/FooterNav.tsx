@@ -42,11 +42,11 @@ function FooterNavBar() {
                         <a href='/dapp' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faGaugeMed}/>}</div>Dapp</a>
                     </div>
                     <div className={styles.linka}>
-                        <a href='/nft' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faArtstation}/>}</div>NFT Market</a>
+                        <a href='/nft' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faArtstation}/>}</div>NFT</a>
                     </div>
-                    <div className={styles.linka}>
+                    {/* <div className={styles.linka}>
                         <a href='/aichat' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faMessage}/>}</div> AI Q&A </a>
-                    </div>
+                    </div> */}
                     <div className={styles.linka}>
                         <a href='/betting' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faSoccerBall}/>}</div> Betting </a>
                     </div>

@@ -17,23 +17,23 @@ background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 99%
 }
 .nav .nav_toggle_btn {
     position: fixed;right: 15px;top: 25px;background-color: transparent !important;border: none;
-    color: #ffffff !important;z-index: 99;
+    z-index: 99;
 }
 .nav .nav_toggle_btn .toggle_icon {
-    color: #f1f1f1;font-size: 28px;display: none;z-index: 99;
+    font-size: 28px;display: none;z-index: 99;
 }
 .nav .nav_toggle_btn .user_icon {
-    color: #ffffff;font-size: 14px !important;
+    font-size: 14px !important;
 }
 .nav .nav_container {
     display: flex;vertical-align: auto;justify-content: space-between;width: 100%;
     font-family: "Poppins",sans-serif;color: rgb(230, 224, 224);height: inherit;
     margin: auto;z-index: 0;top: 0;right: 0;left: 0;
 }
-.nav .nav_container.scrolled {
-  background: rgb(13,20,24);
-  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
-}
+/* .nav .nav_container.scrolled { */
+  /* background: rgb(13,20,24);
+  background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
+/* } */
 .nav .nav_container .logo {
   margin-top: 20px;margin-left: 15px;
 }
@@ -56,7 +56,7 @@ background: linear-gradient(to bottom,  rgba(0,0,0,0.65) 0%,rgba(0,0,0,0.65) 99%
   display: block;
 }
 .nav .nav_container .nav_container_p ul.upa li .navlisttoggle {
-    color: #e6e3e3;font-size: 9px;margin-bottom: 2px;
+    font-size: 9px;margin-bottom: 2px;
 }
 .nav .nav_container .nav_container_p ul.upa li.ld {
     list-style: none;vertical-align: auto;border: 1px solid #e3a204 ;height: fit-content;border-radius: 120px;

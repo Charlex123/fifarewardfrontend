@@ -30,9 +30,10 @@ const RegisterForm = () =>  {
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [sponsorId, setSponsorId] = useState<any>("");
-  const [level, setLevel] = useState<string>("Baller");
+  const [badge] = useState<string>("Bronze");
   const [tpin] = useState<any>(1234);
   const [loading, setLoading] = useState<boolean>(false);
+  const [isinfluencer] = useState<boolean>(false);
   const [status] = useState<any>("Inactive");
   const [passwordinputType, setpasswordinputType] = useState<string>("password");
   const [eyeIcon, setEyeIcon] = useState(<FontAwesomeIcon icon={faEye} />);
@@ -40,13 +41,16 @@ const RegisterForm = () =>  {
 
 //   const isConnected = Boolean(accounts[0]);
 
-    const {id} = router.query
+    const {id} = router.query;
 
     useEffect(() => {
-      if(!id) {
+      if(!id || id == undefined) {
         return;
+      }else {
+        const _id = (id as string).split('/');
+        setSponsorId(_id[0]);
       }
-      setSponsorId(id);
+      
     },[id])
 
     // mainnet 
@@ -130,12 +134,12 @@ const RegisterForm = () =>  {
         }  
         
         setLoading(true);
-        setLevel("Baller");
         const {data} = await axios.post("http://localhost:9000/api/users/register", {
           username,
           sponsorId,
           email,
-          level,
+          isinfluencer,
+          badge,
           tpin,
           status,
           password,

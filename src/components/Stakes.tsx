@@ -4,26 +4,21 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
-import { faClock, faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
+import { faClock, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
 
 import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
-import dappconalertstyles from "../styles/dappconnalert.module.css";
 import dappsidebarstyles from '../styles/dappsidebar.module.css';
-// component
-import { useWeb3React } from "@web3-react/core";
-// import { providers } from "ethers";
-import axios from 'axios';
 import ConnectWallet from './ConnectWalletButton';
 import CountdownTimer from './CountDownTimer';
 import ReferralLink from './ReferralLink';
 import AlertDanger from './AlertDanger';
 import BgOverlay from './BgOverlay';
+import ActionSuccessModal from './ActionSuccess';
 import { ethers } from 'ethers';
-import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
@@ -33,8 +28,9 @@ import DappNav from './Dappnav';
 import DappFooter from './DappFooter';
 import FooterNavBar from './FooterNav';
 import RewardsBadge from './RewardsBadge';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
+import { StakesMetadata } from './StakesMetaData';
+import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp,faXmark } from '@fortawesome/free-solid-svg-icons'
+import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 
 
@@ -55,22 +51,23 @@ const Staking = () =>  {
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
+  const [stakeactionsuccess, setActionSuccess] = useState(false)
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
   // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");  
-  const [wAlert,setWAlert] = useState(false);
-  const [showestimatedprofit,setShowEstimatedProfit] = useState(false);
   const [estimatedprofit,setEstimatedProfit] = useState<any>();
+  const [reward,setReward] = useState<any>();
 
+  const [stakesloaded, setStakesLoaded] = useState<boolean>(false);
+  const [stakesdata,setStakesData] = useState<StakesMetadata[]>([]);
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
   const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
   const [showLoading, setShowLoading] = useState(false);
   const [errorMessage, seterrorMessage] = useState("");
   const [earningprofitpercent, setEarningProfitPercent] = useState<any>(0);
-  const [walletaddress, setWalletAddress] = useState("NA"); 
   const [stakeAmount, setstakeAmount] = useState<any>(500);
   const [stakeduration, setstakeduration] = useState<any>(180);
   const [currentstakeprofitPercent,setCurrentstakeprofitPercent] = useState<any>(0);
@@ -80,7 +77,6 @@ const Staking = () =>  {
   // const [draggedRangeIndex, setDraggedRangeIndex] = useState<number | null>(null);
   const [profitpercent, setProfitPercent] = useState<number>(1);
   const [showTimer, setShowTimer] = useState(false);
-  const [showWithdrawStake, setShowWithdrawStake] = useState(false);
   
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { walletProvider } = useWeb3ModalProvider();
@@ -125,17 +121,12 @@ const Staking = () =>  {
   //   console.log(signature)
   // }
 
-  const closeDappConAlert = () => {
-    setShowAlertDanger(true);
-  }
-
-  const closeWAlert = () => {
-    setWAlert(!wAlert);
-  }
   
-  const StakeFRD = async () => {
+  const StakeFRD = async (e: any) => {
     try {
-      // setWAlert(!wAlert);
+      let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
+      alertdiv.style.display = alertdiv.style.display === "none" ? "block" : "none";
+
       if(walletProvider) {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
@@ -155,10 +146,11 @@ const Staking = () =>  {
     }
   }
 
-  const Approve = async () => {
+  const Approve = async (e: any) => {
     
     try {
-      setWAlert(!wAlert);
+      let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
+      alertdiv.style.display = "block";
       setShowLoading(true);
       setShowBgOverlay(true);
       // setShowTimer(!showTimer);
@@ -170,7 +162,8 @@ const Staking = () =>  {
           const stkamount = ethers.BigNumber.from(amt);
           const reslt = await FRDContract.approve(StakeCA,stkamount);
           if(reslt) {
-            StakeFRD();
+            console.log("approve function",reslt)
+            StakeFRD(e);
         }
       }
     } catch (error:any) {
@@ -182,39 +175,49 @@ const Staking = () =>  {
   }
 
 
-  const calculateReward = async () => {
+  const calculateReward = async (stakeId: number,e:any) => {
     try {
+      let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
+      let rwddiv = e.parentElement.parentElement.previousElementSibling;
+      console.log("rwd div",rwddiv);
+
       setShowLoading(true);
       setShowBgOverlay(true);
       if(walletProvider) {
-        setWAlert(!wAlert);
+        alertdiv.style.display = "block";
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
         const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-        const reslt = await StakeContract.calcReward();
+        const reslt = await StakeContract.calcReward(stakeId);
         console.log('calc reward error',reslt);
         setShowLoading(false);
         setShowBgOverlay(false);
+        rwddiv.style.display = "block";
+        setReward(reslt/10**18);
       }
     }catch(error) {
+      console.log("reward error",error)
       setShowAlertDanger(true);
       seterrorMessage("No active stake found");
     }
     
   }
 
-  const estimateReward = async () => {
+  const estimateReward = async (e: any) => {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
       if(walletProvider) {
-        setWAlert(!wAlert);
+        let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
+        let estdiv = e.parentElement.parentElement.previousElementSibling;
+        console.log(" alert div",alertdiv)
+        alertdiv.style.display = "block";
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
         const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
         const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profitpercent);
         console.log('calc reward error',reslt);
-        setShowEstimatedProfit(!showestimatedprofit);
+        estdiv.style.display = "block";
         setEstimatedProfit(reslt);
         setShowLoading(false);
         setShowBgOverlay(false);
@@ -226,15 +229,21 @@ const Staking = () =>  {
     
   }
 
-  const Withdraw = async () => {
+  const Withdraw = async (stakeId: number,e: any) => {
     try {
+      setShowLoading(true);
+      setShowBgOverlay(true);
       if(walletProvider) {
-        setWAlert(!wAlert);
+        let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
+        alertdiv.style.display = "block";
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
         const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-        const reslt = await StakeContract.withdrawStake();
+        const reslt = await StakeContract.withdrawStake(stakeId);
         console.log("Account Balance: ", reslt);
+        setShowLoading(false);
+        setShowBgOverlay(false);
+        setActionSuccess(true);
       }
     } catch (error) {
       setShowAlertDanger(true);
@@ -261,6 +270,46 @@ const Staking = () =>  {
       router.push(`/signin`);
     }
 
+    const getStakes = async () => {
+      try {
+        // setShowLoading(true);
+        // setShowBgOverlay(true);
+        if(walletProvider) {
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
+          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+          const stks = await StakeContract.loadUserStakes(address);
+          console.log('stake data',stks);
+          await stks.forEach(async (element:any) => {
+            if(element) {
+              
+              let item: StakesMetadata = {
+                stakeId: element.stakeId,
+                rewardTime: element.rewardTime,
+                stakeDuration: element.stakeDuration,
+                profitpercent: element.profitpercent,
+                stakeAmount: element.stakeAmount,
+                currentstakeReward: element.currentstakeReward,
+                stakeRewardPerDay: element.stakeRewardPerDay,
+                totalstakeReward: element.totalstakeReward,
+                totalReward: element.totalReward,
+                isActive: element.isActive,
+                stakerAddress: element.stakerAddress
+              }
+              stakesdata.push(item);
+              setStakesData(stakesdata);
+              setStakesLoaded(true);
+              setShowLoading(false);
+              return item;
+            }
+          });
+        }
+      }catch(error) {
+        setShowAlertDanger(true);
+        seterrorMessage("No active stake found");
+      }
+    }
+    getStakes();
     
   // Function to handle window resize
   const handleResize = () => {
@@ -301,7 +350,7 @@ const Staking = () =>  {
   };
   
   
- }, [userId, router,username,address,chainId,isConnected,walletaddress,stakeduration,wAlert,showTimer,walletProvider,isDragging,initialValues])
+ }, [userId, router,username,address,chainId,isConnected,stakeduration,showTimer,walletProvider,isDragging,initialValues])
 
 
  // Function to toggle the navigation menu
@@ -309,10 +358,6 @@ const Staking = () =>  {
     setSideBarToggle(!dappsidebartoggle);
     setIsSideBarToggled(!isSideBarToggled);
   };
-
-  const toggleIconUp3 = () => {
-      setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
-  }
 
   const calculateprofitPercent = async (percntagechange:any) => {
     let nep = parseFloat(percntagechange).toFixed(1);
@@ -337,13 +382,21 @@ const Staking = () =>  {
     calculateprofitPercent(percentageChange)
   };
 
-  const toggleIconDown3 = () => {
-      setDropdownIcon3(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  const closeWAlert = (e: any) => {
+    let walertdiv = e.parentElement.parentElement;
+    walertdiv.style.display = "none";
   }
 
   const closeAlertModal = () => {
     setShowAlertDanger(false);
     setShowBgOverlay(false);
+  }
+
+  const closeActionModalComp = () => {
+    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    // hiw_bgoverlay.style.display = 'none';
+    setShowBgOverlay(false);
+    setActionSuccess(false);
   }
 
   const logout = () => {
@@ -376,11 +429,13 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               <div>
                 <ReferralLink />
               </div>
-
+              {stakeactionsuccess && 
+                  <ActionSuccessModal prop='Stake Withdrawal ' onChange={closeActionModalComp}/>
+              }
               {showLoading && <Loading />}
               {showBgOverlay && <BgOverlay />}
               {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
-
+              
                 <div className={dappstyles.stk_h1}><h1>Stake FRD</h1></div>
                 <div className={dappstyles.stk_p}>
                     <div className={`${dappstyles.stake}`}>
@@ -466,23 +521,17 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                   </div> */}
 
                                   <div className={dappstyles.cw_btn_div}>
-                                      {wAlert && (
-                                        <div className={dappstyles.w_alert}>
-                                          <div className={dappstyles.m_w}>If you connected with trust wallet or any other mobile wallets, go to your connected wallet and complete transaction</div>
-                                          <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark} style={{color: 'white'}}/></button></div>
-                                        </div>
-                                      )}
-                                      {showestimatedprofit && <div className={dappstyles.estprof}>Estimated profit: <span>{estimatedprofit?.toString()}</span> FRD</div>}
+                                      <div className={dappstyles.w_alert}>
+                                        <div className={dappstyles.m_w}>If you connected with trust wallet or any other mobile wallets, go to your connected wallet and complete transaction</div>
+                                        <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={(e) => closeWAlert(e.target)}>X</button></div>
+                                      </div>
+                                      <div className={dappstyles.estprof}>Estimated profit: <span>{estimatedprofit?.toString()}</span> FRD</div>
                                       <div className={dappstyles.st_btns}>
                                           <div>
-                                              <button type='button' className={dappstyles.stakebtn} onClick={Approve}>Stake</button>
+                                              <button type='button' className={dappstyles.stakebtn} onClick={(e) => Approve(e.target)}>Stake</button>
                                           </div>
                                           <div>
-                                              <button type='button' className={dappstyles.calcrwd} onClick={estimateReward}>Estimate Reward</button>
-                                          </div>
-
-                                          <div>
-                                            <button type='button' className={dappstyles.withd} onClick={Withdraw}>Withdraw</button>
+                                              <button type='button' className={dappstyles.estrwd} onClick={(e) => estimateReward(e.target)}>Estimate Reward</button>
                                           </div>
                                       </div>
                                   </div>
@@ -494,162 +543,51 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                   {/* end of stake conntainer */}
 
                   <div className={dappstyles.stk_h1}><h1>My Stakes</h1></div>
-                  <div className={dappstyles.stake_p}>
-                      <div className={`${dappstyles.stake}`}>
-                        <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
-                            <div className={dappstyles.top}><h1>Stake</h1></div>
-                            <div className={dappstyles.s_m}>
-                              <h3>Stake Earning</h3>
-                              {!showTimer && 
-                                    <>
-                                      <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={stakeduration} /></div>
-                                    </>
-                                  }
-                              <div className={dappstyles.s_m_in }>
-                                  <div className={dappstyles.cw_btn_div}>
-                                      {wAlert && (
-                                        <div className={dappstyles.w_alert}>
-                                          <div>Go to your connected wallet and complete transaction</div>
-                                          <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
-                                        </div>
-                                      )}
-                                      <div className={dappstyles.st_btns}>
-                                          <div>
-                                              <button type='button' className={dappstyles.stakebtn} onClick={Approve}>Stake</button>
-                                          </div>
-                                          <div>
-                                              <button type='button' className={dappstyles.calcrwd} onClick={calculateReward}>Calc Reward</button>
-                                          </div>
+                  {stakesloaded && stakesdata.length > 0 ?
+                      <div className={dappstyles.stake_p}>
 
-                                          <div>
-                                            <button type='button' className={dappstyles.withd} onClick={Withdraw}>Withdraw</button>
-                                          </div>
-                                      </div>
+                          {stakesdata.map((stake,index) => (
+                            <div className={`${dappstyles.stake}`} key={index}>
+                              <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
+                                  <div className={dappstyles.top}><h1>Stake</h1></div>
+                                  <div className={dappstyles.s_m}>
+                                    {!showTimer && 
+                                          <>
+                                            <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={stake.stakeDuration.toNumber()} /></div>
+                                          </>
+                                        }
+                                    <div className={dappstyles.s_m_in }>
+                                        <div className={dappstyles.cw_btn_div}>
+                                            <div className={dappstyles.w_alert}>
+                                              <div className={dappstyles.m_w}>If you connected with trust wallet or any other mobile wallets, go to your connected wallet and complete transaction</div>
+                                              <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={(e) => closeWAlert(e.target)}>X</button></div>
+                                            </div>
+                                            <div className={dappstyles.crwd}>Reward: <span>{reward?.toString()}</span> FRD</div>
+                                            <div className={dappstyles.st_btns}>
+                                                <div>
+                                                    <button type='button' className={dappstyles.calcrwd} onClick={(e) => calculateReward(stake.stakeId.toNumber(),e.target)}>Calc Reward</button>
+                                                </div>
+
+                                                <div>
+                                                  <button type='button' className={dappstyles.withd} onClick={(e) => Withdraw(stake.stakeId.toNumber(),e.target)}>Withdraw</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                   </div>
                               </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div className={`${dappstyles.stake}`}>
-                        <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
-                            <div className={dappstyles.top}><h1>Stake</h1></div>
-                            <div className={dappstyles.s_m}>
-                              <h3>Stake Earning</h3>
-                              {!showTimer && 
-                                    <>
-                                      <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={stakeduration} /></div>
-                                    </>
-                                  }
-                              <div className={dappstyles.s_m_in }>
-                                  <div className={dappstyles.cw_btn_div}>
-                                      {wAlert && (
-                                        <div className={dappstyles.w_alert}>
-                                          <div>Go to your connected wallet and complete transaction</div>
-                                          <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
-                                        </div>
-                                      )}
-                                      <div className={dappstyles.st_btns}>
-                                          <div>
-                                              <button type='button' className={dappstyles.stakebtn} onClick={Approve}>Stake</button>
-                                          </div>
-                                          <div>
-                                              <button type='button' className={dappstyles.calcrwd} onClick={calculateReward}>Calc Reward</button>
-                                          </div>
-
-                                          <div>
-                                            <button type='button' className={dappstyles.withd} onClick={Withdraw}>Withdraw</button>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div className={`${dappstyles.stake}`}>
-                        <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
-                            <div className={dappstyles.top}><h1>Stake</h1></div>
-                            <div className={dappstyles.s_m}>
-                              <h3>Stake Earning</h3>
-                              {!showTimer && 
-                                    <>
-                                      <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={stakeduration} /></div>
-                                    </>
-                                  }
-                              <div className={dappstyles.s_m_in }>
-                                  <div className={dappstyles.cw_btn_div}>
-                                      {wAlert && (
-                                        <div className={dappstyles.w_alert}>
-                                          <div>Go to your connected wallet and complete transaction</div>
-                                          <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
-                                        </div>
-                                      )}
-                                      <div className={dappstyles.st_btns}>
-                                          <div>
-                                              <button type='button' className={dappstyles.stakebtn} onClick={Approve}>Stake</button>
-                                          </div>
-                                          <div>
-                                              <button type='button' className={dappstyles.calcrwd} onClick={calculateReward}>Calc Reward</button>
-                                          </div>
-
-                                          <div>
-                                            <button type='button' className={dappstyles.withd} onClick={Withdraw}>Withdraw</button>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div className={`${dappstyles.stake}`}>
-                        <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
-                            <div className={dappstyles.top}><h1>Stake</h1></div>
-                            <div className={dappstyles.s_m}>
-                              <h3>Stake Earning</h3>
-                              {!showTimer && 
-                                    <>
-                                      <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={stakeduration} /></div>
-                                    </>
-                                  }
-                              <div className={dappstyles.s_m_in }>
-                                  <div className={dappstyles.cw_btn_div}>
-                                      {wAlert && (
-                                        <div className={dappstyles.w_alert}>
-                                          <div>Go to your connected wallet and complete transaction</div>
-                                          <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
-                                        </div>
-                                      )}
-                                      <div className={dappstyles.st_btns}>
-                                          <div>
-                                              <button type='button' className={dappstyles.stakebtn} onClick={Approve}>Stake</button>
-                                          </div>
-                                          <div>
-                                              <button type='button' className={dappstyles.calcrwd} onClick={calculateReward}>Calc Reward</button>
-                                          </div>
-
-                                          <div>
-                                            <button type='button' className={dappstyles.withd} onClick={Withdraw}>Withdraw</button>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                  </div>
-
+                          </div>
+                          ))}
+                      </div> :
+                      <div className={dappstyles.notfound_p}>
+                        <div className={dappstyles.notfound}>You've not created any stakes!</div>
+                      </div>
+                    }
               </div>
             </div>
         </div>
         {/* {isOpen && (<SelectWalletModal isOpen={isOpen} closeWeb3Modal={closeWeb3Modal} />)} */}
-        <DappFooter />
+        {/* <DappFooter /> */}
         <FooterNavBar />
     </>
   );

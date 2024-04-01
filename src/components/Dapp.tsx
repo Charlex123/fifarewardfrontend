@@ -14,14 +14,10 @@ import dappconalertstyles from "../styles/dappconnalert.module.css";
 import dappsidebarstyles from "../styles/dappsidebar.module.css";
 // component
 import ConnectWallet from './ConnectWalletButton';
-import { useWeb3React } from "@web3-react/core";
 import { ethers } from 'ethers';
-import Web3 from 'web3';
-import ws from 'ws';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import axios from 'axios';
 import AlertMessage from './AlertMessage';
 import RewardsBadge from './RewardsBadge';
@@ -311,7 +307,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
             </div>
           </>)}
         {/* {isOpen && (<SelectWalletModal isOpen={isOpen} closeWeb3Modal={closeWeb3Modal} />)} */}
-        <DappFooter />
+        {/* <DappFooter /> */}
         <FooterNavBar/>
     </>
   );

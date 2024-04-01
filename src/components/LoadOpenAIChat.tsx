@@ -30,11 +30,11 @@ const LoadOpenAI: React.FC<{}> = () =>  {
         <div className={styles.main_bg_overlay}></div>
           <div>
             <div>
-              <h1>Welcome To FifaReward Online FootBall AI Assistant</h1>
+              <h1>FootBall Prediction AI Assistant</h1>
             </div>
             <div className={styles.intro_p}>
               <p>
-                Where you chat and intereact with Alexa, FifaReward Online AI Assistant. You can ask for match predictions, generate images of any football legend and many more
+                Our Football AI Chandra will give you football predictions 
               </p>
             </div>
           </div>
@@ -54,11 +54,11 @@ const LoadOpenAI: React.FC<{}> = () =>  {
                               <span className={styles.online_icon}></span>
                             </div>
                             <div className={styles.user_info}>
-                              <span> Welcome to Fifa Reward Online AI Assistant, My name is Alexo, I can do the following for you</span>
+                              <span> I'm Chandra, your football prediction AI assistant, how can i help you today!  </span>
                             </div>
                           </div>
 
-                            <div className={`${styles.card_header} ${styles.msg_head}`}>
+                            {/* <div className={`${styles.card_header} ${styles.msg_head}`}>
                              <ul>
                               <li>
                                 Generate AI images of any type for you
@@ -73,7 +73,7 @@ const LoadOpenAI: React.FC<{}> = () =>  {
                                 And many other things
                               </li>
                              </ul>
-                            </div>
+                            </div> */}
                         </div>
 
                         <div className={styles.chat_convo} id="chat-convo">
@@ -113,7 +113,6 @@ const LoadOpenAI: React.FC<{}> = () =>  {
                     </div>
                     
                     <div className={styles.card_footer}>
-                        <div className={styles.terms}><a href="https://primehealth.ng/dr-julie-terms">Terms of use</a> </div>
                         <form method="POST" >
                             <div className={styles.instructions} id="instructions">Click the microphone button to speak</div>
                           <div className={styles.input_group}>

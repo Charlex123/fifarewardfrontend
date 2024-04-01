@@ -1,34 +1,29 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 // import DappSideBar from './Dappsidebar';
 // material
 
-// import Loading from "./Loading";
-// import AlertMessage from "./AlertMessage";
+import { ethers } from 'ethers';
+import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import dappstyles from "../styles/dapp.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import axios from 'axios';
-import { fas, faCheck, faCheckCircle,faAlignJustify } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
-
 const ReferralLink:React.FC<{}> = () =>  {
 
   const router = useRouter();
   const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<number>();  
-  const [walletaddress, setWalletAddress] = useState<any>("NA");  
-
+  const [sponsorId, setIsSponsorId] = useState<number>(0);  
+  const [walletaddress, setWalletAddress] = useState<any>("NA");
+  const [sponsorWalletAddress, setsponsorWalletAddress] = useState<any>("NA");  
+  const { walletProvider } = useWeb3ModalProvider();
+  const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+  const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
   const [userObjId, setUserObjId] = useState(""); // Initial value
   
   const { address, chainId, isConnected } = useWeb3ModalAccount();
@@ -71,12 +66,22 @@ const ReferralLink:React.FC<{}> = () =>  {
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
+      const username_ = udetails.username;
+      
+      // if(udetails.isinfluencer == true) {
+      //   setIsinfluencer(true);
+      // }  
+
       if(username_) {
         setUsername(username_);
+        setIsSponsorId(udetails.sponsorId);
         setUserId(udetails.userId)
-        setUserObjId(udetails._id)
-        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
+        setUserObjId(udetails._id);
+        if(udetails.isinfluencer == true) {
+          setreferralLink(`https://fifareward.io/register/${udetails.userId}/${username_}`);
+        }else {
+          setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
+        }
       }
     }else {
       router.push(`/signin`);
@@ -121,7 +126,45 @@ const ReferralLink:React.FC<{}> = () =>  {
 }
 getWalletAddress();
 
- }, [userId,address,router,username,walletaddress,userObjId])
+if(isConnected) {
+  if(sponsorId != 0) {
+      async function getSponsorWalletAddress() {
+        try {
+          const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+          }  
+          const {data} = await axios.post("http://localhost:9000/api/users/getsponsorwalletaddress", {
+            sponsorId,
+          }, config);
+          if(data.message === "You do not have a sponsor") {
+          }else {
+            setsponsorWalletAddress(data.message);
+            Addreferrer();
+          }
+          
+        } catch (error) {
+          console.log(error)
+        }
+    }
+    getSponsorWalletAddress();  
+  }
+  
+  async function Addreferrer() {
+    // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+    const provider = new ethers.providers.Web3Provider(walletProvider as any)
+    const signer = provider.getSigner();
+    const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+    const tnx = await StakeContract.addReferrer(sponsorWalletAddress,1);
+    console.log("Account Balance: ", tnx);
+    const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+    const reslt = await betContract.addReferrer(sponsorWalletAddress,1);
+    console.log("Account Balance: ", reslt);
+  }
+}
+
+ }, [userId,address,router,username,walletaddress,sponsorId,userObjId])
 
 
   return (
