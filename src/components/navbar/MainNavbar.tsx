@@ -114,6 +114,7 @@ function Navbar() {
                     {isLoggedIn &&
                         <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
                     }
+                    <li><a href='/airdrop' rel='noopener noreferrer'>AirDrop</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
                     <li><a href='/mining' rel='noopener noreferrer'>Mine</a></li>
                     <li><a href='/nft' rel='noopener noreferrer'>NFT Market Place</a></li>

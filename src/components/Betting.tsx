@@ -20,7 +20,7 @@ import FixturesByCalenderDate from './FixturesByCalenderDate';
 import TodaysFixtures from './TodaysFixtures';
 import LiveFixtures from './LiveFixtures';
 import { Fixture } from './FixtureMetadata';
-import { faCaretDown, faCircle, faL, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCircle, faFilter, faL, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
@@ -242,13 +242,30 @@ const LoadBetData:React.FC<{}> = () => {
       }
     };
 
-  
+      // Function to handle window resize
+    const handleResize = () => {
+      // Check the device width and update isNavOpen accordingly
+      let filterbyDiv = document.getElementById("betsbyleagues") as HTMLDivElement;
+      if (window.innerWidth > 991) {
+        filterbyDiv.style.display = "block";
+      } else {
+        filterbyDiv.style.display = "none";
+      }
+    };
+    
+    // Initial check when the component mounts
+    handleResize();
+
+    // Add a resize event listener to update isNavOpen when the window is resized
+    window.addEventListener('resize', handleResize);
+
     // Add event listener to the body
     document.body.addEventListener('click', handleClickOutside);
   
     return () => {
       // Clean up the event listener when the component is unmounted
       document.body.removeEventListener('click', handleClickOutside);
+      window.removeEventListener('resize', handleResize);
       // clearInterval(intervalId);
     };
 
@@ -268,6 +285,13 @@ const getleagueFixtures = async (leagueid:number, event:any) => {
       else if(event.target.getAttribute("title") == "span___") {
         console.log(" prev el sibl",event.target.previousElementSibling)
         event.target.previousElementSibling.style.backgroundColor = (event.target.previousElementSibling.style.backgroundColor === "#ffffff") ? "lightblue" : "#ffffff";
+      }
+
+      let filterbyDiv = document.getElementById("betsbyleagues") as HTMLDivElement;
+      if(window.innerWidth <= 991) {
+        filterbyDiv.style.display = "none";
+      }else {
+        filterbyDiv.style.display = "block";
       }
 
       const newleagueComponent = <LeagueFixtures leagueid={leagueid} />;
@@ -409,6 +433,16 @@ const loadSearchResults = async () => {
   }
 }
 
+const toggleBetFilter = () => {
+  let filterbyDiv = document.getElementById("betsbyleagues") as HTMLDivElement;
+  filterbyDiv.style.display = filterbyDiv.style.display === "block" ? "none" : "block";
+}
+
+const closeBetFilter = () => {
+  let filterbyDiv = document.getElementById("betsbyleagues") as HTMLDivElement;
+  filterbyDiv.style.display = "none";
+}
+
 const UpKeyWordSearch = (divId: any) => {
   setSearchKeyWord(divId.innerHTML);
   setShowSearchOptions(false)
@@ -501,9 +535,45 @@ const handleInputClick = () => {
         </div>
         {/* how it works div starts */}
 
+        <div className={bettingstyle.betbydate}>
+            <div className={bettingstyle.betbydate_top}>
+              <div className={bettingstyle.betbydate_top_in}>
+                <div className={bettingstyle.live}><button type='button' title='button' onClick={() => loadliveFixtures('live')}>Live</button></div>
+                <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(todaym)}><div className={bettingstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
+                <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrowm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
+                <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrowm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
+                <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_daysm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
+                <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_daysm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
+                <div className={bettingstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
+              </div>
+              {
+                showcalender && (
+                <div className={bettingstyle.calendar}>
+                  <Calendar onChange={onChangeCalenderDate} value={datevalue} showWeekNumbers />
+                </div>
+                )
+              }
+              
+            </div>
+        </div>
+
+        <div className={bettingstyle.filter}>
+            <div className={bettingstyle.filter_c}>
+                <div>
+                  <button type="button" title='filter bet' onClick={toggleBetFilter}>
+                    <FontAwesomeIcon icon={faFilter} style={{color: '#e28305'}}/><span>Filter</span>
+                  </button>
+                </div>
+                <div>
+                  <a href='/openbetslist'>View Open Bets</a>
+                </div>
+            </div>
+        </div>
+        
         <div className={bettingstyle.main_in}>
-          <div className={bettingstyle.leagues}>
-            <div className={bettingstyle.gf}><h3>Games</h3></div>
+          <div className={bettingstyle.leagues} id="betsbyleagues">
+            <div className={bettingstyle.filterclose}><button className={bettingstyle.filterclosebtn} onClick={closeBetFilter}><FontAwesomeIcon icon={faXmark} size='xl'/></button></div>
+            <div className={bettingstyle.gf}><h3>Fixtures</h3></div>
             {/* {countryfixturesdata && 
               <div className={bettingstyle.filter}>
               <h3>Filter By</h3>
@@ -563,183 +633,8 @@ const handleInputClick = () => {
             </div>: <div> <Loading /> </div>}
           </div>
           <div className={bettingstyle.betmain}>
-              <div className={bettingstyle.betmain_top}>
-                <div className={bettingstyle.betmain_top_in}>
-                  <div className={bettingstyle.live}><button type='button' title='button' onClick={() => loadliveFixtures('live')}>Live</button></div>
-                  <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(todaym)}><div className={bettingstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
-                  <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrowm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrowm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                  <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_daysm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
-                  <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_daysm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
-                  <div className={bettingstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
-                </div>
-                {
-                  showcalender && (
-                  <div className={bettingstyle.calndar}>
-                    <Calendar onChange={onChangeCalenderDate} value={datevalue} showWeekNumbers />
-                  </div>
-                  )
-                }
-                
-              </div>
               <div className={bettingstyle.betwrap}>
                   <div className={bettingstyle.betwrapin} id='betwrapin'>
-                  {/* {istodaysfixturesLoaded ? 
-                    <div>
-                      {todaysfixtures.map(country => (country.leagues.map(league => (
-                        <div className={bettingstyle.league_wrap}>
-                          <div className={bettingstyle.tgle} >
-                            <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                            <div className={bettingstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                            <div className={bettingstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                          </div>
-                          <div className={bettingstyle.league_wrap_in} >
-                            {league.fixtures.map(fixture => (
-                              <div className={bettingstyle.fixt}>
-                                <div className={bettingstyle.fixt_d_o}>
-                                  <div className={bettingstyle.fixt_d}>
-                                   <span>Date</span> {`${moment(fixture.fixture.date).format('DD/MM ddd')}`}
-                                  </div>
-                                  <div className={bettingstyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture.fixture.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={bettingstyle.fid}>ID: {fixture.fixture.id}</div>
-                                  </div>
-                                </div>
-
-                                <div className={bettingstyle.fixt_tm}>
-                                  <div className={bettingstyle.teams}>
-                                    <div>{`${fixture.teams.home.name}`}</div>
-                                    <div className={bettingstyle.vs}>Vs</div>
-                                    <div>{`${fixture.teams.away.name}`}</div>
-                                  </div>
-                                </div>
-                                <div className={bettingstyle.openbet}>
-                                  <div className={bettingstyle.opb_btns_div}>
-                                    <div className={bettingstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                                    <div className={bettingstyle.opb_btns}>
-                                      <div className={bettingstyle.opb_open} onClick={(e) => placeBet(e.target)}><button type='button' title='button'>Open Bet {<FontAwesomeIcon icon={faFutbol}/>}</button></div>
-                                      <div className={bettingstyle.opb_hiw} onClick={(e) => openHIWE(e.target)}><button type='button' title='button'>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
-                                    </div>
-                                  </div>
-
-                                  <div className={bettingstyle.pbet}>
-                                    <div className={bettingstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
-                                    <form>
-                                      <h3>Place Bet</h3>
-                                      <div className={bettingstyle.form_g}>
-                                        <ul>
-                                          <li>
-                                            <div>
-                                                <div>
-                                                    Bet Id
-                                                </div>
-                                                <div>
-                                                    987678
-                                                </div>
-                                            </div>
-                                          </li>
-                                          <li>
-                                            <div>
-                                                <div>
-                                                    Match Id
-                                                </div>
-                                                <div>
-                                                    {fixture.fixture.id}
-                                                </div>
-                                            </div>
-                                          </li>
-                                        </ul>
-                                      </div>
-                                      <div className={bettingstyle.form_g}>
-                                        <label>Enter amount</label>
-                                        <input type='number' title='input'/>
-                                      </div>
-                                      <div className={bettingstyle.form_g}>
-                                        <label>Select number of betting participants</label>
-                                        <div>
-                                          <select title='select'>
-                                            <option value='2'>2 Participants</option>
-                                            <option value='4'>4 Participants</option>
-                                            <option value='6'>6 Participants</option>
-                                            <option value='8'>8 Participants</option>
-                                            <option value='10'>10 Participants</option>
-                                          </select>
-                                        </div>
-                                      </div>
-                                      <div className={bettingstyle.form_g}>
-                                        <button type='button' title='button'>Bet</button>
-                                      </div>
-                                    </form>
-                                  </div>
-
-                                  <div>
-                                    <button onClick={(e) => firstopenHIW(e.target)}>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
-                                  </div>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      ))))}
-                      {todaysfixtures?.map((league,index:number) => (
-                      <div className={bettingstyle.league_wrap} key={index}>
-                        <div className={bettingstyle.tgle} >
-                          <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                          <div className={bettingstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                          <div className={bettingstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
-                        </div>
-                        <div className={bettingstyle.league_wrap_in} >
-                          {league.fixtures.map(fixture => (
-                            <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={fixture?.fixture.id}>
-                              <div className={bettingstyle.fixt}>
-                                <div className={bettingstyle.fixt_d_o}>
-                                  <div className={bettingstyle.fixt_d}>
-                                    <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
-                                  </div>
-                                  <div className={bettingstyle.dd}>
-                                      <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
-                                      <div className={bettingstyle.fid}>ID: {fixture?.fixture.id}</div>
-                                  </div>
-                                </div>
-
-                                <div className={bettingstyle.fixt_tm}>
-                                  <div className={bettingstyle.teams}>
-                                    <div>{`${fixture.teams.home.name}`}</div>
-                                    <div className={bettingstyle.vs}>Vs</div>
-                                    <div>{`${fixture.teams.away.name}`}</div>
-                                  </div>
-                                </div>
-                                <div className={bettingstyle.openbet}>
-                                  <div>
-                                    <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
-                                  </div>
-                                </div>
-                            </div>
-                            </a>
-                          ))}
-                          {todaysfixtures?.length > 0 && 
-                            <div className={bettingstyle.paginate_btns}>
-                              <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
-                                {'<<'}
-                              </button>
-                              <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
-                                {'<'}
-                              </button>
-                              {renderPageNumbers()}
-                              <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
-                                {'>'}
-                              </button>
-                              <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
-                                {'>>'}
-                              </button>
-                            </div>
-                          }
-                        </div>
-                      </div>
-                    ))}
-                    </div>
-                  : <div> <Loading/> </div>
-                  } */}
                   {loadedlaguedata &&
                     <div>
                       {leaguecomponent.map(component => component)}
@@ -748,6 +643,7 @@ const handleInputClick = () => {
                   </div>
               </div>
           </div>
+
           <div className={bettingstyle.openbets_list}>
           <div className={bettingstyle.opb_h}>
                 {!isLoggedIn &&

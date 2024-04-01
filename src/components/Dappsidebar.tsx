@@ -31,9 +31,9 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
-  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>);
+  const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown}  className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<number>(); 
   const [isWalletAddressUpdated,setisWalletAddressUpdated] = useState(false);
@@ -108,20 +108,20 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   };
 
   // const toggleIconUp1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   // const toggleIconUp2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   const toggleIconUp3 = () => {
-      setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+      setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
   // const toggleIconDown1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   // const toggleIconDown2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
 
   const logout = () => {
@@ -136,7 +136,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
             <div className={dappsidebarstyles.overlay_dapp}></div>
           )}
           <button title='togglebtn' className={dappsidebarstyles.sidebar_toggle_btn_} type='button' onClick={toggleSideBar}>
-            <FontAwesomeIcon icon={faXmarkCircle} size='lg' className={dappsidebarstyles.navlisttoggle_}/> 
+            <FontAwesomeIcon icon={faXmarkCircle} className={dappsidebarstyles.navlisttoggle_}/> 
           </button>
             <div className={dappsidebarstyles.sidebar_container}>
               <div className={dappsidebarstyles.sidebar_container_p}>

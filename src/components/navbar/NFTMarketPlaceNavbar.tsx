@@ -131,7 +131,8 @@ function Navbar() {
                 {isNavOpen && (
                 <div className={styles.nav_container_p}>
                 <ul className={styles.upa}>
-                    {/* <li><a href='/aichat' rel='noopener noreferrer'>AI Chat</a></li> */}
+                    <li><a href='/mining' rel='noopener noreferrer'>Mine</a></li>
+                    <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li>
                     <li><a href='/betting/' rel='noopener noreferrer'>Betting</a></li>
                     <li><a href='/nft/mynfts' rel='noopener noreferrer'>My NFTs</a></li>
@@ -145,7 +146,7 @@ function Navbar() {
                     </ul>
                 }
                 <div className={styles.con_btns}>
-                {isLoggedIn && (<ConnectWallet />)}
+                {isLoggedIn ? <ConnectWallet /> : ''}
                 </div>
                 </div>)
                 }
