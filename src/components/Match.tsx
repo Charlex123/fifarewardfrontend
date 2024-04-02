@@ -184,7 +184,8 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             const signer = provider.getSigner();
             let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
             let loadBets = await BetFeaturescontract.loadAllBets();
-            console.log("loadBets",loadBets)
+            console.log("loadBets",loadBets);
+            setShowLoading(false);
             await loadBets.forEach(async (element:any) => {
                 console.log(" loaded bets",element)
                 let betAmt = Math.ceil((element.betamount.toString())/(10**18));
@@ -274,7 +275,8 @@ const openBetC = async () => {
         let Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
-        let bCOpenBet = await Betcontract.OpenBet(tamount,matchidparam,username,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount,{ gasLimit: 1000000 });
+        const betId:number = 0;
+        let bCOpenBet = await Betcontract.PlaceBet(tamount,matchidparam,username,betId,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount,{ gasLimit: 1000000 });
         
         bCOpenBet.wait().then(async (receipt:any) => {
           // console.log(receipt);
@@ -285,8 +287,9 @@ const openBetC = async () => {
           }
        })
       } catch (error) {
+        console.log('open bet error',error)
         setShowAlertDanger(true);
-        seterrorMessage(error)
+        seterrorMessage('error')
         setShowLoading(false);
       }
   }
