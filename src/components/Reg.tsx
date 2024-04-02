@@ -47,8 +47,8 @@ const RegisterForm = () =>  {
       if(!id || id == undefined) {
         return;
       }else {
-        const _id = (id as string).split('/');
-        setSponsorId(_id[0]);
+        console.log(" id fer", id[0])
+        setSponsorId(id[0]);
       }
       
     },[id])

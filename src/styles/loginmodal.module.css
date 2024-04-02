@@ -24,10 +24,11 @@
 .loginmodalmain .loginmodalmainin {
     position: absolute;left: 50%;transform: translate(-50%,50%);
     padding: 2px 2px 2px 2px;top: -300px;border-radius: 4px;z-index: 9999;width: 50%;
-    height: 70vh;margin: auto;
+    height: 70vh;margin: auto;background-color: #000000fc;
 }
 .loginmodalmain .closebtn button {
     position: absolute;right: 8px;top: 4px;cursor: pointer;background-color: none;z-index: 99999;
+    color: #e2d7d7;
 }
 .qrcode {
     width: 10rem;height: 20rem;margin: 1rem auto; text-align: center;
@@ -40,7 +41,7 @@
 }
 .loginmodalmain .loginmodalmainin .formTag .fhead h3 {
     font-family: "Poppins", sans-serif;margin: 0 auto;font-weight: 600;
-    text-align: center;font-size: 14px;
+    text-align: center;font-size: 14px;color: #e2d7d7;
 }
 .loginmodalmain .loginmodalmainin .formpTag {
     font-size: 12px;font-family: "Montserrat";font-style: italic;

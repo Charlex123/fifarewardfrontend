@@ -105,7 +105,6 @@ const router = useRouter();
 const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
 const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
-console.log("b ca",BettingCA)
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const { address, chainId, isConnected } = useWeb3ModalAccount();
@@ -183,45 +182,48 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             setShowLoading(true);
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
-            let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingAbi, signer);
+            let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
             let loadBets = await BetFeaturescontract.loadAllBets();
             console.log("loadBets",loadBets)
-            // await loadBets.forEach(async (element:any) => {
-            //     console.log(" loaded bets",element)
-            //     let betAmt = Math.ceil((element.betamount.toString())/(10**18));
-            //     let item: Bets = {
-            //       betId: element.betId,
-            //       matchId: element.matchId,
-            //       username: element.username,
-            //       matchfixture: element.matchfixture,
-            //       openedBy: element.openedBy,
-            //       participant: element.participant,
-            //       betamount: betAmt,
-            //       totalbetparticipantscount: element.totalbetparticipantscount,
-            //       remainingparticipantscount: element.remainingparticipantscount,
-            //       prediction: element.prediction,
-            //       bettingteam: element.bettingteam,
-            //       betstatus: element.betstatus,
-            //       participants: element.participants,
-            //       betwinners: element.betwinners,
-            //       betlosers: element.betlosers,
-            //     }
-            //     betData.push(item);
-            //     setBetData(betData);
-            //     setShowLoading(false);
-            //     console.log("bet data",betData)
-            //     return item;
-            // });
+            await loadBets.forEach(async (element:any) => {
+                console.log(" loaded bets",element)
+                let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+                let item: Bets = {
+                  betId: element.betId,
+                  matchId: element.matchId,
+                  username: element.username,
+                  matchfixture: element.matchfixture,
+                  openedBy: element.openedBy,
+                  participant: element.participant,
+                  betamount: betAmt,
+                  totalbetparticipantscount: element.totalbetparticipantscount,
+                  remainingparticipantscount: element.remainingparticipantscount,
+                  prediction: element.prediction,
+                  bettingteam: element.bettingteam,
+                  betstatus: element.betstatus,
+                  participants: element.participants,
+                  betwinners: element.betwinners,
+                  betlosers: element.betlosers,
+                }
+                betData.push(item);
+                setBetData(betData);
+                setShowLoading(false);
+                console.log("bet data",betData)
+                return item;
+            });
           } catch (error) {
-            setShowAlertDanger(true);
-            seterrorMessage(error);
+            // setShowAlertDanger(true);
+            console.log("error huipo",error)
+            // seterrorMessage('');
             setShowLoading(false);
           }
         }
       }
     };
+    if(isLoggedIn) {
+      fetchPlacedBets();
+    }
 
-    fetchPlacedBets();
     // let searchOptions = ["Team","Match"];
     // let currentSearchOptionIndex = 0;
 
@@ -392,6 +394,7 @@ const showloginCompNow = () => {
 const closeLoginModal = () => {
     // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
     // hiw_bgoverlay.style.display = 'none';
+    setShowLoading(false);
     setShowBgOverlay(false);
     setShowLoginComp(false);
 }

@@ -145,7 +145,7 @@ function Navbar() {
                     </ul>
                 }
                 <div className={styles.con_btns}>
-                {/* {isLoggedIn &&  <ConnectWallet /> } */}
+                {isLoggedIn ?  <ConnectWallet /> : ''}
                 </div>
                 </div>)
                 }

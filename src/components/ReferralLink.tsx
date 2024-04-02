@@ -71,7 +71,7 @@ const ReferralLink:React.FC<{}> = () =>  {
       // if(udetails.isinfluencer == true) {
       //   setIsinfluencer(true);
       // }  
-
+      
       if(username_) {
         setUsername(username_);
         setIsSponsorId(udetails.sponsorId);

@@ -33,7 +33,7 @@ const InfluencerRegisterForm = () =>  {
   const [badge] = useState<string>("Bronze");
   const [tpin] = useState<any>(1234);
   const [loading, setLoading] = useState<boolean>(false);
-  const [isinfluncer] = useState<boolean>(true);
+  const [isinfluencer] = useState<boolean>(true);
   const [status] = useState<any>("Inactive");
   const [passwordinputType, setpasswordinputType] = useState<string>("password");
   const [eyeIcon, setEyeIcon] = useState(<FontAwesomeIcon icon={faEye} />);
@@ -135,7 +135,7 @@ const InfluencerRegisterForm = () =>  {
           username,
           sponsorId,
           email,
-          isinfluncer,
+          isinfluencer,
           badge,
           tpin,
           status,

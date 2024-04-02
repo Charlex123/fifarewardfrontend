@@ -104,7 +104,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
   }
   return (
     <>
-        <div className={`${loginmodalstyles.loginmodalmain} ${theme === 'dark' ? loginmodalstyles['darktheme'] : loginmodalstyles['lighttheme']}`} id="loginmodalid">
+        <div className={loginmodalstyles.loginmodalmain} id="loginmodalid">
             <div className={loginmodalstyles.loginmodalmainin}>
                 <div className={loginmodalstyles.closebtn}><button type='button' title='button'>{<FontAwesomeIcon icon={faXmark} onClick={closeModal} />}</button></div>
                 <form className={loginmodalstyles.formTag} onSubmit={submitHandler}>
