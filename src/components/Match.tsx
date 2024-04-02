@@ -271,6 +271,7 @@ const openBetC = async () => {
     try {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
+        console.log('bet signer', signer);
         let rembetparticipantscount = parseInt(betParticipantsCount) - 1;
         let Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
         const amt = betAmount + "000000000000000000";
