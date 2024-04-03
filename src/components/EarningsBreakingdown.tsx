@@ -126,7 +126,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
         <div className={`${styles.earnins} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
           <div className={styles.rwdb}>
             <div>
-                <h1>Earning Summary</h1>
+                <h1 className={`${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`}>Earning Summary</h1>
             </div>
             <div className={styles.rwdbadge}>
 
