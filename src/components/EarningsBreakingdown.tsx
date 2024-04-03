@@ -1,7 +1,6 @@
 import { useEffect, useState , useContext} from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import Image from 'next/image';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 // import DappSideBar from './Dappsidebar';
@@ -9,12 +8,11 @@ import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
-import styles from "../styles/rewardbadge.module.css";
+import styles from "../styles/earningsbreakdown.module.css";
 // component
 import { ethers } from 'ethers';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import bronzemedal from '../assets/images/medal.png'
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
@@ -26,7 +24,7 @@ library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircl
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
 
-const RewardsBadge:React.FC<{}> = () =>  {
+const EarningsBreakDown:React.FC<{}> = () =>  {
 
   const router = useRouter();
   const { theme } = useContext(ThemeContext);
@@ -125,29 +123,62 @@ const RewardsBadge:React.FC<{}> = () =>  {
 
   return (
     <>
-        <div className={`${styles.rewardsbagde} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+        <div className={`${styles.earnins} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
           <div className={styles.rwdb}>
             <div>
-              <h1>
-                  Activity Counts
-              </h1>
-              <p>
-                Below is the number (counts) of activities you have perform in FifaReward using your connected wallet address
-              </p>
+                <h1>Earning Summary</h1>
             </div>
             <div className={styles.rwdbadge}>
+
                 <div className={styles.d}>
-                  <div> NFTs:</div> <div className={styles.rwd_c}>{nftcount.toString()}</div>
+                    <div>
+                        <h1>Epoch Earning Summary</h1>
+                    </div>
+                    <div className={styles.dd}>
+                        <div className={styles.ddc}>
+                            <div>Total :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                        <div className={styles.ddc}>
+                            <div>Withdrawn :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                        <div className={styles.ddc}>
+                            <div>Remaining </div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                    </div>
                 </div>
+                
                 <div className={styles.d}>
-                  <div>Bets:</div> <div className={styles.rwd_c}>{betcount.toString()}</div>
+                    <div>
+                        <h1>Stake Earning Summary</h1>
+                    </div>
+                    <div className={styles.dd}>
+                        <div className={styles.ddc}>
+                            <div>Total :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                        <div className={styles.ddc}>
+                            <div>Withdrawn :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                        <div className={styles.ddc}>
+                            <div>Remaining :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                    </div>
                 </div>
+
                 <div className={styles.d}>
-                  <div>Stakes:</div> <div className={styles.rwd_c}>{stakecount.toString()}</div>
-                </div>
-                <div className={styles.d}>
-                  <Image src={bronzemedal} alt={'medal'} height={20} width = {20} style={{margin: '0 auto'}}/>
-                  <div> Badge</div>
+                    <div>
+                        <h1>Mining Earning Summary</h1>
+                    </div>
+                    <div className={styles.dd}>
+                        <div className={styles.ddc}>
+                            <div>Total :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                        <div className={styles.ddc}>
+                            <div>Withdrawn :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                        <div className={styles.ddc}>
+                            <div>Remaining :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                        </div>
+                    </div>
                 </div>
             </div>
           </div>
@@ -156,4 +187,4 @@ const RewardsBadge:React.FC<{}> = () =>  {
   );
 }
 
-export default RewardsBadge
+export default EarningsBreakDown

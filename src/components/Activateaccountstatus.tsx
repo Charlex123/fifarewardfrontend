@@ -5,6 +5,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCheckCircle, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 // material
+import HelmetExport from 'react-helmet';
 import regstyles from "../styles/register.module.css";
 // component
 
@@ -20,6 +21,11 @@ const EmailVStatus: React.FC<{}> = () =>  {
   
   return (
     <>
+        <HelmetExport>
+          <title>Activate Account Success | FifaReward</title>
+          <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        </HelmetExport>
+
         <a href='/register' rel='noopener noreferrer' className={regstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back </a>
         <div className={regstyles.regsuccess}>
             <div className={regstyles.regs_in}>

@@ -16,6 +16,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { ThemeContext } from '../contexts/theme-context';
+import HelmetExport from 'react-helmet';
 import styles from '../styles/createnft.module.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
@@ -243,6 +244,10 @@ export default function CreateItem() {
 
   return (
     <>
+      <HelmetExport>
+        <title>Mint NFT | FifaReward</title>
+        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+      </HelmetExport>
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         {showloginComp && <LoginModal prop={'Create NFT'} onChange={closeLoginModal}/>}
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
@@ -287,53 +292,56 @@ export default function CreateItem() {
           </div>
         }
         <div className={styles.main_c}>
-          <div className={styles.dragdrop}>
-            <DragDropImageUpload onFileUpload={handleFileUpload}/>
-          </div>
-          <div className={styles.nft_art_desc}>
-            <div className={styles.form_g}>
-              <label className={styles.label}>Asset Name</label>
-              <input 
-                placeholder="Asset Name"
-                className={styles.input_}
-                onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
-                required
-              />
+          <div><h1>Mint NFT</h1></div>
+          <div className={`${styles.main_cc}`}>
+            <div className={`${styles.dragdrop} ${theme === 'dark' ? styles['darktmod'] : styles['lightmod']}`}>
+              <DragDropImageUpload onFileUpload={handleFileUpload}/>
             </div>
-            <div className={styles.form_g}>
-            <label className={styles.label}>Description </label>
-              <textarea
-                placeholder="Say something about your asset"
-                className={styles.textarea_}
-                onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
-                required
-              />
-            </div>
-            <div className={styles.form_g}>
-              <label className={styles.label}>Supply (Max. of 1)</label>
-              <input
-                placeholder="1"
-                className={styles.input_}
-                onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
-                required
-              />
-            </div>
-            <div className={styles.form_g}>
-              <label className={styles.label}>Traits </label>
-              <p>Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page.</p>
-              <button onClick={AddTraits} className={styles.add_traits}> + Add Trait(s)</button>
-              {showtrait && Traits.map((trait,index) => (
-                <div key={index}>
-                  <div>{trait.name}</div>
-                  <div>{trait.value}</div>
-                </div>
-              ))}
-            </div>
+            <div className={`${styles.nft_art_desc} ${theme === 'dark' ? styles['darktmod'] : styles['lightmod']}`}>
+              <div className={styles.form_g}>
+                <label className={styles.label}>Asset Name</label>
+                <input 
+                  placeholder="Asset Name"
+                  className={styles.input_}
+                  onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
+                  required
+                />
+              </div>
+              <div className={styles.form_g}>
+              <label className={styles.label}>Description </label>
+                <textarea
+                  placeholder="Say something about your asset"
+                  className={styles.textarea_}
+                  onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
+                  required
+                />
+              </div>
+              <div className={styles.form_g}>
+                <label className={styles.label}>Supply (Max. of 1)</label>
+                <input
+                  placeholder="1"
+                  className={styles.input_}
+                  onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
+                  required
+                />
+              </div>
+              <div className={styles.form_g}>
+                <label className={styles.label}>Traits </label>
+                <p>Traits describe attributes of your item. They appear as filters inside your collection page and are also listed out inside your item page.</p>
+                <button onClick={AddTraits} className={styles.add_traits}> + Add Trait(s)</button>
+                {showtrait && Traits.map((trait,index) => (
+                  <div key={index}>
+                    <div>{trait.name}</div>
+                    <div>{trait.value}</div>
+                  </div>
+                ))}
+              </div>
 
-            <div className={styles.form_g}>
-              <button type='button' title='create nft' onClick={checkLogin} className={styles.create_btn}>
-                Create NFT
-              </button>
+              <div className={styles.form_g}>
+                <button type='button' title='create nft' onClick={checkLogin} className={styles.create_btn}>
+                  Create NFT
+                </button>
+              </div>
             </div>
           </div>
         </div>

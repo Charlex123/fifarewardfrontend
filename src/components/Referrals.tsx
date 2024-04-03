@@ -28,6 +28,7 @@ import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faXmark } fr
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import ReferralLink from './ReferralLink';
+import HelmetExport from 'react-helmet';
 
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 // ----------------------------------------------------------------------
@@ -250,6 +251,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
+        <HelmetExport>
+            <title>Referrals | FifaReward</title>
+            <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        </HelmetExport>
         <DappNav/>
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>

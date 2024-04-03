@@ -1,5 +1,5 @@
 .main {
-    position: relative;width: 100%;margin: 0 auto 0 auto;padding: 150px 0 50px 0;
+    position: relative;width: 100%;margin: 0 auto 0 auto;padding: 100px 0 50px 0;
 }
 .lighttheme {
     background-color: var(--background-color-light);
@@ -9,7 +9,15 @@
     background-color: var(--background-color-dark);
     color: var(--text-color-dark);
 }
-.main .main_c {
+.darkmod {
+    border: 1px solid #f1f1f13c;border-radius: 0;background-color: #16131376;
+    color: var(--text-color-dark);
+}
+.lightmod {
+    border: 1px solid #96939386;background-color: #252525c2;border-radius: 0;
+    color: var(--text-color-dark);
+}
+.main .main_cc {
     display: flex;width: 96%;justify-content: space-between;flex-direction: row;margin: 15px auto;align-items: center;height: 700px;
     position: relative;
 }
@@ -45,56 +53,64 @@
         background-color: #e3a204;width: 100%;padding: 4px 6px;border-radius: 8px;margin: 35px auto;
         text-align: center;color: #454545;font-weight: 800;
 }
-.main .main_c .dragdrop {
-    width: 40%;background-color: #e2d7d71f;border-radius: 16px;margin-top: 0;height: 100%;
+.main .main_c h1 {
+    font-size: 35px;font-family: "Poppins",sans-serif;margin: 25px auto;text-align: center;
+    font-weight: 700;
 }
-.main .main_c .nft_art_desc {
-    width: 58%;margin-top: 0;padding: 15px;border: 1px solid #e2d7d71f;border-radius: 16px;
-    background-color: #e2d7d71f;margin-right: 0;height: 100%;
+.main .main_cc .dragdrop {
+    width: 40%;border-radius: 16px;margin-top: 0;height: 100%;
+    border: 1px solid #3f3f3f;
 }
-.main .main_c .nft_art_desc .form_g {
+.main .main_cc .nft_art_desc {
+    width: 58%;margin-top: 0;padding: 15px;border-radius: 16px;
+    margin-right: 0;height: 100%;border: 1px solid #3f3f3f;
+}
+.main .main_cc .nft_art_desc .form_g {
     width: 100%;margin: 15px 0 15px 0;text-align: left;
 }
-.main .main_c .nft_art_desc .form_g label {
+.main .main_cc .nft_art_desc .form_g label {
     font-size: 14px;font-weight: 600;
 }
-.main .main_c .nft_art_desc .form_g .input_ {
+.main .main_cc .nft_art_desc .form_g .input_ {
     width: 100%;background-color: #e2d7d74b;height: 40px;border-radius: 8px;padding-left: 4px;
     font-size: 14px;
 }
-/* .main .main_c .nft_art_desc .form_g .input_::placeholder {
+/* .main .main_cc .nft_art_desc .form_g .input_::placeholder {
     
 } */
-.main .main_c .nft_art_desc .form_g .textarea_ {
+.main .main_cc .nft_art_desc .form_g .textarea_ {
     width: 100%;background-color: #e2d7d74b;border-radius: 8px;
     min-height: 180px;font-size: 14px;
 }
-.main .main_c .nft_art_desc .form_g .textarea_::placeholder {
+.main .main_cc .nft_art_desc .form_g .textarea_::placeholder {
     padding-left: 4px;
 }
-.main .main_c .nft_art_desc .form_g button {
+.main .main_cc .nft_art_desc .form_g button {
     width: 100%;background-color: #e3a204;width: 100%;text-align: center;margin: auto;
     padding: 2px 18px 2px 18px;border-radius: 16px;height: 40px;color: #373434;
 }
-.main .main_c .nft_art_desc .form_g p {
+.main .main_cc .nft_art_desc .form_g p {
     margin: 10px 0;font-size: 14px;
 }
-.main .main_c .nft_art_desc .form_g button.add_traits {
+.main .main_cc .nft_art_desc .form_g button.add_traits {
     background-color: #ffffff;width: fit-content;color: #454545;
     padding: 2px 8px 2px 8px;height: 30px;margin-bottom: 20px;
 }
-.main .main_c .nft_art_desc .form_g .label {
+.main .main_cc .nft_art_desc .form_g .label {
     text-align: left;font-size: 13px;margin: 0;
 }
 
 @media (max-width: 991px) {
-    .main .main_c {
-        display: block;width: 96%;margin: 15px auto;align-items: center;height: 100%;
+    .main .main_c h1 {
+        font-size: 25px;
     }
-    .main .main_c .dragdrop {
-        width: 100%;
+    .main .main_cc {
+        display: block;width: 96%;margin: 10px auto 30px auto;align-items: center;height: 100%;
     }
-    .main .main_c .nft_art_desc {
+    .main .main_cc .dragdrop {
+        width: 100%;margin: 10px auto 50px auto;padding: 150px 0 150px 0;
+    }
+    .main .main_cc .nft_art_desc {
         width: 100%;
     }
 }

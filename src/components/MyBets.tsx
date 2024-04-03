@@ -20,6 +20,7 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { NFTMetadata } from './NFTMetadata';
 import { NFTFullMetadata } from './NFTFullMetadata';
+import HelmetExport from 'react-helmet';
 // material
 import styles from "../styles/mynfts.module.css";
 import dotenv from 'dotenv';
@@ -340,6 +341,10 @@ const MyBets: React.FC<{}> = () =>  {
 
   return (
     <>
+    <HelmetExport>
+        <title> My Bets | FifaReward</title>
+        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+    </HelmetExport>
     {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay />}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}

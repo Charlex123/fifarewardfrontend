@@ -1,0 +1,61 @@
+.lighttheme {
+    background-color: var(--background-color-light);
+    color: var(--text-color-dark);
+}
+.darktheme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+.earnins {
+    width: 100%;text-align: right;margin: 30px 0 10px 0;border-top: 3px solid #827f7fc2;
+    border-bottom: 3px solid #827f7fc2;padding: 10px 0 30px 0;
+}
+.earnins .rwdb {
+    width: 100%;
+}
+.earnins .rwdb h1 {
+    margin: 15px auto;text-align: center;font-family: "Poppins",sans-serif;font-size: 25px;
+    font-weight: 800;
+}
+.earnins .rwdbadge {
+    width: 100%;margin: auto;
+    display: flex;flex-wrap: nowrap;flex-direction: row;justify-content: space-between;align-items: center;
+}
+.earnins .rwdbadge h1 {
+    font-weight: 600;font-family: "Poppins", sans-serif;margin-bottom: 10px;font-size: 16px;
+}
+.earnins .rwdbadge .d {
+    border: 1px solid #656363c2;padding: 10px;background-color: #252525c2;width: 30%;
+    font-size: 13px;font-family: "Montserrat",sans-serif;margin: auto;text-align: center;
+    border-radius: 8px;
+}
+.earnins .rwdbadge .d .dd {
+    text-align: left;
+}
+.earnins .rwdbadge .d .dd .ddc {
+    width: 100%;display: flex;flex-direction: row;flex-wrap: nowrap;justify-self: space-between;
+    margin: 10px auto;border-bottom: 1px solid #696767c2;padding-bottom: 4px;
+}
+.earnins .rwdbadge div .rwd_c {
+    font-weight: 800;font-family: "Poppins",sans-serif;
+}
+
+@media (max-width: 991px) {
+    .earnins .rwdbadge {
+        width: 100%;display: block;flex: none;flex-direction: unset;justify-content: unset;
+        padding: 10px;
+    }
+    .earnins .rwdbadge .d {
+        width: 100%;margin: 20px auto;
+    }
+    .earnins .rwdb h1 {
+        margin: 15px auto;font-size: 22px;
+    }
+}
+
+@media (max-width: 567px) {
+    .earnins .rwdb h1 {
+        font-size: 18px;
+        font-weight: 600;margin: 10px auto -10px auto;
+    }
+}

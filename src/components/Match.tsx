@@ -20,6 +20,7 @@ import { Bets } from './BetsMetadata';
 import ActionSuccessModal from './ActionSuccess';
 import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
+import HelmetExport from 'react-helmet';
 import { Fixture } from './FixtureMetadata';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
@@ -650,6 +651,11 @@ const loadSearchResults = async () => {
 
   return (
     <>
+      <HelmetExport>
+          <title>Bet - {countryparam} - {leagueparam} - {matchparam} | FifaReward</title>
+          <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+      </HelmetExport>
+
       <div className={matchstyle.main}>
       {showBgOverlay && <BgOverlay />}
       {showloading && <Loading/>}

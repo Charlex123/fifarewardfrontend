@@ -20,6 +20,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { NFTFullMetadata } from './NFTFullMetadata';
+import HelmetExport from 'react-helmet';
 
 import styles from "../styles/nftmarketplace.module.css";
 import dotenv from 'dotenv';
@@ -168,6 +169,10 @@ const closeActionModalComp = () => {
   
   return (
     <>
+    <HelmetExport>
+        <title> NFT MarketPlace | FifaReward</title>
+        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+    </HelmetExport>
     {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay />}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}

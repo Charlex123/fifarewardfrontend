@@ -20,6 +20,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import axios from 'axios';
 import AlertMessage from './AlertMessage';
+import HelmetExport from 'react-helmet';
 import RewardsBadge from './RewardsBadge';
 import ReferralLink from './ReferralLink';
 import { ThemeContext } from '../contexts/theme-context';
@@ -28,6 +29,7 @@ import DappNav from './Dappnav';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import DappFooter from './DappFooter';
+import EarningsBreakDown from './EarningsBreakingdown';
 import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
@@ -255,6 +257,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
+        <HelmetExport>
+            <title>Dapp - Bet, Mint NFTs, Stake, and Mine FRD to earn more FRD  | FifaReward</title>
+            <meta name='description' content=' FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        </HelmetExport>
         <DappNav/>
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>
@@ -276,6 +282,9 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
               <div>
                 <RewardsBadge />
+              </div>
+              <div>
+                <EarningsBreakDown />
               </div>
               <div>
                 <ReferralLink />

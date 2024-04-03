@@ -130,7 +130,8 @@ function Navbar() {
                 
                 {isNavOpen && (
                 <div className={styles.nav_container_p}>
-                <ul className={styles.upa}>
+                <ul className={styles.upa}> 
+                    <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
                     <li><a href='/mining' rel='noopener noreferrer'>Mine</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li>

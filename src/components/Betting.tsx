@@ -23,6 +23,7 @@ import { Fixture } from './FixtureMetadata';
 import { faCaretDown, faCircle, faFilter, faL, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import HelmetExport from 'react-helmet';
 dotenv.config();
 // material
 // component
@@ -458,6 +459,10 @@ const handleInputClick = () => {
     <>
     {/* {showloading && <Loading/>} */}
     {/* <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div> */}
+    <HelmetExport>
+        <title>Bet - Bet on your best teams, competitions  and fixture | FifaReward</title>
+        <meta name='description' content='Participate in the FifaReward Airdrop and and accumulate as much tokens as you can. FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+    </HelmetExport>
     {showBgOverlay && <BgOverlay />}
       <div className={bettingstyle.main}>
         <div className={bettingstyle.search} >

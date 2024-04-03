@@ -20,6 +20,7 @@ const ReferralLink:React.FC<{}> = () =>  {
   const [userId, setUserId] = useState<number>();  
   const [sponsorId, setIsSponsorId] = useState<number>(0);  
   const [walletaddress, setWalletAddress] = useState<any>("NA");
+  const [shortwalletaddress, setShortWalletAddress] = useState<any>("NA");
   const [sponsorWalletAddress, setsponsorWalletAddress] = useState<any>("NA");  
   const { walletProvider } = useWeb3ModalProvider();
   const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
@@ -63,7 +64,8 @@ const ReferralLink:React.FC<{}> = () =>  {
   
   useEffect(() => {
     setWalletAddress(address);
-
+    const shrtwa = address?.substring(0,18)+' ...';
+    setShortWalletAddress(shrtwa);
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;
@@ -166,13 +168,17 @@ if(isConnected) {
 
  }, [userId,address,router,username,walletaddress,sponsorId,userObjId])
 
-
+const toggleWA = (e: any) => {
+  let tbtn = e as HTMLButtonElement;
+  const tspan = tbtn.previousElementSibling as HTMLElement;  
+  tspan.style.display = (tspan.style.display === "block") ? "none" : "block";
+}
   return (
     <>
         <div className={`${dappstyles.reflink} ${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']}`} >
             <div className={dappstyles.reflinkdex}>Ref Link: <input title="input" value={referralLink} readOnly /><button type='button' onClick={handleCopyClick}>{buttonText}</button> </div>
             <div><small>Share referral link to earn more FRD!</small></div>
-            <div>Connected Wallet: <span style={{color: 'orange'}}>{walletaddress}</span></div>
+            <div className={dappstyles.cw}>Connected Wallet: <span style={{color: 'orange'}}>{shortwalletaddress}</span><div style={{color: 'orange'}} className={dappstyles.cws}><div>{walletaddress}</div></div><button onClick={(e) => toggleWA(e.target)}>view</button></div>
         </div>
     </>
   );

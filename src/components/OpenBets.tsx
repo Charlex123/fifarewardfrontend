@@ -20,6 +20,7 @@ import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
 import BgOverlay from './BgOverlay';
 import LoginModal from './LoginModal';
+import HelmetExport from 'react-helmet';
 import { faCircle, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 dotenv.config();
@@ -564,6 +565,10 @@ const toggleAddress = (e:any) => {
 
   return (
     <>
+    <HelmetExport>
+        <title>Open Bets List | FifaReward</title>
+        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+    </HelmetExport>
     {showloading && <Loading/>}
     {error && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {/* <div className={openbetsstyle.hiw_overlay} id="hiw_overlay"></div> */}

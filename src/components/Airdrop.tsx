@@ -23,6 +23,7 @@ import DappNav from './Dappnav';
 import DappFooter from './DappFooter';
 import AirdropAbi from '../../artifacts/contracts/FRDAirDrop.sol/FRDAirDrop.json';
 import { AirdropMetadata } from './AirdropMetadata';
+import HelmetExport from 'react-helmet';
 import FooterNavBar from './FooterNav';
 import RewardsBadge from './RewardsBadge';
 import { fas, faCheck, faCheckCircle,faAlignJustify, faXmark, faChevronRight, faCheckDouble } from '@fortawesome/free-solid-svg-icons'
@@ -183,6 +184,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
+        <HelmetExport>
+            <title>AirDrop - Participate in the FifaReward Airdrop | FifaReward</title>
+            <meta name='description' content='Participate in the FifaReward Airdrop and and accumulate as much tokens as you can. FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        </HelmetExport>
         <DappNav/>
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>

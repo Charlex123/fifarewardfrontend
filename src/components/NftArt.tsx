@@ -16,6 +16,7 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { NFTBidMetadata } from './NFTBidMetadata';
 import { NFTFullMetadata } from './NFTFullMetadata';
+import HelmetExport from 'react-helmet';
 import { faEye, faEyeSlash, faHeart, } from "@fortawesome/free-regular-svg-icons";
 import { faAlignJustify, faCartShopping, faCircleCheck, faTag, faXmark  } from "@fortawesome/free-solid-svg-icons";
 // material
@@ -43,9 +44,6 @@ const NFTArt: React.FC<{}> = () =>  {
     const [listingItemTokenId,setListingItemTokenId] = useState<any>(null);
     const [nftItemPrice, setNftItemPrice] = useState<string>("");
     const [bidduration, setBidDuration] = useState<any>(0);
-    const [reservedbuyer, setReservedBuyer] = useState<any>("0x0000000000000000000000000000000000000000");
-    const [minbidamount, setMinBidAmount] = useState<any>(0);
-    const [salesroyaltyfee, setSalesRoyaltyFee] = useState<any>(2);
     const { theme } = useContext(ThemeContext);
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
     const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
@@ -57,10 +55,18 @@ const NFTArt: React.FC<{}> = () =>  {
 
     const [mylistedNFTs,setmyListedNFTS] = useState<NFTFullMetadata[]>([]);
 
+    const [urltitleparams,setTitleParams] = useState<string>('');
+
     const router = useRouter();
 
- 
+    
   useEffect(() => {
+    
+    const { nft } = router.query;
+    if(nft) {
+        setTitleParams(nft[0]);
+    }
+
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
         if(udetails && udetails !== null && udetails !== "") {
         const username_ = udetails.username;  
@@ -194,11 +200,16 @@ const NFTArt: React.FC<{}> = () =>  {
   
   return (
     <>
+    <HelmetExport>
+        <title>NFT Art | {urltitleparams}</title>
+        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
+    </HelmetExport>
+    
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         <div className={styles.main_bg_overlay}></div>
           
           <div className={styles.main_c}>
-            <div className={styles.nft_art}>
+            <div className={` ${styles.nft_art} ${theme === 'dark' ? styles['darkmod'] : styles['lighttmod']}`}>
                 <div className={styles.nft_art_bg_overlay}></div>
                 <div className={styles.nft_art_}>
                     <div className={styles.nft_art_top}>
@@ -212,7 +223,7 @@ const NFTArt: React.FC<{}> = () =>  {
                         </div>  
                     </div>
                     <div className={styles.nft_art_in}>
-                        <Image src={messi} alt='nft art' style={{objectFit: 'cover',width: '100%',height: '100%',marginTop: '0',borderBottomLeftRadius: '8px',borderBottomRightRadius: '8px'}}/>
+                        <Image src={messi} alt='nft art' priority style={{objectFit: 'cover',width: '100%',height: '100%',marginTop: '0',borderBottomLeftRadius: '8px',borderBottomRightRadius: '8px'}}/>
                     </div>
                 </div>
             </div>
@@ -221,7 +232,7 @@ const NFTArt: React.FC<{}> = () =>  {
                 <div className={styles.nft_auctn_in}>
                     <div>
                         <div>
-                        <h1> NFT NAME ..0x3e4</h1>
+                        <h1> LIONEL MESSI - THE GOAT ..0x3e4</h1>
                         </div>
                         <div className={styles.intro_p}>
                         <p>

@@ -23,6 +23,7 @@ import DappNav from './Dappnav';
 import DappFooter from './DappFooter';
 import FooterNavBar from './FooterNav';
 import RewardsBadge from './RewardsBadge';
+import HelmetExport from 'react-helmet';
 import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome} from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
@@ -204,6 +205,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
+        <HelmetExport>
+            <title>Mining | FifaReward</title>
+            <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        </HelmetExport>
         <DappNav/>
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>
