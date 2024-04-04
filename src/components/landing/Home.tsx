@@ -326,7 +326,7 @@ useEffect(() => {
                   <button type='button' className={styles.readmorebtn} onClick={showStakeReadMore}>{textValues[currentStakeRMTextIndex]}</button>
               </div>
               <div className={styles.stakevestimg}>
-                <Image src={stakevest} alt='stake image' quality={90} className={styles.stakevest_img}/>
+                {/* <Image src={stakevest} alt='stake image' quality={90} className={styles.stakevest_img}/> */}
               </div>
           </div>
       </div>
