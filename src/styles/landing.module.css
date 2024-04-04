@@ -43,7 +43,7 @@
   width: 45%;padding: 25px;
 }
 .blk .blk_inner .blkc1 h1 {
-  font-size: 50px;font-weight: bolder;margin: 15px auto;text-align: center;
+  font-size: 50px;font-weight: bolder;margin: 15px auto 65px auto;text-align: center;
   font-family: "Paytone One",Verdana, Geneva, Tahoma, sans-serif;
   line-height: 68px;letter-spacing: 6px;color: #e28305;
 }
@@ -53,7 +53,7 @@
   line-height: 38px;letter-spacing: 6px;
 }
 .blk .blk_inner .blk_image {
-  width: 50%;
+  width: 50%;height: 70vh;
 }
 .c_content {    
     margin: auto;padding: 105px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;margin-top: -30px;
@@ -103,7 +103,7 @@
     font-weight: 900;
 }
 .c_content .hero_h1 h1 {
-    font-size: 55px;font-weight: 900;color: #f1f1f1;
+    font-size: 55px;font-weight: 900;color: #f1f1f1;font-family: "Bungee Spice",sans-serif;
 }
 .c_content .hero_h1 div {
     margin-top: 55px;
@@ -139,7 +139,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 100%;display: flex;flex-direction: row;justify-content: space-between;
 }
 .connectworld .conn_inner .connectw {
-  width: 40%;text-align: center;margin: 10px auto;
+  width: 45%;text-align: center;margin: 10px auto;
 }
 .connectworld .conn_inner .connectw h1 {
   font-size: 40px;text-transform: uppercase;font-weight: 900;margin: 50px auto;
@@ -149,7 +149,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   text-align: left;
 }
 .connectworld .conn_inner .conn_image {
-  width: 55%;margin-top: 40px;
+  width: 50%;margin-top: 40px;height: 70vh;
 }
 .readmorebtn {
   border-radius: 120px;padding: 5px 16px;font-size: 13px;
@@ -416,9 +416,43 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     }
 }
 @media (max-width: 990px) {
-    
+
+    .bg_video {
+      width: 100%;
+      min-height: 70vh;
+      height: 70vh;
+      object-fit: cover;
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      z-index: -1;
+    }
+    .blk {
+      width: 100%;margin: 60px auto 60px auto;
+    }
+    .blk .blk_inner {
+      display: block;flex-direction: none;justify-content: unset;
+    }
+    .blk .blk_inner .blkc {
+      width: 100%;padding: 25px;
+    }
+    .blk .blk_inner .blkc1 h1 {
+      font-size: 40px;font-weight: bolder;margin: 15px auto;text-align: center;
+      font-family: "Paytone One",Verdana, Geneva, Tahoma, sans-serif;
+      line-height: 48px;letter-spacing: 6px;color: #e28305;
+    }
+    .blk .blk_inner .blkc2 h1 {
+      font-size: 25px;font-weight: bolder;margin: 25px auto;text-align: center;
+      font-family: "Bungee Spice",Verdana, Geneva, Tahoma, sans-serif;
+      line-height: 38px;letter-spacing: 6px;
+    }
+    .blk .blk_inner .blk_image {
+      width: 100%;
+    }
     .c_content {    
-        padding: 5px;display: block;margin-top: 5rem;
+        padding: 50px 5px 50px 5px;display: block;height: inherit;min-height: inherit;
     }
     .c_content .hero_image {
         width: 100%;margin: 0;text-align: center;
@@ -430,7 +464,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
         margin: 0 auto 1rem auto;width: 90%;
     }
     .c_content .hero_h1 h1 {
-        font-size: 28px;font-weight: 900;color: #f1f1f1;margin: 0 auto 1rem auto;
+        font-size: 38px;font-weight: 900;color: #f1f1f1;margin: 0 auto 1rem auto;
     }
     .c_content .hero_h1 div {
         margin-top: 0;
@@ -447,12 +481,30 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
         display: flex;justify-content: space-evenly;margin: 5rem auto;
     }
     .c_content .hero_h1 div a.getstarted {
-      font-size: 16px;padding: 6px 18px 6px 18px;
-  }
+        font-size: 16px;padding: 6px 18px 6px 18px;
+    }
     .c_content .hero_h1 div a.learnmore {
         font-size: 16px;padding: 6px 18px 6px 18px;
     }
-    
+    .connectworld {
+      width: 100%;margin: 25px auto 10px auto;
+    }
+    .connectworld .conn_inner {
+      width: 100%;display: block;flex-direction: none;justify-content: unset;
+    }
+    .connectworld .conn_inner .connectw {
+      width: 100%;text-align: center;margin: 10px auto;
+    }
+    .connectworld .conn_inner .connectw h1 {
+      font-size: 30px;
+      font-family: "Paytone One",sans-serif;
+    }
+    .connectworld .conn_inner .connectw p {
+      text-align: left;margin-left: 20px;
+    }
+    .connectworld .conn_inner .conn_image {
+      width: 100%;margin-top: 20px;padding: 50px;margin: auto;
+    }
     .stkb {
       width: 100%;margin: 4rem auto;
     }

@@ -194,7 +194,7 @@ useEffect(() => {
               </div> */}
             </div>
             <div className={styles.blk_image}>
-              <Image src={chainhead} alt='connecting the world through football' />
+              <Image src={chainhead} style={{width: '100%', height: '100%'}} alt='connecting the world through football' />
             </div>
           </div>
       </div>
@@ -231,16 +231,16 @@ useEffect(() => {
               <h4 className={styles.hero_h4}>The best AI Powered time-locked betting and staking system on the blockchain. High yield, protected by deflationary measures backed by validator nodes</h4>
             </div>
             
-            <div className={styles.get_sd_btns}>
+            {/* <div className={styles.get_sd_btns}>
               <a title='get started' href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={styles.getstarted}>Buy FRD</a>
               <a href='/signin' rel='noopener noreferrer' className={styles.learnmore}>Stake FRD</a>
-            </div>
-            <div className={styles.ca}>
+            </div> */}
+            {/* <div className={styles.ca}>
               <span>Contract Address</span> 
               <div className={styles.ca_in}>
                 <input title='input' type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button>
               </div>
-            </div>
+            </div> */}
           </div>
           {/* <div className={styles.hero_image}>
             <Image src={Heroimg} alt='hero img' style={{objectFit: "contain",marginTop: '5rem'}} quality={90} />
@@ -261,7 +261,7 @@ useEffect(() => {
               </div>
             </div>
             <div className={styles.conn_image}>
-              <Image src={fworldmap} alt='connecting the world through football' />
+              <Image src={fworldmap} style={{objectFit: 'contain', width: '100%', height: '100%'}} alt='connecting the world through football' />
             </div>
           </div>
       </div>
@@ -291,46 +291,11 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className={styles.stkb}>
-        <div>
-          <h3>Lauching... </h3>
-          <h1>FIFAREWARD ECO SYSTEM</h1>
-        </div>
-        <div>
-          <Image src={stakebanner} quality={90} style={{objectFit:"contain"}} className={styles.stakebanner} alt='banner'/>
-        </div>
-
-        <div className={styles.gov}>
-          <div className={styles.gov_in}>
-            <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={trust} className={styles.gov_img} alt='image'/></div>
-              <h2>Stake Tafa</h2>
-              <p>Earn sustainable passive rewards by time locking in our innovative gamified smart contracts.</p>
-            </div>
-            <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={peopl_} className={styles.gov_img} alt='image'/></div>
-              <h2>DAO Governance </h2>
-              <p>Self-sustainable community driven TAFAVAULT with onchain voting</p>
-            </div>
-            <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={stat} className={styles.gov_img} alt='image'/></div>
-              <h2>Sustainability</h2>
-              <p>Mathematically programmed rewards through carefully balanced tokenomics</p>
-            </div>
-            <div className={styles.gov_c}>
-              <div className={styles.image_c}><Image src={developt} className={styles.gov_img} alt='image'/></div>
-              <h2>Utility</h2>
-              <p>The protocol is asset backed to protect from even the worst conditions in the market.</p>
-            </div>  
-          </div>
-        </div>
-      </div>
-
       <div className={`${styles.frdstaking} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="frdstaking">
           <h1>FIFAREWARD STAKING</h1>
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
-                <h4>WHY STAKE TAFA?</h4>
+                <h4>WHY STAKE FRD?</h4>
                 <ul>
                   <li>
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 2% daily return on investment on one of the most growing crypto token.
@@ -404,7 +369,7 @@ useEffect(() => {
               <FontAwesomeIcon icon={faCheckCircle}/> Real-time Crypto, Forex, and Synthetics Trade signal alerts via SMS, emails, and telegram
             </li>
             <li>
-              <FontAwesomeIcon icon={faCheckCircle}/> FIFAREWARD token ($TAFA) with several utilities in the FIFAREWARD platform
+              <FontAwesomeIcon icon={faCheckCircle}/> FIFAREWARD token ($FRD) with several utilities in the FIFAREWARD platform
             </li>
             <li>
               <FontAwesomeIcon icon={faCheckCircle}/> Node as a Service (NaaS) system for FIFAREWARD token
@@ -412,13 +377,10 @@ useEffect(() => {
             <li>
               <FontAwesomeIcon icon={faCheckCircle}/> FIFAREWARD token launchpads for several blockchains
             </li>
-            <li>
-              <FontAwesomeIcon icon={faCheckCircle}/> The TafaTaxi Project
-            </li>
           </ul>
       </div>
 
-      <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
+      {/* <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
           <h1>FIFAREWARD REFERRAL SYSTEM</h1>
           <div className={styles.referralsmain}>
               <div className={styles.referralstext}>
@@ -451,18 +413,18 @@ useEffect(() => {
                 </ul>
 
                 <p>
-                Welcome to the world of Community referral income, where spreading the word about amazing crypto investment opportunities and services can generate lucrative daily returns for you! If you're looking for a reliable avenue to increase your TAFA portfolio and earn passive income, referral programs offer a compelling opportunity 
+                Welcome to the world of Community referral income, where spreading the word about amazing crypto investment opportunities and services can generate lucrative daily returns for you! If you're looking for a reliable avenue to increase your FRD portfolio and earn passive income, referral programs offer a compelling opportunity 
                 </p>
                 {refReadMore && (
                   <>
                     <p>
-                    Join the ranks of TAFA Staking successful referrers and tap into the network effects to accumulate unlimited FIFAREWARD units. Get ready to watch your assets soar as you leverage the power of referrals!
+                    Join the ranks of FRD Staking successful referrers and tap into the network effects to accumulate unlimited FIFAREWARD units. Get ready to watch your assets soar as you leverage the power of referrals!
                     </p>
                     <p>
                     Referral income is a dynamic and rewarding way to earn passive income by sharing information that benefits your community
                     </p>
                     <p>
-                    By harnessing the power of community effects and leveraging your relationships, you position yourself as a trusted influencer, earning commission for every successful referral. Make the most of your connections, share the TAFA Staking Protocol , and unlock unlimited referral income. Start referring now to watch your earnings soar and empower others to discover life-changing solutions!
+                    By harnessing the power of community effects and leveraging your relationships, you position yourself as a trusted influencer, earning commission for every successful referral. Make the most of your connections, share the FRD Staking Protocol , and unlock unlimited referral income. Start referring now to watch your earnings soar and empower others to discover life-changing solutions!
                     </p>
                   </>
                 )}
@@ -472,66 +434,8 @@ useEffect(() => {
                 <Image src={teamwork} alt='team image' quality={90} className={styles.referrals_img}/>
               </div>
           </div>
-      </div>
-
-      <div className={styles.tkl}>
-        <div className={styles.tkl_in}>
-            <div className={styles.tkl_head}>
-              <h4>FIFAREWARD</h4>
-              <h1>Token Launch Schedule</h1>
-              <p>FIFAREWARD is launching in three stages over the coming months</p>
-              <p>We start with a huge airdrop, allowing thousands of DeFi users to Free Claim some FIFAREWARD Tokens</p>
-              <div className={styles.dexlinks}>
-                <a href='https://avax.network' rel='noreferrer noopener' className={styles.dl}><Image src={avllogo} className={styles.launchlinks} alt='image'/></a>
-                <a href='https://bnbchain.org' rel='noreferrer noopener' className={styles.dl}><Image src={bnblogo} className={styles.launchlinks} alt='image'/></a>
-                <a href='https://fantom.foundation' rel='noreferrer noopener' className={styles.dl}><Image src={fantlogo} className={styles.launchlinks} alt='image'/></a>
-                <a href='https://ethereum.org/en' rel='noreferrer noopener' className={styles.dl}><Image src={ethlogo} className={styles.launchlinks} alt='image'/></a>
-                <a href='https://polygon.technology' rel='noreferrer noopener' className={styles.dl}><Image src={polychlogo} className={styles.launchlinks} alt='image'/></a>
-                <a href='https://cronos.org' rel='noreferrer noopener' className={styles.dl}><Image src={cronlogo} className={styles.launchlinks} alt='image'/></a>
-              </div>
-            </div>
-            <div className={styles.tkl_body}>
-              <div className={`${styles.tkl_bc} ${styles.skew1_}`}>
-                <h3>STAGE 1</h3>
-                <h2>FREE CLAIM</h2>
-                <p>Tafa free token claiming program completed and tokens already distributed to qualified addresses. </p>
-                <div className={styles.button}>COMPLETED <FontAwesomeIcon icon={faCheck} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}></span></div>
-              </div>
-              <div className={`${styles.tkl_bc} ${styles.skew2_}`}>
-                <h3>STAGE 1</h3>
-                <h2>MAINNET LAUNCH</h2>
-                <p>Tafa token is live on mainnet, buy, sell, trade, transfer, stake , network, earn rewards and enjoy better life with tafa profits. </p>
-                <div className={`${styles.button} ${styles.btn}`}><button >LIVE NOW <FontAwesomeIcon icon={faCheckCircle} size='lg' className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}> </span></button></div>
-              </div>
-            </div>
-        </div>
-
-        <div className={styles.roadmap} id="roadmap"> 
-            <div className={styles.rdm}>
-                <h1>FIFAREWARD ROADMAP</h1>
-                <h4>A Timely Events of FIFAREWARD</h4>
-                <div className={styles.tmlc}>
-                </div>
-             </div>   
-        </div>
-      </div>
-
-      <div className={`${styles.freeclaim} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="freeclaim">
-          <h1>FIFAREWARD FREE CLAIM</h1>
-          <div className={styles.freeclaimmain}>
-            <p>
-              The methods are new, but the concept is old. The difference is in the application and
-              how FIFAREWARD has simplified staking in cryptocurrency. FIFAREWARD leverages several
-              low-risk staking platforms and the expertise of a team of proven profitable traders to
-              generate a yield of 15 to 16.5% returns monthly for her users. It's a hybrid system in
-              which the team utilizes years of experience and a complex algorithm that factors in
-              impactful financial news and technical analysis to arrive at profitable trading
-              decisions. USDT is the base asset for staking. In the future, more will be added
-            </p>
-            <button type='button' disabled>Completed <FontAwesomeIcon icon={faCheckCircle}/></button>
-          </div>
-      </div>
-
+      </div> */}
+      
     </div>
 
     
