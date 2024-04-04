@@ -7,12 +7,12 @@
 .lighttheme {
     background-color: var(--background-color-light);
     color: var(--text-color-light);
-    border: var(--border-dark);
+    /* border: var(--border-dark); */
 }
 .darktheme {
     background-color: var(--background-color-dark);
     color: var(--text-color-dark);
-    border: var(--border-dark)
+    /* border: var(--border-dark) */
 }
 .main {
     width: 100%;

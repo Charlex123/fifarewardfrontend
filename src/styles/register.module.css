@@ -13,15 +13,15 @@
 .lighttheme {
     background-color: var(--background-color-light);
     color: var(--text-color-light);
-    border: var(--border-dark);
+    /* border: var(--border-dark); */
 }
 .darktheme {
     background-color: var(--background-color-dark);
     color: var(--text-color-dark);
-    border: var(--border-dark)
+    /* border: var(--border-dark) */
 }
 .main {
-    width: 100%;
+    width: 100%;height: 100%;
 }
 .form_group {
     margin: 1rem 0;
