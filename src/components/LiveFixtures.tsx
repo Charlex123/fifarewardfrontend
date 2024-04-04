@@ -41,7 +41,7 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
             "Content-type": "application/json"
         }
       }  
-      const {data} = await axios.post("http://localhost:9000/api/livefixtures/loadlivefixtures", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/livefixtures/loadlivefixtures", {
         live,
         currentPage,
         limit

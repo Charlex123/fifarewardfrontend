@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import Typed from 'react-typed';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
-import stadiumbg from '../../assets/images/footballstadium.jpg';
+import chainhead from '../../assets/images/chainhead.png';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
 import peopl_ from '../../assets/images/group.png';
 import trust from '../../assets/images/trust.png';
@@ -174,6 +174,30 @@ useEffect(() => {
     </Helmet>
     <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
       <div className={styles.overlay_d}></div>
+      <div className={styles.blk}>
+          <div className={styles.blk_inner}>
+            <div className={styles.blkc}>
+              <div className={styles.blkc1}>
+                <h1>WELCOME TO THE FRDCHAIN</h1>
+              </div>
+
+              <div className={styles.blkc2}>
+                <h1>A LAYER 2 GAMEFI BLOCKCHAIN </h1>
+                <h1> ON BINANCE SMART CHAIN </h1>
+              </div>
+              
+              {/* <div className={styles.blkc3}>
+                <h3>A ROLL UP BLOCKCHAIN SOLUTION</h3>
+              </div>
+              <div className={styles.blkc4}>
+                <h3>GET MORE SPEED, TRUST, SECURITY AND SCALABILITY</h3>
+              </div> */}
+            </div>
+            <div className={styles.blk_image}>
+              <Image src={chainhead} alt='connecting the world through football' />
+            </div>
+          </div>
+      </div>
       <div className={styles.c_content}>
         <video className={styles.bg_video} autoPlay loop muted >
           <source src="./fifarewardvideo.mp4" type="video/mp4"></source>
@@ -182,7 +206,7 @@ useEffect(() => {
           <div className={styles.hero_h1}>
             <div>
               <h1 className={styles.h1}>
-                WELCOME TO FIFA REWARD  
+                FIFA REWARD  
               </h1>
             </div>
             <Typed
@@ -244,19 +268,9 @@ useEffect(() => {
 
       {/* dex tools */}
       <div className={styles.exchmain}>
-        <h1>FIFAREWARD PARTNERSHIPS</h1>
-        <div>
-          <h4>Buy FRD from these listed exchanges</h4>
-          <div className={styles.dexchanges}>
-            <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noreferrer noopener'><Image src={pcslogo} className={styles.delginks} width={150} height={40} alt='image'/></a>
-            <a href='https://www.geckoterminal.com/bsc/pools/0x7c0406a570ca1407c412238c173898cd145fd52e' rel='noreferrer noopener'><Image src={cgk} className={styles.delginks} width={150} height={40} alt='image'/></a>
-          </div>
-        </div>
+        <h1>SUPPORTED BY</h1>
 
         <div>
-          <h4>
-            Coming Soon Partnerships
-          </h4>
           <div className={styles.dexchanges}>
             {images.map((image, index) => (
             <Image

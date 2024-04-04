@@ -43,7 +43,7 @@ const LoadFixturesSearchResults:React.FC<Props> = ({searchkeyword}) => {
               "Content-type": "application/json"
           }
         }  
-        const {data} = await axios.post("http://localhost:9000/api/fixtures/searchfixturesresults", {
+        const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/searchfixturesresults", {
           searchkeyword,
           currentPage,
           limit

@@ -56,7 +56,7 @@ library.add(faEye, faEyeSlash);
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://tafabackend.onrender.com/api/users/checkforgotemail", {
+    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkforgotemail", {
           email,
     }, config);
     if(data) {
@@ -78,7 +78,7 @@ library.add(faEye, faEyeSlash);
       setLoading(true)
       console.log(email)
       console.log(newpassword)
-      const {data} = await axios.post("https://tafabackend.onrender.com/api/users/resetpassword", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/users/resetpassword", {
         email,
         newpassword,
         confirmnewpassword

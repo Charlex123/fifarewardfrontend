@@ -97,7 +97,7 @@ const ReferralLink:React.FC<{}> = () =>  {
                 "Content-type": "application/json"
             }
             }  
-            const {data} = await axios.post("http://localhost:9000/api/users/updatewalletaddress/", {
+            const {data} = await axios.post("https://fifareward.onrender.com/api/users/updatewalletaddress/", {
               walletaddress,
               username
             }, config);
@@ -118,7 +118,7 @@ const ReferralLink:React.FC<{}> = () =>  {
           "Content-type": "application/json"
       }
       }  
-      const {data} = await axios.post("http://localhost:9000/api/users/getwalletaddress/", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
         username
       }, config);
       setWalletAddress(data.message);
@@ -137,7 +137,7 @@ if(isConnected) {
               "Content-type": "application/json"
           }
           }  
-          const {data} = await axios.post("http://localhost:9000/api/users/getsponsorwalletaddress", {
+          const {data} = await axios.post("https://fifareward.onrender.com/api/users/getsponsorwalletaddress", {
             sponsorId,
           }, config);
           if(data.message === "You do not have a sponsor") {

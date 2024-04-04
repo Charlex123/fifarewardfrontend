@@ -287,7 +287,7 @@ useEffect(() => {
                 }
             }  
             
-            const {data} = await axios.post("http://localhost:9000/api/bets/joinbet", {
+            const {data} = await axios.post("https://fifareward.onrender.com/api/bets/joinbet", {
                 betAmount,
                 betId,
                 matchid,
@@ -424,7 +424,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/searchbetkeywords", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/searchbetkeywords", {
       searchkeyword
   }, config);
   if(data) {
@@ -443,7 +443,7 @@ const loadSearchResults = async () => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/belistsearch", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/belistsearch", {
       searchkeyword,
       currentPage,
       limit
@@ -464,7 +464,7 @@ const viewBetDetails = async(e:any,betId:number) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/getbetconditions", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/getbetconditions", {
       betId
   }, config);
   if(data) {
@@ -507,7 +507,7 @@ const FilterByBetAmount = async (event:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/filterbybetamount", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/filterbybetamount", {
       filterbetAmount,
       currentPage,
       limit
@@ -527,7 +527,7 @@ const FilterByClosedBets = async () => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/filterbyclosedbets", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/filterbyclosedbets", {
       currentPage,
       limit
   }, config);
@@ -546,7 +546,7 @@ const FilterByOpenBets = async () => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/bets/filterbyopenbets", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/filterbyopenbets", {
       currentPage,
       limit
   }, config);

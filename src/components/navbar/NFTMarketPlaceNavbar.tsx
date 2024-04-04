@@ -137,8 +137,8 @@ function Navbar() {
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li>
                     <li><a href='/betting/' rel='noopener noreferrer'>Betting</a></li>
                     <li><a href='/nft/mynfts' rel='noopener noreferrer'>My NFTs</a></li>
-                    <li><a href='/nft' rel='noopener noreferrer'>NFT MarketPlace</a></li>
-                    <li><a href='/nft/createnft' rel='noopener noreferrer'>Create NFT</a></li>
+                    <li><a href='/nft' rel='noopener noreferrer'> MarketPlace</a></li>
+                    <li><a href='/nft/createnft' rel='noopener noreferrer'>Mint</a></li>
                 </ul>
                 {!isLoggedIn && 
                     <ul className={styles.upa}>

@@ -33,6 +33,28 @@
   background-color: var(--background-color-dark);
   color: var(--text-color-dark);
 }
+.blk {
+  width: 100%;margin: 120px auto 120px auto;
+}
+.blk .blk_inner {
+  display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;
+}
+.blk .blk_inner .blkc {
+  width: 45%;padding: 25px;
+}
+.blk .blk_inner .blkc1 h1 {
+  font-size: 50px;font-weight: bolder;margin: 15px auto;text-align: center;
+  font-family: "Paytone One",Verdana, Geneva, Tahoma, sans-serif;
+  line-height: 68px;letter-spacing: 6px;color: #e28305;
+}
+.blk .blk_inner .blkc2 h1 {
+  font-size: 35px;font-weight: bolder;margin: 25px auto;text-align: center;
+  font-family: "Bungee Spice",Verdana, Geneva, Tahoma, sans-serif;
+  line-height: 38px;letter-spacing: 6px;
+}
+.blk .blk_inner .blk_image {
+  width: 50%;
+}
 .c_content {    
     margin: auto;padding: 105px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;margin-top: -30px;
     overflow: hidden;min-height: 100vh;height: 100vh;width: 100%;
@@ -120,7 +142,11 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 40%;text-align: center;margin: 10px auto;
 }
 .connectworld .conn_inner .connectw h1 {
-  font-size: 40px;text-transform: uppercase;font-weight: 900;margin-top: 50px;
+  font-size: 40px;text-transform: uppercase;font-weight: 900;margin: 50px auto;
+  font-family: "Paytone One",sans-serif;
+}
+.connectworld .conn_inner .connectw p {
+  text-align: left;
 }
 .connectworld .conn_inner .conn_image {
   width: 55%;margin-top: 40px;

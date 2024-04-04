@@ -87,7 +87,7 @@ const InfluencerRegisterForm = () =>  {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("http://localhost:9000/api/users/checkusername", {
+    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkusername", {
           username,
     }, config);
     if(data) {
@@ -105,7 +105,7 @@ const InfluencerRegisterForm = () =>  {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("http://localhost:9000/api/users/checkemail", {
+    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkemail", {
           email,
     }, config);
     if(data) {
@@ -131,7 +131,7 @@ const InfluencerRegisterForm = () =>  {
         }  
         
         setLoading(true);
-        const {data} = await axios.post("http://localhost:9000/api/users/register", {
+        const {data} = await axios.post("https://fifareward.onrender.com/api/users/register", {
           username,
           sponsorId,
           email,

@@ -88,7 +88,7 @@ const TodaysFixtures:React.FC = () => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadtodaysfixtures", {
+          const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/loadtodaysfixtures", {
             todaysdate,
             currentPage,
             limit

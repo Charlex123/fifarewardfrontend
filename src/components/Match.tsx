@@ -132,7 +132,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
                     "Content-type": "application/json"
                 }
               }  
-              const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
+              const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures/", config);
               setCountryFixturesdata(data);
               setwindowloadgetbetruntimes(1);
             } catch (error) {
@@ -158,7 +158,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
                         "Content-type": "application/json"
                     }
                 }  
-                const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatch", {
+                const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/loadmatch", {
                     matchidparam
                 }, config);
                 if(data.match !== null) {
@@ -612,7 +612,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/fixtures/searchmatchbykeyword", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/searchmatchbykeyword", {
       searchkeyword
   }, config);
   if(data) {
@@ -635,7 +635,7 @@ const loadSearchResults = async () => {
             "Content-type": "application/json"
         }
     }  
-    const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatchsearchresult", {
+    const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/loadmatchsearchresult", {
         hometeam,
         awayteam
     }, config);

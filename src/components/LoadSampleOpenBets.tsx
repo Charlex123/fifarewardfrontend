@@ -33,7 +33,7 @@ const LoadSampleOpenBetsData:React.FC<Props> = ({onMount}) => {
                         "Content-type": "application/json"
                     }
                 }  
-                const {data} = await axios.get("http://localhost:9000/api/bets/load4bets", config);
+                const {data} = await axios.get("https://fifareward.onrender.com/api/bets/load4bets", config);
                 if(data !== null && data !== undefined) {
                     setBetData(data.loadbets);
                     onMount()

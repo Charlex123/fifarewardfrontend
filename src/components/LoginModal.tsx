@@ -38,7 +38,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("http://localhost:9000/api/users/checkloginemail", {
+    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkloginemail", {
           email,
     }, config);
     if(data) {
@@ -72,7 +72,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
         }
       }  
       setLoading(true)
-      const {data} = await axios.post("http://localhost:9000/api/users/signin", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/users/signin", {
         email,
         password
       }, config);

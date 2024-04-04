@@ -182,7 +182,7 @@ const CountryFixtures:React.FC<{}> = () => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
+          const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures/", config);
           setCountryFixturesdata(data.fixtures);
           setTotalPages(data.totalPages);
           setShowLoading(false);
@@ -203,7 +203,7 @@ const CountryFixtures:React.FC<{}> = () => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadcupfixtures/", config);
+          const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadcupfixtures/", config);
           setCupFixturesdata(data.fixtures);
           setShowLoading(false);
           setLoadCount(1);
@@ -389,7 +389,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/fixtures/searchfixtbykeyword", {
+  const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/searchfixtbykeyword", {
       searchkeyword
   }, config);
   if(data) {
