@@ -544,11 +544,11 @@ const handleInputClick = () => {
             <div className={bettingstyle.betbydate_top}>
               <div className={bettingstyle.betbydate_top_in}>
                 <div className={bettingstyle.live}><button type='button' title='button' onClick={() => loadliveFixtures('live')}>Live</button></div>
-                <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(todaym)}><div className={bettingstyle.dbdate}>{today_d}</div><div>{today_dm}</div></button></div>
-                <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrowm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div>{tomorrow_dm}</div></button></div>
-                <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrowm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div>{nexttomorrow_dm}</div></button></div>
-                <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_daysm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div>{nextthree_dm}</div></button></div>
-                <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_daysm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div>{nextfour_dm}</div></button></div>
+                <div className={bettingstyle.today}><button type='button' title='button' onClick={() => loadfixturesbyDate(todaym)}><div className={bettingstyle.dbdate}>{today_d}</div><div className={bettingstyle.d}>{today_dm}</div></button></div>
+                <div className={bettingstyle.tom}><button type='button' title='button' onClick={() => loadfixturesbyDate(tomorrowm)}><div className={bettingstyle.dbdate}>{tomorrow_d}</div><div className={bettingstyle.d}>{tomorrow_dm}</div></button></div>
+                <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrowm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div className={bettingstyle.d}> {nexttomorrow_dm}</div></button></div>
+                <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_daysm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div className={bettingstyle.d}>{nextthree_dm}</div></button></div>
+                <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_daysm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div className={bettingstyle.d}>{nextfour_dm}</div></button></div>
                 <div className={bettingstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
               </div>
               {
