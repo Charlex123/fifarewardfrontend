@@ -94,7 +94,7 @@ button.back {
 }
 @media (max-width: 991px) {
     .formTag {
-        height: 100vh;padding-top: .5rem;
+        height: 100%;padding-top: 1rem;
         width: 95vw;
     }   
     .btns .registerButton {
