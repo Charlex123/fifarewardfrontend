@@ -136,13 +136,13 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
                     </div>
                     <div className={styles.dd}>
                         <div className={styles.ddc}>
-                            <div>Total :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Total :</div> <div className={styles.rwd_c}>112,034 FRD</div>
                         </div>
                         <div className={styles.ddc}>
-                            <div>Withdrawn :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Withdrawn :</div> <div className={styles.rwd_c}>14,098 FRD</div>
                         </div>
                         <div className={styles.ddc}>
-                            <div>Remaining </div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Remaining :</div> <div className={styles.rwd_c}>97,936 FRD</div>
                         </div>
                     </div>
                 </div>
@@ -153,13 +153,13 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
                     </div>
                     <div className={styles.dd}>
                         <div className={styles.ddc}>
-                            <div>Total :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Total :</div> <div className={styles.rwd_c}>234,220 FRD</div>
                         </div>
                         <div className={styles.ddc}>
-                            <div>Withdrawn :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Withdrawn :</div> <div className={styles.rwd_c}>234,220 FRD</div>
                         </div>
                         <div className={styles.ddc}>
-                            <div>Remaining :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Remaining :</div> <div className={styles.rwd_c}>0 FRD</div>
                         </div>
                     </div>
                 </div>
@@ -170,13 +170,13 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
                     </div>
                     <div className={styles.dd}>
                         <div className={styles.ddc}>
-                            <div>Total :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Total :</div> <div className={styles.rwd_c}>108,000 FRD</div>
                         </div>
                         <div className={styles.ddc}>
-                            <div>Withdrawn :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Withdrawn :</div> <div className={styles.rwd_c}>108,000 FRD</div>
                         </div>
                         <div className={styles.ddc}>
-                            <div>Remaining :</div> <div className={styles.rwd_c}>{nftcount.toString()} FRD</div>
+                            <div className={styles.cd}>Remaining :</div> <div className={styles.rwd_c}>0 FRD</div>
                         </div>
                     </div>
                 </div>

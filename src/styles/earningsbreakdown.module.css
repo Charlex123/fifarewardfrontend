@@ -38,14 +38,17 @@
     border-radius: 8px;
 }
 .earnins .rwdbadge .d .dd {
-    text-align: left;
+    text-align: left;display: block;
 }
 .earnins .rwdbadge .d .dd .ddc {
-    width: 100%;display: flex;flex-direction: row;flex-wrap: nowrap;justify-self: space-between;
+    width: 100%;display: inline-block;flex-direction: row;flex-wrap: nowrap;justify-self: space-between;
     margin: 10px auto;border-bottom: 1px solid #696767c2;padding-bottom: 4px;
 }
-.earnins .rwdbadge div .rwd_c {
-    font-weight: 800;font-family: "Poppins",sans-serif;
+.earnins .rwdbadge .d .dd .ddc .cd {
+    float: left;
+}
+.earnins .rwdbadge .d .dd .ddc .rwd_c {
+    font-weight: 800;font-family: "Poppins",sans-serif;text-align: right;float: right;
 }
 
 @media (max-width: 991px) {
