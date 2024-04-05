@@ -223,7 +223,7 @@ const goBack = () => {
                   onChange={(e) => setConfirmPassword(e.target.value.replace(' ', ''))}
                   />
                   <button className={regstyles.passhideshowButton} onClick={togglePasswordVisiblity} type="button">{eyeIcon}</button>
-                <p className={regstyles.formpTag}>Your password is encrypted and secured, we will not disclose your password with any third</p>
+                <p className={regstyles.formpTag}>Your password is encrypted and secured, we will not disclose your password with any third party</p>
             </div>
 
             <div className={regstyles.form_group}>
