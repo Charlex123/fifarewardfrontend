@@ -43,7 +43,7 @@
   width: 45%;padding: 25px;
 }
 .blk .blk_inner .blkc1 h1 {
-  font-size: 50px;font-weight: bolder;margin: 15px auto 65px auto;text-align: center;
+  font-size: 50px;font-weight: bolder;margin: 85px auto 65px auto;text-align: center;
   font-family: "Paytone One",Verdana, Geneva, Tahoma, sans-serif;
   line-height: 68px;letter-spacing: 6px;color: #e28305;
 }
@@ -53,7 +53,7 @@
   line-height: 38px;letter-spacing: 6px;
 }
 .blk .blk_inner .blk_image {
-  width: 50%;height: 70vh;
+  width: 50%;height: 100%;padding: 10px 50px 20px 50px;
 }
 .c_content {    
     margin: auto;padding: 105px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;margin-top: -30px;

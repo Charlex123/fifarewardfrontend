@@ -11,7 +11,7 @@ import { useState, useEffect } from 'react';
 import Typed from 'react-typed';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
-import chainhead from '../../assets/images/chainhead.png';
+import chainhead from '../../assets/images/chainhead.gif';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
 import peopl_ from '../../assets/images/group.png';
 import trust from '../../assets/images/trust.png';
