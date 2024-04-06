@@ -424,11 +424,15 @@ const handleInputClick = () => {
   console.log('Input clicked. Do something!');
 };
 
+const closeBgModal = () => {
+  setShowBgOverlay(false);
+}
+
   return (
     <>
     {/* {showloading && <Loading/>} */}
     {/* <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div> */}
-    {showBgOverlay && <BgOverlay />}
+    {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={bettingstyle.main}>
         <div className={bettingstyle.search} >
             <div>

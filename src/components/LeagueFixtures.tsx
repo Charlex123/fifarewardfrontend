@@ -208,21 +208,23 @@ return (
                                 </div>
                                 </a>
                               ))}
-                              <div className={leaguefixturestyle.paginate_btns}>
-                                <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
-                                  {'<<'}
-                                </button>
-                                <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
-                                  {'<'}
-                                </button>
-                                {renderPageNumbers()}
-                                <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
-                                  {'>'}
-                                </button>
-                                <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
-                                  {'>>'}
-                                </button>
-                              </div>
+                              {fixturesd!.length > 10 ? 
+                                <div className={leaguefixturestyle.paginate_btns}>
+                                  <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                                    {'<<'}
+                                  </button>
+                                  <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                                    {'<'}
+                                  </button>
+                                  {renderPageNumbers()}
+                                  <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                                    {'>'}
+                                  </button>
+                                  <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                                    {'>>'}
+                                  </button>
+                                </div> : ''  
+                              }
 
                             </div>
                           </div>

@@ -93,17 +93,67 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
   
   
     // Function to render page numbers
- const renderPageNumbers = () => {
-  let pages = [];
-  for (let i = 1; i <= totalPages; i++) {
-    pages.push(
-      <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
-        {i}
-      </button>
-    );
-  }
-  return pages;
-};
+    const renderPageNumbers = () => {
+      let pages = [];
+    
+      let startPage, endPage;
+    
+      // Calculate start and end pages to display
+      if (totalPages <= 7) {
+        startPage = 1;
+        endPage = totalPages;
+      } else {
+        if (currentPage <= 4) {
+          startPage = 1;
+          endPage = 7;
+        } else if (currentPage >= totalPages - 3) {
+          startPage = totalPages - 6;
+          endPage = totalPages;
+        } else {
+          startPage = currentPage - 1;
+          endPage = currentPage + 1;
+        }
+      }
+    
+      // Display first 2 pages if not displayed already
+      if (startPage > 2) {
+        for (let i = 1; i <= 2; i++) {
+          pages.push(
+            <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+              {i}
+            </button>
+          );
+        }
+        if (startPage > 3) {
+          pages.push(<span key="startDots">...</span>);
+        }
+      }
+    
+      // Display pages
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(
+          <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+            {i}
+          </button>
+        );
+      }
+    
+      // Display last 2 pages if not displayed already
+      if (endPage < totalPages - 1) {
+        if (endPage < totalPages - 2) {
+          pages.push(<span key="endDots">...</span>);
+        }
+        for (let i = totalPages - 1; i <= totalPages; i++) {
+          pages.push(
+            <button className={leaguefixturestyle.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+              {i}
+            </button>
+          );
+        }
+      }
+    
+      return pages;
+    };
 
   const gotoPage = (pageNumber: number) => {
     setCurrentPage(pageNumber);
@@ -160,7 +210,7 @@ return (
                                       </a>
                                     ))}
 
-                                    <div>
+                                  {fixturesd!.length > 10 ? 
                                       <div className={leaguefixturestyle.paginate_btns}>
                                         <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
                                           {'<<'}
@@ -175,8 +225,8 @@ return (
                                         <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
                                           {'>>'}
                                         </button>
-                                      </div>
-                                    </div>
+                                      </div> : ''  
+                                  }   
 
                                   </div>
                                 </div>
