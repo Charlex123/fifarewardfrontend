@@ -563,6 +563,10 @@ const toggleAddress = (e:any) => {
   fulladdress.style.display = (fulladdress.style.display === 'block') ? 'none' : 'block';
 }
 
+const closeBgModal = () => {
+  setShowBgOverlay(false);
+}
+
   return (
     <>
     <HelmetExport>
@@ -572,7 +576,7 @@ const toggleAddress = (e:any) => {
     {showloading && <Loading/>}
     {error && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {/* <div className={openbetsstyle.hiw_overlay} id="hiw_overlay"></div> */}
-    {showBgOverlay && <BgOverlay />}
+    {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={openbetsstyle.main}>
         <div className={openbetsstyle.search}>
           <div>

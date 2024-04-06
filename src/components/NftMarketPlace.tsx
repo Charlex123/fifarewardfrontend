@@ -167,6 +167,10 @@ const closeActionModalComp = () => {
   router.reload();
 }
   
+const closeBgModal = () => {
+  setShowBgOverlay(false);
+}
+
   return (
     <>
     <HelmetExport>
@@ -174,7 +178,7 @@ const closeActionModalComp = () => {
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
     </HelmetExport>
     {showloading && <Loading/>}
-    {showBgOverlay && <BgOverlay />}
+    {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {nftactionsuccess && 
         <ActionSuccessModal prop='NFT Item Auction ' onChange={closeActionModalComp}/>

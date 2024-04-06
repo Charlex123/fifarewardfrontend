@@ -406,6 +406,10 @@ const Staking = () =>  {
     router.push(`/signin`);
   };
 
+  const closeBgModal = () => {
+    setShowBgOverlay(false);
+  }
+
 const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
@@ -438,7 +442,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                   <ActionSuccessModal prop='Stake Withdrawal ' onChange={closeActionModalComp}/>
               }
               {showLoading && <Loading />}
-              {showBgOverlay && <BgOverlay />}
+              {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
               {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
               
                 <div className={dappstyles.stk_h1}><h1>Stake FRD</h1></div>
