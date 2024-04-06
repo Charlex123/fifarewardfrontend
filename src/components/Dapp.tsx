@@ -202,6 +202,7 @@ const Dapp:React.FC<{}> = () =>  {
 
  // Function to toggle the navigation menu
  const toggleSideBar = () => {
+    
     setSideBarToggle(!dappsidebartoggle);
     setIsSideBarToggled(!isSideBarToggled);
   };

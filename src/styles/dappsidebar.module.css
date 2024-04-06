@@ -146,7 +146,7 @@ background-color: #f0eded49;border: 1px dashed #e3a204 ;
     z-index: 999;position: absolute;top: 0;right: 0;display: none;font-size: 22px;
   }
   .sidebar {
-    z-index: 9999999;
+    z-index: 9999999999999999999999999;
     padding: 0;width: 100%;
     margin: 0;
     height: 100%;
@@ -160,7 +160,7 @@ background-color: #f0eded49;border: 1px dashed #e3a204 ;
     display: block;
   }
   .sidebar .sidebar_container {
-      margin: 0 !important;position: relative;top: 0;bottom: 0;right: 0;left: 0;z-index: 99;
+      margin: 0 !important;position: relative;top: 0;bottom: 0;right: 0;left: 0;z-index: 9999999999999999;
       display: block;text-align: left;padding: 0 0 10px 0;
       /* background: rgb(13,20,24); */
       height: 100vh;
