@@ -6,7 +6,7 @@
     height: 100%;align-items: center;vertical-align: auto;position: relative;top: 0;left: 0;width: 100%;padding-top: 75px;margin-top: 4px;
     /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+99,0.65+99,0+100 */
 /* background: linear-gradient(to bottom,  rgba(0,0,0,1) 0%,rgba(0,0,0,1) 99%,rgba(0,0,0,0) 100%); W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-overflow: scroll;padding-bottom: 2rem;
+overflow: scroll;padding-bottom: 2rem;z-index: 0;
 }
 /* .overlay_dapp {
   background-color: rgba(58, 57, 57, 0.089);z-index: 99;position: fixed;top: 0;right: 0;bottom: 0;left: 0;display: none;
