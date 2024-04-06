@@ -242,6 +242,10 @@ export default function CreateItem() {
     setOpenAddTraits(true);
   }
 
+  const closeBgModal = () => {
+    setShowBgOverlay(false);
+  }
+
   return (
     <>
       <HelmetExport>
@@ -251,7 +255,7 @@ export default function CreateItem() {
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         {showloginComp && <LoginModal prop={'Create NFT'} onChange={closeLoginModal}/>}
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
-        {showBgOverlay && <BgOverlay />}
+        {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
         {showloading && <Loading/>}
         {betactionsuccess && 
             <ActionSuccessModal prop='Add Traits' onChange={closeActionModalComp}/>

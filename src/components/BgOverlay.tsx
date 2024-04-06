@@ -1,11 +1,19 @@
 import React from "react";
 import styles from '../styles/bgoverlay.module.css';
 
-const BgOverlay:React.FC = () => {
+type Props = {
+    onChange: (newValue:boolean) => void
+}
+
+const BgOverlay:React.FC<Props> = ({onChange}) => {
+
+    const closeBgModal = () => {
+        onChange(false);
+    }
 
     return (
         <>
-            <div className={styles.bg_overlay}></div>
+            <div className={styles.bg_overlay} onClick={() => closeBgModal()}></div>
         </>
     )
 }

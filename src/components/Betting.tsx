@@ -455,6 +455,10 @@ const handleInputClick = () => {
   console.log('Input clicked. Do something!');
 };
 
+const closeBgModal = () => {
+  setShowBgOverlay(false);
+}
+
   return (
     <>
     {/* {showloading && <Loading/>} */}
@@ -463,7 +467,7 @@ const handleInputClick = () => {
         <title>Bet - Bet on your best teams, competitions  and fixture | FifaReward</title>
         <meta name='description' content='Participate in the FifaReward Airdrop and and accumulate as much tokens as you can. FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
     </HelmetExport>
-    {showBgOverlay && <BgOverlay />}
+    {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={bettingstyle.main}>
         <div className={bettingstyle.search} >
             <div>

@@ -466,14 +466,14 @@ const closeHIWDiv = (divId:any) => {
 const closeHIWE = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
-  let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
+  
   if(svg !== null && svg !== undefined) {
     divId.parentElement.parentElement.parentElement.style.display = 'none';
   }
   if(path !== null && path !== undefined) {
     divId.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
   }
+  setShowBgOverlay(false)
 }
 
 const firstopenHIW = (divId:any) => {
@@ -496,30 +496,10 @@ const firstopenHIW = (divId:any) => {
   }
 }
 
-const openHIWE = (divId:any) => {
-  let hiwdiv = document.querySelector('#howitworks') as HTMLElement;
-  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  // console.log('hiw div',hiwdiv)
-  // console.log('hiw overlay',hiw_bgoverlay)
+const openHIWE = () => {
+  let hiwdiv = document.getElementById("howitworks") as HTMLDivElement;
   hiwdiv.style.display = (hiwdiv.style.display === 'block') ? 'none' : 'block';
-  // hiw_bgoverlay.style.display = (hiw_bgoverlay.style.display === 'block') ? 'none' : 'block';
-  setShowBgOverlay(!BgOverlay);
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-
-  if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
-    if(svg !== null && svg !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-    if(path !== null && path !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.parentElement;
-      targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-    }
-  }else {
-    let targetDiv = divId.parentElement.parentElement.parentElement;
-    targetDiv.style.display = (targetDiv.style.display === 'block') ? 'none' : 'block';
-  }
+  setShowBgOverlay(true);
 }
 
 const placeBet = (divId:any) => {
@@ -649,6 +629,10 @@ const loadSearchResults = async () => {
   }
 }
 
+const closeBgModal = () => {
+  setShowBgOverlay(false);
+}
+
   return (
     <>
       <HelmetExport>
@@ -657,7 +641,7 @@ const loadSearchResults = async () => {
       </HelmetExport>
 
       <div className={matchstyle.main}>
-      {showBgOverlay && <BgOverlay />}
+      {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       {showloading && <Loading/>}
       <div className={matchstyle.search} >
             <div>
@@ -766,7 +750,7 @@ const loadSearchResults = async () => {
                                         <div className={matchstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
                                         <div className={matchstyle.opb_btns}>
                                             <div className={matchstyle.opb_open} onClick={(e) => placeBet(e.target)}><button type='button' title='button'>Open Bet {<FontAwesomeIcon icon={faFutbol}/>}</button></div>
-                                            <div className={matchstyle.opb_hiw} onClick={(e) => openHIWE(e.target)}><button type='button' title='button'>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
+                                            <div className={matchstyle.opb_hiw} onClick={() => openHIWE()}><button type='button' title='button'>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
                                         </div>
                                     </div>
 
