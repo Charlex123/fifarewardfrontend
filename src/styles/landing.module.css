@@ -149,7 +149,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   text-align: left;
 }
 .connectworld .conn_inner .conn_image {
-  width: 50%;margin-top: 40px;height: 70vh;
+  width: 50%;margin-top: 40px;height: 70vh;position: relative;
 }
 .readmorebtn {
   border-radius: 120px;padding: 5px 16px;font-size: 13px;
@@ -176,6 +176,15 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .exchmain .dexchanges .delginks {
   width: 150px;margin: 20px 0;
+}
+.frdbetting {
+  width: 100%;
+}
+.frdbetting .betd {
+  display: flex;justify-content: space-between;flex-direction: row;
+}
+.frdbetting .betd .betdc {
+  width: 45%;position: relative;
 }
 .stkb {
   width: 100%;margin: 4rem 0;text-align: center;padding: 0;

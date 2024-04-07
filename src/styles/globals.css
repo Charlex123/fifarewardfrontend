@@ -48,7 +48,7 @@ body {
   /* background-image: url("../assets/images/bbg.jpg");
   background-repeat: none;
   background-position: cover; */
-  font-family: "Poppins",sans-serif !important;
+  font-family: "Montserrat","Poppins",sans-serif;
   overflow-x: hidden;
 }
 .darktheme {

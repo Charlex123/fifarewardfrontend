@@ -13,27 +13,23 @@ import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
-import peopl_ from '../../assets/images/group.png';
-import trust from '../../assets/images/trust.png';
-import stat from '../../assets/images/statistics.png';
-import developt from '../../assets/images/development.png';
-import stakebanner from '../../assets/images/banner.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import avllogo from '../../assets/images/blockchain-avalanche-white-5bb3c6b6.png';
+import dappimg from '../../assets/images/dapp.png';
 import bnblogo from '../../assets/images/blockchain-binance-white-71f5d555.png';
 import cronlogo from '../../assets/images/blockchain-cronos-light-78484d18.png';
 import ethlogo from '../../assets/images/blockchain-ethereum-white-c6bf63d1.png';
-import fantlogo from '../../assets/images/blockchain-fantom-white-0b93e569.png';
+import stakeimg from '../../assets/images/stake.png';
+import betbg from '../../assets/images/betting.png'
 import binancelogo from '../../assets/images/binance.png';
 import mexclogo from '../../assets/images/mexc.png';
 import okxlogo from '../../assets/images/okx.png';
-import pcslogo from '../../assets/images/pcs.png';
+import refgroup from '../../assets/images/refgroup.png';
 import huobilogo from '../../assets/images/huobi.png';
 import kucoinlogo from '../../assets/images/kucoin.png';
 import stakevest from '../../assets/images/stakevest.png'
 import fworldmap from '../../assets/images/world-map.png'
 import teamwork from '../../assets/images/Teamwork.png'
-import polychlogo from '../../assets/images/blockchain-polygon-white-024b04f0.png';
+import betmob from '../../assets/images/betmob.png';
 import { ThemeContext } from '../../contexts/theme-context';
 import { library } from '@fortawesome/fontawesome-svg-core'
 // import { Chrono } from "react-chrono";
@@ -42,6 +38,7 @@ import dotenv from 'dotenv';
 import { fas, faCheck, faCheckCircle,faAlignJustify, faCircleChevronRight, faCheckSquare, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
 import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import Betting from '../../pages/betting';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 dotenv.config();
 const Home = () => {
@@ -216,8 +213,9 @@ useEffect(() => {
                         'Sustainable',
                         'AI Powered',
                         'Betting',
-                        'Buy FRD',
-                        'Stake FRD',
+                        'Gaming',
+                        'Staking',
+                        'Mining',
                         'Earn Rewards',
                         'Trusted']}
                     typeSpeed={40}
@@ -226,9 +224,9 @@ useEffect(() => {
                     style={{ color: '#e3a204', fontSize: '40px',fontWeight: 600,fontFamily: 'Verdana' }}
                     loop
                 />
-                <h1>AI Powered Staking Betting Dapp</h1>
+                <h1>AI Powered Mining, Staking, Gaming And Betting Dapp</h1>
             <div>
-              <h4 className={styles.hero_h4}>The best AI Powered time-locked betting and staking system on the blockchain. High yield, protected by deflationary measures backed by validator nodes</h4>
+              <h4 className={styles.hero_h4}>The Leading Sport GameFi Protocol</h4>
             </div>
             
             {/* <div className={styles.get_sd_btns}>
@@ -251,17 +249,29 @@ useEffect(() => {
           <div className={styles.conn_inner}>
             <div className={styles.connectw}>
               <h1>Connecting the world through football</h1>
-              <p>
-                Football is a sensational sport that connects the world. 
-              </p>
               <div>
-                <p><span>FifaReward</span> connects the world through blockchain.</p> 
-                <p>The first complete decentralized betting system on the blockchain <a href='/betting'>bet on the blockchain</a></p>
-                <p>Unique NFT market place of football and soccer legends <a href='/nft'>visit NFT market place</a></p>
+                  <p>
+                    Football is a sensational sport that connects the world. 
+                  </p>
+                  <p>
+                    FifaReward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities
+                  </p>
+              </div>
+              <div>
+                <p><span>FifaReward</span> as a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
+             </div>
+              <div>
+                <h1>Guess The Football Hero</h1>
+                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero </p>
+              </div>
+              <div>
+                <h1>Minting NFT of Football Legends</h1>
+                <p> Mint and sell nft arts of your favorites legends using our NFT minting engine and nft market place respectively.</p>
               </div>
             </div>
             <div className={styles.conn_image}>
-              <Image src={fworldmap} style={{objectFit: 'contain', width: '100%', height: '100%'}} alt='connecting the world through football' />
+              <Image src={fworldmap} alt='Image' style={{position: 'absolute',width: '30%',right: '0'}}/>
+              <Image src={dappimg} style={{objectFit: 'contain', width: '90%', height: '100%'}} alt='connecting the world through football' />
             </div>
           </div>
       </div>
@@ -291,29 +301,52 @@ useEffect(() => {
         </div>
       </div>
 
+      <div className={`${styles.frdbetting} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+          <div className={styles.betd}>
+              <div className={styles.betdc}>
+                  <div>
+                    <h1>FIFAREWARD BETTING</h1>
+                    <h3>Wager Bet</h3>
+                  </div>
+                  <div>
+                    <p>
+                      FifaReward is introducing the <span>Wager Bettng System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
+                    </p>
+                    <p>
+                      The user whose prediction is correct will wins the best and get the sum of bet amounts
+                    </p>
+                  </div>
+              </div>
+              <div className={styles.betdc}>
+                <div>
+                  <Image src={betmob} style={{position: 'absolute',width: '120px',left: '5%',top: '-20%'}} alt='bet'/>
+                  <Image src={betbg} style={{width: '100%'}} alt='betting image'/>
+                </div>
+              </div>
+          </div>
+      </div>
+
       <div className={`${styles.frdstaking} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="frdstaking">
-          <h1>FIFAREWARD STAKING</h1>
+          <h1>STAKING AND MINING</h1>
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
-                <h4>WHY STAKE FRD?</h4>
+                FifaReward built staking and mining systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
+                <h4>WHY STAKE FRD?</h4> 
                 <ul>
                   <li>
-                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 2% daily return on investment on one of the most growing crypto token.
+                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn up to 0.1% FRD daily.
                   </li>
                   <li>
-                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You can withdraw anytime you want
+                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> Automated, trusted and secure staking smart contract for transparency.
                   </li>
                   <li>
-                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> Withdraw and convert to any cryptocurrency of your choice in any exchange of your choice
+                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/>  Withdraw and restake anytime.
                   </li>
                   <li>
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> FIFAREWARD is a DAO token governed by the community of validators and stakers 
                   </li>
                 </ul>
-                <p>
-                    Welcome to the world of crypto staking - a revolutionary way to maximize your crypto investments! Whether you're an experienced investor or new to the crypto scene, staking offers unparalleled benefits and an avenue for growing your digital assets exponentially.
-                </p>
-                
+{/*                 
                 {stakeReadMore && (
                   <>
                     <p>
@@ -322,45 +355,46 @@ useEffect(() => {
                     <p>
                     FIFAREWARD staking presents an irresistible opportunity to maximize your investment potential, earn passive income, referral income, and actively contribute to the growth of blockchain networks. By staking your coins, you unlock a world of benefits: secure returns, reduced risks, community participation, and efficient asset allocation. Don't let your crypto assets remain idle any longer! Take control, stake your coins, and start reaping the rewards today - it's time to witness the true power of staking!
                     </p>
-                  </>)}  
-                  <button type='button' className={styles.readmorebtn} onClick={showStakeReadMore}>{textValues[currentStakeRMTextIndex]}</button>
+                  </>)}   */}
+                  {/* <button type='button' className={styles.readmorebtn} onClick={showStakeReadMore}>{textValues[currentStakeRMTextIndex]}</button> */}
               </div>
               <div className={styles.stakevestimg}>
-                {/* <Image src={stakevest} alt='stake image' quality={90} className={styles.stakevest_img}/> */}
+                <Image src={stakeimg} alt='stake image' quality={90} className={styles.stakevest_img}/>
               </div>
           </div>
       </div>
 
       <div className={`${styles.aboutfrd} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="aboutfrd">
           <h1>ABOUT FIFAREWARD</h1>
+          
           <p>
-            FIFAREWARD is a coinage from TA (Technical Analysis), FA (Fundamental Analysis), and
-            XTRA (Extra). FIFAREWARD aims at being the go-to source for reliable information in the
-            crypto, forex, and synthetics financial space. We take pride in our ability to provide
-            our users with the latest news in the financial markets, as well as premium technical
-            analysis on different financial assets. What more? FIFAREWARD team is working on a
-            trading bot that will give her users outstanding leverage in trading financial markets
-            via several exchanges and brokers.
+            Welcome to Fifareward DeFi Protocol, where we aim to revolutionize the world of betting, NFT market place, and gaming through decentralization. We are a team of passionate individuals committed to creating a platform that enables users to experience secure, transparent, and fair betting opportunities, NFT market place etc.
           </p>
           
           {aboutReadMore && (
             <>
               <p>
-                Moreso, understanding and engaging productively in cryptography/cryptocurrency has
-                been quite a difficult venture for newbies despite several innovative ways to simplify
-                same by many developers.
+                At our core, we believe that decentralization is the future of the betting industry. By leveraging blockchain technology, we are able to eliminate the need for intermediaries and create a trustless ecosystem where users have complete control over their bets. This ensures that all transactions are executed with utmost transparency, leaving no room for manipulation or foul play.
               </p>
               <p>
-                The key problems are overt. Robots and several other methods invented have never
-                been all-inclusive, and have little or no bearing on core technical and fundamental
-                analysis. FIFAREWARD hence comes in as a multi-dimensional solution in delivering realtime relevant financial news and hybrid expert technical analysis as well as financial
-                market updates to its users. FIFAREWARD also provides its users with the best hybrid TAFA-based trading robot for trading several financial markets with several exchanges
-                and brokers.
+                At our core, we believe that decentralization is the future of the betting industry. By leveraging blockchain technology, we are able to eliminate the need for intermediaries and create a trustless ecosystem where users have complete control over their bets. This ensures that all transactions are executed with utmost transparency, leaving no room for manipulation or foul play.
+              </p>
+              <p>
+                As we set out on this journey, our vision is to create a community-driven platform where every participant has a stake in the decision-making process. Through the use of governance tokens, our users will have the power to shape the future of the platform, ensuring that it evolves in a way that best serves the interests of the community.
+              </p>
+              <p>
+                Security is of paramount importance to us. That's why we have implemented robust security measures to safeguard user funds and maintain the integrity of the platform. With our advanced encryption protocols, users can place bets with confidence, knowing that their assets are protected against any potential threats.
+              </p>
+              <p>
+                Above all, we prioritize user experience. We have designed our platform to be intuitive and user-friendly, making it accessible to both novice and experienced bettors. Our team is also readily available to provide support and address any concerns or questions that our users may have.
+              </p>
+              <p>
+                Join us on this exciting journey as we decentralize the betting industry and transform the way bets are made. Together, we can create a future where transparency, fairness, and trust are at the forefront of betting, gaming and NFT market place.
               </p>
             </>
           )}
           <button type='button' className={styles.readmorebtn} onClick={showAboutReadMore}>{textValues[currentAboutRMTextIndex]}</button>
-          <ul>
+          {/* <ul>
             <h4>Reasons To Buy And Stake FIFAREWARD</h4>
             <li>
               <FontAwesomeIcon icon={faCheckCircle}/> FIFAREWARD staking with fair monthly yield
@@ -377,31 +411,20 @@ useEffect(() => {
             <li>
               <FontAwesomeIcon icon={faCheckCircle}/> FIFAREWARD token launchpads for several blockchains
             </li>
-          </ul>
+          </ul> */}
       </div>
 
-      {/* <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
-          <h1>FIFAREWARD REFERRAL SYSTEM</h1>
+      <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
+          <h1>REFER AND EARN</h1>
           <div className={styles.referralsmain}>
               <div className={styles.referralstext}>
                 <h4>
-                  Unlock Unlimited Referral Income: Harness the Power of Community Effects!
+                  As a decentralized protocol, we understand that the power is with the pople (users). We've built our system to give back to the people through the refer and earn system.
                 </h4>
                 <h5>
-                  FIFAREWARD referral system has 3 generations
+                  For every user you referred, you earn 0.5% of each stakes, betting and mining rewards.
                 </h5>
-                <ul>
-                  <li>
-                    <FontAwesomeIcon icon={faChevronRight} size='lg' className={styles.chronotitleicon}/> First Generation
-                  </li>
-                  <li>
-                    <FontAwesomeIcon icon={faChevronRight} size='lg' className={styles.chronotitleicon}/> Second Generation
-                  </li>
-                  <li>
-                    <FontAwesomeIcon icon={faChevronRight} size='lg' className={styles.chronotitleicon}/> Third Generation
-                  </li>
-                </ul>
-                <ul>
+                {/* <ul>
                   <li>
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.5% daily return on investment from all your direct referrals (first genration referrals)
                   </li>
@@ -410,31 +433,14 @@ useEffect(() => {
                   <li>
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.2% daily ROI from all your second genration referrals
                   </li>
-                </ul>
+                </ul> */}
 
-                <p>
-                Welcome to the world of Community referral income, where spreading the word about amazing crypto investment opportunities and services can generate lucrative daily returns for you! If you're looking for a reliable avenue to increase your FRD portfolio and earn passive income, referral programs offer a compelling opportunity 
-                </p>
-                {refReadMore && (
-                  <>
-                    <p>
-                    Join the ranks of FRD Staking successful referrers and tap into the network effects to accumulate unlimited FIFAREWARD units. Get ready to watch your assets soar as you leverage the power of referrals!
-                    </p>
-                    <p>
-                    Referral income is a dynamic and rewarding way to earn passive income by sharing information that benefits your community
-                    </p>
-                    <p>
-                    By harnessing the power of community effects and leveraging your relationships, you position yourself as a trusted influencer, earning commission for every successful referral. Make the most of your connections, share the FRD Staking Protocol , and unlock unlimited referral income. Start referring now to watch your earnings soar and empower others to discover life-changing solutions!
-                    </p>
-                  </>
-                )}
-                <button type='button' className={styles.readmorebtn} onClick={showRefReadMore}>{textValues[currentRefRMTextIndex]}</button>
-              </div>
+                </div>
               <div className={styles.referralsimg}>
-                <Image src={teamwork} alt='team image' quality={90} className={styles.referrals_img}/>
+                <Image src={refgroup} alt='team image' quality={90} className={styles.referrals_img}/>
               </div>
           </div>
-      </div> */}
+      </div>
       
     </div>
 
