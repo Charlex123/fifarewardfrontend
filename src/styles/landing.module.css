@@ -484,6 +484,12 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
       bottom: 0;
       z-index: -1;
     }
+    .c_content .hero_h1 .h1 {
+        font-size: 35px;
+    }
+    .c_content .hero_h1 h1 {
+        font-size: 25px;
+    }
     .c_content .hero_h1 div {
         margin-top: 5px;
     }
@@ -495,6 +501,12 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     }
     .connectworld .conn_inner .connectw {
       width: 100%;margin: 10px 2%;
+    }
+    .connectworld h1 {
+      font-size: 30px;
+    }
+    .connectworld .conn_inner .connectw h2 {
+      font-size: 20px;
     }
     .connectworld .conn_inner .conn_image {
       width: 100%;margin-top: 10px;height: 100%;
@@ -538,6 +550,27 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     .frdreferrals .referralsmain .referralsimg {
       width: 100%;
     }
+}
+@media (max-width: 767px) {
+  .connectworld h1 {
+    font-size: 28px;
+  }
+  .exchmain h1 {
+    font-size: 28px;
+  }
+  .frdbetting .betd .betdc h1 {
+    font-size: 28px;
+  }
+  .frdstaking h1 {
+    font-size: 28px;
+  }
+  .frdreferrals h1 {
+    font-size: 28px;
+  }
+  .aboutfrd h1 {
+    font-size: 28px;
+  }
+
 }
 @media (max-width: 567px) {
   .frdstaking .gov .gov_in .gov_c {

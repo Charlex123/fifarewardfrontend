@@ -26,7 +26,7 @@ import okxlogo from '../../assets/images/okx.png';
 import refgroup from '../../assets/images/refgroup.png';
 import huobilogo from '../../assets/images/huobi.png';
 import kucoinlogo from '../../assets/images/kucoin.png';
-import stakevest from '../../assets/images/stakevest.png'
+import frdbanner from '../../assets/images/frdbanner.gif'
 import fworldmap from '../../assets/images/world-map.png'
 import teamwork from '../../assets/images/Teamwork.png'
 import betmob from '../../assets/images/betmob.png';
@@ -191,7 +191,7 @@ useEffect(() => {
               </div> */}
             </div>
             <div className={styles.blk_image}>
-              <Image src={chainhead} style={{width: '100%', height: '450px'}} alt='connecting the world through football' />
+              <Image src={chainhead} style={{width: '100%', height: '100%'}} alt='connecting the world through football' />
             </div>
           </div>
       </div>
@@ -271,8 +271,7 @@ useEffect(() => {
             </div>
             <div className={styles.conn_image}>
               <div className={styles.cimg}>
-                <Image src={fworldmap} alt='Image' style={{position: 'absolute',width: '250px',right: '4%',top: '-10%'}}/>
-                <Image src={dappimg} style={{width: '100%', height: '85%',borderRadius: '8px',marginTop: '15%',border: '2px solid #78787873'}} alt='connecting the world through football' />
+                <Image src={frdbanner} style={{width: '100%', height: '100%',borderRadius: '8px',marginTop: '0'}} alt='connecting the world through football' />
               </div>
             </div>
           </div>
@@ -322,9 +321,9 @@ useEffect(() => {
               </div>
               <div className={styles.betdc}>
                 <div>
-                  <Image src={betmob} style={{position: 'absolute',width: '180px',left: '5%',top: '-40%'}} alt='bet'/>
+                  <Image src={betmob} style={{position: 'absolute',width: '120px',left: '5%',top: '-60px'}} alt='bet'/>
                   <div className={styles.setimg}>
-                    <Image src={betbg} style={{width: '100%',height:'350px',borderRadius: '8px',marginTop: '0',border: '2px solid #78787873'}} alt='betting image'/>
+                    <Image src={betbg} style={{width: '100%',height:'100%',borderRadius: '8px',marginTop: '0',border: '2px solid #78787873'}} alt='betting image'/>
                   </div>
                 </div>
               </div>
@@ -364,7 +363,7 @@ useEffect(() => {
                   {/* <button type='button' className={styles.readmorebtn} onClick={showStakeReadMore}>{textValues[currentStakeRMTextIndex]}</button> */}
               </div>
               <div className={styles.stakevestimg}>
-                <Image src={stakeimg} alt='stake image' quality={90} style={{height:'350px',borderRadius: '16px',marginTop: '0',border: '2px solid #78787873'}} className={styles.stakevest_img}/>
+                <Image src={stakeimg} alt='stake image' quality={90} style={{width: '100%',height:'100%',borderRadius: '16px',marginTop: '0',border: '2px solid #78787873'}} className={styles.stakevest_img}/>
               </div>
           </div>
       </div>
