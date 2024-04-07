@@ -208,7 +208,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-size: 13px;color: #e28305;font-family: "Poppins", sans-serif;
 }
 .frdstaking h1 {
-  font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;
+  font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;width: max-content;
   font-family: "Bungee Spice","Poppins",sans-serif;font-weight: 600;letter-spacing: 6px;
 }
 .frdstaking .stakebanner {
@@ -554,6 +554,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 @media (max-width: 767px) {
   .connectworld h1 {
     font-size: 28px;
+  }
+  .exchmain {
+    margin-top: -80px;
   }
   .exchmain h1 {
     font-size: 28px;

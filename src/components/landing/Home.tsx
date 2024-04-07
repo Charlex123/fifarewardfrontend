@@ -254,7 +254,7 @@ useEffect(() => {
                     Football is a sensational sport that connects the world. 
                   </p>
                   <p>
-                    FifaReward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities
+                    FifaReward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities.
                   </p>
               </div>
               <div>
@@ -262,7 +262,7 @@ useEffect(() => {
              </div>
               <div>
                 <h2>Guess The Football Hero</h2>
-                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero </p>
+                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero. </p>
               </div>
               <div>
                 <h2>Minting NFT of Football Legends</h2>
@@ -315,7 +315,7 @@ useEffect(() => {
                       FifaReward is introducing the <span>Wager Bettng System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
                     </p>
                     <p>
-                      The user whose prediction is correct will wins the best and get the sum of bet amounts
+                      The user whose prediction is correct wins the best and get the sum of bet amounts.
                     </p>
                   </div>
               </div>
@@ -331,7 +331,7 @@ useEffect(() => {
       </div>
 
       <div className={`${styles.frdstaking} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="frdstaking">
-          <h1>STAKING AND MINING</h1>
+          <h1>STAKING & MINING</h1>
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
                 FifaReward built staking and mining systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
@@ -347,7 +347,7 @@ useEffect(() => {
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/>  Withdraw and restake anytime.
                   </li>
                   <li>
-                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> FIFAREWARD is a DAO token governed by the community of validators and stakers 
+                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> FIFAREWARD is a DAO token governed by the community of validators and stakers. 
                   </li>
                 </ul>
 {/*                 
