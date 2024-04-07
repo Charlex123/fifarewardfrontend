@@ -364,6 +364,34 @@ useEffect(() => {
           </div>
       </div>
 
+      <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
+          <h1>REFER AND EARN</h1>
+          <div className={styles.referralsmain}>
+              <div className={styles.referralstext}>
+                <h4>
+                  As a decentralized protocol, we understand that the power is with the pople (users). We've built our system to give back to the people through the refer and earn system.
+                </h4>
+                <h5>
+                  For every user you referred, you earn 0.5% of each stakes, betting and mining rewards.
+                </h5>
+                {/* <ul>
+                  <li>
+                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.5% daily return on investment from all your direct referrals (first genration referrals)
+                  </li>
+                  <li>
+                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.3% daily ROI from all your second genration referrals                </li>
+                  <li>
+                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.2% daily ROI from all your second genration referrals
+                  </li>
+                </ul> */}
+
+                </div>
+              <div className={styles.referralsimg}>
+                <Image src={refgroup} alt='team image' quality={90} className={styles.referrals_img}/>
+              </div>
+          </div>
+      </div>
+
       <div className={`${styles.aboutfrd} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="aboutfrd">
           <h1>ABOUT FIFAREWARD</h1>
           
@@ -412,34 +440,6 @@ useEffect(() => {
               <FontAwesomeIcon icon={faCheckCircle}/> FIFAREWARD token launchpads for several blockchains
             </li>
           </ul> */}
-      </div>
-
-      <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
-          <h1>REFER AND EARN</h1>
-          <div className={styles.referralsmain}>
-              <div className={styles.referralstext}>
-                <h4>
-                  As a decentralized protocol, we understand that the power is with the pople (users). We've built our system to give back to the people through the refer and earn system.
-                </h4>
-                <h5>
-                  For every user you referred, you earn 0.5% of each stakes, betting and mining rewards.
-                </h5>
-                {/* <ul>
-                  <li>
-                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.5% daily return on investment from all your direct referrals (first genration referrals)
-                  </li>
-                  <li>
-                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.3% daily ROI from all your second genration referrals                </li>
-                  <li>
-                    <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn 0.2% daily ROI from all your second genration referrals
-                  </li>
-                </ul> */}
-
-                </div>
-              <div className={styles.referralsimg}>
-                <Image src={refgroup} alt='team image' quality={90} className={styles.referrals_img}/>
-              </div>
-          </div>
       </div>
       
     </div>
