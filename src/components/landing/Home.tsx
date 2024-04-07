@@ -191,7 +191,7 @@ useEffect(() => {
               </div> */}
             </div>
             <div className={styles.blk_image}>
-              <Image src={chainhead} style={{width: '100%', height: '100%'}} alt='connecting the world through football' />
+              <Image src={chainhead} style={{width: '100%', height: '450px'}} alt='connecting the world through football' />
             </div>
           </div>
       </div>
@@ -246,9 +246,9 @@ useEffect(() => {
       </div>
       {/* fifa reward betting */}
       <div className={styles.connectworld}>
+          <h1>Connecting the world through football</h1>
           <div className={styles.conn_inner}>
             <div className={styles.connectw}>
-              <h1>Connecting the world through football</h1>
               <div>
                   <p>
                     Football is a sensational sport that connects the world. 
@@ -261,17 +261,19 @@ useEffect(() => {
                 <p><span>FifaReward</span> as a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
              </div>
               <div>
-                <h1>Guess The Football Hero</h1>
+                <h2>Guess The Football Hero</h2>
                 <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero </p>
               </div>
               <div>
-                <h1>Minting NFT of Football Legends</h1>
+                <h2>Minting NFT of Football Legends</h2>
                 <p> Mint and sell nft arts of your favorites legends using our NFT minting engine and nft market place respectively.</p>
               </div>
             </div>
             <div className={styles.conn_image}>
-              <Image src={fworldmap} alt='Image' style={{position: 'absolute',width: '30%',right: '0'}}/>
-              <Image src={dappimg} style={{objectFit: 'contain', width: '90%', height: '100%'}} alt='connecting the world through football' />
+              <div className={styles.cimg}>
+                <Image src={fworldmap} alt='Image' style={{position: 'absolute',width: '250px',right: '4%',top: '-10%'}}/>
+                <Image src={dappimg} style={{width: '100%', height: '85%',borderRadius: '8px',marginTop: '15%',border: '2px solid #78787873'}} alt='connecting the world through football' />
+              </div>
             </div>
           </div>
       </div>
@@ -280,8 +282,8 @@ useEffect(() => {
       <div className={styles.exchmain}>
         <h1>SUPPORTED BY</h1>
 
-        <div>
-          <div className={styles.dexchanges}>
+        <div className={styles.dexchanges}>
+          <div className={styles.dexc}>
             {images.map((image, index) => (
             <Image
               key={index}
@@ -289,10 +291,11 @@ useEffect(() => {
               alt={`slide-${index}`}
               className={styles.delginks}
               style={{
-                width: '150px',
-                height: '40px',
+                width: '130px',
+                height: '30px',
+                maxHeight: '30px',
                 margin: 'auto 0 auto 0',
-                transform: `translateX(${index * 30 - currentSliderIndex * 50}%)`,
+                transform: `translateX(${index * 30 - currentSliderIndex * 20}%)`,
                 transition: 'transform 0.5s ease-in-out',
               }}
             />
@@ -306,7 +309,7 @@ useEffect(() => {
               <div className={styles.betdc}>
                   <div>
                     <h1>FIFAREWARD BETTING</h1>
-                    <h3>Wager Bet</h3>
+                    <h3>(Wager Bet)</h3>
                   </div>
                   <div>
                     <p>
@@ -319,8 +322,10 @@ useEffect(() => {
               </div>
               <div className={styles.betdc}>
                 <div>
-                  <Image src={betmob} style={{position: 'absolute',width: '120px',left: '5%',top: '-20%'}} alt='bet'/>
-                  <Image src={betbg} style={{width: '100%'}} alt='betting image'/>
+                  <Image src={betmob} style={{position: 'absolute',width: '180px',left: '5%',top: '-40%'}} alt='bet'/>
+                  <div className={styles.setimg}>
+                    <Image src={betbg} style={{width: '100%',height:'350px',borderRadius: '8px',marginTop: '0',border: '2px solid #78787873'}} alt='betting image'/>
+                  </div>
                 </div>
               </div>
           </div>
@@ -359,7 +364,7 @@ useEffect(() => {
                   {/* <button type='button' className={styles.readmorebtn} onClick={showStakeReadMore}>{textValues[currentStakeRMTextIndex]}</button> */}
               </div>
               <div className={styles.stakevestimg}>
-                <Image src={stakeimg} alt='stake image' quality={90} className={styles.stakevest_img}/>
+                <Image src={stakeimg} alt='stake image' quality={90} style={{height:'350px',borderRadius: '16px',marginTop: '0',border: '2px solid #78787873'}} className={styles.stakevest_img}/>
               </div>
           </div>
       </div>
@@ -387,7 +392,7 @@ useEffect(() => {
 
                 </div>
               <div className={styles.referralsimg}>
-                <Image src={refgroup} alt='team image' quality={90} className={styles.referrals_img}/>
+                <Image src={refgroup} alt='team image' style={{width: '100%', height: '350px'}} quality={90} className={styles.referrals_img}/>
               </div>
           </div>
       </div>
