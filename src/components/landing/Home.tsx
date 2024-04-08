@@ -59,6 +59,7 @@ const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8
 const [buttonText, setButtonText] = useState("Copy");
 const [username, setUsername] = useState<string>("");
 const [userId, setUserId] = useState<string>("");  
+const [isMobile,setIsMobile] = useState<boolean>(false);
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 
 const images = [
@@ -77,15 +78,15 @@ const goToNextImage = () => {
   setCurrentSliderIndex((prevIndex) => (prevIndex + 1) % images.length);
 };
 
-const showStakeReadMore =  () => {
-  setStakeReadMore(!stakeReadMore);
-  setCurrentStakeRMTextIndex((prevIndex) => (prevIndex + 1) % textValues.length);
-}
+// const showStakeReadMore =  () => {
+//   setStakeReadMore(!stakeReadMore);
+//   setCurrentStakeRMTextIndex((prevIndex) => (prevIndex + 1) % textValues.length);
+// }
 
-const showRefReadMore =  () => {
-  setRefReadMore(!refReadMore);
-  setCurrentRefRMTextIndex((prevIndex) => (prevIndex + 1) % textValues.length);
-}
+// const showRefReadMore =  () => {
+//   setRefReadMore(!refReadMore);
+//   setCurrentRefRMTextIndex((prevIndex) => (prevIndex + 1) % textValues.length);
+// }
 
 const showAboutReadMore =  () => {
   setAboutReadMore(!aboutReadMore);
@@ -94,33 +95,33 @@ const showAboutReadMore =  () => {
 
 
 
-const handleCopyClick = () => {
-   // Create a temporary textarea element
-   const textArea = document.createElement('textarea');
+// const handleCopyClick = () => {
+//    // Create a temporary textarea element
+//    const textArea = document.createElement('textarea');
    
-   // Set the value of the textarea to the text you want to copy
-   textArea.value = contractAddress;
+//    // Set the value of the textarea to the text you want to copy
+//    textArea.value = contractAddress;
 
-   // Append the textarea to the document
-   document.body.appendChild(textArea);
+//    // Append the textarea to the document
+//    document.body.appendChild(textArea);
 
-   // Select the text inside the textarea
-   textArea.select();
+//    // Select the text inside the textarea
+//    textArea.select();
 
-   // Execute the copy command
-   document.execCommand('copy');
+//    // Execute the copy command
+//    document.execCommand('copy');
 
-   // Remove the temporary textarea
-   document.body.removeChild(textArea);
+//    // Remove the temporary textarea
+//    document.body.removeChild(textArea);
 
-   // Set the state to indicate that the text has been copied
-   setButtonText("Copied");
+//    // Set the state to indicate that the text has been copied
+//    setButtonText("Copied");
 
-   // Reset the state after a brief period (optional)
-   setTimeout(() => {
-      setButtonText("Copy");
-   }, 1500);
- };
+//    // Reset the state after a brief period (optional)
+//    setTimeout(() => {
+//       setButtonText("Copy");
+//    }, 1500);
+//  };
 
 useEffect(() => {
 
@@ -144,6 +145,7 @@ useEffect(() => {
     // Check the device width and update isNavOpen accordingly
     if (window.innerWidth <= 990) {
       setNavOpen(false);
+      setIsMobile(true);
     } else {
       setNavOpen(true);
     }
@@ -331,7 +333,7 @@ useEffect(() => {
       </div>
 
       <div className={`${styles.frdstaking} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="frdstaking">
-          <h1>STAKING & MINING</h1>
+          {isMobile === true ? <h1>STAKING <div>AND</div> MINING</h1> : <h1>STAKING AND MINING</h1>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
                 FifaReward built staking and mining systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
