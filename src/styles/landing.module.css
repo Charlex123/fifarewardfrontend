@@ -553,25 +553,25 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 @media (max-width: 767px) {
   .connectworld h1 {
-    font-size: 28px;
+    font-size: 28px;margin-bottom: 20px !important;
   }
   .exchmain {
     margin-top: -80px;
   }
   .exchmain h1 {
-    font-size: 28px;
+    font-size: 28px;margin-bottom: 20px !important;
   }
   .frdbetting .betd .betdc h1 {
-    font-size: 28px;
+    font-size: 28px;margin-bottom: 20px !important;
   }
   .frdstaking h1 {
-    font-size: 28px;
+    font-size: 28px;margin-bottom: -20px !important;
   }
   .frdreferrals h1 {
-    font-size: 28px;
+    font-size: 28px;margin-bottom: 20px !important;
   }
   .aboutfrd h1 {
-    font-size: 28px;
+    font-size: 28px;margin-bottom: 20px !important;
   }
 
 }
