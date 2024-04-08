@@ -6,7 +6,7 @@ import FooterNavBar from './FooterNav';
 // import cgk from '../assets/images/coingecko-aace8f3c.png';
 // import cmc from '../assets/images/coinmarketcap-a91aaec1.png';
 import { fas, faCheck, faCheckCircle, faCircleDollarToSlot, faGift, faPeopleGroup, faHamburger} from '@fortawesome/free-solid-svg-icons';
-import { faTwitter, faFontAwesome, faGoogle, faTelegram, faMedium, faArtstation, faBandcamp, faGalacticSenate } from '@fortawesome/free-brands-svg-icons'
+import { faTwitter, faFontAwesome, faGoogle, faTelegram, faMedium, faArtstation, faBandcamp, faGalacticSenate, faDiscord } from '@fortawesome/free-brands-svg-icons'
 import { faSoccerBall } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome, faGoogle, faCheck,faCheckCircle, faCircleDollarToSlot, faGift, faPeopleGroup)
 
@@ -53,14 +53,14 @@ const handleCopyClick = () => {
                      <div>
                         <a href='https://twitter.com' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTwitter} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Twitter</span></a>
                      </div>
-                     {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faFacebook} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Facebook</span></a></div> */}
+                     <div><a href='https://www.dextools.io/app/en/bnb/pair-explorer/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1?t=1712569347593' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>DexTools</span></a></div>
                      <div>
                         <a href='https://t.me/+0Pc-mCo8mF5kODA8' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTelegram} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
                      </div>
                      <div>
-                        <a href='https://www.geckoterminal.com/bsc/pools/0x7c0406a570ca1407c412238c173898cd145fd52e' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
+                        <a href='https://www.geckoterminal.com/bsc/pools/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
                      </div>
-                     {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faDiscord} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div> */}
+                     <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faDiscord} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div>
                      {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faMedium} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Medium</span></a> </div>*/}
                      {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faYoutube} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>YouTube</span></a> </div> */}
                   </div>
