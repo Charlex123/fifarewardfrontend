@@ -136,7 +136,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 100%;
 }
 .connectworld h1 {
-  font-size: 40px;text-transform: uppercase;font-weight: 900;margin: 50px auto;
+  font-size: 40px;text-transform: uppercase;font-weight: 900;margin: 50px auto 30px auto;
   font-family: "Paytone One",sans-serif;letter-spacing: 6px;padding: 10px;text-align: center;
 }
 .connectworld .conn_inner {
