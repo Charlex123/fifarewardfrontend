@@ -378,7 +378,7 @@ useEffect(() => {
                   As a decentralized protocol, we understand that the power is with the pople (users). We've built our system to give back to the people through the refer and earn system.
                 </h4>
                 <h5>
-                  For every user you referred, you earn 0.5% of each of their stakes, betting and mining rewards.
+                  For every user you referred, you earn 2% of each of their stakes, betting and mining rewards.
                 </h5>
                 {/* <ul>
                   <li>
