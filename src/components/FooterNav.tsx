@@ -5,7 +5,7 @@ import logo from '../assets/images/logo.png';
 import Image from 'next/image';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from '@fortawesome/fontawesome-svg-core'
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faGamepad, faDashboard, faGauge, faGaugeMed } from '@fortawesome/free-solid-svg-icons'
+import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faGamepad, faDashboard, faGauge, faGaugeMed, faHomeAlt } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome, faTelegram, faBandcamp, faArtstation } from '@fortawesome/free-brands-svg-icons'
 import { faMessage, faQuestionCircle, faSoccerBall } from '@fortawesome/free-regular-svg-icons';
 library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
@@ -38,6 +38,9 @@ function FooterNavBar() {
         <>
             <nav className={styles.footernav}>
                 <div className={styles.nav_container}>
+                    <div className={styles.linka}>
+                        <a href='/' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faHomeAlt}/>}</div>Home</a>
+                    </div>
                     <div className={styles.linka}>
                         <a href='/dapp' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faGaugeMed}/>}</div>Dapp</a>
                     </div>

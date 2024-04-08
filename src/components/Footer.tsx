@@ -55,7 +55,7 @@ const handleCopyClick = () => {
                      </div>
                      {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faFacebook} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Facebook</span></a></div> */}
                      <div>
-                        <a href='https://t.me/tafaxtraweb' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTelegram} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
+                        <a href='https://t.me/+0Pc-mCo8mF5kODA8' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTelegram} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
                      </div>
                      <div>
                         <a href='https://www.geckoterminal.com/bsc/pools/0x7c0406a570ca1407c412238c173898cd145fd52e' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
@@ -67,7 +67,7 @@ const handleCopyClick = () => {
                </div>
 
                <div className={footerstyles.footer_c2}>
-                  <h3>Feature</h3>
+                  <h3>Features</h3>
                   <div className={footerstyles.f_c}>
                      <div>
                         <a href='/mining' rel='noopener noreferrer' ><FontAwesomeIcon icon={faHamburger} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Mine</span></a>
