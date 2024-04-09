@@ -1,4 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import Web3 from 'web3';
 
 let pancakeSwapAbi =  [
     {"inputs":[{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address[]","name":"path","type":"address[]"}],"name":"getAmountsOut","outputs":[{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"stateMutability":"view","type":"function"},
@@ -7,8 +8,6 @@ let pancakeSwapAbi =  [
     {"inputs":[],"name":"decimals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
     ];
 
-    import Web3 from 'web3';
-    
     /*
     Required Node.js
     -- Web3 Token Charting --
