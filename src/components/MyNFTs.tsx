@@ -340,6 +340,7 @@ const MyNFTs: React.FC<{}> = () =>  {
     }
 
     const closeBgModal = () => {
+      setShowLoading(false);
       setShowBgOverlay(false);
     }
 

@@ -243,6 +243,7 @@ export default function CreateItem() {
   }
 
   const closeBgModal = () => {
+    setShowLoading(false);
     setShowBgOverlay(false);
   }
 

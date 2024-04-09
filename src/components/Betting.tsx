@@ -456,6 +456,7 @@ const handleInputClick = () => {
 };
 
 const closeBgModal = () => {
+  setShowLoading(false);
   setShowBgOverlay(false);
 }
 

@@ -407,6 +407,7 @@ const Staking = () =>  {
   };
 
   const closeBgModal = () => {
+    setShowLoading(false);
     setShowBgOverlay(false);
   }
 

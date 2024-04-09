@@ -1,4 +1,4 @@
-// import { NextApiRequest, NextApiResponse } from 'next';
+import { NextApiRequest, NextApiResponse } from 'next';
 
 let pancakeSwapAbi =  [
     {"inputs":[{"internalType":"uint256","name":"amountIn","type":"uint256"},{"internalType":"address[]","name":"path","type":"address[]"}],"name":"getAmountsOut","outputs":[{"internalType":"uint256[]","name":"amounts","type":"uint256[]"}],"stateMutability":"view","type":"function"},
@@ -6,7 +6,8 @@ let pancakeSwapAbi =  [
     let tokenAbi = [
     {"inputs":[],"name":"decimals","outputs":[{"internalType":"uint256","name":"","type":"uint256"}],"stateMutability":"view","type":"function"},
     ];
-    const Web3 = require('web3');
+
+    import Web3 from 'web3';
     
     /*
     Required Node.js
@@ -28,7 +29,7 @@ let pancakeSwapAbi =  [
     
     
     let pancakeSwapContract = "0x10ED43C718714eb63d5aA57B78B54704E256024E".toLowerCase();
-    const web3 = new Web3("https://bsc-dataseed1.binance.org");
+    
     async function calcSell( tokensToSell: any, tokenAddres: any){
         const web3 = new Web3("https://bsc-dataseed1.binance.org");
         const BNBTokenAddress = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" //BNB
@@ -41,7 +42,7 @@ let pancakeSwapAbi =  [
         try {
             let router = await new web3.eth.Contract( pancakeSwapAbi, pancakeSwapContract );
             amountOut = await router.methods.getAmountsOut(tokensToSell, [tokenAddres ,BNBTokenAddress]).call();
-            amountOut =  web3.utils.fromWei(amountOut[1]);
+            amountOut =  web3.utils.fromWei(amountOut as any,'ether');
         } catch (error) {}
         
         if(!amountOut) return 0;
@@ -55,8 +56,8 @@ let pancakeSwapAbi =  [
         let amountOut;
         try {
             let router = await new web3.eth.Contract( pancakeSwapAbi, pancakeSwapContract );
-            amountOut = await router.methods.getAmountsOut(bnbToSell, [BNBTokenAddress ,USDTokenAddress]).call();
-            amountOut =  web3.utils.fromWei(amountOut[1]);
+            amountOut = await router.methods.getAmountsOut(bnbToSell, [BNBTokenAddress ,USDTokenAddress]).call() as any;
+            amountOut =  web3.utils.fromWei(amountOut[1] as any,'ether');
         } catch (error) {}
         if(!amountOut) return 0;
         return amountOut;
@@ -76,12 +77,23 @@ let pancakeSwapAbi =  [
     function that was build to retrive the token prices
     */
     (async () => {
-        const tokenAddres = '0xa49e44976c236beb51a1f818d49b9b9759ed97b1'; // change this with the token addres that you want to know the 
-        let bnbPrice = await calcBNBPrice() // query pancakeswap to get the price of BNB in USDT
-        console.log(`CURRENT BNB PRICE: ${bnbPrice}`);
-        // Them amount of tokens to sell. adjust this value based on you need, you can encounter errors with high supply tokens when this value is 1.
-        let tokens_to_sell = 1; 
-        let priceInBnb = await calcSell(tokens_to_sell, tokenAddres)/tokens_to_sell; // calculate TOKEN price in BNB
-        console.log( 'SHIT_TOKEN VALUE IN BNB : ' + priceInBnb + ' | Just convert it to USD ' );
-        console.log(`SHIT_TOKEN VALUE IN USD: ${priceInBnb*bnbPrice}`); // convert the token price from BNB to USD based on the retrived BNB value
+        
     })();
+
+    export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+        // Handle HTTP requests here
+        if (req.method === 'GET') {
+            const tokenAddres = '0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc'; // change this with the token addres that you want to know the 
+            let bnbPrice: number = await calcBNBPrice() as number// query pancakeswap to get the price of BNB in USDT
+            console.log(`CURRENT BNB PRICE: ${bnbPrice}`);
+            // Them amount of tokens to sell. adjust this value based on you need, you can encounter errors with high supply tokens when this value is 1.
+            let tokens_to_sell = 1; 
+            let priceInBnb: number = await calcSell(tokens_to_sell, tokenAddres) as number/(tokens_to_sell); // calculate TOKEN price in BNB
+            console.log( 'SHIT_TOKEN VALUE IN BNB : ' + priceInBnb + ' | Just convert it to USD ' );
+            console.log(`SHIT_TOKEN VALUE IN USD: ${priceInBnb*bnbPrice}`); // convert the token price from BNB to USD based on the retrived BNB value
+            res.status(200).json({ /* Response data */ });
+        } else {
+            // Handle other HTTP methods
+            res.status(405).json({ message: 'Method Not Allowed' });
+        }
+    }

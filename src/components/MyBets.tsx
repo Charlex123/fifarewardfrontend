@@ -340,6 +340,7 @@ const MyBets: React.FC<{}> = () =>  {
     }
 
     const closeBgModal = () => {
+      setShowLoading(false);
       setShowBgOverlay(false);
     }
 

@@ -564,6 +564,7 @@ const toggleAddress = (e:any) => {
 }
 
 const closeBgModal = () => {
+  setShowLoading(false);
   setShowBgOverlay(false);
 }
 

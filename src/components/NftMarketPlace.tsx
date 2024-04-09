@@ -168,6 +168,7 @@ const closeActionModalComp = () => {
 }
   
 const closeBgModal = () => {
+  setShowLoading(false);
   setShowBgOverlay(false);
 }
 

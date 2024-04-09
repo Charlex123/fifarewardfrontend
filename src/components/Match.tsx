@@ -630,6 +630,7 @@ const loadSearchResults = async () => {
 }
 
 const closeBgModal = () => {
+  setShowLoading(false);
   setShowBgOverlay(false);
 }
 
