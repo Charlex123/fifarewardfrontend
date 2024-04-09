@@ -28,7 +28,7 @@ const ReferralLink:React.FC<{}> = () =>  {
   const [userObjId, setUserObjId] = useState(""); // Initial value
   
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-
+  
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
 
@@ -59,17 +59,87 @@ const ReferralLink:React.FC<{}> = () =>  {
       setButtonText("Copy");
    }, 1500);
  };
-
- console.log("ref u address", address)
   
   useEffect(() => {
-    setWalletAddress(address);
-    const shrtwa = address?.substring(0,18)+' ...';
-    setShortWalletAddress(shrtwa);
+
+    async function Addreferrer() {
+      // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+      const provider = new ethers.providers.Web3Provider(walletProvider as any)
+      const signer = provider.getSigner();
+      const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+      const tnx = await StakeContract.addReferrer(sponsorWalletAddress,1);
+      console.log("Account Balance: ", tnx);
+      const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+      const reslt = await betContract.addReferrer(sponsorWalletAddress,1);
+      console.log("Account Balance: ", reslt);
+    }
+
+    async function getSponsorWalletAddress(sponsorId: any) {
+      try {
+        const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+        }  
+        const {data} = await axios.post("https://fifareward.onrender.com/api/users/getsponsorwalletaddress", {
+          sponsorId,
+        }, config);
+        if(data.message === "You do not have a sponsor") {
+        }else {
+          setsponsorWalletAddress(data.message);
+          Addreferrer();
+        }
+        
+      } catch (error) {
+        console.log(error)
+      }
+  }
+    
+    async function getWalletAddress(username: string) {
+      
+        try {
+          const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+          }  
+          const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
+            username
+          }, config);
+          setWalletAddress(data.message);
+          const shrtwa = walletaddress?.substring(0,18)+' ...';
+          setShortWalletAddress(shrtwa);
+        } catch (error) {
+          console.log(error)
+        }
+    }
+
+    async function updateWalletAddress(username: string) {
+        try {
+          const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+          }  
+          const addr = address;
+          console.log("addr ",addr)
+          const {data} = await axios.post("https://fifareward.onrender.com/api/users/updatewalletaddress/", {
+            addr,
+            username
+          }, config);
+          if(data) {
+            getWalletAddress(username);
+          }
+          // setisWalletAddressUpdated(!isWalletAddressUpdated);
+
+        } catch (error) {
+          console.log(error)
+        }
+    }
+
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;
-      
       // if(udetails.isinfluencer == true) {
       //   setIsinfluencer(true);
       // }  
@@ -84,87 +154,18 @@ const ReferralLink:React.FC<{}> = () =>  {
         }else {
           setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
         }
+        updateWalletAddress(username_);
+        getSponsorWalletAddress(udetails.sponsorId);
       }
     }else {
       router.push(`/signin`);
     }
 
-    if(address) {
-        async function updateWalletAddress() {
-          try {
-            const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-            }  
-            const {data} = await axios.post("https://fifareward.onrender.com/api/users/updatewalletaddress/", {
-              walletaddress,
-              username
-            }, config);
-            console.log('update wallet data', data.message);
-            // setisWalletAddressUpdated(!isWalletAddressUpdated);
-          } catch (error) {
-            console.log(error)
-          }
-      }
-      updateWalletAddress();
-    }
-    
-//   async function getWalletAddress() {
-    
-//     try {
-//       const config = {
-//       headers: {
-//           "Content-type": "application/json"
-//       }
-//       }  
-//       const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
-//         username
-//       }, config);
-//       setWalletAddress(data.message);
-//     } catch (error) {
-//       console.log(error)
-//     }
+// if(isConnected) {
+//   if(sponsorId != 0) {
+      
+//   }
 // }
-// getWalletAddress();
-
-if(isConnected) {
-  if(sponsorId != 0) {
-      async function getSponsorWalletAddress() {
-        try {
-          const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-          }  
-          const {data} = await axios.post("https://fifareward.onrender.com/api/users/getsponsorwalletaddress", {
-            sponsorId,
-          }, config);
-          if(data.message === "You do not have a sponsor") {
-          }else {
-            setsponsorWalletAddress(data.message);
-            Addreferrer();
-          }
-          
-        } catch (error) {
-          console.log(error)
-        }
-    }
-    getSponsorWalletAddress();  
-  }
-  
-  async function Addreferrer() {
-    // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    const provider = new ethers.providers.Web3Provider(walletProvider as any)
-    const signer = provider.getSigner();
-    const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-    const tnx = await StakeContract.addReferrer(sponsorWalletAddress,1);
-    console.log("Account Balance: ", tnx);
-    const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-    const reslt = await betContract.addReferrer(sponsorWalletAddress,1);
-    console.log("Account Balance: ", reslt);
-  }
-}
 
  }, [userId,address,router,username,walletaddress,sponsorId,userObjId,shortwalletaddress])
 

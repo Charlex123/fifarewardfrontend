@@ -375,7 +375,7 @@ useEffect(() => {
           <div className={styles.referralsmain}>
               <div className={styles.referralstext}>
                 <h4>
-                  As a decentralized protocol, we understand that the power is with the pople (users). We've built our system to give back to the people through the refer and earn system.
+                  As a decentralized protocol, we understand that the power is with the people (users). We've built our system to give back to the people through the refer and earn system.
                 </h4>
                 <h5>
                   For every user you referred, you earn 2% of each of their stakes, betting and mining rewards.

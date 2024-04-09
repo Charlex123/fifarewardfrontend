@@ -137,13 +137,13 @@ const RewardsBadge:React.FC<{}> = () =>  {
             </div>
             <div className={styles.rwdbadge}>
                 <div className={styles.d}>
-                  <div> NFTs:</div> <div className={styles.rwd_c}>45</div>
+                  <div> NFTs:</div> <div className={styles.rwd_c}>{nftcount.toString()}</div>
                 </div>
                 <div className={styles.d}>
-                  <div>Bets:</div> <div className={styles.rwd_c}>62</div>
+                  <div>Bets:</div> <div className={styles.rwd_c}>{betcount.toString()}</div>
                 </div>
                 <div className={styles.d}>
-                  <div>Stakes:</div> <div className={styles.rwd_c}>3</div>
+                  <div>Stakes:</div> <div className={styles.rwd_c}>{stakecount.toString()}</div>
                 </div>
                 <div className={styles.d}>
                   <Image src={bronzemedal} alt={'medal'} height={20} width = {20} style={{margin: '0 auto'}}/>

@@ -202,7 +202,7 @@ const Dapp:React.FC<{}> = () =>  {
 
  // Function to toggle the navigation menu
  const toggleSideBar = () => {
-    
+
     setSideBarToggle(!dappsidebartoggle);
     setIsSideBarToggled(!isSideBarToggled);
   };
@@ -280,6 +280,22 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
                 <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
               </button>
+              
+              <div className={dappstyles.head}>
+                  <div className={dappstyles.uname}><span>Hi, {username}</span></div>
+                  <h1>
+                      WELCOME TO FIFAREWARD 
+                  </h1>
+                  <p>Welcome to Fifareward DeFi Protocol, where we aim to revolutionize the world of betting, NFT market place, and gaming through decentralization. We are a team of passionate individuals committed to creating a platform that enables users to experience secure, transparent, and fair betting opportunities, NFT market place etc.</p>
+                  <div className={dappstyles.get_sd_btns}>
+                    <a title='get started' href='/stakes' rel='noopener noreferrer' className={dappstyles.getstarted}>Stake FRD</a>
+                    <a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc' rel='noopener noreferrer' className={dappstyles.learnmore}>Buy FRD</a>
+                  </div>
+              </div>
+              
+              <div>
+                <ReferralLink />
+              </div>
 
               <div>
                 <RewardsBadge />
@@ -287,22 +303,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               <div>
                 <EarningsBreakDown />
               </div>
-              <div>
-                <ReferralLink />
-              </div>
-
-                <div className={dappstyles.head}>
-                    <div className={dappstyles.uname}><span>Hi, {username}</span></div>
-                    <h1>
-                        WELCOME TO FIFAREWARD 
-                    </h1>
-                    <p>FifaReward is a smart contract platform that replicates the traditional Certificate of Deposit but on the blockchain. It allows users to stake their FRD tokens to earn fixed interest, 2% daily ROI. It also has NFT functionality, and is backed by ownership of Validator Nodes.</p>
-                    <p>A community DAO manages the FRD Vault, which collects fees from trade tax and early unstakes. The usage of these funds will be voted on by the community, to use on things such as purchasing additional Validator Nodes, Marketing, Conferences, Token Burns etc.</p>
-                    <div className={dappstyles.get_sd_btns}>
-                      <a title='get started' href='/stakes' rel='noopener noreferrer' className={dappstyles.getstarted}>Stake FRD</a>
-                      <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappstyles.learnmore}>Buy FRD</a>
-                    </div>
-                </div>
+              
               </div>
             </div>
         </div>

@@ -7,7 +7,7 @@
 @import url("https://fonts.googleapis.com/css?family=Caveat");
 
 .main_w {
-    width: 100%;height: 100%;padding-top: 4.8rem;
+    width: 100%;height: 100%;padding-top: 4.8rem;padding-bottom: 5rem;
     /* background: rgb(13,20,24);
     background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(13,20,24,1) 14%, rgba(19,28,28,1) 29%, rgba(28,28,46,1) 44%, rgba(24,28,45,1) 49%, rgba(18,27,43,1) 54%, rgba(19,28,28,1) 64%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
@@ -111,7 +111,7 @@
     font-size: 16px;font-family: "Poppins";text-transform: capitalize;
 }
 .main .head {
-    margin: 3rem 1rem 8rem 1rem;text-align: center;border-radius: 20px;padding: 2rem 1rem 2rem 1rem;
+    margin: 2rem 1rem 2rem 1rem;text-align: center;border-radius: 20px;padding: 2rem 1rem 2rem 1rem;
     /* background: rgb(13,20,24);
     background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
@@ -129,15 +129,15 @@
     display: flex;justify-content: space-evenly;margin-top: 45px;
 }
 .main .head div a.getstarted {
-    background-color: #e3a204;width: fit-content;padding: 5px 12px;border-radius: 60px;height: fit-content;
-    font-family: "Poppins",sans-serif;font-size: 18px;font-weight: 600;box-shadow: 1px 1px 2px 2px #e3a204;
+    background-color: #e3a204;width: fit-content;padding: 2px 8px;border-radius: 60px;height: fit-content;
+    font-family: "Poppins",sans-serif;font-size: 14px;font-weight: 600;box-shadow: 1px 1px 2px 2px #e3a204;
     color: #2c2b2b;
     /* background: rgb(13,20,24);
 background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(36,168,19,0.9192051820728291) 0%, rgba(37,203,6,1) 100%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .main .head div a.learnmore {
-    color: #e2d7d7;border: none;font-family: "Poppins";font-size: 18px;border: 2px solid #e3a204;border-radius: 120px;
-    font-weight: 600;padding: 2px 28px 2px 28px;border-radius: 60px;margin-top: 0;
+    color: #e2d7d7;border: none;font-family: "Poppins";font-size: 14px;border: 2px solid #e3a204;border-radius: 120px;
+    font-weight: 600;padding: 2px 18px 2px 18px;border-radius: 60px;margin-top: 0;
 }
 .main .airdrop_{
     margin: 20px 20px 120px 20px;padding: 20px 20px 20px 20px;border-radius: 16px;
@@ -423,7 +423,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 
 @media (max-width: 767px) {
-    
+    .main .head {
+        margin: -1rem 1rem 1rem 1rem;
+    }
     .main_c .main {
         width: 90%;height: 100%;
     }

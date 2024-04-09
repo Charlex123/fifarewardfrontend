@@ -117,7 +117,7 @@ const Airdrop = () =>  {
           }
           loadAirDUsers();
     }else {
-        open();
+        // open();
     }
   // Function to handle window resize
   const handleResize = () => {

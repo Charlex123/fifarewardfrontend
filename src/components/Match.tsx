@@ -683,28 +683,31 @@ const closeBgModal = () => {
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='../../../../register'>Join Fifa Reward</a>
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Sign up with Fifa Reward using this link <a href='../../../../register'>Join FifaReward</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Fund your wallet with FRD from <a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc'>pancakeswap</a> or any other exchange of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Visit the betting page
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Visit the <a href='../../../../betting'>betting page</a>
               </li>
               <li>
                 <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Click on Open Bets, and place a bet by selecting your betting team, prediction, bet participants and betting amount in FRD. 
               </li>
               <li>
                 <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../../../../betting/openbetslists'>open bets</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Any user can join your bet.
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> All placed bets are closed after the match or fixture, bet winners get their winning bets automatically in their wallets. 
+              </li>
+              <li>
+                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> If your bet didn't find a participant to join, after the fixture, if you win, your winnings will be transferred to your wallet. But if you lose, you can bet again to try your luck next time.  
               </li>
               <li>
                 <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Draw bets are carried over to a next match

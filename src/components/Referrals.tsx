@@ -107,7 +107,7 @@ const handleCopyClick = () => {
         setUsername(username_);
         setUserId(udetails.userId)
         setUserObjId(udetails._id)
-        setreferralLink(`https://tafaextra.io/register/${udetails.userId}`);
+        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
       }
     }else {
       router.push(`/signin`);
@@ -121,7 +121,7 @@ const handleCopyClick = () => {
           "Content-type": "application/json"
       }
       }  
-      const {data} = await axios.post("https://tafabackend.onrender.com/api/users/getwalletaddress/", {
+      const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
         username
       }, config);
       console.log('update wallet data', data.message);
@@ -135,7 +135,7 @@ getWalletAddress();
 
     async function getreferrals() {
       try {
-         const {data} = await axios.get(`https://tafabackend.onrender.com/api/users/getreferrals/${udetails.userId}`, {
+         const {data} = await axios.get(`https://fifareward.onrender.com/api/users/getreferrals/${udetails.userId}`, {
          });
          setFirstGenReferrals(data.firstgendownlines);
          console.log('ref data',data.firstgendownlines);
@@ -156,7 +156,7 @@ getWalletAddress();
             "Content-type": "application/json"
         }
         }  
-        const {data} = await axios.post("https://tafabackend.onrender.com/api/users/getsponsorwalletaddress", {
+        const {data} = await axios.post("https://fifareward.onrender.com/api/users/getsponsorwalletaddress", {
           userObjId,
         }, config);
         if(data.message === "You do not have a sponsor") {
@@ -187,7 +187,7 @@ getWalletAddress();
               "Content-type": "application/json"
           }
           }  
-          const {data} = await axios.post("https://tafabackend.onrender.com/api/users/updatewalletaddress/", {
+          const {data} = await axios.post("https://fifareward.onrender.com/api/users/updatewalletaddress/", {
             walletaddress,
             username
           }, config);
