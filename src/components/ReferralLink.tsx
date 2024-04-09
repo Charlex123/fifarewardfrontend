@@ -110,23 +110,23 @@ const ReferralLink:React.FC<{}> = () =>  {
       updateWalletAddress();
     }
     
-  async function getWalletAddress() {
+//   async function getWalletAddress() {
     
-    try {
-      const config = {
-      headers: {
-          "Content-type": "application/json"
-      }
-      }  
-      const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
-        username
-      }, config);
-      setWalletAddress(data.message);
-    } catch (error) {
-      console.log(error)
-    }
-}
-getWalletAddress();
+//     try {
+//       const config = {
+//       headers: {
+//           "Content-type": "application/json"
+//       }
+//       }  
+//       const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
+//         username
+//       }, config);
+//       setWalletAddress(data.message);
+//     } catch (error) {
+//       console.log(error)
+//     }
+// }
+// getWalletAddress();
 
 if(isConnected) {
   if(sponsorId != 0) {
@@ -166,7 +166,7 @@ if(isConnected) {
   }
 }
 
- }, [userId,address,router,username,walletaddress,sponsorId,userObjId])
+ }, [userId,address,router,username,walletaddress,sponsorId,userObjId,shortwalletaddress])
 
 const toggleWA = (e: any) => {
   let tbtn = e as HTMLButtonElement;
@@ -176,7 +176,11 @@ const toggleWA = (e: any) => {
   return (
     <>
         <div className={`${dappstyles.reflink} ${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']}`} >
-            <div className={dappstyles.reflinkdex}>Ref Link: <input title="input" value={referralLink} readOnly /><button type='button' onClick={handleCopyClick}>{buttonText}</button> </div>
+            <div className={dappstyles.reflinkdex}>
+              <div className={dappstyles.reftxt}>Ref Link:</div> 
+              <div className={dappstyles.refinput}><input title="input" value={referralLink} readOnly /></div>
+              <div className={dappstyles.refbtn}><button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
+            </div>
             <div><small>Share referral link to earn more FRD!</small></div>
             <div className={dappstyles.cw}>Connected Wallet: <span style={{color: 'orange'}}>{shortwalletaddress}</span><div style={{color: 'orange'}} className={dappstyles.cws}><div>{walletaddress}</div></div><button onClick={(e) => toggleWA(e.target)}>view</button></div>
         </div>

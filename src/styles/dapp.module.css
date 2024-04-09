@@ -68,13 +68,25 @@
     /* background: rgb(13,20,24); */
     /* background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
-.main .reflink input {
-    background-color: #e3a204 ;color: #000000;font-size: 12px;font-weight: 500;padding: 3px 16px 3px 12px;
-    border-radius: 60px;width: 50%;margin-left: 15px;
+.main .reflink .reflinkdex {
+    display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: flex-start;
 }
-.main .reflink button {
+.main .reflink .reflinkdex .reftxt {
+    width: max-content;
+}
+.main .reflink .reflinkdex .refinput {
+    width: 76%;margin-left: 2%;margin-right: 2%;
+}
+.main .reflink .reflinkdex .refbtn {
+    width: 10%;
+}
+.main .reflink .reflinkdex .refinput input {
+    background-color: #e3a204 ;color: #000000;font-size: 13px;font-weight: 500;padding: 3px 16px 3px 12px;
+    border-radius: 60px;width: 100%;
+}
+.main .reflink .reflinkdex .refbtn button {
     background-color: orange;color: #2c2b2b;font-size: 13px;font-weight: 600;padding: 3px 12px;
-    border-radius: 60px;width: fit-content;margin-left: 8px;
+    border-radius: 60px;width: fit-content;
 }
 .main .reflink .cw {
     position: relative;
@@ -435,6 +447,12 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     }
     .main .con_btns  {
         display: block;
+    }
+    .main .reflink .reflinkdex {
+        display: block;flex-direction: none;justify-content: unset;
+    }
+    .main .reflink .reflinkdex .refinput {
+        width: 100%;margin-left: 0;margin-right: 0;margin-top: 5px;margin-bottom: 5px;
     }
 }
 
