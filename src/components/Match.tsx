@@ -970,12 +970,12 @@ const closeBgModal = () => {
                                 <div className={matchstyle.fixt_tm}>
                                     <div className={matchstyle.teams}>
                                       <div> 
-                                        <div><Image src={matchData?.teams.home.logo} className={matchstyle.lg} alt="logo" width={30} height={40} /></div> 
+                                        <div><Image src={matchData!.teams.home.logo} className={matchstyle.lg} alt="logo" width={30} height={40} /></div> 
                                         <div>{`${matchData?.teams.home.name}`}</div> 
                                       </div>
                                       <div className={matchstyle.vs}> {matchData?.goals.home != null ? (matchData?.goals.home) : ''} - {matchData?.goals.home != null ? (matchData?.goals.away) : ''}</div>
                                       <div> 
-                                        <div><Image src={matchData?.teams.away.logo} className={matchstyle.lg} alt="logo" width={30} height={40} /></div> 
+                                        <div><Image src={matchData!.teams.away.logo} className={matchstyle.lg} alt="logo" width={30} height={40} /></div> 
                                         <div>{`${matchData?.teams.away.name}`}</div> 
                                       </div>
                                     </div>
@@ -1183,7 +1183,7 @@ const closeBgModal = () => {
                                         <div className={matchstyle.type1}>{stat.type}</div>
                                         <div className={matchstyle.stats1} >
                                           <div className={matchstyle.prog1}><span></span></div>
-                                          <div className={matchstyle.val1}>{stat.value = stat.value ? stat.value : '0'}</div>
+                                          <div className={matchstyle.val1}>{stat.value === stat.value ? stat.value : '0'}</div>
                                         </div>
                                       </div>
                                     ))}
@@ -1204,7 +1204,7 @@ const closeBgModal = () => {
                                       <div key={index}>
                                           <div className={matchstyle.type2}>{stat.type}</div>
                                           <div className={matchstyle.stats2} >
-                                            <div className={matchstyle.val2}>{stat.value = stat.value ? stat.value : '0'}</div>
+                                            <div className={matchstyle.val2}>{stat.value === stat.value ? stat.value : '0'}</div>
                                             <div className={matchstyle.prog2}><span></span></div>
                                           </div>
                                       </div>
