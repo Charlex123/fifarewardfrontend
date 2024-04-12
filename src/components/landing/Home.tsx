@@ -314,7 +314,7 @@ useEffect(() => {
                   </div>
                   <div>
                     <p>
-                      FifaReward is introducing the <span>Wager Bettng System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
+                      FifaReward is introducing the <span>Wager Betting System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
                     </p>
                     <p>
                       The user whose prediction is correct wins the bet and get the sum of bet amounts.

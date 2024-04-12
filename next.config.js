@@ -11,6 +11,8 @@ const nextConfig = {
     'imgbox.com',
     'ipfs',
     'nftstorage.link',
+    'media.api-sports.io',
+    'api-sports.io',
     'ipfs.nftstorage.link'],
   },
   webpack: (config) => {

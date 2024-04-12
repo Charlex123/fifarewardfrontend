@@ -12,6 +12,8 @@ import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json
 import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
+// import '../../api-sports-widgets';
+// import pitch from '../assets/images/pitch.jpeg'
 import moment from 'moment';
 import Loading from './Loading';
 import AlertDanger from './AlertDanger';
@@ -22,6 +24,9 @@ import LoadSampleOpenBetsData from './LoadSampleOpenBets';
 import LoginModal from './LoginModal';
 import HelmetExport from 'react-helmet';
 import { Fixture } from './FixtureMetadata';
+import { Team } from './FixtureStatisticMetadata';
+import { Events } from './FixtureEventsMetadata';
+import { Lineups } from './FixtureLineUpMetadata';
 import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -46,7 +51,7 @@ const MatchData:React.FC<{}> = () => {
     }
   }
 
-
+  
 // interface League {
 //   leagueId: number;
 //   leagueName: string;
@@ -84,13 +89,21 @@ const [betData,setBetData] = useState<Bets[]>([]);
 
 const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
 const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
-const[countryparam,setCountryParam] = useState<string>('');
-const[leagueparam,setLeagueParam] = useState<string>('');
-const[matchparam,setMatchParam] = useState<string>('');
-const[matchidparam,setMatchIdParam] = useState<string>('');
-const[matchData,setMatchData] = useState<Fixture>();
-const[bettingteam,setBettingTeam] = useState<string>('');
-const[betprediction,setBetPrediction] = useState<string>('');
+const [countryparam,setCountryParam] = useState<string>('');
+const [leagueparam,setLeagueParam] = useState<string>('');
+const [matchparam,setMatchParam] = useState<string>('');
+const [matchidparam,setMatchIdParam] = useState<string>('');
+const [matchData,setMatchData] = useState<Fixture>();
+const [fixtureh2hdataLoaded,setFixtureH2HDataLoaded] = useState<boolean>(false);
+const [fixtureh2hData,setFixtureH2HData] = useState<Fixture[]>([]);
+const [fixturestatisticsdataloaded,setFixtureStatisticsDataLoaded] = useState<boolean>(false);
+const [fixturestatisticsData,setFixtureStatisticsData] = useState<Team[]>([]);
+const [fixtureeventsdataloaded,setFixtureEventsDataLoaded] = useState<boolean>(false);
+const [fixtureeventsData,setFixtureEventsData] = useState<Events[]>([]);
+const [fixturelineupsdataloaded,setFixtureLineupsDataLoaded] = useState<boolean>(false);
+const [fixturelineupsData,setFixtureLineupsData] = useState<Lineups[]>([]);
+const [bettingteam,setBettingTeam] = useState<string>('');
+const [betprediction,setBetPrediction] = useState<string>('');
 const [betAmount,setBetAmount] = useState<string>('50000');
 const [betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
@@ -145,6 +158,91 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
       
         }
 
+        const fixtureLineups = async (fixtureid: number) => {
+          try {
+            const config = {
+              headers: {
+                  "Content-type": "application/json",
+                  "x-rapidapi-host": "v3.football.api-sports.io",
+                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+              }
+            }
+            const { data } = await axios.get(`https://v3.football.api-sports.io/fixtures/lineups?fixture=${fixtureid}`, config)
+            console.log(" fixture  lineups ",data.response)
+            if(data.response.length > 0) {
+              setFixtureLineupsDataLoaded(true);
+              setFixtureLineupsData(data.response);
+            }
+          } catch (error) {
+            
+          }
+        }
+
+        const fixtureEvents = async (fixtureid: number) => {
+          try {
+            const config = {
+              headers: {
+                  "Content-type": "application/json",
+                  "x-rapidapi-host": "v3.football.api-sports.io",
+                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+              }
+            }
+            const { data } = await axios.get(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureid}`, config)
+            console.log(" fixture  events ",data.response)
+            if(data.response.length > 0) {
+              setFixtureEventsDataLoaded(true);
+              setFixtureEventsData(data.response);
+            }
+    
+          } catch (error) {
+            
+          }
+        }
+
+        const fixtureStatistics = async (fixtureid: number) => {
+          try {
+            const config = {
+              headers: {
+                  "Content-type": "application/json",
+                  "x-rapidapi-host": "v3.football.api-sports.io",
+                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+              }
+            }
+            const { data } = await axios.get(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureid}`, config)
+            console.log(" fixture  statistics ",data.response)
+            if(data.response.length > 0) {
+              setFixtureStatisticsDataLoaded(true);
+              setFixtureStatisticsData(data.response);
+            }
+    
+          } catch (error) {
+            
+          }
+        }
+
+        const head2head = async (hometeamid: number,awayteamid: number) => {
+          try {
+            const config = {
+              headers: {
+                  "Content-type": "application/json",
+                  "x-rapidapi-host": "v3.football.api-sports.io",
+                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+              }
+            } 
+
+            const {data} = await axios.get(`https://v3.football.api-sports.io/fixtures/headtohead?h2h=${hometeamid}-${awayteamid}`, config)
+            
+            if(data.response.length > 0) {
+                setFixtureH2HDataLoaded(true);
+                setFixtureH2HData(data.response);
+            }
+            
+          } catch (error) {
+            
+          }
+          
+        }
+
         async function loadMatchData() {
             if(router.query.match){
                 setIsParamsLoaded(true)
@@ -164,6 +262,11 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
                 if(data.match !== null) {
                     setIsMatchDataLoaded(true);
                     setMatchData(data.match);
+
+                    head2head(data.match.teams.home.id,data.match.teams.away.id);
+                    fixtureEvents(data.match.fixture.id);
+                    fixtureLineups(data.match.fixture.id);
+                    fixtureStatistics(data.match.fixture.id);
                 }
             }
         }loadMatchData();
@@ -259,13 +362,60 @@ const handleClickOutside = (event: MouseEvent) => {
 // Add event listener to the body
 document.body.addEventListener('click', handleClickOutside);
 
+// Define a type for the function loadAPISportsWidget
+interface WidgetScript {
+  loadAPISportsWidget: Function;
+}
+
+const loadAPISportsWidget = async () => {
+  // @ts-ignore
+  const importedModule = await import(/* webpackIgnore: true */ "https://widgets.api-sports.io/2.0.3/widgets.js");
+  console.log("impotrtec module", importedModule)
+}
+loadAPISportsWidget()
+
+const script = document.createElement('script');
+  script.type = 'module';
+
+  // @ts-ignore
+  script.src = 'https://widgets.api-sports.io/2.0.3/widgets.js';
+
+
+  
+  // Define an event listener to handle script loading
+  const handleScriptLoad = () => {
+  // Access the function from the window object
+  const apiSportsWidget: WidgetScript = window as unknown as WidgetScript;
+  
+  // Call the function if it exists
+  if (apiSportsWidget.loadAPISportsWidget) {
+    apiSportsWidget.loadAPISportsWidget();
+    console.log('Script loaded successfully!');
+  } else {
+    console.error('loadAPISportsWidget function not found.');
+  }
+};
+
+  // Define an event listener to handle script errors
+  const handleScriptError = (error: any) => {
+    console.error('Script loading error:', error);
+  };
+
+  script.addEventListener('load', handleScriptLoad);
+  script.addEventListener('error', handleScriptError);
+
+  document.body.appendChild(script);
+  
 return () => {
   // Clean up the event listener when the component is unmounted
+  script.removeEventListener('load', handleScriptLoad);
+  script.removeEventListener('error', handleScriptError);
   document.body.removeEventListener('click', handleClickOutside);
+  document.body.removeChild(script)
   // clearInterval(intervalId);
 };
   
-},[countryfixturesdata,router.query.match,matchidparam,username])
+},[countryfixturesdata,router.query.match,matchidparam,username,isConnected,isLoggedIn])
 
 const openBetC = async () => {
   if(walletProvider) {
@@ -423,23 +573,73 @@ const toggleFixtures = (divId:any) => {
   let path = divId.getAttribute('fill');
   if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
     if(svg !== null && svg !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
+      let targetDiv = divId.parentElement.parentElement.nextElementSibling;
       targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
     }
     if(path !== null && path !== undefined) {
-      let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
+      let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
       targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
     }
   }else {
-    let targetDiv = divId.parentElement.parentElement.nextElementSibling;
+    let targetDiv = divId.parentElement.nextElementSibling;
     targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
   }
   
 
 }
 
+const toggleFixturesH = (divId:any) => {
+  
+  let targetDiv = divId.parentElement.parentElement.nextElementSibling;
+  targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
+
+}
+
 const closeLeagueFixtures = (divId:any) => {
   console.log('huo',divId);
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  if(svg !== null && svg !== undefined) {
+    divId.parentElement.parentElement.parentElement.remove();
+  }
+  if(path !== null && path !== undefined) {
+    divId.parentElement.parentElement.parentElement.parentElement.remove()
+  }
+}
+
+const toggleFixtureAct = (divId:any) => {
+  console.log("div Id dd",divId)
+  let svg = divId.getAttribute('data-icon');
+  let path = divId.getAttribute('fill');
+  if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
+    if(svg !== null && svg !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.nextElementSibling;
+      console.log("target div cc",targetDiv);
+      targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
+    }
+    if(path !== null && path !== undefined) {
+      let targetDiv = divId.parentElement.parentElement.parentElement.nextElementSibling;
+      console.log("target div cc",targetDiv);
+      targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
+    }
+  }else {
+    let targetDiv = divId.parentElement.nextElementSibling;
+    console.log("target div cc",targetDiv);
+    targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
+  }
+  
+
+}
+
+const toggleFixtureActH = (divId:any) => {
+  console.log("div id ff",divId)
+  let targetDiv = divId.parentElement.parentElement.nextElementSibling;
+    console.log("target div cc",targetDiv);
+    targetDiv.style.display = (targetDiv.style.display === 'none') ? 'block' : 'none';
+  
+}
+
+const closeLeagueFixtureAct = (divId:any) => {
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
   if(svg !== null && svg !== undefined) {
@@ -603,6 +803,7 @@ const getKeyWordSearchN = async (keyword:any) => {
   
 }
 
+
 const loadSearchResults = async () => {
   try {
     
@@ -628,6 +829,7 @@ const loadSearchResults = async () => {
     console.log(error)
   }
 }
+
 
 const closeBgModal = () => {
   setShowLoading(false);
@@ -722,11 +924,34 @@ const closeBgModal = () => {
           <div className={matchstyle.betmain}>
               <div className={matchstyle.betwrap}>
                   <div className={matchstyle.betwrapin} id='betwrapin'>
+
                   {ismatchdataLoaded &&
                     <div>
                         <div className={matchstyle.league_wrap}>
+
+                        {/* {fixturelineupsdataloaded && fixturelineupsData.length > 0 ?
+                          <div className={matchstyle.lineups_pitch}>
+                            {fixturelineupsData.map((lineup,index) => (
+                              <div key={index}>
+                                <div className={matchstyle.lineups}>
+                                  <div>
+                                    <div>
+                                      <Image src={lineup.coach.photo} alt='logo' width={30} height={40}/>
+                                    </div>
+                                    <div>
+                                      {lineup.coach.name}
+                                    </div>
+                                  </div>
+                                  
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          : ''
+                        } */}
+
                           <div className={matchstyle.tgle} >
-                            <div onClick={(e) => toggleFixtures(e.target)}><h3>{matchData?.league.name}</h3></div>
+                            <div><h3 onClick={(e) => toggleFixturesH(e.target)}>{matchData?.league.name}</h3></div>
                             <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
                             <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
                           </div>
@@ -744,9 +969,15 @@ const closeBgModal = () => {
 
                                 <div className={matchstyle.fixt_tm}>
                                     <div className={matchstyle.teams}>
-                                    <div>{`${matchData?.teams.home.name}`} {matchData?.goals.home != null ? (matchData?.goals.home) : ''}</div>
-                                    <div className={matchstyle.vs}>Vs</div>
-                                    <div>{`${matchData?.teams.away.name}`} {matchData?.goals.away != null ? (matchData?.goals.away) : ''}</div>
+                                      <div> 
+                                        <div><Image src={matchData?.teams.home.logo} className={matchstyle.lg} alt="logo" width={30} height={40} /></div> 
+                                        <div>{`${matchData?.teams.home.name}`}</div> 
+                                      </div>
+                                      <div className={matchstyle.vs}> {matchData?.goals.home != null ? (matchData?.goals.home) : ''} - {matchData?.goals.home != null ? (matchData?.goals.away) : ''}</div>
+                                      <div> 
+                                        <div><Image src={matchData?.teams.away.logo} className={matchstyle.lg} alt="logo" width={30} height={40} /></div> 
+                                        <div>{`${matchData?.teams.away.name}`}</div> 
+                                      </div>
                                     </div>
                                 </div>
                                 <div className={matchstyle.openbet}>
@@ -839,20 +1070,177 @@ const closeBgModal = () => {
                                     </form>
                                     </div>
 
-                                    <div>
-                                    <button type='button' title='buttn' onClick={(e) => firstopenHIW(e.target)}>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                    <div className={matchstyle.sbtn}>
+                                      <button type='button' title='buttn' onClick={(e) => firstopenHIW(e.target)}> Bet On ({`${matchData?.teams.home.name} vs ${matchData?.teams.away.name}`}) </button>
                                     </div>
                                 </div>
                             </div>
                           </div>
                         </div>
+
+
+                        {/* {fixtureeventsdataloaded && fixtureeventsData.length > 0 ?
+                          <div className={matchstyle.fixevents}>
+                            <div className={matchstyle.tgle} >
+                              <div onClick={(e) => toggleFixtures(e.target)}><h3>Events</h3></div>
+                              <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                              <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                            </div>
+                            {fixtureeventsData.map((event,index) => (
+                              <div key={index}>
+                                <div>
+                                  <div><Image src={event.team.logo} alt='logo' width={25} height={35} /></div>
+                                  <div>{event.team.name}</div>
+                                </div>
+                                <div >
+                                  <div>
+                                    {event.assist.name}
+                                  </div>
+                                  <div>
+                                    {event.detail}
+                                  </div>
+                                </div>
+                                <div>
+                                  {event.player.name}
+                                </div>
+                                <div>
+                                  {event.time.extra}
+                                </div>
+                                <div>
+                                  {event.time.elapsed}
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                          : ''
+                        } */}
+
+                        {fixtureh2hdataLoaded && fixtureh2hData?.length > 0 ?
+                        <div className={matchstyle.fixh2h}>
+                          <div className={matchstyle.tgle} >
+                            <div><h3 onClick={(e) => toggleFixtureActH(e.target)}>Head To Head</h3></div>
+                            <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtureAct(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                            <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtureAct(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                          </div>
+
+                          <div>
+                            {fixtureh2hData?.map((h2h,index) => (
+                              <div key={index}>
+                                  <div className={matchstyle.h2hdate}>{`${moment(h2h.fixture.date).format('dddd, MMMM Do YYYY')}`}</div>
+                                  <div className={matchstyle.h2hd}>
+                                      <div className={matchstyle.h2hdb}>
+                                        <div>
+                                          <Image src={h2h.teams.home.logo} alt='logo' width={25} height={35}/> 
+                                        </div>
+                                        <div className={matchstyle.h2hname}>
+                                          {h2h.teams.home.name}
+                                        </div>
+                                      </div>
+                                      <div className={matchstyle.h2hdc}>
+                                        <div>{h2h?.goals.home != null ? (matchData?.goals.home) : ''}</div>
+                                        <div className={matchstyle.vs}> - </div>
+                                        <div>{h2h?.goals.away != null ? (matchData?.goals.away) : ''}</div>
+                                      </div>
+                                      <div className={matchstyle.h2hdb}>
+                                        <div>
+                                          <Image src={h2h.teams.away.logo} alt='logo' width={25} height={35}/>
+                                        </div>
+                                        <div  className={matchstyle.h2hname}>
+                                          {h2h.teams.away.name}
+                                        </div>
+                                      </div>
+                                  </div>
+                              </div>
+                            ))}
+                          </div>
+
+                        </div> : ''
+                      }
+
+                      {fixturestatisticsdataloaded && fixturestatisticsData.length > 0 ?
+                        <div className={matchstyle.fixstats}>
+                            <div className={matchstyle.tgle} >
+                              <div><h3 onClick={(e) => toggleFixtureActH(e.target)}>Match Statistics </h3></div>
+                              <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtureAct(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
+                              <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtureAct(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                            </div>
+                          
+                            <div>
+                              <div className={matchstyle.fixstatsd} >
+                                
+                                <div className={matchstyle.fixstatsdc1}>
+                                  <div className={matchstyle.fixstatsdc11}>
+                                    <div>
+                                      <Image src={fixturestatisticsData[0].team.logo} className={matchstyle.teamlogo} width={25} height={35} alt='logo' style={{textAlign: 'left'}}/>
+                                    </div>
+                                    <div className={matchstyle.fixstatsname}>
+                                      {fixturestatisticsData[0].team.name}
+                                    </div>
+                                  </div>
+                                  <div className={matchstyle.fixstatsds}>
+                                    {fixturestatisticsData[0].statistics.map((stat,index) => (
+                                      <div key={index}>
+                                        <div className={matchstyle.type1}>{stat.type}</div>
+                                        <div className={matchstyle.stats1} >
+                                          <div className={matchstyle.prog1}><span></span></div>
+                                          <div className={matchstyle.val1}>{stat.value = stat.value ? stat.value : '0'}</div>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                                <div className={matchstyle.fixstatsdc2}>
+                                  <div className={matchstyle.fixstatsdc22}>
+                                    <div className={matchstyle.tlogo}>
+                                      <Image src={fixturestatisticsData[1].team.logo} className={matchstyle.teamlogo} width={25} height={35} alt='logo' style={{textAlign: 'right',marginRight: '0'}}/>
+                                    </div>
+                                    <div className={matchstyle.fixstatsname}>
+                                      {fixturestatisticsData[1].team.name}
+                                    </div>
+                                  </div>
+                                  <div className={matchstyle.fixstatsds}>
+                                    {fixturestatisticsData[1].statistics.map((stat,index) => (
+                                      <div key={index}>
+                                          <div className={matchstyle.type2}>{stat.type}</div>
+                                          <div className={matchstyle.stats2} >
+                                            <div className={matchstyle.val2}>{stat.value = stat.value ? stat.value : '0'}</div>
+                                            <div className={matchstyle.prog2}><span></span></div>
+                                          </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+
+                              </div>
+                            </div>
+
+                        </div>  
+                        : ''
+                    }
                     </div>
+
+                    
                   }
                   {loadedlaguedata &&
                     <div>
                       {leaguecomponent.map(component => component)}
                     </div> 
                   }
+                  
+                  <div id="wg-api-football-standings"
+                      data-host="v3.football.api-sports.io"
+                      data-key="aa2a3bb1320411e0c7ad474b053c6514"
+                      data-league="39"
+                      data-team=""
+                      data-season="2023"
+                      data-theme="dark"
+                      data-show-errors="false"
+                      data-show-logos="true"
+                      className="wg_loader">
+                  </div>
+                        
+
                   </div>
               </div>
           </div>
