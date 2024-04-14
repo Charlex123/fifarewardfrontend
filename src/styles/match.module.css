@@ -46,7 +46,7 @@
     background-color: #a19d9d87;margin-right: 5px;padding: 0 2px 0 2px;cursor: pointer;
 }
 .main .breadcrum {
-    width: 100%;margin: 15px 0;text-align: left;padding-left: 2rem;
+    width: 100%;margin: 15px 0 25px 0;text-align: left;padding-left: 2rem;
 }
 .main .breadcrum a {
     color: #151414;
@@ -510,10 +510,13 @@
 
 @media (max-width: 991px) {
     .main {
-        padding: 2rem 0 5rem 0;
+        padding: 2rem 2rem 5rem 2rem;margin: 0 auto;
     }
     .main .search {
        width: 94%;
+    }
+    .main .breadcrum {
+        margin: 15px 0 45px 0;text-align: left;padding-left: 0;
     }
     .main .betbydate {
         padding: 0 10% 0 10%;font-size: 14px;
@@ -556,13 +559,31 @@
 }
 @media (max-width: 767px) {
     .main {
-        padding: 2rem 0 5rem 0;
+        padding: 2rem 1rem 5rem 1rem;
     }
     .main .search {
        width: 94%;
     }
     .main .betbydate {
         margin: auto;padding: 0 1% 0 1%;font-size: 12px;
+    }
+    .main .main_in {
+        display: block;
+    }
+}
+
+@media (max-width: 567px) {
+    .main {
+        padding: 5rem 2px 5rem 8px;
+    }
+    .main .search {
+       width: 94%;
+    }
+    .main .betbydate {
+        margin: auto;padding: 0 1% 0 1%;font-size: 12px;
+    }
+    .main .betbydate .betbydate_top .betbydate_top_in {
+        padding: 5px 3px 5px 3px;
     }
     .main .main_in {
         display: block;

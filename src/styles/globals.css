@@ -36,18 +36,16 @@
 }
 
 * {
-  margin: 0;
+  margin: 0;padding: 0;
   box-sizing: border-box;
 }
-.main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
+/* .main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
   display: block;
-}
+} */
 body {
-  position: relative;
   box-sizing: border-box;
-  /* background-image: url("../assets/images/bbg.jpg");
-  background-repeat: none;
-  background-position: cover; */
+  width: 100%;
+  margin: 0;padding: 0;
   font-family: "Montserrat","Poppins",sans-serif;
   overflow-x: hidden;
 }
@@ -60,7 +58,7 @@ body {
   background-color: var(--background-color-light);
   color: var(--text-color-dark);
 }
-a {
+/* a {
   text-decoration: none;
 }
 
@@ -68,9 +66,9 @@ a {
 .MuiBackdropRoot {
   background: rgba(33, 33, 33, 0.15) !important;
   backdrop-filter: blur(20px) !important;
-}
+} */
 /* scrollBar */
-
+/* 
 ::-webkit-scrollbar {
   width: 0;
 }
@@ -259,4 +257,4 @@ button:active,button:focus,select:active,select:focus,input:active,input:focus {
   body {
     overflow-x: hidden;
   }
-}
+} */

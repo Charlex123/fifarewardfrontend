@@ -471,26 +471,26 @@ const closeBgModal = () => {
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={bettingstyle.main}>
         <div className={bettingstyle.search} >
-            <div>
-              <form>
-                  <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
-                  {showsearchoptions &&
-                    <div className={bettingstyle.searchop} ref={divRef} >
-                      { keywordsearchresults?.map((result,index) => (
-                      <div  key={index}>
-                        <div className={bettingstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target)}>
-                          {result.league.country}
-                        </div>
-                        <div className={bettingstyle.sc2} onClick={(e) => UpKeyWordSearch(e.target)}>
-                          {result.league.name}
-                        </div>
+          <div>
+            <form>
+                <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
+                {showsearchoptions &&
+                  <div className={bettingstyle.searchop} ref={divRef} >
+                    { keywordsearchresults?.map((result,index) => (
+                    <div  key={index}>
+                      <div className={bettingstyle.ft2} onClick={(e) => UpKeyWordSearch(e.target)}>
+                        {result.league.country}
                       </div>
-                      ))}
+                      <div className={bettingstyle.sc2} onClick={(e) => UpKeyWordSearch(e.target)}>
+                        {result.league.name}
+                      </div>
                     </div>
-                  }
-              </form>
-            </div>
+                    ))}
+                  </div>
+                }
+            </form>
           </div>
+        </div>
 
         <div className={bettingstyle.headbg}>
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>

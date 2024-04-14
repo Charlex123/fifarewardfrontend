@@ -109,6 +109,7 @@ const ReferralLink:React.FC<{}> = () =>  {
           setWalletAddress(data.message);
           const shrtwa = walletaddress?.substring(0,18)+' ...';
           setShortWalletAddress(shrtwa);
+          console.log(" wall addres", data.message)
         } catch (error) {
           console.log(error)
         }

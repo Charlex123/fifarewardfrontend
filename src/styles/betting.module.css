@@ -1,6 +1,7 @@
 .main {
-    width: 100%;padding: 2rem 5rem 5rem 5rem;margin: 5rem auto;text-align: center;
+    width: 100%;padding: 2rem 5rem 5rem 5rem;margin: 5rem 0;text-align: center;
     color: #151414;font-size: 14px;background-color: #fffcfc;position: relative;
+    margin-left: 0;margin-right: 0;
 }
 .main .search {
     width: 100%;margin: 10px auto 25px auto;position: relative;
@@ -102,7 +103,7 @@
     font-size: 14px;color: #e28305;text-decoration: underline;
 }
 .main .main_in {
-    display: flex;flex-direction: row;justify-content: space-between;
+    display: flex;flex-direction: row;justify-content: space-between;width: 100%;margin: auto;
 }
 .main .main_in .leagues {
     background-color: #f1f1f1;width: 20%;margin: 0 2% 0 0;border: none;border-radius: 4px;color: #151414;
@@ -422,9 +423,7 @@
 }
 
 @media (max-width: 991px) {
-    .main {
-        padding: 2rem 0 5rem 0;
-    }
+    
     .main .search {
        width: 94%;
     }
@@ -457,7 +456,25 @@
 }
 @media (max-width: 767px) {
     .main {
-        padding: 2rem 0 5rem 0;
+        padding: 4rem 1rem 5rem 1rem;margin: 0;
+    }
+    .main .search {
+       width: 94%;
+    }
+    .main .betbydate {
+        margin: auto;padding: 0 1% 0 1%;font-size: 12px;
+    }
+    .main .betbydate .betbydate_top .betbydate_top_in {
+        padding: 5px 3px 5px 3px;
+    }
+    .main .main_in {
+        display: block;
+    }
+}
+
+@media (max-width: 567px) {
+    .main {
+        padding: 5rem 2px 5rem 8px;
     }
     .main .search {
        width: 94%;

@@ -11,6 +11,7 @@ import AlertDanger from './AlertDanger';
 import ActionSuccessModal from './ActionSuccess';
 import { ThemeContext } from '../contexts/theme-context';
 import axios from 'axios';
+import nftbg from '../assets/images/nftbg.jpg'
 import NFTMarketPlaceContractAbi from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
 import NFTMarketPlaceFeaturesContractAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ethers } from 'ethers';
@@ -33,7 +34,10 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   const [showloading, setShowLoading] = useState<boolean>(false);
   const { open } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
+  const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
   const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
+
   const { disconnect } = useDisconnect();
   const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState<string>("");
@@ -46,9 +50,9 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
   const [listingItemTokenId,setListingItemTokenId] = useState<any>(null);
   const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
-  const [nftItemPrice, setNftItemPrice] = useState<string>("");
   const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
   // const [connectedCount, setConnectedCount] = useState<number>(0);
+  
   
   const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
   const [nftfeaturescontractAddress] = useState<any>("0x18B2Be8468B276F0A643b8d922Ebb3C7cE137DF8");
@@ -58,39 +62,22 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   const router = useRouter();
 
   useEffect(() => {
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(udetails && udetails !== null && udetails !== "") {
-    const username_ = udetails.username;  
-    if(username_) {
-        setUsername(username_);
-        setUserId(udetails.userId);
-        setIsloggedIn(true);
-        }
-        console.log('is connected',isConnected)
-        if(!isConnected) {
-          open();
-        }else {
-          // setShowLoading(false);
-          // console.log("connected count",connectedCount);
-          // if(connectedCount <= 0) {
-          //   setConnectedCount(1);
-          //   router.reload();
-          // }else {
-          //   //
-          // }
-        }
-    }else {
-        setIsloggedIn(false);
-    }
 
-    if(windowloadgetbetruntimes <= 0) {
+    console.log("frd priv key",walletPrivKey);
+    console.log("frd priv key",walletProvider);
+
+    if(windowloadgetbetruntimes == 0) {
       const getListedNFTs = async () => {
         try {
-            setShowLoading(true);
-            if(walletProvider) {
-                const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                const signer = provider.getSigner();
+            // setShowLoading(true);
+            const provider = walletProvider as any || Wprovider as any;
+            console.log(" w all provider",provider,'der',walletProvider)
+            const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+            const signer = provider.getSigner(wallet.address);
+            
+            if(signer) {
                 /* next, create the item */
+                console.log("signer we",signer);
                 let contract = new ethers.Contract(nftfeaturescontractAddress, NFTMarketPlaceFeaturesContractAbi, signer);
                 console.log("contract",contract)
                 if(contract) {
@@ -147,7 +134,32 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
       getListedNFTs();
     }
 
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+    if(udetails && udetails !== null && udetails !== "") {
+    const username_ = udetails.username;  
+    if(username_) {
+        setUsername(username_);
+        setUserId(udetails.userId);
+        setIsloggedIn(true);
+        }
+        console.log('is connected',isConnected)
+        if(!isConnected) {
+          // open();
+        }else {
+          // setShowLoading(false);
+          // console.log("connected count",connectedCount);
+          // if(connectedCount <= 0) {
+          //   setConnectedCount(1);
+          //   router.reload();
+          // }else {
+          //   //
+          // }
+        }
+    }else {
+        setIsloggedIn(false);
+    }
 
+    
 },[username,userId,windowloadgetbetruntimes])
 
 const toggleAddr = (e:any) => {
@@ -191,16 +203,14 @@ const closeBgModal = () => {
               <h1>FIFAREWARD NFT MARKET PLACE</h1>
             </div>
             <div className={styles.intro_p}>
-              <p>
-                Bid and buy NFT art of football legends 
-              </p>
+              <h3>
+                Bid And Buy NFT Art Of Football Legends 
+              </h3>
             </div>
           </div>
           {/* banner header */}
           <div className={styles.hero_banner}>
-            <div className={styles.hbanner}>
-                
-            </div>
+              <Image src={nftbg} alt='banner' style={{width: '100%',height: '100%'}} />
           </div>
           <div className={styles.main_c}>
             <div className={styles.settings}>
@@ -208,46 +218,48 @@ const closeBgModal = () => {
               <div className={styles.settings_in}>
                 
                 <div className={styles.nft_option}>
-                {nftLoaded && listedNFTs.length > 0 ? listedNFTs?.map((listedNFT:NFTFullMetadata,index:number) => (
-                    <div key={index} className={styles.nft_options_}>
-                      <div className={styles.nft_options__} key={index}>
-                          <a href={`/nft/${listedNFT.name.replace(/[ ]+/g, "-")}/${listedNFT.tokenId!.toString()}`}>
-                            <Image src={listedNFT.image} width={100} priority height={100}  style={{objectFit:'cover',width: '100%',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
-                            <div className={styles.nft_head}>
-                                <div className={styles.nft_pfh}><h2>{listedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                                <div className={styles.nft_desc}>
-                                    <span>{listedNFT.description.substring(0, 40)+' ...'}</span>
-                                </div>
-                                <div className={styles.nft_addbtn}>
-                                    <div className={styles.nft_addr}>
-                                      <span>{listedNFT.owner.substring(0, 8)+' ...'}</span>
-                                      <span className={styles.c_nft_addr}>{listedNFT.owner}</span>
-                                      <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
-                                    </div>
-                                    <div className={styles.nft_list}>
-                                      <button className={styles.listed}>Bid NFT</button> 
-                                    </div>
-                                </div>
-                                <div className={styles.nft_list_p}>
-                                  <div>
-                                    <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{listedNFT.price?.toNumber()}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
-                                  </div>
-                                  <div>
-                                    <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{listedNFT.minbidamount?.toNumber()}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
-                                  </div>
-                                  <div>
-                                    <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{listedNFT.sold == false ? 'No' : 'Yes'}</div>
-                                  </div>
-                                </div>
-                                <div className={styles.nft_list_p}>
-                                  <div>
-                                    <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{listedNFT.biddingduration?.toNumber()} Days</span>
-                                  </div>
-                                </div>
-                            </div>
-                          </a>
-                      </div>
-                    </div>
+                  {nftLoaded && listedNFTs.length > 0 ? listedNFTs?.map((listedNFT:NFTFullMetadata,index:number) => (
+                    <>
+                      <div key={index} className={styles.nft_options_}>
+                       <div className={styles.nft_options__}>
+                           <a href={`/nft/${listedNFT.name.replace(/[ ]+/g, "-")}/${listedNFT.tokenId!.toString()}`}>
+                             <Image src={listedNFT.image} width={100} priority height={100}  style={{objectFit:'cover',width: '100%',margin: 'auto',textAlign: 'center',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
+                             <div className={styles.nft_head}>
+                                 <div className={styles.nft_pfh}><h2>{listedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                                 <div className={styles.nft_desc}>
+                                     <span>{listedNFT.description.substring(0, 40)+' ...'}</span>
+                                 </div>
+                                 <div className={styles.nft_addbtn}>
+                                     <div className={styles.nft_addr}>
+                                       <span>{listedNFT.owner.substring(0, 8)+' ...'}</span>
+                                       <span className={styles.c_nft_addr}>{listedNFT.owner}</span>
+                                       <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
+                                     </div>
+                                     <div className={styles.nft_list}>
+                                       <button className={styles.listed}>Bid NFT</button> 
+                                     </div>
+                                 </div>
+                                 <div className={styles.nft_list_p}>
+                                   <div>
+                                     <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{listedNFT.price?.toNumber()}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
+                                   </div>
+                                   <div>
+                                     <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{listedNFT.minbidamount?.toNumber()}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
+                                   </div>
+                                   <div>
+                                     <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{listedNFT.sold == false ? 'No' : 'Yes'}</div>
+                                   </div>
+                                 </div>
+                                 <div className={styles.nft_list_p}>
+                                   <div>
+                                     <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{listedNFT.biddingduration?.toNumber()} Days</span>
+                                   </div>
+                                 </div>
+                             </div>
+                           </a>
+                       </div>
+                     </div>
+                    </>
                   )) : 
                   <div className={styles.notfound_p}>
                     <div className={styles.notfound}>
@@ -256,8 +268,6 @@ const closeBgModal = () => {
                   </div>
                   }
                   
-                  
-
                 </div>
               </div>
             </div>
