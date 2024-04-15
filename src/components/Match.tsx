@@ -86,7 +86,7 @@ const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 const [showloginComp,setShowLoginComp] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
 const [betData,setBetData] = useState<Bets[]>([]);
-
+const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
 const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
 const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
 const [countryparam,setCountryParam] = useState<string>('');
@@ -104,7 +104,7 @@ const [fixturelineupsdataloaded,setFixtureLineupsDataLoaded] = useState<boolean>
 const [fixturelineupsData,setFixtureLineupsData] = useState<Lineups[]>([]);
 const [bettingteam,setBettingTeam] = useState<string>('');
 const [betprediction,setBetPrediction] = useState<string>('');
-const [betAmount,setBetAmount] = useState<string>('50000');
+const [betAmount,setBetAmount] = useState<string>('');
 const [betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
 const [showloading, setShowLoading] = useState<boolean>(false);
@@ -136,6 +136,21 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             }
         }
         
+        const getUSDEQUIVFRDAMOUNT =  async () => {
+          try {
+            const config = {
+              headers: {
+                  "Content-type": "application/json"
+              }
+            }  
+            const {data} = await axios.get("../../../../api/gettokenprice", config);
+            setUsdEquivFrdAmount(data.usdequivalentfrdamount);
+            setBetAmount(data.usdequivalentfrdamount);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        }
+        getUSDEQUIVFRDAMOUNT();
         
         if(windowloadgetbetruntimes == 0) {
           const fetchData = async () => {
@@ -438,10 +453,10 @@ const openBetC = async () => {
              setBetOpenSuccess(true);
           }
        })
-      } catch (error) {
+      } catch (error: any) {
         console.log('open bet error',error)
         setShowAlertDanger(true);
-        seterrorMessage('error')
+        seterrorMessage(error.code)
         setShowLoading(false);
       }
   }
@@ -464,7 +479,8 @@ const Approve = async (e:any) => {
         }
     }
   } catch (error:any) {
-    seterrorMessage("Connect Wallet First");
+    setShowAlertDanger(true);
+    seterrorMessage(error.code);
   }
 }
 
@@ -1047,8 +1063,8 @@ const closeBgModal = () => {
                                             <small id='predictionalert'></small>
                                         </div>
                                         <div className={matchstyle.form_g}>
-                                            <label>Enter amount (10000FRD)</label>
-                                            <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={'50000 FRD'} />
+                                            <label>Enter amount ({`Min of ${usdequivfrdamount.toLocaleString()}FRD`})</label>
+                                            <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={`${usdequivfrdamount.toLocaleString()}FRD`} />
                                             <small id='minamuntalert'></small>
                                         </div>
                                         <div className={matchstyle.form_g}>

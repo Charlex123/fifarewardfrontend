@@ -29,6 +29,8 @@ let pancakeSwapAbi =  [
     
     let pancakeSwapContract = "0x10ED43C718714eb63d5aA57B78B54704E256024E".toLowerCase();
     
+    let usdequiv = 30;
+
     async function calcSell( tokensToSell: any, tokenAddres: any){
         const web3 = new Web3("https://bsc-dataseed1.binance.org");
         const BNBTokenAddress = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c" //BNB
@@ -75,9 +77,6 @@ let pancakeSwapAbi =  [
     This script simply comunicates with the smart contract deployed by pancakeswap and calls the main
     function that was build to retrive the token prices
     */
-    (async () => {
-        
-    })();
 
     export default async function handler(req: NextApiRequest, res: NextApiResponse) {
         // Handle HTTP requests here
@@ -90,7 +89,7 @@ let pancakeSwapAbi =  [
             let priceInBnb: number = await calcSell(tokens_to_sell, tokenAddres) as number/(tokens_to_sell); // calculate TOKEN price in BNB
             console.log( 'SHIT_TOKEN VALUE IN BNB : ' + priceInBnb + ' | Just convert it to USD ' );
             console.log(`SHIT_TOKEN VALUE IN USD: ${priceInBnb*bnbPrice}`); // convert the token price from BNB to USD based on the retrived BNB value
-            res.status(200).json({ bnbprice: priceInBnb, usdprice: priceInBnb*bnbPrice});
+            res.status(200).json({ bnbprice: priceInBnb, usdprice: priceInBnb*bnbPrice, usdequivalentfrdamount: Math.floor(usdequiv/(priceInBnb*bnbPrice)) });
         } else {
             // Handle other HTTP methods
             res.status(405).json({ message: 'Method Not Allowed' });

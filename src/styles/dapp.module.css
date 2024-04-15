@@ -25,6 +25,12 @@
     color: var(--text-color-dark);
     /* border: var(--border-dark) */
 }
+.main .notfound_p {
+    width: 100%;margin: auto;text-align: center;
+}
+.main .notfound {
+    text-align: center;font-family: "Montserrat",sans-serif;margin: 20px auto;
+}
 .main_c {
     width: 100%;display: flex;flex-direction: row;justify-content: space-between;
 }

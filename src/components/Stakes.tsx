@@ -21,6 +21,7 @@ import ActionSuccessModal from './ActionSuccess';
 import { ethers } from 'ethers';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import { ThemeContext } from '../contexts/theme-context';
@@ -82,7 +83,7 @@ const Staking = () =>  {
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-
+  const { open } = useWeb3Modal();
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
   
@@ -143,7 +144,9 @@ const Staking = () =>  {
       }
         
     } catch (error:any) {
-      console.log(error)
+      console.log(error);
+      setShowAlertDanger(true);
+      seterrorMessage(error.code);
     }
   }
 
@@ -155,22 +158,26 @@ const Staking = () =>  {
       setShowLoading(true);
       setShowBgOverlay(true);
       // setShowTimer(!showTimer);
-      if(walletProvider) {
-          const provider = new ethers.providers.Web3Provider(walletProvider as any)
-          const signer = provider.getSigner();
-          const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
-          const amt = stakeAmount + "000000000000000000";
-          const stkamount = ethers.BigNumber.from(amt);
-          const reslt = await FRDContract.approve(StakeCA,stkamount);
-          if(reslt) {
-            console.log("approve function",reslt)
-            StakeFRD(e);
+      if(isConnected) {
+          if(walletProvider) {
+            const provider = new ethers.providers.Web3Provider(walletProvider as any)
+            const signer = provider.getSigner();
+            const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+            const amt = stakeAmount + "000000000000000000";
+            const stkamount = ethers.BigNumber.from(amt);
+            const reslt = await FRDContract.approve(StakeCA,stkamount);
+            if(reslt) {
+              console.log("approve function",reslt)
+              StakeFRD(e);
+          }
         }
+      }else {
+        open();
       }
     } catch (error:any) {
-      console.log("approve error", error)
+      console.log("approve error", error.code)
       setShowAlertDanger(true);
-      seterrorMessage("Connect Wallet First");
+      seterrorMessage(error.code);
     }
     
   }
@@ -184,22 +191,26 @@ const Staking = () =>  {
 
       setShowLoading(true);
       setShowBgOverlay(true);
-      if(walletProvider) {
-        alertdiv.style.display = "block";
-        const provider = new ethers.providers.Web3Provider(walletProvider as any);
-        const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-        const reslt = await StakeContract.calcReward(stakeId);
-        console.log('calc reward error',reslt);
-        setShowLoading(false);
-        setShowBgOverlay(false);
-        rwddiv.style.display = "block";
-        setReward(reslt/10**18);
+      if(isConnected) {
+        if(walletProvider) {
+          alertdiv.style.display = "block";
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
+          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+          const reslt = await StakeContract.calcReward(stakeId);
+          console.log('calc reward error',reslt);
+          setShowLoading(false);
+          setShowBgOverlay(false);
+          rwddiv.style.display = "block";
+          setReward(reslt/10**18);
+        }
+      }else {
+        open();
       }
-    }catch(error) {
+    }catch(error: any) {
       console.log("reward error",error)
       setShowAlertDanger(true);
-      seterrorMessage("No active stake found");
+      seterrorMessage(error.code);
     }
     
   }
@@ -208,24 +219,28 @@ const Staking = () =>  {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
-      if(walletProvider) {
-        let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
-        let estdiv = e.parentElement.parentElement.previousElementSibling;
-        console.log(" alert div",alertdiv)
-        alertdiv.style.display = "block";
-        const provider = new ethers.providers.Web3Provider(walletProvider as any);
-        const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-        const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profitpercent);
-        console.log('calc reward error',reslt);
-        estdiv.style.display = "block";
-        setEstimatedProfit(reslt);
-        setShowLoading(false);
-        setShowBgOverlay(false);
+      if(isConnected) {
+        if(walletProvider) {
+          let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
+          let estdiv = e.parentElement.parentElement.previousElementSibling;
+          console.log(" alert div",alertdiv)
+          alertdiv.style.display = "block";
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
+          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+          const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profitpercent);
+          console.log('calc reward error',reslt);
+          estdiv.style.display = "block";
+          setEstimatedProfit(reslt);
+          setShowLoading(false);
+          setShowBgOverlay(false);
+        }
+      }else {
+        open()
       }
-    }catch(error) {
+    }catch(error: any) {
       setShowAlertDanger(true);
-      seterrorMessage("No active stake found");
+      seterrorMessage(error.code);
     }
     
   }
@@ -234,21 +249,25 @@ const Staking = () =>  {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
-      if(walletProvider) {
-        let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
-        alertdiv.style.display = "block";
-        const provider = new ethers.providers.Web3Provider(walletProvider as any);
-        const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-        const reslt = await StakeContract.withdrawStake(stakeId);
-        console.log("Account Balance: ", reslt);
-        setShowLoading(false);
-        setShowBgOverlay(false);
-        setActionSuccess(true);
+      if(isConnected) {
+        if(walletProvider) {
+          let alertdiv = e.parentElement.parentElement.previousElementSibling.previousElementSibling;
+          alertdiv.style.display = "block";
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
+          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+          const reslt = await StakeContract.withdrawStake(stakeId);
+          console.log("Account Balance: ", reslt);
+          setShowLoading(false);
+          setShowBgOverlay(false);
+          setActionSuccess(true);
+        }
+      }else {
+        open();
       }
-    } catch (error) {
+    } catch (error: any) {
       setShowAlertDanger(true);
-      seterrorMessage("You must have stake to withdraw");
+      seterrorMessage(error.code);
     }
   }
 
@@ -391,6 +410,7 @@ const Staking = () =>  {
   const closeAlertModal = () => {
     setShowAlertDanger(false);
     setShowBgOverlay(false);
+    setShowLoading(false);
   }
 
   const closeActionModalComp = () => {
@@ -590,7 +610,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                           ))}
                       </div> :
                       <div className={dappstyles.notfound_p}>
-                        <div className={dappstyles.notfound}>You've not created any stakes!</div>
+                        <div className={dappstyles.notfound}>No stakes found, stake FRD and see all your stakes here!</div>
                       </div>
                     }
               </div>
