@@ -50,7 +50,7 @@
     width: 100%;margin: auto;display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;
 }
 .main .settings .nft_option .nft_options_ {
-    width: 32%;height: 280px;text-align: left;
+    width: 24%;height: 280px;text-align: left;
 }
 .main .settings .nft_option .nft_options_ a {
     width: 100%;
@@ -150,7 +150,11 @@ color: rgba(200, 200, 200, 1);
 .instructions {
 font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
 }
-
+@media (max-width: 1200px) {
+    .main .settings .nft_option .nft_options_ {
+        width: 32%;
+    }
+}
 @media (max-width: 991px) {
     .main .hero_banner {
         height: 350px;
@@ -165,6 +169,9 @@ font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
     .main .hero_banner {
         height: 350px;
         max-height: 350px;
+    }
+    .main .settings .nft_option .nft_options_ {
+        width: 48%;
     }
 }
 

@@ -46,16 +46,14 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
   const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
   const [errorMessage,seterrorMessage] = useState<string>("");
-  const [showListNFTDiv,setShowListNFTDiv] = useState<boolean>(false);
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
-  const [listingItemTokenId,setListingItemTokenId] = useState<any>(null);
   const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
   const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
   // const [connectedCount, setConnectedCount] = useState<number>(0);
   
   
-  const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
-  const [nftfeaturescontractAddress] = useState<any>("0x18B2Be8468B276F0A643b8d922Ebb3C7cE137DF8");
+  const nftcontractAddress = process.env.NEXT_PUBLIC_NFTMARKEPLACE_DEPLOYED_CA;
+  const nftfeaturescontractAddress = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
 
   const [listedNFTs,setListedNFTS] = useState<NFTFullMetadata[]>([]);
   
@@ -78,7 +76,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
             if(signer) {
                 /* next, create the item */
                 console.log("signer we",signer);
-                let contract = new ethers.Contract(nftfeaturescontractAddress, NFTMarketPlaceFeaturesContractAbi, signer);
+                let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi, signer);
                 console.log("contract",contract)
                 if(contract) {
                     let listednfts = await contract.fetchUnSoldAuctionItems();

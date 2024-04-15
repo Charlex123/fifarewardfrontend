@@ -60,11 +60,12 @@ const Airdrop = () =>  {
   const [initialValues, setInitialValues] = useState<number[]>([]);
   // const [deltaX, setDeltaX] = useState(0);
   // const [draggedRangeIndex, setDraggedRangeIndex] = useState<number | null>(null);
-
+  const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
 
   const [showTimer, setShowTimer] = useState(false);
   const { open } = useWeb3Modal();  
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
+  const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
 
@@ -89,36 +90,35 @@ const Airdrop = () =>  {
       router.push(`/signin`);
     }
 
-    if(isConnected) {
-        async function loadAirDUsers() {
-            try {
-                // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-                const provider = new ethers.providers.Web3Provider(walletProvider as any)
-                const signer = provider.getSigner();
-                const AirdropContract = new ethers.Contract(AirdropCA!, AirdropAbi, signer);
-                const airdropusers = await AirdropContract.GetAllAirDroppers();
-                
-                console.log('aser der',airdropusers);
-                await airdropusers.forEach(async (element:any) => {
-                    if(element) {
-                        let item: AirdropMetadata = {
-                            airdropId: element.airdropId,
-                            walletaddress: element.walletaddress
-                        }
+    async function loadAirDUsers() {
+        try {
+            // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+            const provider = walletProvider as any || Wprovider as any;
+            console.log(" w all provider",provider,'der',walletProvider)
+            const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+            const signer = provider.getSigner(wallet.address);
 
-                        airdropdata.push(item);
-                        setAirdropData(airdropdata);
-                        setAirdropDataLoaded(true);
-                    }})
-                  
-            } catch (error) {
-                console.log("add aird error", error)
-            }
-          }
-          loadAirDUsers();
-    }else {
-        // open();
-    }
+            const AirdropContract = new ethers.Contract(AirdropCA!, AirdropAbi, signer);
+            const airdropusers = await AirdropContract.GetAllAirDroppers();
+            
+            console.log('aser der',airdropusers);
+            await airdropusers.forEach(async (element:any) => {
+                if(element) {
+                    let item: AirdropMetadata = {
+                        airdropId: element.airdropId,
+                        walletaddress: element.walletaddress
+                    }
+
+                    airdropdata.push(item);
+                    setAirdropData(airdropdata);
+                    setAirdropDataLoaded(true);
+                }})
+                
+        } catch (error) {
+            console.log("add aird error", error)
+        }
+        }
+        loadAirDUsers();
   // Function to handle window resize
   const handleResize = () => {
       // Check the device width and update isNavOpen accordingly
@@ -161,18 +161,23 @@ const Airdrop = () =>  {
  }, [userId, router,username,address,chainId,isConnected,walletaddress,stakeduration,wAlert,showTimer,walletProvider,isDragging,initialValues])
 
  async function JoinAirdrop() {
-    try {
-        // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-        const provider = new ethers.providers.Web3Provider(walletProvider as any)
-        const signer = provider.getSigner();
-        const AirdropContract = new ethers.Contract(AirdropCA!, AirdropAbi, signer);
-        const addairdropuser = AirdropContract.addAirDropUser({ gasLimit: 1000000 });
-        if(addairdropuser) {
-            router.reload();
+    if(isConnected) {
+        try {
+            // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+            const provider = new ethers.providers.Web3Provider(walletProvider as any)
+            const signer = provider.getSigner();
+            const AirdropContract = new ethers.Contract(AirdropCA!, AirdropAbi, signer);
+            const addairdropuser = AirdropContract.addAirDropUser({ gasLimit: 1000000 });
+            if(addairdropuser) {
+                router.reload();
+            }
+        } catch (error) {
+            console.log("add aird error", error)
         }
-    } catch (error) {
-        console.log("add aird error", error)
+    }else {
+        open();
     }
+    
   }
  // Function to toggle the navigation menu
  const toggleSideBar = () => {
@@ -209,6 +214,36 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               </div>
 
               <div className={`${dappstyles.airdrop_} ${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']}`}>
+                    
+                    <div className={dappstyles.airdusers}>
+                        {aidropdataloaded && airdropdata.length > 0 ?
+                        <div>
+                            <h3 className={dappstyles.airdh2}>
+                                FRD Airdroppers list
+                            </h3>
+                            <table id="resultTable" className="table01 margin-table">
+                                <thead>
+                                    <tr>
+                                        <th id="accountTh" className="align-L">AirdropId</th>
+                                        <th id="balanceTh">Wallet Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="userData">
+                                {airdropdata.map((airdropper:any, index) =>(
+                                    <tr key={index}>
+                                    <td>{airdropper.airdropId.toNumber()}</td>
+                                    <td>{airdropper.walletaddress}</td>
+                                </tr>
+                                ))}
+                                </tbody>
+                            </table>
+
+                        </div> : 
+                        <div></div>
+                        }
+                    
+                    </div>
+
                     <div className={dappstyles.airdroph1}><h1> FifaReward Airdrop</h1></div>
                     <div className={dappstyles.airdh}><p>Join FifaReward Airdrop and accumulate FRD tokens</p></div>
 
@@ -253,34 +288,6 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                         </div>
                     </div>
 
-                    <div className={dappstyles.airdusers}>
-                        {aidropdataloaded && airdropdata.length > 0 ?
-                        <div>
-                            <h3 className={dappstyles.airdh2}>
-                                FRD Airdroppers list
-                            </h3>
-                            <table id="resultTable" className="table01 margin-table">
-                                <thead>
-                                    <tr>
-                                        <th id="accountTh" className="align-L">AirdropId</th>
-                                        <th id="balanceTh">Wallet Address</th>
-                                    </tr>
-                                </thead>
-                                <tbody id="userData">
-                                {airdropdata.map((airdropper:any, index) =>(
-                                    <tr key={index}>
-                                    <td>{airdropper.airdropId.toNumber()}</td>
-                                    <td>{airdropper.walletaddress}</td>
-                                </tr>
-                                ))}
-                                </tbody>
-                            </table>
-
-                        </div> : 
-                        <div></div>
-                        }
-                    
-                    </div>
 
                   </div>
                 
