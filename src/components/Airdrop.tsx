@@ -251,9 +251,9 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                         <div><h3>How To Participate</h3></div>
                         <div>
                             <ul>
-                                <li> <FontAwesomeIcon icon={faChevronRight}/> Follow us on twitter <a href={`https://twitter.com/@FRD_Labs`}>@FRD_Labs</a></li>
-                                <li> <FontAwesomeIcon icon={faChevronRight}/> Join Our Discord <a href={`https://twitter.com/@FRD_Labs`}>@FRD_Labs</a></li>
-                                <li> <FontAwesomeIcon icon={faChevronRight}/> Join Our Telegram <a href={`https://twitter.com/@FRD_Labs`}>@FRD_Labs</a></li>
+                                <li> <FontAwesomeIcon icon={faChevronRight}/> Follow us on twitter <a href={`https://twitter.com/@FRD_Labs`}>FRD_Labs</a></li>
+                                <li> <FontAwesomeIcon icon={faChevronRight}/> Join Our Discord <a href={`https://discord.com/invite/DC5Ta8bb`}>FRD_Labs</a></li>
+                                <li> <FontAwesomeIcon icon={faChevronRight}/> Join Our Telegram <a href={`https://t.me/FifarewardLabs`}>FifarewardLabs</a></li>
                                 <li> <FontAwesomeIcon icon={faChevronRight}/>  Like our tweets</li>
                                 <li> <FontAwesomeIcon icon={faChevronRight}/> Retweet our tweets</li>
                             </ul>

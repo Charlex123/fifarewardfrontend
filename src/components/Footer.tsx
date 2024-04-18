@@ -51,16 +51,16 @@ const handleCopyClick = () => {
                   <h3>Socials</h3>
                   <div className={footerstyles.f_c}>
                      <div>
-                        <a href='https://twitter.com' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTwitter} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Twitter</span></a>
+                        <a href='https://twitter.com/@FRD_Labs' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTwitter} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Twitter</span></a>
                      </div>
                      <div><a href='https://www.dextools.io/app/en/bnb/pair-explorer/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1?t=1712569347593' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>DexTools</span></a></div>
                      <div>
-                        <a href='https://t.me/+0Pc-mCo8mF5kODA8' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTelegram} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
+                        <a href='https://t.me/FifarewardLabs' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTelegram} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
                      </div>
                      <div>
                         <a href='https://www.geckoterminal.com/bsc/pools/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
                      </div>
-                     <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faDiscord} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div>
+                     <div><a href='https://discord.com/invite/DC5Ta8bb' rel='noopener noreferrer' ><FontAwesomeIcon icon={faDiscord} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div>
                      {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faMedium} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Medium</span></a> </div>*/}
                      {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faYoutube} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>YouTube</span></a> </div> */}
                   </div>
