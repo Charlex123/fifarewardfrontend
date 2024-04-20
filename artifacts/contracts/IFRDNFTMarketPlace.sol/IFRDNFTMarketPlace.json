@@ -192,6 +192,11 @@
             },
             {
               "internalType": "bool",
+              "name": "listed",
+              "type": "bool"
+            },
+            {
+              "internalType": "bool",
               "name": "sold",
               "type": "bool"
             }

@@ -32,6 +32,7 @@ struct AuctionItem {
     address payable owner;
     address payable reservedbuyer;
     uint purchasemethod;
+    bool listed;
     bool sold;
   }
 
@@ -95,6 +96,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       address seller,
       address creator,
       address owner,
+      bool listed,
       bool sold
   );
 
@@ -222,6 +224,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       owner : payable(address(this)),
       reservedbuyer: payable (reservedbuyer_),
       purchasemethod: 0,
+      listed: true,
       sold : false
     });
     
@@ -235,6 +238,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       msg.sender,
       creator_,
       address(this),
+      true,
       false
     );
     _transfer(msg.sender, address(this), tokenId_);
@@ -379,6 +383,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       _allowForPull(creator, creatorRoyalty);
       idToAuctionItem[itemId].owner = payable(bidder_buyer);
       idToAuctionItem[itemId].seller = payable(bidder_buyer);
+      idToAuctionItem[itemId].listed = false;
       idToAuctionItem[itemId].sold = true;
       idToAuctionItem[itemId].purchasemethod = purchasemethod_;
       

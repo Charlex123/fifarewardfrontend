@@ -147,4 +147,12 @@ contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
       return items;
     }
 
+    function getAuctionItem(uint _itemId) public view returns (AuctionItem memory) {
+        return FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping( _itemId);
+    }
+
+    function getAuctionItemRemainingTime(uint _itemId) public view returns (uint) {
+        return FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(_itemId).biddingduration - block.timestamp ;
+    }
+
 }

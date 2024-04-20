@@ -438,13 +438,14 @@ const openBetC = async () => {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
         console.log('bet signer', signer);
-        let rembetparticipantscount = parseInt(betParticipantsCount) - 1;
-        let Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const rembetparticipantscount = parseInt(betParticipantsCount) - 1;
+        console.log("rem bet part",rembetparticipantscount)
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
-        const betId:number = 0;
-        let bCOpenBet = await Betcontract.PlaceBet(tamount,matchidparam,username,betId,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount,{ gasLimit: 1000000 });
-        
+        const betId: number = 0;
+        const bCOpenBet = await Betcontract.PlaceBet(tamount,matchidparam,username,betId,address,matchparam,betprediction,bettingteam,betParticipantsCount,{ gasLimit: 8000000 });
+        console.log("bet place c",bCOpenBet);
         bCOpenBet.wait().then(async (receipt:any) => {
           // console.log(receipt);
           if (receipt && receipt.status == 1) {
@@ -572,7 +573,8 @@ const closeLoginModal = () => {
 
 const closeAlertModal = () => {
   setShowAlertDanger(false);
-  // setShowBgOverlay(false)
+  setShowBgOverlay(false);
+  setShowLoading(false);
 }
 
 const closeActionModalComp = () => {
@@ -1244,17 +1246,17 @@ const closeBgModal = () => {
                     </div> 
                   }
                   
-                  <div id="wg-api-football-standings"
-                      data-host="v3.football.api-sports.io"
-                      data-key="aa2a3bb1320411e0c7ad474b053c6514"
-                      data-league="39"
-                      data-team=""
-                      data-season="2023"
-                      data-theme="dark"
-                      data-show-errors="false"
-                      data-show-logos="true"
-                      className="wg_loader">
-                  </div>
+                      <div id="wg-api-football-standings"
+                          data-host="v3.football.api-sports.io"
+                          data-key="aa2a3bb1320411e0c7ad474b053c6514"
+                          data-league="39"
+                          data-team=""
+                          data-season="2023"
+                          data-theme="dark"
+                          data-show-errors="false"
+                          data-show-logos="true"
+                          className="wg_loader">
+                      </div>
                         
 
                   </div>
