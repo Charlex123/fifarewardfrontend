@@ -108,11 +108,11 @@ contract FRDBettingFeatures is ReentrancyGuard {
         FRDBettingContract.closeBet(_betId);
     }
 
-    function searchBetByAddress(address walletaddress) internal view returns(Bets[] memory) {
+    function searchBetByAddress(address walletaddress) external view returns(Bets[] memory) {
         return FRDBettingContract.getBetByAddress(walletaddress);
     }
 
-    function getUserBets(address walletaddress) internal view returns(Bets[] memory) {
+    function getUserBets(address walletaddress) external view returns(Bets[] memory) {
         return FRDBettingContract.getBetByAddress(walletaddress);
     }
 

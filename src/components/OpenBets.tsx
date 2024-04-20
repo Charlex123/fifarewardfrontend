@@ -81,6 +81,8 @@ const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
+const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
+const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
 const { address, chainId, isConnected } = useWeb3ModalAccount();
 
 useEffect(() => {
@@ -96,18 +98,27 @@ useEffect(() => {
   
   // if(windowloadgetbetruntimes == 0) {
     const fetchData = async () => {
-      if(!isConnected) {
-        open();
-      }else {
+
+        let provider, signer;
+        
         if(walletProvider) {
+          provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+          signer = provider.getSigner();
+        }else {
+          const provider = walletProvider as any || Wprovider as any;
+          const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+          signer = provider.getSigner(wallet.address);
+        }
+        console.log(' s signer',signer)
+        if(signer) {
           try {
             console.log(" hop in")
             setShowLoading(true);
-            const provider = new ethers.providers.Web3Provider(walletProvider as any)
-            const signer = provider.getSigner();
-            let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingAbi, signer);
+            const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeatureAbi, signer);
             console.log(" test a",BetFeaturescontract)
-            let loadBets = await BetFeaturescontract.loadAllBets();
+            const loadBets = await BetFeaturescontract.loadAllBets();
+            // const loaduserBets = await BetFeaturescontract.getUserBets("0x6df7E51F284963b33CF7dAe442E5719da69c312d");
+          // console.log("g user bets",loaduserBets);
             console.log(" loaded bets",loadBets)
             await loadBets.forEach(async (element:any) => {
                 
@@ -115,9 +126,11 @@ useEffect(() => {
                 let item: Bets = {
                   betId: element.betId,
                   matchId: element.matchId,
+                  uniqueId: element.uniqueId,
                   username: element.username,
                   matchfixture: element.matchfixture,
                   openedBy: element.openedBy,
+                  creationType: element.creationType,
                   participant: element.participant,
                   betamount: betAmt,
                   totalbetparticipantscount: element.totalbetparticipantscount,
@@ -140,8 +153,8 @@ useEffect(() => {
             seterrorMessage(error);
             setShowLoading(false);
           }
+          
         }
-      }
     };
 
     fetchData();
@@ -738,7 +751,8 @@ const closeBgModal = () => {
                 <thead>
                   <tr>
                     {/* <th>S/N</th> */}
-                    <th>Bet Id</th>
+                    <th>S/N Id</th>
+                    <th>Id</th>
                     <th>Match Id</th>
                     <th>Bet Amount</th>
                     <th>Opened BY</th>
@@ -755,6 +769,7 @@ const closeBgModal = () => {
                     <tr key={index}>
                       {/* <td><div className={openbetsstyle.div}>{index+1}</div></td> */}
                       <td><div className={openbetsstyle.div}>{openbet.betId.toString()}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.uniqueId.toString()}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.matchId.toString()}</div></td>
                       <td><div className={openbetsstyle.div}>{(openbet.betamount.toString())}{<span className={openbetsstyle.amtunit}>FRD</span>}</div></td>
                       <td><div className={openbetsstyle.divaddress}><span>{openbet.openedBy.substring(0,8)+'...'}</span><span className={openbetsstyle.fulladdr}>{openbet.openedBy}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>

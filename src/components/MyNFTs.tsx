@@ -60,8 +60,8 @@ const MyNFTs: React.FC<{}> = () =>  {
     const [newItemPrice, setNewItemPrice] = useState<string>("");
     const [newminbidamount, setNewMinBidAmount] = useState<any>(0);
     
-    const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
-    const [nftfeaturescontractAddress] = useState<any>("0x18B2Be8468B276F0A643b8d922Ebb3C7cE137DF8");
+    const nftcontractAddress = process.env.NEXT_PUBLIC_NFTMARKEPLACE_CA;
+    const nftfeaturescontractAddress = process.env.NEXT_PUBLIC_NFTMARKETPLACE_FEATURES_CA;
 
     const [myunlistedNFTs,setmyUnlistedNFTS] = useState<NFTMetadata[]>([]);
 
@@ -94,7 +94,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+                  let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace, signer);
                   
                   if(contract) {
                       let mintednfts = await contract.getMintedNfts();
@@ -149,7 +149,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftfeaturescontractAddress, NFTMarketPlaceFeaturesContractAbi, signer);
+                  let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi, signer);
                   
                   if(contract) {
                       let listednfts = await contract.fetchItemsCreated();
@@ -215,7 +215,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       if(listingItemTokenId && nftItemPrice && bidduration > 0 && minbidamount > 0) {
         try {
           setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace, signer);
           let transaction = contract.createAuctionItem(listingItemTokenId,nftItemPrice,bidduration,reservedbuyer,minbidamount,salesroyaltyfee );
           console.log(transaction.hash);
           if(transaction) {
@@ -239,7 +239,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       
         try {
           setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace, signer);
           let transaction = contract.unListAuctionItem(itemId);
           console.log(transaction.hash);
           if(transaction) {
@@ -259,7 +259,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       
         try {
           setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace, signer);
           let transaction = contract.ListBackAuctionItem(itemId);
           console.log(transaction.hash);
           if(transaction) {
@@ -279,7 +279,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       
         try {
           setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace, signer);
           let transaction = contract.updateBiddingOptions();
           console.log(transaction.hash);
           if(transaction) {

@@ -311,9 +311,11 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
                 let item: Bets = {
                   betId: element.betId,
                   matchId: element.matchId,
+                  uniqueId: element.uniqueId,
                   username: element.username,
                   matchfixture: element.matchfixture,
                   openedBy: element.openedBy,
+                  creationType: element.creationType,
                   participant: element.participant,
                   betamount: betAmt,
                   totalbetparticipantscount: element.totalbetparticipantscount,
@@ -444,8 +446,8 @@ const openBetC = async () => {
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
         const betId: number = 0;
-        const bCOpenBet = await Betcontract.PlaceBet(tamount,matchidparam,username,betId,address,matchparam,betprediction,bettingteam,betParticipantsCount,{ gasLimit: 8000000 });
-        console.log("bet place c",bCOpenBet);
+        const uniqueId = Math.floor(100000 + Math.random() * 900000);
+        const bCOpenBet = await Betcontract.PlaceBet(tamount,matchidparam,username,betId,uniqueId,address,matchparam,betprediction,bettingteam,betParticipantsCount,{ gasLimit: 1000000 });
         bCOpenBet.wait().then(async (receipt:any) => {
           // console.log(receipt);
           if (receipt && receipt.status == 1) {

@@ -61,17 +61,19 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
 
   useEffect(() => {
 
-    console.log("frd priv key",walletPrivKey);
-    console.log("frd priv key",walletProvider);
-
     if(windowloadgetbetruntimes == 0) {
       const getListedNFTs = async () => {
         try {
             // setShowLoading(true);
-            const provider = walletProvider as any || Wprovider as any;
-            console.log(" w all provider",provider,'der',walletProvider)
-            const wallet = new ethers.Wallet(walletPrivKey as any, provider);
-            const signer = provider.getSigner(wallet.address);
+            let provider, signer;
+            if(walletProvider) {
+              provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+              signer = provider.getSigner();
+            }else {
+              const provider = walletProvider as any || Wprovider as any;
+              const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+              signer = provider.getSigner(wallet.address);
+            }
             
             if(signer) {
                 /* next, create the item */

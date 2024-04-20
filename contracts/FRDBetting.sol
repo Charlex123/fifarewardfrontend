@@ -71,11 +71,11 @@ struct Users {
         error BetClosed();
         error AccountNotRegistered();
         error DuplicateBetNotAllowed();
-        
+
 
     contract FRDBetting is ReentrancyGuard {
 
-        
+
         using SafeMath for uint256;
         uint timeNow = block.timestamp;
         IERC20 public FifaRewardTokenContract;
@@ -83,6 +83,7 @@ struct Users {
         uint256 private _refIds;
         uint256 private _userIds;
         uint remainingparticipantscount;
+        string private betcreationType;
         address private betdeployer;
         address[] private emptyArr;
         address public feeWallet = 0xbCCEb2145266639E0C39101d48B79B6C694A84Dc;
@@ -92,8 +93,8 @@ struct Users {
 
         constructor(address _FifaRewardTokenAddress) {
             FifaRewardTokenContract = IERC20(_FifaRewardTokenAddress);
-            betdeployer = msg.sender; 
-        } 
+            betdeployer = msg.sender;
+        }
 
         mapping(address => uint256) private _balanceOf;
         mapping(uint256 => Bets) private BetIds;
@@ -102,15 +103,15 @@ struct Users {
         mapping(uint256 => Users) private userDetailsById;
         mapping(address => Referrals) private referrals;
         mapping(uint256 => Referrals) private referralsbyId;
-        
+
         event RegisterUser(uint indexed userId, bool registered, bool wasReferred, address walletaddress);
-        event BetEvent(address indexed betopener,address participant, string username, uint betamount, uint betId, uint matchId);
+        event BetEvent(address indexed betopener,address participant,string username, uint betamount, uint betId, uint matchId);
         event AddReferral(uint indexed refId,uint sponsorUserId, uint referralUserId, address referral, address sponsor, address[] referrals);
 
         function myTokenBalance() public view returns(uint) {
             return _balanceOf[msg.sender];
         }
-        
+
         // modifier to check if caller is owner
         modifier isOwner() {
             // If the first argument of 'require' evaluates to 'false', execution terminates and all
@@ -125,7 +126,7 @@ struct Users {
         function compareStrings(string memory a, string memory b) internal pure returns (bool) {
             return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
         }
-        
+
         function getUserId(address _useraddress) public view returns(uint) {
             uint allusersCount = _userIds;
             if(_useraddress == address(0)) {
@@ -172,7 +173,7 @@ struct Users {
         }
 
         function getuserReferrals(address _useraddress) public view returns (address[] memory) {
-            
+
             // get userId
             uint _userId = getUserId(_useraddress);
             // Check if the user exists and has referrals
@@ -184,7 +185,7 @@ struct Users {
             uint allrefCount = _refIds;
             uint refCount = userDetailsById[_userId].refCount;
             // uint currentIndex = 0;
-            
+
             address[] memory userReferrals = new address[](refCount);
 
             uint currentIndex = 0;
@@ -227,7 +228,7 @@ struct Users {
             uint totalrefBonus = 0;
             uint _refBonus = 0;
             for(uint j = 0; j < refCount; j++) {
-                // get user bet & referral Id 
+                // get user bet & referral Id
                 uint refId = getuserRefId(userReferrals[j]);
                 uint[] memory refbetIds = getuserbetIds(userReferrals[j]);
                 for(uint refbet = 0; refbet < refbetIds.length; refbet++) {
@@ -239,15 +240,15 @@ struct Users {
                         totalrefBonus += _refBonus;
                     }
                 }
-                
-                
+
+
             }
             return totalrefBonus;
         }
 
-        function registerNewUser(address useraddress, uint betcount, uint refcount, bool hasplacedbet, bool hasactivebet, bool wasreferred) public  nonReentrant {
+        function registerNewUser(address useraddress, uint betcount, uint refcount, bool hasplacedbet, bool hasactivebet, bool wasreferred) internal {
             _userIds += 1;
-            uId = _userIds; 
+            uId = _userIds;
             userDetailsById[uId] = Users({
                 userId:uId,
                 hasplacedBet: hasplacedbet,
@@ -265,8 +266,8 @@ struct Users {
         function addReferrer(address _sponsor, uint _refbonus) external nonReentrant {
             require(_sponsor != address(0), "Invalid");
             require(_sponsor != msg.sender, "YCRY");
-            
-            
+
+
             uint _sponsoruserId = getUserId(_sponsor);
             uint _user_refId = getuserRefIdBySponsor(msg.sender,_sponsor);
             // check if user has been referred by this sponsor before
@@ -304,12 +305,12 @@ struct Users {
                 });
 
                 userDetailsById[_sponsoruserId].refCount++;
-                
+
                 emit RegisterUser(_referraluserId, true, true, msg.sender);
 
                 emit AddReferral(_refId,_sponsoruserId,_referraluserId,msg.sender,_sponsor,_referrals);
             }
-            
+
         }
 
         function checkDuplicateBet(uint _betId) internal view returns(bool) {
@@ -321,23 +322,36 @@ struct Users {
             return false;
         }
 
-        function generateRandomNumber() internal view returns (uint256) {
-            uint256 randomNumber = uint256(keccak256(abi.encodePacked(block.timestamp, block.basefee, blockhash(block.number - 1))));
-            return (randomNumber % 900000) + 100000; // Ensure the number is 6 digits
-        }
-        
-        function addBet(uint betamount, uint matchId, string memory username, uint _bId, address betopener, string memory creationtype, string memory matchfixture, string memory prediction, string memory bettingteam, uint totalbetparticipantscount, address[] memory _participants ) public nonReentrant {
-        
+
+        function addBet(uint betamount, uint matchId, string memory username, uint _betId, uint _uniqueId, address betopener, string memory matchfixture, string memory prediction, string memory bettingteam, uint totalbetparticipantscount ) internal {
+
+            address[] storage _participants = BetIds[bId].participants;
+            _participants.push(msg.sender);
+
             remainingparticipantscount = totalbetparticipantscount - _participants.length;
-    
+
+            _betIds += 1;
+
+            if(_betId != 0) {
+                bId = _betId;
+                betcreationType = "OpenBet";
+                if(checkDuplicateBet(_betId)) {
+                    revert DuplicateBetNotAllowed();
+                }
+            }else {
+                bId = _betIds;
+                betcreationType = "JoinedBet";
+            }
+
+
             BetIds[bId] = Bets({
-                betId : _bId,
+                betId : bId,
                 matchId : matchId,
-                uniqueId: generateRandomNumber(),
+                uniqueId: _uniqueId,
                 username: username,
                 matchfixture : matchfixture,
                 openedBy : betopener,
-                creationType: creationtype,
+                creationType: betcreationType,
                 participant: msg.sender,
                 betamount : betamount,
                 totalbetparticipantscount: totalbetparticipantscount,
@@ -350,45 +364,31 @@ struct Users {
                 betlosers: emptyArr
 
             });
-            
+
             if(_balanceOf[msg.sender] < betamount) {
                 _balanceOf[msg.sender] += betamount;
                 FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
             }
-            
+
             emit BetEvent(betopener, msg.sender, username, betamount, bId, matchId);
             // emit OpenBets(msg.sender,msg.sender,username, betamount, betId, matchId, matchfixture, prediction, bettingteam);
-        
+
         }
 
-        function PlaceBet(uint betamount, uint matchId, string memory username, uint _betId, address betopener, string memory matchfixture, string memory prediction, string memory bettingteam, uint totalbetparticipantscount) external nonReentrant {
-            
+        function PlaceBet(uint betamount, uint matchId, string memory username, uint _betId, uint _uniqueId, address betopener, string memory matchfixture, string memory prediction, string memory bettingteam, uint totalbetparticipantscount) external nonReentrant {
+
             if(msg.sender == address(0)) {
                 revert Unauthorized();
-            } 
+            }
             if(betamount <= 0) {
                 revert InvalidAmount();
             }
             if(_balanceOf[msg.sender] < betamount) {
                 require(FifaRewardTokenContract.balanceOf(msg.sender) >= betamount, "IFB");
             }
-            
+
             userDetails[msg.sender].hasplacedBet = true;
             // check if user is already registered
-            _betIds += 1;
-
-            string memory creationtype;
-            
-            if(_betId != 0) {
-                bId = _betId;
-                creationtype = "OpenBet";
-                if(checkDuplicateBet(_betId)) {
-                    revert DuplicateBetNotAllowed();
-                }
-            }else {
-                bId = _betIds;
-                creationtype = "JoinedBet";
-            }
 
             if(userDetails[msg.sender].registered == true ) {
                 // user is already registered, continue with staking
@@ -401,16 +401,12 @@ struct Users {
                 // user is not registered, register user and add address to User struct and proceed with betting
                 registerNewUser(msg.sender,userDetailsById[uId].betCount++,userDetailsById[uId].refCount++,true,true,false);
             }
-
-            address[] storage _participants = BetIds[bId].participants;
-            _participants.push(msg.sender);
-
-            addBet(betamount, matchId, username, bId, betopener, creationtype, matchfixture, prediction, bettingteam, totalbetparticipantscount, _participants);
+            addBet(betamount, matchId, username, _betId, _uniqueId, betopener, matchfixture, prediction, bettingteam, totalbetparticipantscount);
 
         }
 
         function getBetParticipants(uint betId) external  view returns (address[] memory) {
-            return BetIds[betId].participants;    
+            return BetIds[betId].participants;
         }
 
         // function getBetsArray() external view returns (Bets[] memory) {
@@ -440,7 +436,7 @@ struct Users {
             betDetails[0] = BetIds[_betId];
             return betDetails;
         }
-        
+
         function getCount(address _useraddress) internal view returns (uint){
             uint _uId = getUserId(_useraddress);
             return userDetailsById[_uId].betCount;
@@ -460,7 +456,7 @@ struct Users {
 
         function closeBet(uint _betId) internal {
             uint betsCount = _betIds;
-            
+
             for(uint i=0; i < betsCount; i++) {
                 if(BetIds[i+1].betId == _betId) {
                     BetIds[i+1].betstatus = "closed";
@@ -483,10 +479,14 @@ struct Users {
                         closeBet(currentId);
                     }else {
                         if(BetIds[currentId].matchId == _matchId) {
+
                             if(compareStrings(BetIds[currentId].prediction, betresult)) {
+
                                 BetIds[currentId].betwinners.push(BetIds[currentId].participant);
+
                                 paybetWinners(currentId,BetIds[currentId].betwinners,20);
                             }else {
+
                                 BetIds[currentId].betlosers.push(BetIds[currentId].participant);
                             }
                         }
@@ -509,18 +509,17 @@ struct Users {
                 for(uint bw = 0; bw < betwinners.length; bw++) {
                     address betWinner = BetIds[_betId].betwinners[bw];
                     _balanceOf[betWinner] -= winnerPay;
-                    FifaRewardTokenContract.transferFrom( address(this),betWinner, winnerPay);
+                    FifaRewardTokenContract.transferFrom(address(this),betWinner, winnerPay);
                 }
             }else {
                 for(uint bw = 0; bw < betwinners.length; bw++) {
                     BetIds[_betId].betwinners[bw];
                     address betWinner = BetIds[_betId].betwinners[bw];
                     _balanceOf[betWinner] -= mulitWinnersPay;
-                    FifaRewardTokenContract.transferFrom( address(this),betWinner, mulitWinnersPay);
+                    FifaRewardTokenContract.transferFrom(address(this),betWinner, mulitWinnersPay);
                 }
             }
-            
+
             closeBet(_betId);
         }
     }
-    

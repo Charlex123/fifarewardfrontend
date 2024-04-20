@@ -29,8 +29,9 @@ dotenv.config();
 export default function CreateItem() {
   
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
-  const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
-  const [frdcontractAddress] = useState<any>("0x344db0698433Eb0Ca2515d02C7dBAf21be07C295");
+  const nftcontractAddress = process.env.NEXT_PUBLIC_NFTMARKEPLACE_CA;
+
+  const frdcontractAddress = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
   const { theme } = useContext(ThemeContext);
   const [betactionsuccess,setActionSuccess] = useState<boolean>(false);
 
@@ -120,7 +121,7 @@ export default function CreateItem() {
 
             console.log('signer address',signer,signer.getAddress(),signer._address,address)
             /* next, create the item */
-            let contract = new ethers.Contract(frdcontractAddress, FifaRewardToken, signer.connectUnchecked());
+            let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken, signer.connectUnchecked());
             let transaction = await contract.balanceOf(address);
             let frdBal = ethers.utils.formatEther(transaction);
             if(parseInt(frdBal) < 500) {
@@ -155,7 +156,7 @@ export default function CreateItem() {
         const signer = provider.getSigner();
 
         /* next, create the item */
-        let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
+        let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace, signer);
         let transaction = await contract.createToken(fileUrl)
         await transaction.wait();
         console.log(" nft creation transaction",transaction)

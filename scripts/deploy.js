@@ -12,7 +12,7 @@ async function main() {
     // const FRDNFTMarketPlaceFeatures = await hre.ethers.getContractFactory("FRDNFTMarketPlaceFeatures");
     // const frdnftmarketplacefeatures = await FRDNFTMarketPlaceFeatures.deploy("0x6F723caaD34F25a7B443361823FbfBb87dADA6b9");
     const FRDBettingFeatures = await hre.ethers.getContractFactory("FRDBettingFeatures");
-    const frdbettingfeatures = await FRDBettingFeatures.deploy("0xB4D1b032ab0fA60Dea9F3C8e5a4c61Fe254D5eD6");
+    const frdbettingfeatures = await FRDBettingFeatures.deploy("0x0AE7FAe7256012FDF47273C1d7a4C2A6A6246198");
     // const AirDrop = await hre.ethers.getContractFactory("FRDAirDrop");
     // const airdrop = await AirDrop.deploy();
     // console.log('FRD Contract Address',frdToken.address)
