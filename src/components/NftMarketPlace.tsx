@@ -53,7 +53,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
   
   
   const nftcontractAddress = process.env.NEXT_PUBLIC_NFTMARKEPLACE_DEPLOYED_CA;
-  const nftfeaturescontractAddress = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
+  const nftfeaturescontractAddress = process.env.NEXT_PUBLIC_NFTMARKETPLACE_FEATURES_CA;
 
   const [listedNFTs,setListedNFTS] = useState<NFTFullMetadata[]>([]);
   
@@ -83,46 +83,49 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                 if(contract) {
                     let listednfts = await contract.fetchUnSoldAuctionItems();
                     console.log("listed nfts",listednfts)
-                    await listednfts.forEach(async (element:any) => {
-                      if(element[1] && element[1] !== "") {
-                        let ipfsurl = element[2];
-                        let ipfsurlarray = ipfsurl.split('//');
-                        
-                        let ipfsmetarray = ipfsurlarray[1].split('/');
-                        const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
-                        const { name, description, traits, image } = metadata.data;
-                        let img = image.split('//');
-                        const image_ = `https://nftstorage.link/ipfs/${img[1]}`;
-                        console.log("image_",image_)
-                        let item: NFTFullMetadata = {
-                          name: name,
-                          image: image_,
-                          description: description,
-                          traits: traits,
-                          chainId: chainId,
-                          seller: element.seller,
-                          creator: element.creator,
-                          owner: element.owner,
-                          hascreatedToken: element.hascreatedToken,
-                          // following properties only exist if the NFT has been minted
-                          tokenId: element.tokenId,
-                          tokenURI: element.tokenURI,
-                          price: element.sellingprice,
-                          itemId: element.itemId,
-                          biddingduration: element.biddingduration,
-                          minbidamount: element.minbidamount,
-                          sold: element.sold,
+                    if(listednfts.length > 0) {
+                      await listednfts.forEach(async (element:any) => {
+                        if(element[1] && element[1] !== "") {
+                          let ipfsurl = element[2];
+                          let ipfsurlarray = ipfsurl.split('//');
+                          
+                          let ipfsmetarray = ipfsurlarray[1].split('/');
+                          const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
+                          const { name, description, traits, image } = metadata.data;
+                          let img = image.split('//');
+                          const image_ = `https://nftstorage.link/ipfs/${img[1]}`;
+                          console.log("image_",image_)
+                          let item: NFTFullMetadata = {
+                            name: name,
+                            image: image_,
+                            description: description,
+                            traits: traits,
+                            chainId: chainId,
+                            seller: element.seller,
+                            creator: element.creator,
+                            owner: element.owner,
+                            // following properties only exist if the NFT has been minted
+                            tokenId: element.tokenId,
+                            tokenURI: element.tokenURI,
+                            price: element.sellingprice,
+                            itemId: element.itemId,
+                            biddingduration: element.biddingduration,
+                            minbidamount: element.minbidamount,
+                            sold: element.sold,
+                          }
+                          listedNFTs.push(item);
+                          setListedNFTS(listedNFTs);
+                          setNFTLoaded(true);
+                          setShowLoading(false);
+                          setwindowloadgetbetruntimes(1);
+                          console.log('listedNFTs ssss---',listedNFTs)
+                          return item;
                         }
-                        listedNFTs.push(item);
-                        setListedNFTS(listedNFTs);
-                        setNFTLoaded(true);
-                        setShowLoading(false);
-                        setwindowloadgetbetruntimes(1);
-                        console.log('listedNFTs ssss---',listedNFTs)
-                        return item;
-                      }
-                    });
-                    setShowLoading(false);
+                      });
+                    }else {
+                      setShowLoading(false);
+                    }
+                    
                 }
             }
         } catch (error) {
@@ -219,8 +222,7 @@ const closeBgModal = () => {
                 
                 <div className={styles.nft_option}>
                   {nftLoaded && listedNFTs.length > 0 ? listedNFTs?.map((listedNFT:NFTFullMetadata,index:number) => (
-                    <>
-                      <div key={index} className={styles.nft_options_}>
+                    <div key={index} className={styles.nft_options_}>
                        <div className={styles.nft_options__}>
                            <a href={`/nft/${listedNFT.name.replace(/[ ]+/g, "-")}/${listedNFT.tokenId!.toString()}`}>
                              <Image src={listedNFT.image} width={100} priority height={100}  style={{objectFit:'cover',width: '100%',margin: 'auto',textAlign: 'center',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
@@ -231,8 +233,8 @@ const closeBgModal = () => {
                                  </div>
                                  <div className={styles.nft_addbtn}>
                                      <div className={styles.nft_addr}>
-                                       <span>{listedNFT.owner.substring(0, 8)+' ...'}</span>
-                                       <span className={styles.c_nft_addr}>{listedNFT.owner}</span>
+                                       <span>{listedNFT.seller.substring(0, 8)+' ...'}</span>
+                                       <span className={styles.c_nft_addr}>{listedNFT.seller}</span>
                                        <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
                                      </div>
                                      <div className={styles.nft_list}>
@@ -259,7 +261,6 @@ const closeBgModal = () => {
                            </a>
                        </div>
                      </div>
-                    </>
                   )) : 
                   <div className={styles.notfound_p}>
                     <div className={styles.notfound}>

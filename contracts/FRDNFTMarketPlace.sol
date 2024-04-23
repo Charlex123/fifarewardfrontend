@@ -23,6 +23,7 @@ struct AuctionItem {
     uint256 tokenId;
     uint itemId;
     string tokenURI;
+    string ownerusername;
     uint biddingduration;
     uint256 minbidamount;
     uint256 sellingprice;
@@ -32,25 +33,28 @@ struct AuctionItem {
     address payable owner;
     address payable reservedbuyer;
     uint purchasemethod;
-    bool listed;
     bool sold;
   }
 
   struct NFTMints {
     uint256 tokenId;
     string tokenURI;
+    string ownerusername;
     address creator;
     address owner;
     bool hascreatedToken;
+    bool listed;
   }
 
   struct Bid {
     uint256 tokenId;
     uint itemId;
     string tokenURI;
+    string bidderusername;
     uint256 biddingId;
     uint256 biddingtime;
     address payable bidderaddress;
+    address payable seller;
     address payable creator;
     address payable owner;
     uint256 biddingprice;
@@ -82,7 +86,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     owner = payable(msg.sender);
   }
 
-  event NFTMinted(uint256 indexed tokenId, string tokenURI, address creator, address owner);
+  event NFTMinted(uint256 indexed tokenId, string tokenURI, string username, address creator, address owner, bool listed);
 
   event updateBiddingPrice(uint256 indexed tokenId, uint256 indexed itemId, uint256 newminbidamount, uint256 newsellingprice);
 
@@ -90,13 +94,13 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       uint256 indexed tokenId,
       uint256 indexed itemId,
       string indexed tokenURI,
+      string ownerusername,
       uint biddingduration,
       uint256 minbidamount,
       uint256 sellingprice,
       address seller,
       address creator,
       address owner,
-      bool listed,
       bool sold
   );
 
@@ -104,9 +108,11 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       uint256 indexed tokenId,
       uint256 indexed itemId,
       string indexed tokenURI,
+      string bidderusername,
       uint256 biddingId,
       uint256 biddingtime,
       address bidderaddress,
+      address seller,
       address creator,
       address owner,
       uint256 biddingprice,
@@ -121,26 +127,30 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   mapping(address => uint) private credits;
 
   /* Mints a token and lists it in the marketplace */
-  function createToken(string memory tokenURI) public payable returns (uint) {
+  function createToken(string memory tokenURI, string memory username) public payable returns (uint) {
     _tokenIds += 1;
     uint256 newTokenId = _tokenIds;
     MintedNFTIds[newTokenId] = NFTMints({
       tokenId: newTokenId,
       tokenURI: tokenURI,
+      ownerusername: username,
       creator: payable(msg.sender),
       owner: payable(msg.sender),
-      hascreatedToken: true 
+      hascreatedToken: true,
+      listed: false 
     });
     MintedNFTs[msg.sender] = NFTMints({
       tokenId: newTokenId,
       tokenURI: tokenURI,
+      ownerusername: username,
       creator: payable(msg.sender),
       owner: payable(msg.sender),
-      hascreatedToken: true 
+      hascreatedToken: true,
+      listed: false
     });
     _mint(msg.sender, newTokenId);
     _setTokenURI(newTokenId, tokenURI);
-    emit NFTMinted(newTokenId, tokenURI, msg.sender,msg.sender);
+    emit NFTMinted(newTokenId, tokenURI, username, msg.sender,msg.sender, false);
     return newTokenId;
   }
 
@@ -210,11 +220,13 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     _itemIds += 1;
     uint256 itemId = _itemIds;
     string memory tokenurl = MintedNFTIds[tokenId_].tokenURI;
+    string memory username = MintedNFTIds[tokenId_].ownerusername;
     
     idToAuctionItem[itemId] = AuctionItem({
       itemId : itemId,
       tokenId : tokenId_,
       tokenURI: tokenurl,
+      ownerusername: username,
       biddingduration: timenow + (biddingduration_ * 1 days),
       minbidamount: minbidamt,
       sellingprice : sellingprice_,
@@ -224,14 +236,15 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       owner : payable(address(this)),
       reservedbuyer: payable (reservedbuyer_),
       purchasemethod: 0,
-      listed: true,
       sold : false
     });
-    
+    MintedNFTs[msg.sender].listed = true;
+    MintedNFTIds[tokenId_].listed = true;
     emit AuctionItemCreated(
       tokenId_,
       itemId,
       tokenurl,
+      username,
       biddingduration_,
       minbidamt,
       sellingprice_,
@@ -277,7 +290,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   //   return salesroyaltyFeeBasisPoints;
   // }
 
-  function bidNFT(uint256 tokenId_, uint256 itemId_,uint256 biddingprice_) external payable nonReentrant {
+  function bidNFT(uint256 tokenId_, uint256 itemId_,uint256 biddingprice_, string memory username) external payable nonReentrant {
     uint256  minbidamnt = idToAuctionItem[itemId_].minbidamount;
     console.log("time now",timenow);
     console.log("bid duration",idToAuctionItem[itemId_].biddingduration);
@@ -287,18 +300,25 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
     if(biddingprice_ < minbidamnt) {
       revert minimumbiddingAmount();
     }
+    if(msg.sender == idToAuctionItem[itemId_].creator) {
+      revert Unauthorized();
+    }
+
     _biddingIds += 1;
       uint256 biddingId_ = _biddingIds;
       string memory tokenurl = MintedNFTIds[tokenId_].tokenURI;
       address creator_ = idToAuctionItem[itemId_].creator;
+      address seller_ = idToAuctionItem[itemId_].seller;
       address owner_ = idToAuctionItem[itemId_].owner;
       biddingItem[biddingId_] = Bid({
         itemId : itemId_,
         tokenId : tokenId_,
         tokenURI: tokenurl,
+        bidderusername: username,
         biddingId: biddingId_,
         biddingtime: timenow,
         bidderaddress : payable(msg.sender),
+        seller: payable(seller_);
         creator: payable(creator_),
         owner : payable(owner_),
         biddingprice : biddingprice_,
@@ -310,9 +330,11 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
         tokenId_,
         itemId_,
         tokenurl,
+        username,
         biddingId_,
         timenow,
         msg.sender,
+        seller_,
         creator_,
         owner_,
         biddingprice_,
@@ -366,15 +388,16 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
   /* Creates the sale of a marketplace item */
   /* Transfers ownership of the item, as well as funds between parties */
   function createMarketSale(
-      uint256 itemId,address bidder_buyer, uint purchasemethod_
+      uint256 itemId,address bidder_buyer, uint purchasemethod_, uint price, string memory bidder_buyerusername
       ) public payable nonReentrant {
       
-      uint price = idToAuctionItem[itemId].sellingprice;
       uint tokenId = idToAuctionItem[itemId].tokenId;
       address creator = idToAuctionItem[itemId].creator;
-      if(idToAuctionItem[itemId].owner != address(this)) 
+      if(idToAuctionItem[itemId].owner != address(this)) {
         revert Unauthorized();
-      require(msg.value == price, "invalid price");
+      }
+        
+      require(msg.value >= price, "invalid price");
 
       uint creatorRoyalty = (price * idToAuctionItem[itemId].salesroyaltyFeeBasisPoints)/basisPointsTotal;
       uint adminFee = (price * adminfeeBasisPoints)/basisPointsTotal;
@@ -383,8 +406,12 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       _allowForPull(creator, creatorRoyalty);
       idToAuctionItem[itemId].owner = payable(bidder_buyer);
       idToAuctionItem[itemId].seller = payable(bidder_buyer);
-      idToAuctionItem[itemId].listed = false;
+      
       idToAuctionItem[itemId].sold = true;
+      MintedNFTIds[tokenId].listed = false;
+      MintedNFTIds[tokenId].ownerusername = bidder_buyerusername;
+      MintedNFTs[bidder_buyer].listed = false;
+      MintedNFTs[bidder_buyer].ownerusername = bidder_buyerusername;
       idToAuctionItem[itemId].purchasemethod = purchasemethod_;
       
       // idToAuctionItem[tokenId].creator = payable(address(0));
@@ -392,6 +419,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       _allowForPull(payable(owner), adminFee);
       _allowForPull(payable(bidder_buyer), sellerPayment);
       _transfer(address(this), bidder_buyer, tokenId);
+
   }
 
  /* Unlists an item previously listed for sale and transfer back to the creator */
@@ -425,13 +453,13 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       uint256 itemId
     ) public payable nonReentrant {
       uint tokenId = idToAuctionItem[itemId].tokenId;
-      if(msg.sender != idToAuctionItem[itemId].owner) 
+      if(msg.sender != idToAuctionItem[itemId].owner) {
         revert Unauthorized();
+      }
       idToAuctionItem[itemId].sold = false;
       idToAuctionItem[itemId].owner = payable(msg.sender);
       // idToAuctionItem[itemId].seller = payable(msg.sender);
       _transfer(address(this), msg.sender, tokenId);
-
     }
 
   /* Unlists an item previously listed for sale and transfer back to the creator */
@@ -444,7 +472,6 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage  {
       idToAuctionItem[itemId].sold = false;
       idToAuctionItem[itemId].owner = payable(address(this));
       _transfer(msg.sender, address(this), tokenId);
-
     }
 
 }

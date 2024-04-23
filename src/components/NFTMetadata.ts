@@ -16,4 +16,5 @@ export interface NFTMetadata {
     price?: BigNumber,
     seller?: string,
     itemId?: string,
+    listed: boolean
 }

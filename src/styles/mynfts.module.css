@@ -1,6 +1,6 @@
 .main {
     width: 100%;margin-top: 0;margin-bottom: 0;
-    padding: 120px 12px 12px 12px;position: relative;
+    padding: 80px 12px 12px 12px;position: relative;
 }
 /* .main_bg_overlay {
     position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 1;border-radius: 0;opacity: .85;
@@ -12,6 +12,50 @@
 .darktheme {
     background-color: var(--background-color-dark);
     color: var(--text-color-dark);
+}
+.lightmod {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    border: 1px solid #0f0c0c;
+}
+.darkmod {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+    border: 1px solid #6d6b6bc5;
+}
+.main .nft_offer {
+    position: absolute;width: 90%;z-index: 99999;margin: 3rem auto;text-align: center;
+    background-color: #161616;left: 0;right: 0;border-radius: 8px;color: #e2d7d7;
+}
+.main .nft_offer .closebtn {
+    position: absolute;right: 2%;top: 6px;
+}
+.main .nft_offer .offer_p {
+    border-bottom: 1px solid #6d6b6bc5;
+}
+.main .nft_offer .offer_p_in {
+    padding: 10px 20px;
+}
+.main .nft_offer .offer_list {
+    padding: 10px 20px;margin-top: 15px;
+}
+.main .tablec {
+    overflow-x: auto;position: relative;
+} 
+.main table {
+    width: 100%;margin: auto;margin-left: 0;text-align: left;border-radius: 8px;
+}
+.main table th {
+    font-size: 14px;border-bottom: 1px solid #5a585883;
+    border-radius: 8px;padding: 3px;font-weight: 900;
+}
+.main table td {
+    font-size: 12px;font-weight: 600;border-left: 1px solid #5a585883;
+    border-radius: 2px;padding: 6px 3px;border-right: 1px solid #5a585883;
+}
+.main table td button {
+    font-size: 14px;font-weight: 500;background-color: #e28305;color: #e2d7d7;
+    border-radius: 8px;padding: 0 3px;border-right: 1px solid #5a585883;
 }
 .main .listnftitem {
     position: absolute;margin: 0 auto; width: 40%;
@@ -48,7 +92,7 @@
 }
 .main h1 {
     font-family: "Poppins",sans-serif;font-size: 35px;text-align: center;
-    font-weight: 800;position: relative;z-index: 0;margin: 1rem auto;
+    font-weight: 800;position: relative;z-index: 0;margin: .1rem auto;
 }
 .main .intro_p {
     z-index: 0;position: relative;width: 70%;margin: 1rem auto 2rem auto;text-align: center;
@@ -59,11 +103,11 @@
 .main .hero_banner {
     position: relative;z-index: 1;
 }
-.main_c {
-    width: 100%;margin: 30px 0 150px 0;
+.main .main_c {
+    width: 100%;margin: 20px 0 10px 0;
 }
 .main .settings {
-    width: 100%;position: relative;z-index: 1;color: #e2d7d7;height: inherit;margin-bottom: 50px;
+    width: 100%;position: relative;z-index: 1;color: #e2d7d7;height: inherit;margin-bottom: 30px;
 }
 /* .settings_bg_overlay {
     position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
@@ -83,13 +127,14 @@
 }
 .main .main_c .settings .h1 {
     font-weight: 600;font-size: 24px;text-align: center;font-family: "Montserrat", sans-serif;
+    margin: 0 auto 20px auto;
 }
 .main .settings .nft_option {
     display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-start;
     align-items: stretch;text-align: left;margin: auto ;width: 100%;
 }
 .main .settings .nft_option .nft_options_ {
-    width: 24%;height: 280px;margin: 30px .5% 80px .5%;text-align: left;
+    width: 24%;height: inherit;margin: 0 .5% 0 .5%;text-align: left;
 }
 
 .main .settings .nft_option .nft_options_ .nft_options__ {
@@ -187,4 +232,20 @@ color: rgba(200, 200, 200, 1);
 }
 .instructions {
 font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
+}
+
+@media (max-width: 1200px) {
+    .main .settings .nft_option .nft_options_ {
+        width: 32%;
+    }
+}
+@media (max-width: 991px) {
+    .main .settings .nft_option .nft_options_ {
+        width: 49%;
+    }
+}
+@media (max-width: 767px) {
+    .main .settings .nft_option .nft_options_ {
+        width: 100%;
+    }
 }

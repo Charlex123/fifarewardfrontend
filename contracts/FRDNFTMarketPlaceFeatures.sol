@@ -40,6 +40,28 @@ contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
         return FRDNFTMarketPlaceContract.loadAllBids();
     }
 
+    function getAllBidsForAUser(address wallet) external view returns (Bid[] memory) {
+        uint totalBids = FRDNFTMarketPlaceContract.getAllBidIdsCount();
+        
+        uint userBidsCount = 0;
+        Bid[] memory userBids = new Bid[](totalBids);
+
+        for (uint i = 1; i <= totalBids; i++) {
+            Bid memory bid = FRDNFTMarketPlaceContract.getBidsMapping(i);
+            if (bid.seller == wallet) {
+                itemBids[userBidsCount] = bid;
+                userBidsCount++;
+            }
+        }
+
+        // Resize the array to remove any empty elements
+        assembly {
+            mstore(userBids, userBidsCount)
+        }
+
+        return userBids;
+    }
+
     function getBidsForItem(uint256 itemId) external view returns (Bid[] memory) {
         uint totalBids = FRDNFTMarketPlaceContract.getAllBidIdsCount();
         console.log("total bids",totalBids);

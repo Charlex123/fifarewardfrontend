@@ -9,7 +9,6 @@ export interface NFTFullMetadata {
     seller: string,
     creator: string,
     owner: any,
-    hascreatedToken: boolean,
     // following properties only exist if the NFT has been minted
     tokenId?: string,
     tokenURI?: string,

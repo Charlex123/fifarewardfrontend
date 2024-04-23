@@ -4,7 +4,6 @@ import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react'
 
 // 1. Get projectId
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECTPROJECTID;
-console.log('project Id',projectId)
 // 2. Set chains
 const mainnet = {
   chainId: 56,

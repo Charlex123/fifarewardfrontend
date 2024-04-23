@@ -296,7 +296,11 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                             ))}
                             </tbody>
                         </table>
-                    </div>) : 'Referrals Not Found' }
+                    </div>) : 
+                    <div className={dappstyles.notfound_p}>
+                      <div className={dappstyles.notfound}>Referrals not found </div>
+                    </div> 
+                    }
 
                 </div>
               </div>

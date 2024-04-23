@@ -29,7 +29,7 @@ dotenv.config();
 export default function CreateItem() {
   
   const nftStorageApiKey = process.env.NEXT_PUBLIC_NFT_STOARAGE_API_KEY || '';
-  const nftcontractAddress = process.env.NEXT_PUBLIC_NFTMARKEPLACE_CA;
+  const nftcontractAddress = process.env.NEXT_PUBLIC_NFTMARKETPLACE_CA;
 
   const frdcontractAddress = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
   const { theme } = useContext(ThemeContext);
