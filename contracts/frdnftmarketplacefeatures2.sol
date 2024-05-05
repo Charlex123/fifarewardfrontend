@@ -36,10 +36,39 @@ contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
         return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
     }
 
-    
+    function getAllBids() external  view returns (Bid[] memory) {
+        return FRDNFTMarketPlaceContract.loadAllBids();
+    }
+
+    function getBidsForAnItem(uint itemId) external view returns (Bid[] memory) {
+        uint totalBids = FRDNFTMarketPlaceContract.getAllBidIdsCount();
+        uint currentIndex = 0;
+        Bid[] memory bid = new Bid[](totalBids);
+
+        for (uint i = 1; i <= totalBids; i++) {
+            
+            if (bid[i+1].itemId == itemId) {
+                uint currentId = i + 1;
+                Bid memory currentItem = FRDNFTMarketPlaceContract.getBidsMapping(currentId);
+                bid[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+
+        // Resize the array to remove any empty elements
+        assembly {
+            mstore(bid, totalBids)
+        }
+
+        return bid;
+    }
+
+    function getBidsForItem(uint256 itemId) external view returns (Bid memory) {
+        return FRDNFTMarketPlaceContract.getBidsMapping(itemId);
+    }
+
     function getUserNFTMintedCount() public view returns (uint) {
         uint totalTokenIds = FRDNFTMarketPlaceContract.getAllNFTMintsCount();
-        
         uint nfttokenCount = 0;
 
         for(uint i = 0; i < totalTokenIds; i++) {
@@ -56,9 +85,9 @@ contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
         uint itemCount = FRDNFTMarketPlaceContract.getAllItemIdsCount();
         uint unsoldItemCount = 0;
         uint currentIndex = 0;
-        
+
         for (uint i = 0; i < itemCount; i++) {
-          if (FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(i+1).owner == FRDMarketPlaceAddress) {
+          if (FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(i+1).sold == false && FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(i+1).owner == FRDMarketPlaceAddress) {
             unsoldItemCount += 1;
           }
         }
@@ -128,7 +157,7 @@ contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
     }
 
     function getAuctionItemRemainingTime(uint _itemId) public view returns (uint) {
-        return block.timestamp - FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(_itemId).autionTime;
+        return FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(_itemId).biddingduration - block.timestamp ;
     }
 
 }

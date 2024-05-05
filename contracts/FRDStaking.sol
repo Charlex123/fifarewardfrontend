@@ -27,27 +27,30 @@ interface IBEP20 {
 contract FRDStaking is ReentrancyGuard {
 
     error createTokenFirst();
-    error biddingTimeHasPassed();
-    error minimumbiddingAmount();
     error priceMustBeGreaterThanZero();
     error Unauthorized();
     error InvalidAmount();
     error AccountNotRegistered();
     error referralAlreadyExits();
+    error referralrewardalreadyClaimed();
     error sponsorMustHaveActiveStakeToRefer();
+    error stakeCompleteWithdrawalDurationNotReached();
     error YouMustHaveActiveStakeToWithdraw();
     error AmountIsLessThanMinimumWithdrawAmount();
-    error AmountIsMoreThanMinimumWithdrawAmount();
+    error AmountIsMoreThanStakeReward();
+    error downlinealreadyRegistered();
+    error minWithdrawalTimeNotReached();
 
     using SafeMath for uint256;
-    uint256 private _stakeIds;
-    uint256 private _refIds;
-    uint256 private _userIds;
+    uint256 private nextStakeId;
+    uint256 public nextReferralRewardId;
+    uint256 private nextUserId;
     address staker = msg.sender;
     address stakedeployer;
     uint withFeePercent = 5;
     uint amtToWIthdraw;
     uint amtRemaining;
+    address public feeWallet = 0xbCCEb2145266639E0C39101d48B79B6C694A84Dc;
     uint uId;
     uint timeNow = block.timestamp;
     IERC20 public FifaRewardTokenContract;
@@ -57,7 +60,7 @@ contract FRDStaking is ReentrancyGuard {
         stakedeployer = msg.sender; 
     } 
 
-    struct Users {
+    struct User {
         uint userId;
         bool hasStaked;
         uint stakeCount;
@@ -66,42 +69,48 @@ contract FRDStaking is ReentrancyGuard {
         bool registered;
         bool wasReferred;
         address walletaddress;
+        address[] referrals;
     }
 
-    struct Stakes {
+    struct Stake {
         uint stakeId;
         uint rewardTime;
         uint stakeDuration;
+        uint stakeTime;
         uint profitpercent;
         uint stakeAmount;
+        uint amountRemaining;
+        uint amountWithdrawn;
         uint currentstakeReward;
         uint stakeRewardPerDay;
-        uint totalstakeReward;
+        uint stakeReward;
         uint totalReward;
         bool isActive; 
         address stakerAddress;
     }
 
-    struct Referrals {
-        uint refId;
-        uint sponsorUserId;
-        uint referralUserId;
-        address referral;
+    struct ReferralReward {
+        uint refrewardId;
+        uint stakeId;
         address sponsor;
-        uint refbonus;
-        address[] referrals;
+        uint rewardamount;
+        bool rewardrecieved;
     }
 
-    mapping(address => uint256) private _balanceOf;
-    mapping(address => Users) private userDetails;
-    mapping(uint256 => Users) private userDetailsById;
-    mapping(address => Stakes) private MyStakes;
-    mapping(uint256 => Stakes) private MyStakeIds;
-    mapping(address => Referrals) private referrals;
-    mapping(uint256 => Referrals) private referralsbyId;
+    mapping(address => uint256) public _balanceOf;
+    mapping(uint256 => User) private userDetailsById;
+    mapping(address => Stake) private MyStakes;
+    mapping(uint256 => Stake) private MyStakeIds;
+    mapping(address => uint[]) private userCreatedStakeIds; // Mapping of user addresses to the betIds they created
+    mapping(uint => address) private userIdToAddress;
+    mapping(address => User) private users; // Mapping of user addresses to user data
+    mapping(uint => ReferralReward) private referralrewardIds; 
+    mapping(address => ReferralReward) private referralrewards; 
 
-    event RegisterUser(uint indexed userId, bool registered, bool wasReferred, address walletaddress);
-    event StakedEvent(uint indexed stakeId,address indexed staker, uint stake_duration, uint stake_amount, uint stakerewardperDay, uint totalstakeReward, uint total_reward, bool isActive, bool hasStaked);
+    // Event to log when a referral reward is claimed
+    event ReferralRewardClaimed(address indexed sponsor, uint amount);
+    event UserRegistered(uint indexed userId, address useraddress);
+    event StakedEvent(uint indexed stakeId,address indexed staker, uint stake_duration);
     event WithdrawlEvent(address indexed Withdrawer, uint withdrawAmount, uint withdrawTime, uint256 amountToWithdraw, uint256 amountRemaining);
     event AddReferral(uint indexed refId,uint sponsorUserId, uint referralUserId, address referral, address sponsor, address[] referrals);
 
@@ -112,134 +121,20 @@ contract FRDStaking is ReentrancyGuard {
         _;
     }
     
-    function getUserId(address _useraddress) public view returns(uint) {
-        uint allusersCount = _userIds;
-        if(_useraddress == address(0)) {
-            revert Unauthorized();
-        }else {
-            uint _uId;
-            for(uint i = 0; i < allusersCount; i++) {
-                if(userDetailsById[i+1].walletaddress == _useraddress) {
-                    _uId = userDetailsById[i+1].userId;
-                }
-            }
-            return _uId;
-        }
-    }
-
-    function getuserRefIdBySponsor(address _useraddress, address _sponsor) public view returns(uint) {
-        uint allrefsCount = _refIds;
-        if(_useraddress == address(0)) {
-            revert Unauthorized();
-        }else {
-            uint _refId;
-            for(uint i = 0; i < allrefsCount; i++) {
-                if(referralsbyId[i+1].referral == _useraddress && referralsbyId[i+1].sponsor == _sponsor) {
-                    _refId = referralsbyId[i+1].refId;
-                }
-            }
-            return _refId;
-        }
-    }
-
-    function getuserRefId(address _useraddress) public view returns(uint) {
-        uint allrefsCount = _refIds;
-        if(_useraddress == address(0)) {
-            revert Unauthorized();
-        }else {
-            uint _refId;
-            for(uint i = 0; i < allrefsCount; i++) {
-                if(referralsbyId[i+1].referral == _useraddress) {
-                    _refId = referralsbyId[i+1].refId;
-                }
-            }
-            return _refId;
-        }
-    }
-
-    function getuserReferrals(address _useraddress) public view returns (address[] memory) {
-        
-        // get userId
-        uint _userId = getUserId(_useraddress);
-        //get user refId
-        // uint _refId = getuserRefId(_useraddress);
-
-        // Check if the user exists and has referrals
-        if(userDetailsById[_userId].registered == false) {
-            revert AccountNotRegistered();
-        }
-
-        // if(userDetailsById[_userId].refCount )
-        uint allrefCount = _refIds;
-        uint refCount = userDetailsById[_userId].refCount;
-        // uint currentIndex = 0;
-        
-        address[] memory userReferrals = new address[](refCount);
-
-        uint currentIndex = 0;
-
-        // Iterate through all referrals to find the ones related to the user
-        for(uint i = 0; i < allrefCount; i++) {
-            if(referralsbyId[i+1].sponsor == _useraddress) {
-                userReferrals[currentIndex] = referralsbyId[i+1].referral;
-                currentIndex++;
-            }
-        }
-
-        return userReferrals;
-    }
-
-    function getuserStakeIds(address _useraddress) public view returns(uint[] memory) {
-        uint allstakesCount = _stakeIds;
-        if(_useraddress == address(0)) {
-            revert Unauthorized();
-        }else {
-            uint[] memory stake_Ids = new uint[](allstakesCount);
-            uint currentIndex = 0;
-            for(uint i = 0; i < allstakesCount; i++) {
-                if(MyStakeIds[i+1].stakerAddress == _useraddress) {
-                    stake_Ids[currentIndex] = i + 1;
-                    currentIndex++;
-                }
-            }
-            return stake_Ids;
-        }
-    }
-
-    function getuserRefBonus(address _useraddress) public view returns(uint totalrefbonus) {
-        // get user referrals
-        address[] memory userReferrals = getuserReferrals(_useraddress);
-        uint refCount = userReferrals.length;
-        uint[] memory stakeAmounts = new uint[](refCount);
-        uint[] memory _refbonus_ = new uint[](refCount);
-        // Check active stakes for each referral and sum their stake amounts
-        uint totalrefBonus = 0;
-        uint _refBonus = 0;
-        for(uint j = 0; j < refCount; j++) {
-            // get user stake & referral Id 
-            uint[] memory refStakeIds = getuserStakeIds(userReferrals[j]);
-            uint refId = getuserRefId(userReferrals[j]);
-            for(uint refstake = 0; refstake < refStakeIds.length; refstake++) {
-                if (MyStakeIds[refstake + 1].isActive) {
-                    stakeAmounts[j] = MyStakeIds[refstake + 1].stakeAmount;
-                    _refbonus_[j] = referralsbyId[refId].refbonus;
-                    _refBonus = stakeAmounts[j].mul(_refbonus_[j]);
-
-                    totalrefBonus += _refBonus;
-                }
-            }
-        }
-        return totalrefBonus;
+    function registerUser(bool hasstaked, uint stakeCount, bool hasactivestake, uint refCount, bool registered, bool wasReferred, address useraddress) internal {
+        nextUserId++;
+        users[useraddress] = User(nextUserId, hasstaked, stakeCount, hasactivestake, refCount, registered, wasReferred, useraddress, new address[](0));
+        userIdToAddress[nextUserId] = useraddress;
+        // Emit event for user registration
+        emit UserRegistered(nextUserId, msg.sender);
     }
 
     function hasStaked(address _useraddress) public view returns(bool) {
-        uint _userId = getUserId(_useraddress);
-        return userDetailsById[_userId].hasStaked;
+        return users[_useraddress].hasStaked;
     }
 
     function wasRef_errered(address _useraddress) public view returns(bool) {
-        uint _userId = getUserId(_useraddress);
-        return userDetailsById[_userId].wasReferred;
+        return users[_useraddress].wasReferred;
     }
 
     function myWalletAddress() public view returns(address) {
@@ -251,92 +146,117 @@ contract FRDStaking is ReentrancyGuard {
     }
 
     function hasActiveStake(address _useraddress) public view returns(bool) {
-        uint _userId = getUserId(_useraddress);
-        return userDetailsById[_userId].hasActiveStake;
+        return users[_useraddress].hasActiveStake;
     }
 
-    function sendToken(
-        address _to,
-        address _ca,
-        uint256 _amount
-    ) external isOwner {
-        IBEP20 token = IBEP20(_ca);
-        token.transfer(_to, _amount);
-    }
-   
     function myTokenBalance() public view returns(uint) {
         return _balanceOf[msg.sender];
     }
 
-    function addReferrer(address _sponsor, uint _refbonus) external nonReentrant {
-        require(_sponsor != address(0), "Invalid address");
-        require(_sponsor != msg.sender, "YCRY");
-        
-         
-        uint _sponsoruserId = getUserId(_sponsor);
-        uint _user_refId = getuserRefIdBySponsor(msg.sender,_sponsor);
-        // check if sponsor is has an active stake 
-        if(MyStakeIds[_sponsoruserId].isActive == false) {
-            revert sponsorMustHaveActiveStakeToRefer();
+    function addReferral(address sponsorAddress, address downlineAddress) public {
+        // Ensure the sponsor is a registered user
+        require(users[sponsorAddress].registered, "Sponsor is not a registered user");
+
+
+        // Register user if not already registered
+        if (users[downlineAddress].registered == true) {
+            revert downlinealreadyRegistered();
         }else {
-            // check if user has been referred by this sponsor before
-            if(referralsbyId[_user_refId].sponsor == _sponsor) {
-                revert referralAlreadyExits();
-            }else {
-                address[] storage  _referrals = referrals[_sponsor].referrals;
-                _referrals.push(msg.sender);
-                // check if user is already registered
-                uint _referraluserId;
-                if(userDetails[msg.sender].registered == true ) {
-                    // user is already registered, do nothing
-                    uId = getUserId(msg.sender);
-                    console.log("ui user Id",uId);
-                    userDetailsById[uId].refCount = userDetailsById[uId].refCount++;
-                    userDetails[msg.sender].refCount = userDetailsById[uId].refCount++;
-                    _referraluserId = userDetailsById[uId].userId;
-                     _referraluserId = userDetails[msg.sender].userId;
-                }else {
-                    // user is not registered, register user and add address to User struct
-                    _userIds += 1;
-                    uId = _userIds; 
-                    userDetailsById[uId] = Users({
-                        userId:uId,
-                        hasStaked: false,
-                        stakeCount:0,
-                        hasActiveStake:false,
-                        refCount:0,
-                        registered: true,
-                        wasReferred: true,
-                        walletaddress: msg.sender
-                    });
+            registerUser(false, 0, false, 0, true, true, downlineAddress);
+        }
+        // Ensure the downline is not already referred by the sponsor
+        require(!isReferral(sponsorAddress, downlineAddress), "Downline is already referred by the sponsor");
 
-                    _referraluserId = uId;
-                }
+        // Add downline address to the referrals array of the sponsor's User struct
+        users[sponsorAddress].referrals.push(downlineAddress);
+    }
 
-                _refIds += 1;
-                uint _refId = _refIds;
-                // add referrer to referrals struct
-                referralsbyId[_refId] = Referrals({
-                    refId:_refId,
-                    sponsorUserId:_sponsoruserId,
-                    referralUserId:_referraluserId,
-                    referral:msg.sender,
-                    sponsor:_sponsor,
-                    refbonus:_refbonus.mul(1000),
-                    referrals:_referrals
-                });
-
-                userDetailsById[_sponsoruserId].refCount++;
-                
-                emit RegisterUser(_referraluserId, true, true, msg.sender);
-
-                emit AddReferral(_refId,_sponsoruserId,_referraluserId,msg.sender,_sponsor,_referrals);
+    // Function to check if a user is already referred by a sponsor
+    function isReferral(address sponsorAddress, address downlineAddress) internal view returns (bool) {
+        address[] memory referrals = users[sponsorAddress].referrals;
+        for (uint i = 0; i < referrals.length; i++) {
+            if (referrals[i] == downlineAddress) {
+                return true;
             }
         }
-        
+        return false;
+    }
+
+    function _getSponsor(address user) internal view returns (address) {
+        console.log("get sponsor ran");
+        address[] memory userReferrals = users[user].referrals;
+        for (uint i = 0; i < userReferrals.length; i++) {
+            if (userReferrals[i] == user) {
+                return userReferrals[i];
+            }
+        }
+        return address(0);
+    }
+
+    function _rewardSponsorIfDownline(address user, uint stakeamount, uint stakeId) internal {
+        console.log("re sponsor ran");
+        address sponsor = _getSponsor(user);
+        if (sponsor != address(0)) {
+            console.log("stake amount",stakeamount);
+            // Calculate referral reward (2% of the stake amount)
+            uint referralReward = (stakeamount * 2) / 100;
+            // Transfer referral reward to the sponsor
+
+            // Check if the contract has enough tokens to transfer the reward
+            require(FifaRewardTokenContract.balanceOf(address(this)) >= referralReward, "Contract does not have enough tokens");
+    
+            // check if sponsor has received referral reward already
+            if(referralrewards[user].rewardrecieved) {
+                revert referralrewardalreadyClaimed();
+            }
+
+            nextReferralRewardId++;
+            referralrewardIds[nextReferralRewardId] = ReferralReward(nextReferralRewardId, stakeId, sponsor, referralReward, true);
+            console.log("sponsor reward",referralReward);
+            _balanceOf[sponsor] += referralReward;
+            // Assuming FifaRewardTokenContract has a transfer function
+            FifaRewardTokenContract.transferFrom(address(this), sponsor,referralReward);
+            // Emit event for referral reward claimed
+            emit ReferralRewardClaimed(sponsor, referralReward);
+        }
+    }
+
+    function getReferrals(address sponsor) public view returns(address[] memory) {
+        return users[sponsor].referrals;
+    }
+
+    function getsponsorReferralRewards(address sponsor) public view returns(ReferralReward[] memory) {
+        uint totalRefRewards = nextReferralRewardId;
+        uint currentIndex = 0;
+
+        ReferralReward[] memory sponsorRewards = new ReferralReward[](totalRefRewards);
+        for (uint i = 1; i <= totalRefRewards; i++) {
+            if(referralrewardIds[i + 1].sponsor == sponsor) {
+                ReferralReward storage currentRefReward = referralrewardIds[i+1];
+                sponsorRewards[i+1] = currentRefReward;
+                currentIndex += 1;
+            }
+        }
+        return sponsorRewards;
+    }
+
+    // Function to get user registration details using user's wallet address
+    function getUserRegistrationDetails(address _user) public view returns (User memory) {
+        return users[_user];
+    }
+
+    // Function to list all the registered users' details
+    function listRegisteredUsers() public view returns (User[] memory) {
+        User[] memory userList = new User[](nextUserId);
+        for (uint i = 1; i <= nextUserId; i++) {
+            address userAddress = userIdToAddress[i];
+            userList[i - 1] = users[userAddress];
+        }
+        return userList;
     }
 
     function stake(uint stake_amount, uint stake_duration, uint profitpercent) external nonReentrant {
+        nextStakeId++;
         if(staker == address(0))
             revert Unauthorized();
         if(stake_amount <= 0) 
@@ -345,67 +265,46 @@ contract FRDStaking is ReentrancyGuard {
              "Token transfer not approved");
         require(FifaRewardTokenContract.balanceOf(msg.sender) >= stake_amount, "IFB");
 
-        userDetails[msg.sender].hasStaked = true;
+        users[msg.sender].hasStaked = true;
         // check if user is already registered
-        if(userDetails[msg.sender].registered == true ) {
-            // user is already registered, continue with staking
-            // get userId
-            uint u_Id = getUserId(msg.sender);
-            userDetailsById[u_Id].stakeCount = userDetailsById[u_Id].stakeCount++;
-            userDetails[msg.sender].stakeCount = userDetailsById[u_Id].stakeCount++;
-            userDetailsById[u_Id].hasStaked = true;
-        }else {
-            // user is not registered, register user and add address to User struct and proceed with staking
-            _userIds += 1;
-            uint _userId = _userIds;
-            uint _stakeCount = userDetailsById[_userId].stakeCount++;
-            uint _refCount = userDetailsById[_userId].refCount++;
-            console.log("user Id +++",_stakeCount);
-            console.log("ref Id +++",userDetailsById[_userId].refCount++);
-            userDetailsById[_userId] = Users({
-                userId:_userId,
-                hasStaked: true,
-                stakeCount: _stakeCount,
-                hasActiveStake:true,
-                refCount:_refCount,
-                registered: true,
-                wasReferred: false,
-                walletaddress: msg.sender
-            });
-            userDetails[msg.sender].registered = true;
-            emit RegisterUser(_userId, true, true, msg.sender);
+        // Register user if not already registered
+        if (!users[msg.sender].registered) {
+            registerUser(true, 0, true, 0, true, false, msg.sender);
         }
-        
         console.log("time now",timeNow);
         
         uint interest_RatePerDay = stake_amount.mul(profitpercent).div(1000);
 
-        _stakeIds += 1;
-        uint256 stakeId = _stakeIds;
-
-        uint totalstake_reward = interest_RatePerDay.mul(stake_duration);
-        uint total_reward = stake_amount.add(totalstake_reward);
-        MyStakeIds[stakeId] = Stakes({
-            stakeId: stakeId,
+        uint stake_reward = interest_RatePerDay.mul(stake_duration);
+        uint total_reward = stake_amount.add(stake_reward);
+        MyStakeIds[nextStakeId] = Stake({
+            stakeId: nextStakeId,
             rewardTime: timeNow + (stake_duration * 1 days),
-            stakeDuration: stake_duration,
-            profitpercent: profitpercent.div(1000),
+            stakeDuration: stake_duration * 1 days,
+            stakeTime: block.timestamp,
+            profitpercent: profitpercent,
             stakeAmount: stake_amount,
+            amountRemaining: 0,
+            amountWithdrawn: 0,
             currentstakeReward: stake_amount,
             stakeRewardPerDay: interest_RatePerDay,
-            totalstakeReward: totalstake_reward,
+            stakeReward: stake_reward,
             totalReward: total_reward,
             isActive: true,
             stakerAddress: msg.sender
         });
 
+        // Map user address to the new stakeId
+        userCreatedStakeIds[msg.sender].push(nextStakeId);
+        users[msg.sender].stakeCount = userCreatedStakeIds[msg.sender].length;
         // updateusertokenbalance
         _balanceOf[msg.sender] += stake_amount;
         
         // transfer tokens to contract
         FifaRewardTokenContract.transferFrom(msg.sender, address(this), stake_amount);
-        
-        emit StakedEvent(stakeId, staker, stake_duration ,stake_amount, interest_RatePerDay, totalstake_reward, total_reward, true, true);
+        // Check if the user is a downline and reward the sponsor
+        _rewardSponsorIfDownline(msg.sender, stake_amount, nextStakeId);
+        emit StakedEvent(nextStakeId, msg.sender, stake_duration );
     }
 
     
@@ -413,23 +312,15 @@ contract FRDStaking is ReentrancyGuard {
         require(msg.sender != address(0),"Invalid addresses");
         
         // get userId
-        uint _userId = getUserId(msg.sender);
-        // Check if the user exists and has referrals
-        if(userDetailsById[_userId].registered == false) {
+        if(users[msg.sender].registered == false) {
             revert AccountNotRegistered();
         }
        
         uint totalReward = 0;
         // get stake details of the user
         if(MyStakeIds[_stakeId].stakerAddress == msg.sender) {
-            uint refCount = userDetailsById[_userId].refCount;
-            uint staketotalReward = MyStakeIds[_stakeId].totalReward;
-            if(refCount > 0) {
-                uint refbonus = getuserRefBonus(msg.sender);
-                totalReward = staketotalReward.add(refbonus);
-            }else {
-                totalReward = staketotalReward;
-            }
+            uint staketotalReward = MyStakeIds[_stakeId].stakeReward;
+            totalReward = staketotalReward;
         }else {
             revert Unauthorized();
         }
@@ -440,16 +331,14 @@ contract FRDStaking is ReentrancyGuard {
     function EstimateReward(uint stakeamount, uint duration, uint profitpercent) public view returns (uint) {
         require(msg.sender != address(0),"Invalid address");
         uint estprof = stakeamount.mul(duration).mul(profitpercent).div(1000);
-        return stakeamount.add(estprof);
+        return estprof;
         
     }
 
     function getMinWithdrawAmount(uint _stakeId) public view returns (uint) {
         require(msg.sender != address(0),"Invalid address");
         // get userId
-        uint _userId = getUserId(msg.sender);
-        // Check if the user exists and has referrals
-        if(userDetailsById[_userId].registered == false) {
+        if(users[msg.sender].registered == false) {
             revert AccountNotRegistered();
         }
         uint minWithAmnt = 0;
@@ -457,8 +346,8 @@ contract FRDStaking is ReentrancyGuard {
             if(MyStakeIds[_stakeId].isActive) {
                 uint profitperc = MyStakeIds[_stakeId].profitpercent;
                 uint stakeAmt = MyStakeIds[_stakeId].stakeAmount;
-                uint minstakedur = 180 * 1 days;
-                minWithAmnt = stakeAmt.mul(minstakedur).mul(profitperc);
+                uint minstakedur = 180;
+                minWithAmnt = stakeAmt.mul(minstakedur).mul(profitperc).div(1000);
             }
         }
         return minWithAmnt;
@@ -467,78 +356,82 @@ contract FRDStaking is ReentrancyGuard {
     function withdrawStake(uint _stakeId, uint _withdrawAmt) external nonReentrant {
         require(msg.sender != address(0),"Invlid addresses");
         
-        // get userId
-        uint _userId = getUserId(msg.sender);
         // Check if the user exists and has referrals
-        if(userDetailsById[_userId].registered == false) {
+        if(users[msg.sender].registered == false) {
             revert AccountNotRegistered();
         }
 
-        uint _totalReward = 0;
         // get stake details of the user
         if(MyStakeIds[_stakeId].stakerAddress == msg.sender) {
             if(MyStakeIds[_stakeId].isActive) {
-                uint refCount = userDetailsById[_userId].refCount;
-                uint stakeReward = MyStakeIds[_stakeId].totalstakeReward;
-                uint totalstakeReward = MyStakeIds[_stakeId].totalReward;
-                uint minstaketime = 180 * 1 days;
+                uint stakeReward = MyStakeIds[_stakeId].stakeReward;
+                uint totalReward = MyStakeIds[_stakeId].totalReward;
                 uint stakeduration = MyStakeIds[_stakeId].stakeDuration;
-                uint minstakedur = timeNow.add(minstaketime);
+                uint rewardtime = MyStakeIds[_stakeId].rewardTime;
+                uint staketime = MyStakeIds[_stakeId].stakeTime;
+                uint minstakedur = staketime + (180 * 1 days);
+                console.log("stake rew",stakeReward);
+                console.log("total stake reward",totalReward);
+                console.log("time now",block.timestamp);
+                console.log("min stake duration",minstakedur);
+                console.log("reward time",stakeReward);
+                console.log(" stake duration",stakeduration);
                 // uint stakeremTime = stakeduration.sub(minstakedur);
                 uint minwithAmt = getMinWithdrawAmount(_stakeId);
-                uint withFee = withFeePercent.div(100);
-                if(timeNow > minstakedur && timeNow < stakeduration) {
+                uint withFee = _withdrawAmt.mul(withFeePercent).div(100);
+                console.log("withd percent",withFee);
+                if(timeNow > minstakedur) {
                     if(_withdrawAmt < minwithAmt) {
                         revert AmountIsLessThanMinimumWithdrawAmount();
                     }else {
-                        if(refCount > 0) {
-                            uint refbonus = getuserRefBonus(msg.sender);
-                            _totalReward = stakeReward.add(refbonus);
-                            amtToWIthdraw = _withdrawAmt.sub(withFee);
-                            amtRemaining = stakeReward.sub(amtToWIthdraw);
-                        }else {
-                            amtToWIthdraw = _withdrawAmt.sub(withFee);
-                            amtRemaining = stakeReward.sub(amtToWIthdraw);
+                        if(_withdrawAmt > totalReward) {
+                            revert AmountIsMoreThanStakeReward();
                         }
+                        if(timeNow > rewardtime) {
+                            if(_withdrawAmt < totalReward) {
+                                amtToWIthdraw = _withdrawAmt.sub(withFee);
+                                amtRemaining = totalReward.sub(amtToWIthdraw);
+                            }
+                            if(_withdrawAmt == totalReward) {
+                                amtToWIthdraw = _withdrawAmt.sub(withFee);
+                                amtRemaining = totalReward.sub(amtToWIthdraw);
+                                MyStakeIds[_stakeId].isActive = false;
+                            }
+                        }else {
+                            if(_withdrawAmt == totalReward) {
+                                revert stakeCompleteWithdrawalDurationNotReached();
+                            }else {
+                                amtToWIthdraw = _withdrawAmt.sub(withFee);
+                                amtRemaining = stakeReward.sub(amtToWIthdraw);
+                            }
+                        }
+
+                        
+                        MyStakeIds[_stakeId].amountRemaining = amtRemaining;
+                        MyStakeIds[_stakeId].amountWithdrawn = MyStakeIds[_stakeId].amountWithdrawn + amtToWIthdraw;
                         // update this stake details
                         // uint interest_RatePerDay = stake_amount.mul(profitpercent).div(1000);
                         // MyStakeIds[_stakeId].currentstakeReward = false;
                         // MyStakeIds[_stakeId].stakeRewardPerDay = false;
                         // MyStakeIds[_stakeId].totalstakeReward = false;
                         // MyStakeIds[_stakeId].totalReward = false;
+                        
+                        console.log("amt to withd",amtToWIthdraw);
+                        _balanceOf[msg.sender] -= amtToWIthdraw;
+                        _balanceOf[feeWallet] += withFee;
+                        FifaRewardTokenContract.transfer(msg.sender, amtToWIthdraw);
+
+                        emit WithdrawlEvent(msg.sender, amtToWIthdraw, timeNow,amtToWIthdraw, amtRemaining);
                     }
-                }else if(timeNow > stakeduration) {
-                    if(_withdrawAmt > totalstakeReward) {
-                        revert AmountIsMoreThanMinimumWithdrawAmount();
-                    }else if(_withdrawAmt < totalstakeReward) {
-                        if(refCount > 0) {
-                            uint refbonus = getuserRefBonus(msg.sender);
-                            _totalReward = stakeReward.add(refbonus);
-                            amtToWIthdraw = _withdrawAmt.sub(withFee);
-                            amtRemaining = stakeReward.sub(amtToWIthdraw);
-                        }else {
-                            amtToWIthdraw = _withdrawAmt.sub(withFee);
-                            amtRemaining = stakeReward.sub(amtToWIthdraw);
-                        }
-                    }else if(_withdrawAmt == totalstakeReward) {
-                        if(refCount > 0) {
-                            uint refbonus = getuserRefBonus(msg.sender);
-                            _totalReward = stakeReward.add(refbonus);
-                            amtToWIthdraw = _withdrawAmt.sub(withFee);
-                            amtRemaining = stakeReward.sub(amtToWIthdraw);
-                        }else {
-                            amtToWIthdraw = _withdrawAmt.sub(withFee);
-                            amtRemaining = stakeReward.sub(amtToWIthdraw);
-                        }
-                        MyStakeIds[_stakeId].isActive = false;
-                    }
+                    
+                }else {
+                    revert minWithdrawalTimeNotReached();
                 }
                 
-                // userDetails[msg.sender].stakeCount--;
-                // userDetails[msg.sender].userStakes[msg.sender].Stakes--;
-                FifaRewardTokenContract.transfer(msg.sender, amtToWIthdraw);
-
-                emit WithdrawlEvent(msg.sender, amtToWIthdraw, timeNow,amtToWIthdraw, amtRemaining);
+                
+                // users[msg.sender].stakeCount--;
+                // users[msg.sender].userStakes[msg.sender].Stakes--;
+                
 
             }else {
                 revert YouMustHaveActiveStakeToWithdraw();
@@ -553,51 +446,23 @@ contract FRDStaking is ReentrancyGuard {
         return address(this).balance;
     }
 
-    function loadAllStakes() external view returns (Stakes[] memory) {
-        uint stakesCount = _stakeIds;
+    function loadAllStakes() external view returns (Stake[] memory) {
+        uint stakesCount = nextStakeId;
         uint currentIndex = 0;
 
-        Stakes[] memory stakes = new Stakes[](stakesCount);
+        Stake[] memory stakes = new Stake[](stakesCount);
         for (uint i = 0; i < stakesCount; i++) {
             uint currentId = i + 1;
-            Stakes storage currentStake = MyStakeIds[currentId];
+            Stake storage currentStake = MyStakeIds[currentId];
             stakes[currentIndex] = currentStake;
             currentIndex += 1;
         }
         return stakes;
     }
 
-    function GetAllUsers() external view returns (Users[] memory) {
-        uint usersCount = _userIds;
-        uint currentIndex = 0;
-
-        Users[] memory users = new Users[](usersCount);
-        for (uint i = 0; i <usersCount; i++) {
-            uint currentId = i + 1;
-            Users storage currentUser = userDetailsById[currentId];
-            users[currentIndex] = currentUser;
-            currentIndex += 1;
-        }
-        return users;
-    }
-
-    function GetAllReferrals() external view returns (Referrals[] memory) {
-        uint refCount = _refIds;
-        uint currentIndex = 0;
-
-        Referrals[] memory _referrals = new Referrals[](refCount);
-        for (uint i = 0; i <refCount; i++) {
-            uint currentId = i + 1;
-            Referrals storage currentRef = referralsbyId[currentId];
-            _referrals[currentIndex] = currentRef;
-            currentIndex += 1;
-        }
-        return _referrals;
-    }
-
     
-    function loadUserStakes(address _useraddress) external view returns (Stakes[] memory) {
-        uint stakesCount = _stakeIds;
+    function loadUserStakes(address _useraddress) external view returns (Stake[] memory) {
+        uint stakesCount = nextStakeId;
         uint userStakes = 0;
         uint currentIndex = 0;
 
@@ -607,11 +472,11 @@ contract FRDStaking is ReentrancyGuard {
             }
         }
 
-        Stakes[] memory stakes = new Stakes[](userStakes);
+        Stake[] memory stakes = new Stake[](userStakes);
         for (uint i = 0; i < userStakes; i++) {
             if(MyStakeIds[i+1].stakerAddress == _useraddress) {
                 uint currentId = i + 1;
-                Stakes storage currentStake = MyStakeIds[currentId];
+                Stake storage currentStake = MyStakeIds[currentId];
                 stakes[currentIndex] = currentStake;
                 currentIndex += 1;
             }
@@ -620,13 +485,14 @@ contract FRDStaking is ReentrancyGuard {
     }
 
     function getUserStakeCount(address _useraddress) public view returns(uint) {
-        uint _uId = getUserId(_useraddress);
-        return userDetailsById[_uId].stakeCount;
+        return users[_useraddress].stakeCount;
     }
 
     function getUserRefCount(address _useraddress) public view returns(uint) {
-        uint _uId = getUserId(_useraddress);
-        return userDetailsById[_uId].refCount;
+        return users[_useraddress].refCount;
     }
 
+    function getStakeRemainingTime(uint stakeId) public view returns (uint) {
+        return  block.timestamp - MyStakeIds[stakeId].stakeTime;
+    }
 }
