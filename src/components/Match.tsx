@@ -9,7 +9,6 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
-import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
 // import '../../api-sports-widgets';
@@ -301,7 +300,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             setShowLoading(true);
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
-            let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+            let BetFeaturescontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
             let loadBets = await BetFeaturescontract.loadAllBets();
             console.log("loadBets",loadBets);
             setShowLoading(false);

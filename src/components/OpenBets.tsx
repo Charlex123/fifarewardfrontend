@@ -11,7 +11,6 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { BigNumber } from "ethers";
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
-import BettingFeatureAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import { Bets } from './BetsMetadata';
 import footballb from '../assets/images/footaballb.jpg';
 import AlertDanger from './AlertDanger';
@@ -114,7 +113,7 @@ useEffect(() => {
           try {
             console.log(" hop in")
             setShowLoading(true);
-            const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeatureAbi, signer);
+            const BetFeaturescontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
             console.log(" test a",BetFeaturescontract)
             const loadBets = await BetFeaturescontract.loadAllBets();
             // const loaduserBets = await BetFeaturescontract.getUserBets("0x6df7E51F284963b33CF7dAe442E5719da69c312d");

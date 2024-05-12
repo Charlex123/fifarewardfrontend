@@ -29,6 +29,7 @@ pragma solidity^0.8.9;
         uint refCount;
         bool registered;
         bool wasReferred;
+        address sponsor;
         address useraddress;
         address[] referrals;
     }
@@ -162,9 +163,9 @@ pragma solidity^0.8.9;
             return keccak256(abi.encodePacked(a)) == keccak256(abi.encodePacked(b));
         }
 
-        function registerUser(string memory username, uint betCount, bool hasActiveBet, uint refCount, bool registered, bool wasReferred, address useraddress) internal {
+        function registerUser(string memory username, uint betCount, bool hasActiveBet, uint refCount, bool registered, bool wasReferred, address sponsor, address useraddress) internal {
             nextUserId++;
-            users[useraddress] = User(nextUserId, username, betCount, hasActiveBet, refCount, registered, wasReferred, useraddress, new address[](0));
+            users[useraddress] = User(nextUserId, username, betCount, hasActiveBet, refCount, registered, wasReferred, sponsor, useraddress, new address[](0));
             userIdToAddress[nextUserId] = useraddress;
             // Emit event for user registration
             emit UserRegistered(nextUserId, msg.sender, users[msg.sender].referrals);
@@ -187,7 +188,7 @@ pragma solidity^0.8.9;
             if (users[downlineAddress].registered == true) {
                 revert downlinealreadyRegistered();
             }else {
-                registerUser(username, 0, false, 0, true, true, downlineAddress);
+                registerUser(username, 0, false, 0, true, true, sponsorAddress, downlineAddress);
             }
             // Ensure the downline is not already referred by the sponsor
             require(!isReferral(sponsorAddress, downlineAddress), "Downline is already referred by the sponsor");
@@ -257,11 +258,10 @@ pragma solidity^0.8.9;
 
             // Register user if not already registered
             if (!users[msg.sender].registered) {
-                registerUser(username, 0, true, 0, true, false, msg.sender);
+                registerUser(username, 0, true, 0, true, false, address(0), msg.sender);
             }
 
             if(_balanceOf[msg.sender] < betamount) {
-                _balanceOf[msg.sender] += betamount;
                 FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
             }
             // Emit event for bet creation
@@ -290,7 +290,7 @@ pragma solidity^0.8.9;
             }
             
             if (!users[msg.sender].registered) {
-                registerUser(username, 0, true, 0, true, false, msg.sender);
+                registerUser(username, 0, true, 0, true, false, address(0), msg.sender);
             }
             
             // Check if the user has already placed a bet on this betId
@@ -332,7 +332,6 @@ pragma solidity^0.8.9;
             userBetIds[msg.sender] = _betId;
 
             if(_balanceOf[msg.sender] < betamount) {
-                _balanceOf[msg.sender] += betamount;
                 FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
             }
             // Emit an event
@@ -341,18 +340,8 @@ pragma solidity^0.8.9;
             _rewardSponsorIfDownline(msg.sender, betamount, _betId);
         }
 
-        function _getSponsor(address user) internal view returns (address) {
-            address[] memory userReferrals = users[user].referrals;
-            for (uint i = 0; i < userReferrals.length; i++) {
-                if (userReferrals[i] == user) {
-                    return userReferrals[i];
-                }
-            }
-            return address(0);
-        }
-
         function _rewardSponsorIfDownline(address user, uint betamount, uint betId) internal {
-            address sponsor = _getSponsor(user);
+            address sponsor = users[user].sponsor;
             if (sponsor != address(0)) {
                 // Calculate referral reward (2% of the bet amount)
                 uint referralReward = (betamount * 2) / 100;
@@ -369,9 +358,8 @@ pragma solidity^0.8.9;
                 nextReferralRewardId++;
                 referralrewardIds[nextReferralRewardId] = ReferralReward(nextReferralRewardId, betId, sponsor, referralReward, true);
                 
-                _balanceOf[sponsor] += referralReward;
                 // Assuming FifaRewardTokenContract has a transfer function
-                FifaRewardTokenContract.transferFrom(address(this), sponsor ,referralReward);
+                FifaRewardTokenContract.transfer(sponsor ,referralReward);
                 // Emit event for referral reward claimed
                 emit ReferralRewardClaimed(sponsor, referralReward);
             }

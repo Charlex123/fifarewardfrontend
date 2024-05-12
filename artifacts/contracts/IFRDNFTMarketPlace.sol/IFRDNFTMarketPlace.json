@@ -56,42 +56,12 @@
           "components": [
             {
               "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "itemId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "tokenURI",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "biddingId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
               "name": "biddingtime",
               "type": "uint256"
             },
             {
               "internalType": "address payable",
               "name": "bidderaddress",
-              "type": "address"
-            },
-            {
-              "internalType": "address payable",
-              "name": "creator",
-              "type": "address"
-            },
-            {
-              "internalType": "address payable",
-              "name": "owner",
               "type": "address"
             },
             {
@@ -141,6 +111,11 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "autionTime",
+              "type": "uint256"
+            },
+            {
               "internalType": "string",
               "name": "tokenURI",
               "type": "string"
@@ -152,17 +127,17 @@
             },
             {
               "internalType": "uint256",
+              "name": "creatorsalesroyalty",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "minbidamount",
               "type": "uint256"
             },
             {
               "internalType": "uint256",
               "name": "sellingprice",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "salesroyaltyFeeBasisPoints",
               "type": "uint256"
             },
             {
@@ -179,26 +154,6 @@
               "internalType": "address payable",
               "name": "owner",
               "type": "address"
-            },
-            {
-              "internalType": "address payable",
-              "name": "reservedbuyer",
-              "type": "address"
-            },
-            {
-              "internalType": "uint256",
-              "name": "purchasemethod",
-              "type": "uint256"
-            },
-            {
-              "internalType": "bool",
-              "name": "listed",
-              "type": "bool"
-            },
-            {
-              "internalType": "bool",
-              "name": "sold",
-              "type": "bool"
             }
           ],
           "internalType": "struct AuctionItem",
@@ -263,42 +218,12 @@
           "components": [
             {
               "internalType": "uint256",
-              "name": "tokenId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
-              "name": "itemId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "string",
-              "name": "tokenURI",
-              "type": "string"
-            },
-            {
-              "internalType": "uint256",
-              "name": "biddingId",
-              "type": "uint256"
-            },
-            {
-              "internalType": "uint256",
               "name": "biddingtime",
               "type": "uint256"
             },
             {
               "internalType": "address payable",
               "name": "bidderaddress",
-              "type": "address"
-            },
-            {
-              "internalType": "address payable",
-              "name": "creator",
-              "type": "address"
-            },
-            {
-              "internalType": "address payable",
-              "name": "owner",
               "type": "address"
             },
             {

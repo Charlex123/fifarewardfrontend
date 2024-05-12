@@ -34,7 +34,7 @@ contract FRDStaking is ReentrancyGuard {
     error referralAlreadyExits();
     error referralrewardalreadyClaimed();
     error sponsorMustHaveActiveStakeToRefer();
-    error stakeCompleteWithdrawalDurationNotReached();
+    error stakedurationnotCompleted();
     error YouMustHaveActiveStakeToWithdraw();
     error AmountIsLessThanMinimumWithdrawAmount();
     error AmountIsMoreThanStakeReward();
@@ -45,14 +45,12 @@ contract FRDStaking is ReentrancyGuard {
     uint256 private nextStakeId;
     uint256 public nextReferralRewardId;
     uint256 private nextUserId;
-    address staker = msg.sender;
     address stakedeployer;
     uint withFeePercent = 5;
     uint amtToWIthdraw;
     uint amtRemaining;
     address public feeWallet = 0xbCCEb2145266639E0C39101d48B79B6C694A84Dc;
     uint uId;
-    uint timeNow = block.timestamp;
     IERC20 public FifaRewardTokenContract;
 
     constructor(address _FifaRewardTokenAddress) {
@@ -68,6 +66,7 @@ contract FRDStaking is ReentrancyGuard {
         uint refCount;
         bool registered;
         bool wasReferred;
+        address sponsor;
         address walletaddress;
         address[] referrals;
     }
@@ -121,9 +120,9 @@ contract FRDStaking is ReentrancyGuard {
         _;
     }
     
-    function registerUser(bool hasstaked, uint stakeCount, bool hasactivestake, uint refCount, bool registered, bool wasReferred, address useraddress) internal {
+    function registerUser(bool hasstaked, uint stakeCount, bool hasactivestake, uint refCount, bool registered, bool wasReferred,address sponsor, address useraddress) internal {
         nextUserId++;
-        users[useraddress] = User(nextUserId, hasstaked, stakeCount, hasactivestake, refCount, registered, wasReferred, useraddress, new address[](0));
+        users[useraddress] = User(nextUserId, hasstaked, stakeCount, hasactivestake, refCount, registered, wasReferred, sponsor, useraddress, new address[](0));
         userIdToAddress[nextUserId] = useraddress;
         // Emit event for user registration
         emit UserRegistered(nextUserId, msg.sender);
@@ -162,7 +161,7 @@ contract FRDStaking is ReentrancyGuard {
         if (users[downlineAddress].registered == true) {
             revert downlinealreadyRegistered();
         }else {
-            registerUser(false, 0, false, 0, true, true, downlineAddress);
+            registerUser(false, 0, false, 0, true, true, sponsorAddress, downlineAddress);
         }
         // Ensure the downline is not already referred by the sponsor
         require(!isReferral(sponsorAddress, downlineAddress), "Downline is already referred by the sponsor");
@@ -182,28 +181,16 @@ contract FRDStaking is ReentrancyGuard {
         return false;
     }
 
-    function _getSponsor(address user) internal view returns (address) {
-        console.log("get sponsor ran");
-        address[] memory userReferrals = users[user].referrals;
-        for (uint i = 0; i < userReferrals.length; i++) {
-            if (userReferrals[i] == user) {
-                return userReferrals[i];
-            }
-        }
-        return address(0);
-    }
 
     function _rewardSponsorIfDownline(address user, uint stakeamount, uint stakeId) internal {
-        console.log("re sponsor ran");
-        address sponsor = _getSponsor(user);
+        address sponsor = users[user].sponsor;
         if (sponsor != address(0)) {
-            console.log("stake amount",stakeamount);
             // Calculate referral reward (2% of the stake amount)
             uint referralReward = (stakeamount * 2) / 100;
             // Transfer referral reward to the sponsor
 
             // Check if the contract has enough tokens to transfer the reward
-            require(FifaRewardTokenContract.balanceOf(address(this)) >= referralReward, "Contract does not have enough tokens");
+            require(FifaRewardTokenContract.balanceOf(stakedeployer) >= referralReward, "Contract does not have enough tokens");
     
             // check if sponsor has received referral reward already
             if(referralrewards[user].rewardrecieved) {
@@ -212,10 +199,9 @@ contract FRDStaking is ReentrancyGuard {
 
             nextReferralRewardId++;
             referralrewardIds[nextReferralRewardId] = ReferralReward(nextReferralRewardId, stakeId, sponsor, referralReward, true);
-            console.log("sponsor reward",referralReward);
             _balanceOf[sponsor] += referralReward;
             // Assuming FifaRewardTokenContract has a transfer function
-            FifaRewardTokenContract.transferFrom(address(this), sponsor,referralReward);
+            FifaRewardTokenContract.transfer(sponsor,referralReward);
             // Emit event for referral reward claimed
             emit ReferralRewardClaimed(sponsor, referralReward);
         }
@@ -257,21 +243,20 @@ contract FRDStaking is ReentrancyGuard {
 
     function stake(uint stake_amount, uint stake_duration, uint profitpercent) external nonReentrant {
         nextStakeId++;
-        if(staker == address(0))
+        if(msg.sender == address(0))
             revert Unauthorized();
         if(stake_amount <= 0) 
             revert InvalidAmount();
         require(FifaRewardTokenContract.allowance(msg.sender, address(this)) >= stake_amount,
              "Token transfer not approved");
-        require(FifaRewardTokenContract.balanceOf(msg.sender) >= stake_amount, "IFB");
+        require(FifaRewardTokenContract.balanceOf(msg.sender) >= stake_amount, "Insufficient Token Balance");
 
         users[msg.sender].hasStaked = true;
         // check if user is already registered
         // Register user if not already registered
         if (!users[msg.sender].registered) {
-            registerUser(true, 0, true, 0, true, false, msg.sender);
+            registerUser(true, 0, true, 0, true, false, address(0), msg.sender);
         }
-        console.log("time now",timeNow);
         
         uint interest_RatePerDay = stake_amount.mul(profitpercent).div(1000);
 
@@ -279,8 +264,8 @@ contract FRDStaking is ReentrancyGuard {
         uint total_reward = stake_amount.add(stake_reward);
         MyStakeIds[nextStakeId] = Stake({
             stakeId: nextStakeId,
-            rewardTime: timeNow + (stake_duration * 1 days),
-            stakeDuration: stake_duration * 1 days,
+            rewardTime: block.timestamp + (stake_duration * 1 minutes),
+            stakeDuration: stake_duration * 1 minutes,
             stakeTime: block.timestamp,
             profitpercent: profitpercent,
             stakeAmount: stake_amount,
@@ -297,17 +282,15 @@ contract FRDStaking is ReentrancyGuard {
         // Map user address to the new stakeId
         userCreatedStakeIds[msg.sender].push(nextStakeId);
         users[msg.sender].stakeCount = userCreatedStakeIds[msg.sender].length;
-        // updateusertokenbalance
-        _balanceOf[msg.sender] += stake_amount;
-        
-        // transfer tokens to contract
-        FifaRewardTokenContract.transferFrom(msg.sender, address(this), stake_amount);
+
+        // Perform the token transfer from staker to the contract
+        require(FifaRewardTokenContract.transferFrom(msg.sender, address(this), stake_amount), "Token transfer failed");
+
         // Check if the user is a downline and reward the sponsor
         _rewardSponsorIfDownline(msg.sender, stake_amount, nextStakeId);
         emit StakedEvent(nextStakeId, msg.sender, stake_duration );
     }
 
-    
     function calcReward(uint _stakeId) public view returns (uint reward) {
         require(msg.sender != address(0),"Invalid addresses");
         
@@ -366,47 +349,40 @@ contract FRDStaking is ReentrancyGuard {
             if(MyStakeIds[_stakeId].isActive) {
                 uint stakeReward = MyStakeIds[_stakeId].stakeReward;
                 uint totalReward = MyStakeIds[_stakeId].totalReward;
-                uint stakeduration = MyStakeIds[_stakeId].stakeDuration;
+                // uint stakeduration = MyStakeIds[_stakeId].stakeDuration;
                 uint rewardtime = MyStakeIds[_stakeId].rewardTime;
                 uint staketime = MyStakeIds[_stakeId].stakeTime;
-                uint minstakedur = staketime + (180 * 1 days);
-                console.log("stake rew",stakeReward);
-                console.log("total stake reward",totalReward);
-                console.log("time now",block.timestamp);
-                console.log("min stake duration",minstakedur);
-                console.log("reward time",stakeReward);
-                console.log(" stake duration",stakeduration);
+                uint amtRem = MyStakeIds[_stakeId].amountRemaining;
+                uint minstakedur = staketime + (180 * 1 minutes);
                 // uint stakeremTime = stakeduration.sub(minstakedur);
                 uint minwithAmt = getMinWithdrawAmount(_stakeId);
                 uint withFee = _withdrawAmt.mul(withFeePercent).div(100);
-                console.log("withd percent",withFee);
-                if(timeNow > minstakedur) {
+                if(block.timestamp > minstakedur) {
                     if(_withdrawAmt < minwithAmt) {
                         revert AmountIsLessThanMinimumWithdrawAmount();
                     }else {
                         if(_withdrawAmt > totalReward) {
                             revert AmountIsMoreThanStakeReward();
                         }
-                        if(timeNow > rewardtime) {
+                        
+                        if(block.timestamp > rewardtime) {
                             if(_withdrawAmt < totalReward) {
                                 amtToWIthdraw = _withdrawAmt.sub(withFee);
-                                amtRemaining = totalReward.sub(amtToWIthdraw);
+                                amtRemaining = totalReward.sub(amtRem).sub(amtToWIthdraw);
                             }
                             if(_withdrawAmt == totalReward) {
-                                amtToWIthdraw = _withdrawAmt.sub(withFee);
-                                amtRemaining = totalReward.sub(amtToWIthdraw);
+                                amtRemaining = totalReward;
                                 MyStakeIds[_stakeId].isActive = false;
                             }
                         }else {
                             if(_withdrawAmt == totalReward) {
-                                revert stakeCompleteWithdrawalDurationNotReached();
+                                revert stakedurationnotCompleted();
                             }else {
                                 amtToWIthdraw = _withdrawAmt.sub(withFee);
-                                amtRemaining = stakeReward.sub(amtToWIthdraw);
+                                amtRemaining = stakeReward.sub(amtRem).sub(amtToWIthdraw);
                             }
                         }
 
-                        
                         MyStakeIds[_stakeId].amountRemaining = amtRemaining;
                         MyStakeIds[_stakeId].amountWithdrawn = MyStakeIds[_stakeId].amountWithdrawn + amtToWIthdraw;
                         // update this stake details
@@ -416,12 +392,11 @@ contract FRDStaking is ReentrancyGuard {
                         // MyStakeIds[_stakeId].totalstakeReward = false;
                         // MyStakeIds[_stakeId].totalReward = false;
                         
-                        console.log("amt to withd",amtToWIthdraw);
-                        _balanceOf[msg.sender] -= amtToWIthdraw;
-                        _balanceOf[feeWallet] += withFee;
+                        
                         FifaRewardTokenContract.transfer(msg.sender, amtToWIthdraw);
+                        FifaRewardTokenContract.transfer(feeWallet, withFee);
 
-                        emit WithdrawlEvent(msg.sender, amtToWIthdraw, timeNow,amtToWIthdraw, amtRemaining);
+                        emit WithdrawlEvent(msg.sender, amtToWIthdraw, block.timestamp,amtToWIthdraw, amtRemaining);
                     }
                     
                 }else {
@@ -441,7 +416,7 @@ contract FRDStaking is ReentrancyGuard {
         }
         
     }
-
+    
     function getContractBalance() public view isOwner returns (uint256) {
         return address(this).balance;
     }

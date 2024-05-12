@@ -50,6 +50,29 @@ contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
         return nfttokenCount;
     }
 
+    /* Returns only items that a user has purchased */
+    function getMintedNfts() public view returns (NFTMints[] memory) {
+      uint totalMintedNftCount = FRDNFTMarketPlaceContract.getAllNFTMintsCount();
+      uint itemCount = 0;
+      uint currentIndex = 0;
+
+      for (uint i = 0; i < totalMintedNftCount; i++) {
+        if(FRDNFTMarketPlaceContract.getNFTMintsMapping(i+1).creator == msg.sender) {
+          itemCount += 1;
+        }
+      }
+
+      NFTMints[] memory items = new NFTMints[](itemCount);
+      for (uint i = 0; i < totalMintedNftCount; i++) {
+        if(FRDNFTMarketPlaceContract.getNFTMintsMapping(i+1).creator == msg.sender) {
+          uint currentId = i + 1;
+          NFTMints memory currentItem = FRDNFTMarketPlaceContract.getNFTMintsMapping(currentId);
+          items[currentIndex] = currentItem;
+          currentIndex += 1;
+        }
+      }
+      return items;
+    }
    
     /* Returns all unsold market items */
     function fetchUnSoldAuctionItems() public view returns (AuctionItem[] memory) {

@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT OR Apache-2.0
 pragma solidity ^0.8.2;
 
-import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "hardhat/console.sol";
@@ -15,6 +15,7 @@ struct AuctionItem {
     uint autionTime;
     string tokenURI;
     uint biddingduration;
+    uint creatorsalesroyalty;
     uint256 minbidamount;
     uint256 sellingprice;
     address payable seller;
@@ -47,7 +48,6 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
     address payable creator;
     address payable seller;
     uint256 private adminfeeBasisPoints = 500; // 5% in basis points (parts per 10,000) 250/100000
-    uint256 private creatorBasisPoints = 250; // 2.5% in basis points (parts per 10,000) 250/100000
     address feeAddress = 0xbCCEb2145266639E0C39101d48B79B6C694A84Dc;
 
 
@@ -127,32 +127,45 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         uint256 tokenId,
         uint256 sellingprice,
         uint duration,
-        uint256 minbidamount
+        uint256 minbidamount,
+        uint creatorsalesroyalty
     ) public {
         require(MintedNFTIds[tokenId].hascreatedToken, "invalid");
         _itemIds++;
         uint256 ItemId = _itemIds;
+        address creator_ = MintedNFTIds[tokenId].creator;
+        console.log("creator",creator_);
+
         idToAuctionItem[ItemId] = AuctionItem(
             tokenId,
             ItemId,
             block.timestamp,
             MintedNFTIds[tokenId].tokenURI,
             block.timestamp + (duration * 1 days),
+            creatorsalesroyalty,
             minbidamount,
             sellingprice,
             payable(msg.sender),
-            payable(MintedNFTIds[tokenId].creator),
+            payable(creator_),
             payable(address(this))
         );
         _transfer(msg.sender, address(this), tokenId);
         emit AuctionItemCreated (tokenId, ItemId, MintedNFTIds[tokenId].tokenURI);
     }
 
+    function setcreatorSalesRoyalty(uint newsalesroyalty, uint itemId) external nonReentrant {
+        AuctionItem storage item = idToAuctionItem[itemId];
+        if(msg.sender != item.seller) {
+            revert Unauthorized();
+        }
+        item.creatorsalesroyalty = newsalesroyalty;
+    }
+
     function bidOnNFT( uint256 itemId,uint256 biddingprice_) external payable nonReentrant {
         
         AuctionItem storage item = idToAuctionItem[itemId];
         
-        if(msg.sender == item.seller || msg.sender == item.creator || item.seller == address(0)) {
+        if(msg.sender == item.seller || msg.sender == item.creator || msg.sender == address(0)) {
             revert Unauthorized();
         }
         require(item.owner == address(this), "Already sold");
@@ -221,7 +234,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         AuctionItem storage item = idToAuctionItem[itemId];
         
         uint256 adminFee = (amount * adminfeeBasisPoints) / 10000;
-        uint256 creatorFee = (amount * creatorBasisPoints) / 10000;
+        uint256 creatorFee = (amount * item.creatorsalesroyalty) / 10000;
         uint256 payout = amount - (adminFee + creatorFee);
 
         payable(feeAddress).transfer(adminFee);

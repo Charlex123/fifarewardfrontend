@@ -16,7 +16,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import bronzemedal from '../assets/images/medal.png'
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
-import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { fas, faCheck, faCheckCircle,faAlignJustify } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
@@ -43,7 +43,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
   const { walletProvider } = useWeb3ModalProvider();
 
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
-  const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
+  const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
   const NFTFeaturesCA = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
   
   useEffect(() => {
@@ -88,7 +88,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const BettingFeatureContract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+          const BettingFeatureContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
           const reslt = await BettingFeatureContract.getUserBetCount(address);
           setBetCount(reslt);
           console.log(reslt)
