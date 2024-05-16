@@ -4,9 +4,9 @@
   position: relative;width: auto;
 }
 .closebtn {
-    position: fixed;right: 8px;top: 13%;color: white;background-color: none;z-index: 999999999 !important;
+    position: fixed;right: 20px;top: 13%;color: white;background-color: none;z-index: 999999999 !important;
 }
 .alert {
-    font-size: 14px; text-align: center;font-family: 'Poppins';background: #787777a3;min-height: 40px;z-index: 99999;left: 0;right: 0;
+    font-size: 14px; text-align: center;font-family: 'Poppins';background: #787777a3;min-height: 40px;z-index: 99999;left: 10px;right: 10px;
     margin:12px auto;padding: 8px 20px;color: #ffffff;border-radius: 120px; font-weight: lighter;position: fixed;top: 10%;
 }

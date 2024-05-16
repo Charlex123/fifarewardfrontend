@@ -56,22 +56,18 @@ const MyNFTs: React.FC<{}> = () =>  {
     const [showunListedNFT,setShowUnListedNFT] = useState<boolean>(false);
     const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
     const [listingItemTokenId,setListingItemTokenId] = useState<any>(null);
-    const [nftItemPrice, setNftItemPrice] = useState<string>("");
-    // const [itemprice, setItemPrice] = useState<any>(0);
-    const [itemprice2, setItemPrice2] = useState<any>(0);
+    const [nftItemPrice, setNftItemPrice] = useState<number>();
     const [bidduration, setBidDuration] = useState<any>(0);
     const [minbidamount, setMinBidAmount] = useState<any>(0);
     const [salesroyaltyfee, setSalesRoyaltyFee] = useState<any>(2);
     const { theme } = useContext(ThemeContext);
     const [itemname, setItemName] = useState<any>('');
+    const [contractaddress, setContractAddress] = useState<any>('');
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
     const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
     const [isSideBarToggled, setIsSideBarToggled] = useState(false)
     const [_itemId, set_ItemId] = useState<number>();
     const [itemBids,setItemBids] = useState<NFTBidMetadata[]>([]);
-    const [newbidduration,setNewBidDuration] = useState<number>();
-    const [newItemPrice, setNewItemPrice] = useState<string>("");
-    const [newminbidamount, setNewMinBidAmount] = useState<any>(0);
     
     const nftcontractAddress = process.env.NEXT_PUBLIC_NFTMARKETPLACE_CA;
     const nftfeaturescontractAddress = process.env.NEXT_PUBLIC_NFTMARKETPLACE_FEATURES_CA;
@@ -121,6 +117,28 @@ const MyNFTs: React.FC<{}> = () =>  {
         }
 
       if(windowloadgetbetruntimes <= 0) {
+
+        const getContractAddress = async () => {
+            try {
+              setShowLoading(true);
+              if(walletProvider) {
+                  const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+                  const signer = provider.getSigner();
+                  /* next, create the item */
+                  let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+                  if(contract) {
+                      let caddress = await contract.getContractAddress();
+                      setContractAddress(caddress);
+                  }
+              }
+          } catch (error) {
+              console.error('Error creating Web3Provider:', error);
+              // Handle or rethrow the error as needed
+          }
+        }
+        
+
+
         const getMyUnlistedNFTs = async () => {
           try {
               setShowLoading(true);
@@ -129,8 +147,8 @@ const MyNFTs: React.FC<{}> = () =>  {
                   const signer = provider.getSigner();
                   /* next, create the item */
                   let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi, signer);
-                  console.log("contract ss",contract);
                   if(contract) {
+                      getContractAddress();
                       let mintednfts = await contract.getMintedNfts();
                       if(mintednfts.length > 0) {
                         await mintednfts.forEach(async (element:any) => {
@@ -154,8 +172,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                               hascreatedToken: element.hascreatedToken,
                               // following properties only exist if the NFT has been minted
                               tokenId: element.tokenId,
-                              tokenURI: element.tokenURI,
-                              listed: element.listed
+                              tokenURI: element.tokenURI
                             }
                             myunlistedNFTs.push(item);
                             setmyUnlistedNFTS(myunlistedNFTs);
@@ -196,7 +213,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                       if(listednfts.length > 0) {
                         await listednfts.forEach(async (element:any) => {
                           if(element[1] && element[1] !== "") {
-                            let ipfsurl = element[2];
+                            let ipfsurl = element[3];
                             let ipfsurlarray = ipfsurl.split('//');
                             
                             let ipfsmetarray = ipfsurlarray[1].split('/');
@@ -219,8 +236,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                               seller: element.seller,
                               itemId: element.itemId,
                               biddingduration: element.biddingduration,
-                              minbidamount: element.minbidamount,
-                              sold: element.sold
+                              minbidamount: element.minbidamount
                             }
                             mylistedNFTs.push(item);
                             setmyListedNFTS(mylistedNFTs);
@@ -259,7 +275,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       getMyListedNFTs();
 
     }
-          
+    console.log("c address",contractaddress)
     },[username,userId,windowloadgetbetruntimes])
   
     const getItemBidds = async (itemId: any,itemName: string) => {
@@ -308,38 +324,52 @@ const MyNFTs: React.FC<{}> = () =>  {
       
   }
   
-  const AcceptOffer = async (itemId: any, price: any, bidderaddress: any) => {
-    
-        setShowAlertDanger(false);
-        setShowLoading(true);
-        const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-        const signer = provider.getSigner();
-        
-        try {
-            
-            let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
-            const purchasemethod: string = "Bid";
-            const buynftC = await contract.createMarketSale(itemId,bidderaddress,purchasemethod,price,username, {gasLimit: 1000000});
-            
-            buynftC.wait().then(async (receipt:any) => {
-                // console.log(receipt);
-                if (receipt && receipt.status == 1) {
-                    // transaction success.
-                    setShowLoading(false);
-                    setShowBgOverlay(false);
-                    setActionSuccess(true);
-                    setPropMessage('Offer ');
-                }
-            })
-            
-        } catch (error: any) {
-            console.log("t error",error);
-            setShowLoading(false);
-            setShowBgOverlay(true);
-            setShowAlertDanger(true);
-            seterrorMessage(error.code);
-        }
-    }
+  const AcceptOffer = async (itemId: number) => {
+      setShowAlertDanger(false);
+      setShowLoading(true);
+
+      try {
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
+          const contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+          const buynftC = await contract.acceptHighestBid(itemId, { gasLimit: 1000000 });
+
+          // Ensure to use `await` with `.wait()` to catch any errors from the transaction
+          const receipt = await buynftC.wait();
+
+          // Check the transaction status after it's been awaited
+          if (receipt && receipt.status === 1) {
+              // Transaction success
+              setShowLoading(false);
+              setShowBgOverlay(false);
+              setActionSuccess(true);
+              setPropMessage('Offer accepted successfully');
+          } else {
+              throw new Error('Transaction failed with status ' + receipt.status);
+          }
+      } catch (error: any) {
+          console.error("Transaction error:", error);
+          setShowLoading(false);
+          setShowBgOverlay(true);
+          setShowAlertDanger(true);
+
+          // Handle specific known error types
+          let errorMessage = 'An unexpected error occurred. Please try again.';
+          if (error.code === ethers.errors.CALL_EXCEPTION) {
+              errorMessage = 'Transaction failed: CALL_EXCEPTION. Please check your transaction details and try again.';
+          } else if (error.message.includes('insufficient funds')) {
+              errorMessage = 'Transaction failed: Insufficient funds. Please ensure you have enough balance to cover the gas fees.';
+          } else if (error.message.includes('gas required exceeds allowance')) {
+              errorMessage = 'Transaction failed: Gas limit too low. Please increase the gas limit and try again.';
+          } else {
+              // General error message
+              errorMessage = `Transaction failed: ${error.message}`;
+          }
+
+          seterrorMessage(errorMessage);
+      }
+  };
+
 
     const createNftItem = async () => {
       setShowListNFTDiv(false);
@@ -358,7 +388,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                 setShowLoading(false);
                 setShowBgOverlay(false);
                 setActionSuccess(true);
-                setPropMessage('NFT successfully added to market place');
+                setPropMessage('NFT auction ');
               }
           })
         } catch (error: any) {
@@ -373,12 +403,13 @@ const MyNFTs: React.FC<{}> = () =>  {
       
     }
 
-    const unlistItem = async (itemId:string) => {
+    const unlistItem = async (itemId:number) => {
       const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
       const signer = provider.getSigner();
       
         try {
           setShowLoading(true);
+          setShowBgOverlay(true);
           let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
           let transaction = await contract.unListAuctionItem(itemId);
           transaction.wait().then(async (receipt:any) => {
@@ -399,12 +430,13 @@ const MyNFTs: React.FC<{}> = () =>  {
       
     }
 
-    const listbackItem = async (itemId:string) => {
+    const listbackItem = async (itemId:number) => {
       const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
       const signer = provider.getSigner();
       
         try {
           setShowLoading(true);
+          setShowBgOverlay(true);
           let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
           let transaction = await contract.ListBackAuctionItem(itemId);
           
@@ -433,7 +465,7 @@ const MyNFTs: React.FC<{}> = () =>  {
         try {
           setShowLoading(true);
           let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
-          let transaction = await contract.updateBiddingOptions();
+          let transaction = await contract.updateAuctionItem(_itemId,bidduration,minbidamount,nftItemPrice);
           transaction.wait().then(async (receipt:any) => {
               // console.log(receipt);
               if (receipt && receipt.status == 1) {
@@ -456,10 +488,11 @@ const MyNFTs: React.FC<{}> = () =>  {
       e.previousElementSibling.style.display = (e.previousElementSibling.style.display === 'block') ? 'none' : 'block';
     }
 
-    const changeitemPrice = async ( event: React.MouseEvent) => {
+    const changeitemPrice = async (itemId: number, event: React.MouseEvent) => {
       event.preventDefault();
         setShowBgOverlay(true);
         setShowChangePriceModal(true);
+        set_ItemId(itemId);
         setTimeout(function() {
           if(divRef.current) {
             divRef.current.focus()
@@ -482,6 +515,7 @@ const MyNFTs: React.FC<{}> = () =>  {
     const closeListItemModalDiv = () => {
       setShowBgOverlay(false);
       setShowListNFTDiv(false);
+      setShowLoading(false);
       setShowChangePriceModal(false);
     }
 
@@ -496,7 +530,55 @@ const MyNFTs: React.FC<{}> = () =>  {
       }, 2000);
     }
 
+    function nftfloorpriceToInt(number: any) {
+      // Check if the number is already an integer
+      if (number % 1 === 0) {
+          console.log(`${number} is already an integer.`);
+          return number;
+      }
+  
+      // Count the number of decimal places
+      const decimalPlaces = countDecimalPlaces(number);
+  
+      // Calculate the multiplier to make the number an integer
+      const multiplier = Math.pow(10, decimalPlaces);
+  
+      // Multiply the number by the multiplier to shift the decimal point
+      const result = number * multiplier;
+  
+      setNftItemPrice(result);
+      return result;
+  }
+    
+    function nftminbidamountToInt(number: any) {
+        // Check if the number is already an integer
+        if (number % 1 === 0) {
+            console.log(`${number} is already an integer.`);
+            return number;
+        }
+    
+        // Count the number of decimal places
+        const decimalPlaces = countDecimalPlaces(number);
+    
+        // Calculate the multiplier to make the number an integer
+        const multiplier = Math.pow(10, decimalPlaces);
+    
+        // Multiply the number by the multiplier to shift the decimal point
+        const result = number * multiplier;
+    
+        console.log(`${number} converted to integer is ${result}`);
+        setMinBidAmount(result);
+        return result;
+    }
+    
+    // Helper function to count decimal places
+    function countDecimalPlaces(value: any) {
+        if (Math.floor(value) === value) return 0;
+        return value.toString().split(".")[1].length || 0;
+    }
+    
     const closeAlertModal = () => {
+      setShowLoading(false);
       setShowAlertDanger(false);
       setShowBgOverlay(false);
     }
@@ -506,6 +588,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       // hiw_bgoverlay.style.display = 'none';
       setShowBgOverlay(false);
       setActionSuccess(false);
+      setShowLoading(false);
       router.reload();
     }
 
@@ -528,7 +611,6 @@ const MyNFTs: React.FC<{}> = () =>  {
         <title>My NFTs | FifaReward</title>
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
     </HelmetExport>
-    {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {nftactionsuccess && 
@@ -538,7 +620,7 @@ const MyNFTs: React.FC<{}> = () =>  {
         <DappSideBar onChange={toggleSideBar} />
       </div> */}
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
-
+      {showloading && <Loading/>}
         {nftbidsLoaded && itemBids.length > 0 ? 
           <div className={`${styles.nft_offer } ${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`} id="nft_offer">
             
@@ -571,9 +653,9 @@ const MyNFTs: React.FC<{}> = () =>  {
                                 <td>{bid.biddingprice.toLocaleString()}BNB</td>
                                 <td>${`${(bid.biddingprice.toString() as any * bnbdollarPrice!).toLocaleString()}`}</td>
                                 <td>{1}</td>
-                                <td>{((bid.biddingprice.toString()) as any/itemprice2!) * 100}%</td>
+                                <td>{((bid.biddingprice.toString()) as any/nftItemPrice!) * 100}%</td>
                                 <td>{`${Math.floor((bid.biddingtime.toNumber())/86400000)}`}</td>
-                                <td><button onClick={() => AcceptOffer(bid.itemId.toString(),bid.biddingprice.toNumber(),bid.owner)}>Accept</button></td>
+                                <td><button onClick={() => AcceptOffer(bid.itemId.toNumber())}>Accept</button></td>
                             </tr>
                             ))}
                             </tbody>
@@ -607,11 +689,11 @@ const MyNFTs: React.FC<{}> = () =>  {
                   <div className={styles.listnftitem_c_ina}>
                       <div className={styles.list_tc}>
                         <label>NFT item id</label>
-                        <input type='text' value={listingItemTokenId} readOnly/>
+                        <input type='text' value={_itemId} readOnly/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>New listing price(BNB/MATIC)</label>
-                        <input type='text' onChange={(e) => setNftItemPrice(e.target.value) } placeholder='200BNB'/>
+                        <label>New listing/floor price(BNB)</label>
+                        <input type='number' onChange={(e) => nftfloorpriceToInt(e.target.value) } placeholder='20'/>
                       </div>
                   </div>
                   <div className={styles.listnftitem_c_ina}>
@@ -620,8 +702,8 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>New min. bid amount</label>
-                        <input type='number' onChange={(e) => setMinBidAmount(e.target.value) } placeholder='1'/>
+                        <label>New min. bid amount (BNB)</label>
+                        <input type='number' onChange={(e) => nftminbidamountToInt(e.target.value) } placeholder='18'/>
                       </div>
                   </div>
                   <div>
@@ -652,8 +734,8 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='text' value={listingItemTokenId} readOnly/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>Listing price(BNB/MATIC)</label>
-                        <input type='text' onChange={(e) => setNftItemPrice(e.target.value) } placeholder='200BNB'/>
+                        <label>Listing/floor price(BNB)</label>
+                        <input type='number' onChange={(e) => nftfloorpriceToInt(e.target.value) } placeholder='20'/>
                       </div>
                   </div>
                   <div className={styles.listnftitem_c_ina}>
@@ -662,8 +744,8 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>Min. bid amount</label>
-                        <input type='number' onChange={(e) => setMinBidAmount(e.target.value) } placeholder='1'/>
+                        <label>Min. bid amount(BNB)</label>
+                        <input type='number' onChange={(e) => setMinBidAmount(e.target.value) } placeholder='18'/>
                       </div>
                   </div>
                   <div className={styles.listnftitem_c_ina}>
@@ -674,8 +756,6 @@ const MyNFTs: React.FC<{}> = () =>  {
                           <option value={3}>3% Fee</option>
                           <option value={4}>4% Fee</option>
                           <option value={5}>5% Fee</option>
-                          <option value={6}>6% Fee</option>
-                          <option value={7}>7% Fee</option>
                         </select>
                       </div>
                   </div>
@@ -694,7 +774,7 @@ const MyNFTs: React.FC<{}> = () =>  {
               <div className={styles.settings_bg_overlay}></div>
               <div className={styles.settings_in}>
                 <div>
-                  <h1 className={styles.h1}>Unlisted NFTs</h1>
+                  <h1 className={styles.h1}> NFTs YOU MINTED </h1>
                 </div>
 
                 <div className={styles.nft_option}>
@@ -737,7 +817,7 @@ const MyNFTs: React.FC<{}> = () =>  {
               <div className={styles.settings_bg_overlay}></div>
               <div className={styles.settings_in}>
                 <div>
-                  <h1 className={styles.h1}>Listed NFTs</h1>
+                  <h1 className={styles.h1}> AUCTION ITEMS YOU CREATED </h1>
                 </div>
 
                 <div className={styles.nft_option}>
@@ -753,6 +833,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                                 <div className={styles.nft_desc}>
                                     <span>{mylistedNFT.description.substring(0, 40)+' ...'}</span>
                                 </div>
+                              </a>
                                 <div className={styles.nft_addbtn}>
                                     <div className={styles.nft_addr}>
                                       <span>{mylistedNFT.owner.substring(0, 8)+' ...'}</span>
@@ -760,35 +841,53 @@ const MyNFTs: React.FC<{}> = () =>  {
                                       <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
                                     </div>
                                     <div className={styles.nft_list}>
-                                      <span className={styles.listed}>Listed {<FontAwesomeIcon icon={faCheck} style={{color:'#e3a204'}}/>}</span> 
+                                      {
+                                        (() => {
+                                          if(mylistedNFT.owner == contractaddress && mylistedNFT.seller == mylistedNFT.seller) {
+                                            return <span className={styles.listed}>Listed {<FontAwesomeIcon icon={faCheck} style={{color:'#e3a204'}}/>}</span>
+                                          }else if(mylistedNFT.owner == mylistedNFT.owner && mylistedNFT.seller == mylistedNFT.seller) {
+                                            return <span className={styles.listed}>UnListed </span>
+                                          }else if(mylistedNFT.owner == contractaddress && mylistedNFT.seller != mylistedNFT.seller) {
+                                            return <span className={styles.listed}>Sold {<FontAwesomeIcon icon={faCheck} style={{color:'#e3a204'}}/>}</span>
+                                          }
+                                        })()
+                                      }
                                     </div>
                                 </div>
                                 <div className={styles.nft_list_p}>
-                                  <div>
-                                    <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{mylistedNFT.price?.toNumber()}{mylistedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
+                                    <div>
+                                      <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{mylistedNFT.price?.toNumber()}{mylistedNFT.chainId = 97 ? 'BNB': ''}</div>
+                                    </div>
+                                    <div>
+                                      <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{mylistedNFT.minbidamount?.toNumber()}{mylistedNFT.chainId = 97 ? 'BNB': ''}</div>
+                                    </div>
+                                    <div>
+                                      {/* <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{mylistedNFT.sold == false ? 'No' : 'Yes'}</div> */}
+                                    </div>
                                   </div>
-                                  <div>
-                                    <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{mylistedNFT.minbidamount?.toNumber()}{mylistedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
+                                  <div className={styles.nft_list_p}>
+                                    <div>
+                                      <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor(mylistedNFT.biddingduration?.toNumber()/86400000)} Days</span>
+                                    </div>
                                   </div>
-                                  <div>
-                                    <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{mylistedNFT.sold == false ? 'No' : 'Yes'}</div>
-                                  </div>
-                                </div>
-                                <div className={styles.nft_list_p}>
-                                  <div>
-                                    <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor(mylistedNFT.biddingduration?.toNumber()/86400000)} Days</span>
-                                  </div>
-                                </div>
-                              </a>
-                              <div className={styles.nft_list_b}>
+                                <div className={styles.nft_list_b}>
+                                
                                 <div>
-                                  {mylistedNFT.owner == mylistedNFT.creator ? <button className={styles.listedp} type='button' onClick={() => unlistItem(mylistedNFT.itemId!.toString())}>Unlist</button> : <button className={styles.listedp} type='button' onClick={() => listbackItem(mylistedNFT.itemId!.toString())}>Unlist</button>} 
+                                  {
+                                    (() => {
+                                      if(mylistedNFT.owner == contractaddress && mylistedNFT.seller == mylistedNFT.seller) {
+                                        return <button className={styles.listedp} type='button' onClick={() => unlistItem(mylistedNFT.itemId!.toNumber())}>Unlist</button>
+                                      }else if(mylistedNFT.owner == mylistedNFT.seller && mylistedNFT.seller == mylistedNFT.seller) {
+                                        return <button className={styles.listedp} type='button' onClick={() => listbackItem(mylistedNFT.itemId!.toNumber())}>List Item</button>
+                                      }
+                                    })()
+                                  }
                                 </div>
                                 <div>
-                                  {nftbidsLoaded2 === true ? <button className={styles.listedp} type='button' onClick={() => getItemBidds(mylistedNFT.itemId?.toString(),mylistedNFT.name)}>View Offers</button> : <div style={{fontSize: '14px'}}>No offers yet</div>}
+                                  {nftbidsLoaded2 === true ? <button className={styles.listedp} type='button' onClick={() => getItemBidds(mylistedNFT.itemId?.toNumber(),mylistedNFT.name)}>View Offers</button> : <div style={{fontSize: '14px'}}>No offers yet</div>}
                                 </div>
                                 <div>
-                                  <button className={styles.listedp} type='button' onClick={(e) => changeitemPrice(e)}>Update Bid Price</button> 
+                                  <button className={styles.listedp} type='button' onClick={(e) => changeitemPrice(mylistedNFT.itemId!.toNumber(),e)}>Update Bid Price</button> 
                                 </div>
                               </div>
                           </div>

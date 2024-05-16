@@ -28,6 +28,18 @@
 .main .notfound_p {
     width: 100%;margin: auto;text-align: center;
 }
+.main .w_alert {
+    position: absolute;background-color: rgba(60, 59, 59, 0.677);font-size: 12px;border-radius: 8px;width: fit-content;
+    padding: 1px 2px;color: #f1f1f1;margin: 2rem auto;text-align: center;padding: 20px;
+    border: 1px solid #454343;left: 10px;right: 10px;top: 150px;
+}
+.main .w_alert .walertclosediv {
+    margin-right: 15px;margin-top: 5px;text-align: right;color: #ffffff;position: absolute;
+    top: 0;right: -5px;
+}
+.main .w_alert .walertclosediv .walertclosedivbtn {
+    color: white;   
+}
 .main .notfound {
     text-align: center;font-family: "Montserrat",sans-serif;margin: 20px auto;
 }
@@ -67,6 +79,48 @@
 .lightmod {
     border: 1px solid #96939386;background-color: #252525c2;border-radius: 0;
     color: var(--text-color-dark);
+}
+.main .width_stake {
+    position: absolute;margin: 0 auto; width: 40%;
+    border-radius: 16px;z-index: 99;text-align: center;left: 0;right: 0;
+    padding: 10px 10px 10px 10px;background-color: #525050;
+}
+.main .width_stake .width_stake_h {
+    display: flex;flex-direction: row;justify-content: space-between;margin: 0 0 35px 0;
+    border-bottom: 1px solid #8d8f9161;
+}
+.main .width_stake .width_stake_h h1 {
+    font-weight: 600;font-size: 16px;text-align: left;
+}
+.main .width_stake .width_stake_c_ina {
+    width: 100%;margin: 15px 0;
+}
+.main .width_stake .width_stake_c_ina .wbtn {
+    text-align: right;
+}
+.main .width_stake .width_stake_c_ina .wbtn .maxwithdbtn {
+    border: none;font-size: 12px;font-weight: 600;text-decoration: underline;
+}
+.main .width_stake .width_stake_c_ina .list_tc {
+    width: 100%;text-align: left;
+}
+.main .width_stake .width_stake_c_ina .list_tc .labelc {
+    display: flex;flex-direction: row;justify-content: space-between;font-size: 13px
+}
+.main .width_stake .width_stake_c_ina label {
+    text-align: left;width: 100%;font-size: 13px;font-weight: 600;
+}
+.main .width_stake .width_stake_c_ina input {
+    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 13px;
+}
+.main .width_stake .width_stake_c_ina select {
+    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 14px;
+}
+.main .width_stake .width_stake_c_in button.createlistitem_ {
+        background-color: #e3a204;width: 100%;padding: 4px 6px;border-radius: 8px;margin: 35px auto;
+        text-align: center;color: #454545;font-weight: 800;
 }
 .main .reflink {
     margin: 15px 30px 30px 30px;font-size: 14px;position: relative;
@@ -278,7 +332,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     width: 100%;display: flex;justify-content: space-between;margin-top: 20px;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .s_m_in_c .s_a {
-    width: 100%;text-align: left;font-size: 13px;font-weight: 600;
+    width: 100%;text-align: left;font-size: 12px;font-weight: 600;
     font-family: "Montserrat",sans-serif;margin: 0;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .s_m_in_c .s_a  select {
@@ -286,7 +340,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     font-weight: 400;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .s_m_in_c .s_b {
-    width: 50%;text-align: right;font-size: 13px;font-weight: 600;font-family: "Montserrat",sans-serif;
+    width: 50%;text-align: right;font-size: 12px;font-weight: 600;font-family: "Montserrat",sans-serif;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .amountprog {
     width: 100%;
@@ -401,6 +455,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     border-radius: 8px;padding: 3px;
 }
 @media (max-width: 1100px) {
+    
     .main_w {
         width: 100%;
     }
@@ -409,6 +464,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     }
     .main_c .main {
         width: 100%;height: 100%;margin-left: 0;
+    }
+    .main .width_stake {
+        width: 80%;
     }
     .main_c .sidebar {
         width: 50%;z-index: 999;
@@ -426,11 +484,15 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     .main .reflink input {
         width: 60%;margin-left: 0;
     }
+    
 }
 
 @media (max-width: 767px) {
     .main .head {
         margin: -1rem 1rem 1rem 1rem;
+    }
+    .main .width_stake {
+        width: 90%;
     }
     .main_c .main {
         width: 90%;height: 100%;

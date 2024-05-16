@@ -243,9 +243,15 @@ font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
     .main .settings .nft_option .nft_options_ {
         width: 49%;
     }
+    .main .listnftitem {
+        width: 80%;
+    }
 }
 @media (max-width: 767px) {
     .main .settings .nft_option .nft_options_ {
         width: 100%;
+    }
+    .main .listnftitem {
+        width: 90%;
     }
 }

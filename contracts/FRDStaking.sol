@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity^0.8.9;
+pragma solidity^0.8.20;
 
 /*
   8888888888   88888888       888888888
@@ -116,7 +116,7 @@ contract FRDStaking is ReentrancyGuard {
     // modifier to check if caller is owner
     modifier isOwner() {
         if(msg.sender == stakedeployer)
-            revert Unauthorized();
+            revert("Unauthorized");
         _;
     }
     
@@ -159,7 +159,7 @@ contract FRDStaking is ReentrancyGuard {
 
         // Register user if not already registered
         if (users[downlineAddress].registered == true) {
-            revert downlinealreadyRegistered();
+            revert("downline already registered");
         }else {
             registerUser(false, 0, false, 0, true, true, sponsorAddress, downlineAddress);
         }
@@ -194,7 +194,7 @@ contract FRDStaking is ReentrancyGuard {
     
             // check if sponsor has received referral reward already
             if(referralrewards[user].rewardrecieved) {
-                revert referralrewardalreadyClaimed();
+                revert("referral reward already claimed");
             }
 
             nextReferralRewardId++;
@@ -241,12 +241,12 @@ contract FRDStaking is ReentrancyGuard {
         return userList;
     }
 
-    function stake(uint stake_amount, uint stake_duration, uint profitpercent) external nonReentrant {
+    function stake(uint stake_amount, uint stake_duration, uint profitpercent) public nonReentrant {
         nextStakeId++;
         if(msg.sender == address(0))
-            revert Unauthorized();
+            revert("Unauthorized");
         if(stake_amount <= 0) 
-            revert InvalidAmount();
+            revert("invalid amount");
         require(FifaRewardTokenContract.allowance(msg.sender, address(this)) >= stake_amount,
              "Token transfer not approved");
         require(FifaRewardTokenContract.balanceOf(msg.sender) >= stake_amount, "Insufficient Token Balance");
@@ -296,7 +296,7 @@ contract FRDStaking is ReentrancyGuard {
         
         // get userId
         if(users[msg.sender].registered == false) {
-            revert AccountNotRegistered();
+            revert("account not registered");
         }
        
         uint totalReward = 0;
@@ -305,7 +305,7 @@ contract FRDStaking is ReentrancyGuard {
             uint staketotalReward = MyStakeIds[_stakeId].stakeReward;
             totalReward = staketotalReward;
         }else {
-            revert Unauthorized();
+            revert("Unauthorized");
         }
         
         return totalReward;
@@ -322,7 +322,7 @@ contract FRDStaking is ReentrancyGuard {
         require(msg.sender != address(0),"Invalid address");
         // get userId
         if(users[msg.sender].registered == false) {
-            revert AccountNotRegistered();
+            revert("account not registered");
         }
         uint minWithAmnt = 0;
         if(MyStakeIds[_stakeId].stakerAddress == msg.sender) {
@@ -336,12 +336,27 @@ contract FRDStaking is ReentrancyGuard {
         return minWithAmnt;
     }
 
-    function withdrawStake(uint _stakeId, uint _withdrawAmt) external nonReentrant {
+    function getMaxWithdrawAmount(uint _stakeId) public view returns (uint) {
+        require(msg.sender != address(0),"Invalid address");
+        // get userId
+        if(users[msg.sender].registered == false) {
+            revert("account not registered");
+        }
+        uint maxWithAmnt = 0;
+        if(MyStakeIds[_stakeId].stakerAddress == msg.sender) {
+            if(MyStakeIds[_stakeId].isActive) {
+                maxWithAmnt = MyStakeIds[_stakeId].totalReward;
+            }
+        }
+        return maxWithAmnt;
+    }
+
+    function withdrawStake(uint _stakeId, uint _withdrawAmt) public nonReentrant {
         require(msg.sender != address(0),"Invlid addresses");
         
         // Check if the user exists and has referrals
         if(users[msg.sender].registered == false) {
-            revert AccountNotRegistered();
+            revert("account not registered");
         }
 
         // get stake details of the user
@@ -359,10 +374,10 @@ contract FRDStaking is ReentrancyGuard {
                 uint withFee = _withdrawAmt.mul(withFeePercent).div(100);
                 if(block.timestamp > minstakedur) {
                     if(_withdrawAmt < minwithAmt) {
-                        revert AmountIsLessThanMinimumWithdrawAmount();
+                        revert("Amount Is Less Than Minimum Withdraw Amount");
                     }else {
                         if(_withdrawAmt > totalReward) {
-                            revert AmountIsMoreThanStakeReward();
+                            revert("Amount Is More Than Stake Reward");
                         }
                         
                         if(block.timestamp > rewardtime) {
@@ -376,7 +391,7 @@ contract FRDStaking is ReentrancyGuard {
                             }
                         }else {
                             if(_withdrawAmt == totalReward) {
-                                revert stakedurationnotCompleted();
+                                revert("stake duration not Completed");
                             }else {
                                 amtToWIthdraw = _withdrawAmt.sub(withFee);
                                 amtRemaining = stakeReward.sub(amtRem).sub(amtToWIthdraw);
@@ -400,7 +415,7 @@ contract FRDStaking is ReentrancyGuard {
                     }
                     
                 }else {
-                    revert minWithdrawalTimeNotReached();
+                    revert("min withdrawal time not reached");
                 }
                 
                 
@@ -409,10 +424,10 @@ contract FRDStaking is ReentrancyGuard {
                 
 
             }else {
-                revert YouMustHaveActiveStakeToWithdraw();
-            }
+                revert("You must have active stake to withdraw");
+            } 
         }else {
-            revert Unauthorized();
+            revert("Unauthorized");
         }
         
     }
@@ -468,6 +483,15 @@ contract FRDStaking is ReentrancyGuard {
     }
 
     function getStakeRemainingTime(uint stakeId) public view returns (uint) {
-        return  block.timestamp - MyStakeIds[stakeId].stakeTime;
+        uint currentTime = block.timestamp;
+        uint rewardTime = MyStakeIds[stakeId].rewardTime;
+        
+        if (currentTime >= rewardTime) {
+            return 0;
+        } else {
+            return rewardTime - currentTime;
+        }
     }
+
+
 }

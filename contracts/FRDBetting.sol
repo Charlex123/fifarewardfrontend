@@ -111,7 +111,7 @@ pragma solidity^0.8.9;
         mapping(uint => Bet) private bets;
         mapping(uint => mapping(string => mapping(string => PredictionCount))) private predictionCounts;
         mapping(uint => mapping(address => ParticipantsBetDetails)) private participantsbetDetails;
-        mapping(uint => address) private userIdToAddress;
+        mapping(uint => address) public userIdToAddress;
         mapping(address => uint) private userBetIds; // Mapping of user addresses to the betId they betted on
         mapping(address => uint[]) private userCreatedBetIds; // Mapping of user addresses to the betIds they created
         mapping(address => uint[]) private userJoinedBetIds; // Mapping of user addresses to the betIds they joined
@@ -175,10 +175,14 @@ pragma solidity^0.8.9;
             bets[_betId].betstatus = "closed";
         }
 
-        function getbetParticipants(uint _betId) public view returns (uint) {
+        function getbetParticipantsCount(uint _betId) public view returns (uint) {
             return bets[_betId].participants.length;
         }
         
+        function getbetParticipants(uint _betId) public view returns (address[] memory) {
+            return bets[_betId].participants;
+        }
+
         function addReferral(address sponsorAddress, address downlineAddress, string memory username) public {
             // Ensure the sponsor is a registered user
             require(users[sponsorAddress].registered, "Sponsor is not a registered user");
@@ -186,7 +190,7 @@ pragma solidity^0.8.9;
 
             // Register user if not already registered
             if (users[downlineAddress].registered == true) {
-                revert downlinealreadyRegistered();
+                revert("downline already registered");
             }else {
                 registerUser(username, 0, false, 0, true, true, sponsorAddress, downlineAddress);
             }
@@ -214,10 +218,10 @@ pragma solidity^0.8.9;
             nextBetId++;
             
             if(msg.sender == address(0)) {
-                revert unauthorized();
+                revert("unauthorized");
             }
             if(betamount <= 0) {
-                revert invalidAmount();
+                revert("invalid Amount");
             }
             if(_balanceOf[msg.sender] < betamount) {
                 require(FifaRewardTokenContract.balanceOf(msg.sender) >= betamount, "IFB");
@@ -278,11 +282,11 @@ pragma solidity^0.8.9;
             // Ensure the bet exists
             require(bets[_betId].betId == _betId, "Bet does not exist");
             if(msg.sender == address(0)) {
-                revert unauthorized();
+                revert("unauthorized");
             }
             
             if(betamount <= 0) {
-                revert invalidAmount();
+                revert("invalid Amount");
             }
             
             if(_balanceOf[msg.sender] < betamount) {
@@ -295,17 +299,17 @@ pragma solidity^0.8.9;
             
             // Check if the user has already placed a bet on this betId
             if(participantsbetDetails[_betId][msg.sender].hasjoinedthisbet == true) {
-                revert duplicateBetNotAllowed();
+                revert("Duplicate Bet Not Allowed");
             }
 
             uint limit = bets[_betId].totalbetparticipantscount.div(2);
             
             if(getPredictionCount(_betId, _team, _prediction) == limit) {
-                revert predictionCountReached();
+                revert("prediction count reached");
             }
 
             if(bets[_betId].remainingparticipantscount == 0) {
-                revert maxbetparticipantsReached();
+                revert("maxbet participants reached");
             }
 
             // Update count of participants with the same _bettingteam and _prediction
@@ -352,7 +356,7 @@ pragma solidity^0.8.9;
 
                 // check if sponsor has received referral reward already
                 if(referralrewards[user].rewardrecieved) {
-                    revert referralrewardalreadyClaimed();
+                    revert("referral reward already claimed");
                 }
 
                 nextReferralRewardId++;
@@ -423,11 +427,24 @@ pragma solidity^0.8.9;
             return bets[_betId].betlosers;
         }
 
-        
+        // Function to get all the betIds created by a particular address
+        function getBetIdsCreatedByUser(address _user) public view returns (uint[] memory) {
+            return (userCreatedBetIds[_user]);
+        }
 
-        // // Function to get all the betIds created by a particular address
-        function getBetIdsByUser(address _user) public view returns (uint, uint, uint[] memory, uint[] memory) {
-            return (userCreatedBetIds[_user].length,userJoinedBetIds[_user].length,userCreatedBetIds[_user],userJoinedBetIds[_user]);
+        // Function to get all the betIds created by a particular address
+        function getBetIdsCreatedByUserCount(address _user) public view returns (uint) {
+            return (userCreatedBetIds[_user].length);
+        }
+
+        // Function to get all the betIds created by a particular address
+        function getBetIdsUserJoined(address _user) public view returns (uint[] memory) {
+            return (userJoinedBetIds[_user]);
+        }
+
+        // Function to get all the betIds created by a particular address
+        function getBetIdsUserJoinedCount(address _user) public view returns (uint) {
+            return (userJoinedBetIds[_user].length);
         }
 
         // Function to pay bet winners participants
@@ -487,13 +504,14 @@ pragma solidity^0.8.9;
             return users[_user];
         }
 
-        // Function to list all the registered users' details
-        function listRegisteredUsers() public view returns (User[] memory) {
-            User[] memory userList = new User[](nextUserId);
-            for (uint i = 1; i <= nextUserId; i++) {
-                address userAddress = userIdToAddress[i];
-                userList[i - 1] = users[userAddress];
-            }
-            return userList;
+        // Function to retrieve NFTMints by ID
+        function getBetsMapping(uint256 _betId) external view returns (Bet memory) {
+            return bets[_betId];
+        }
+
+        function getAllBetIdsCount() external view returns (uint) {
+            return nextBetId;
         }   
+
+        
     }

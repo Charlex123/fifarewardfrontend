@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 const CountdownTimer = ({time}:any) => {
-  const timer_ = time * 86400;
+  const timer_ = time;
   const [timeRemaining, setTimeRemaining] = useState(timer_); // days in seconds
 
   useEffect(() => {

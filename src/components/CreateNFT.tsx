@@ -325,6 +325,7 @@ export default function CreateItem() {
               <div className={styles.form_g}>
                 <label className={styles.label}>Supply (Max. of 1)</label>
                 <input
+                  type="number"
                   placeholder="1"
                   className={styles.input_}
                   onChange={e => updateFormInput({ ...formInput, price: e.target.value })}

@@ -112,6 +112,11 @@
             },
             {
               "internalType": "uint256",
+              "name": "decimalplaces",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "autionTime",
               "type": "uint256"
             },

@@ -12,6 +12,7 @@ error invalidAmount();
 struct AuctionItem {
     uint256 tokenId;
     uint itemId;
+    uint decimalplaces;
     uint autionTime;
     string tokenURI;
     uint biddingduration;
@@ -83,12 +84,6 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         uint256 amount
     );
 
-    // event sellerFundsWithdrawal (
-    //     address bidderaddress,
-    //     uint256 amount
-    // );
-    
-
   event updateBiddingPrice(uint256 indexed tokenId, uint256 indexed itemId, uint256 newminbidamount, uint256 newsellingprice);
 
 
@@ -128,17 +123,18 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         uint256 sellingprice,
         uint duration,
         uint256 minbidamount,
-        uint creatorsalesroyalty
+        uint creatorsalesroyalty,
+        uint dcp
     ) public {
         require(MintedNFTIds[tokenId].hascreatedToken, "invalid");
         _itemIds++;
         uint256 ItemId = _itemIds;
         address creator_ = MintedNFTIds[tokenId].creator;
-        console.log("creator",creator_);
 
         idToAuctionItem[ItemId] = AuctionItem(
             tokenId,
             ItemId,
+            dcp,
             block.timestamp,
             MintedNFTIds[tokenId].tokenURI,
             block.timestamp + (duration * 1 days),
@@ -149,6 +145,8 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
             payable(creator_),
             payable(address(this))
         );
+        MintedNFTIds[tokenId].owner = payable(address(this));
+        MintedNFTs[msg.sender].owner = payable(address(this));
         _transfer(msg.sender, address(this), tokenId);
         emit AuctionItemCreated (tokenId, ItemId, MintedNFTIds[tokenId].tokenURI);
     }
@@ -156,7 +154,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
     function setcreatorSalesRoyalty(uint newsalesroyalty, uint itemId) external nonReentrant {
         AuctionItem storage item = idToAuctionItem[itemId];
         if(msg.sender != item.seller) {
-            revert Unauthorized();
+            revert("Unauthorized");
         }
         item.creatorsalesroyalty = newsalesroyalty;
     }
@@ -166,27 +164,21 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         AuctionItem storage item = idToAuctionItem[itemId];
         
         if(msg.sender == item.seller || msg.sender == item.creator || msg.sender == address(0)) {
-            revert Unauthorized();
+            revert("Unauthorized");
         }
         require(item.owner == address(this), "Already sold");
         require(block.timestamp <= item.biddingduration, "Bidding has ended");
         if(msg.value < biddingprice_) {
-            revert invalidAmount();
+            revert("invalid amount");
         }
-        //  // Refund previous bid if there was one
-        // if (itembid.biddingprice > 0) {
-        //     payable(msg.sender).transfer(itembid.biddingprice);
-        //     emit BidRefunded(itemId, itembid.bidderaddress, itembid.biddingprice);
-        // }
+        
         Bid[] storage bids = itemBids[itemId];
         if (bids.length > 0) {
             Bid storage lastBid = bids[bids.length - 1];
             require(msg.value > lastBid.biddingprice, "higher bid found.");
             payable(lastBid.bidderaddress).transfer(lastBid.biddingprice); // Refund the last bidder
         }
-       // Record the new bid
-        // _biddingIds++;
-        // uint biddingId = _biddingIds;
+        
         itemBids[itemId].push(Bid(
             block.timestamp,
             payable(msg.sender),
@@ -205,7 +197,6 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         AuctionItem storage item = idToAuctionItem[itemId];
         Bid[] storage bids = itemBids[itemId];
         require(msg.sender == idToAuctionItem[itemId].seller, "unauthorized");
-        // require(block.timestamp > item.biddingduration, "Auction not ended");
         if (bids.length > 0) {
             Bid storage lastBid = bids[bids.length - 1];
             require(lastBid.bidderaddress != address(0), "No bids");
@@ -219,11 +210,11 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
     function DirectNFTSale(uint256 itemId, uint amount) public payable nonReentrant {
         AuctionItem storage item = idToAuctionItem[itemId];
         if(msg.sender == item.seller || msg.sender == item.creator || item.seller == address(0)) {
-            revert Unauthorized();
+            revert("Unauthorized");
         }
         // require(block.timestamp > item.biddingduration, "Auction not ended");
         if(msg.value < amount || msg.value < item.sellingprice) {
-            revert invalidAmount();
+            revert("invalid amount");
         }
         require(msg.sender != address(0), "invalid");
 
@@ -242,6 +233,9 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         payable(item.seller).transfer(payout);
         item.seller = payable (buyer);
         item.owner = payable (buyer);
+        uint tokenId = item.tokenId;
+        MintedNFTIds[tokenId].owner = payable(buyer);
+        MintedNFTs[msg.sender].owner = payable(buyer);
         item.sellingprice = amount;
 
         _transfer(address(this), buyer, item.tokenId);
@@ -271,6 +265,32 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         return _tokenIds;
     }
 
+    function removeToken(uint tokenId) external nonReentrant {
+        if(msg.sender != owner) {
+            revert("Unauthorized");
+        }
+        // get current owner
+        address cowner =  MintedNFTIds[tokenId].owner;
+        MintedNFTIds[tokenId].owner = payable(address(0));
+        _transfer(cowner, address(0), tokenId);
+    }
+
+    function removeItem(uint itemId) external nonReentrant {
+        if(msg.sender != owner) {
+            revert("Unauthorized");
+        }
+        AuctionItem storage item = idToAuctionItem[itemId];
+        uint tokenId = item.tokenId;
+        item.owner = payable(address(this));
+        MintedNFTIds[tokenId].owner = payable(address(this));
+        _transfer(address(this), address(this), itemId);
+    }
+
+    // Function to retrieve all bids of a specific item
+    function getContractAddress() public view returns (address ) {
+        return address(this);
+    }
+
     // Function to retrieve all bids of a specific item
     function getAllBidsForItem(uint256 itemId) public view returns (Bid[] memory) {
         return itemBids[itemId];
@@ -282,10 +302,12 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
     ) public payable nonReentrant {
       uint tokenId = idToAuctionItem[itemId].tokenId;
       if(msg.sender != idToAuctionItem[itemId].seller) {
-        revert Unauthorized();
+        revert("Unauthorized");
       }
       idToAuctionItem[itemId].owner = payable(msg.sender);
-      // idToAuctionItem[itemId].seller = payable(msg.sender);
+      MintedNFTIds[tokenId].owner = payable(msg.sender);
+      MintedNFTs[msg.sender].owner = payable(msg.sender);
+      
       _transfer(address(this), msg.sender, tokenId);
     }
 
@@ -295,25 +317,28 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
     ) public payable nonReentrant {
       uint tokenId = idToAuctionItem[itemId].tokenId;
       if(msg.sender != idToAuctionItem[itemId].seller) 
-        revert Unauthorized();
+        revert("Unauthorized");
       idToAuctionItem[itemId].owner = payable(address(this));
+      MintedNFTIds[tokenId].owner = payable(address(this));
+      MintedNFTs[msg.sender].owner = payable(address(this));
       _transfer(msg.sender, address(this), tokenId);
     }
 
     // /* Unlists an item previously listed for sale and transfer back to the creator */
-    function changeItemAuctionPrice(
+    function updateAuctionItem(
       uint256 itemId, 
+      uint newduration,
       uint256 newminbidamount, 
       uint256 newsellingprice
     ) public nonReentrant {
       uint tokenId = idToAuctionItem[itemId].tokenId;
       if(msg.sender != idToAuctionItem[itemId].seller) {
-        revert Unauthorized();
+        revert("Unauthorized");
       }
         
       idToAuctionItem[itemId].minbidamount = newminbidamount;
       idToAuctionItem[itemId].sellingprice = newsellingprice;
-    //   idToAuctionItem[itemId].owner = payable(address(this));
+      idToAuctionItem[itemId].biddingduration = newduration;
       
       emit updateBiddingPrice(tokenId, itemId, newminbidamount, newsellingprice);
     }

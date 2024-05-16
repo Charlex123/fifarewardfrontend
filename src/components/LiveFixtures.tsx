@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { faCaretDown, faXmark, faSoccerBall  } from "@fortawesome/free-solid-svg-icons";
 import leaguefixturestyle from '../styles/leaguefixtures.module.css'
 import axios from 'axios';
+import Image from 'next/image';
 import dotenv from 'dotenv';
 import moment from 'moment';
 import Loading from './Loading';
@@ -196,9 +197,9 @@ return (
           
                                           <div className={leaguefixturestyle.fixt_tm}>
                                             <div className={leaguefixturestyle.teams}>
-                                              <div>{`${fixture.teams.home.name}`} {fixture.goals.home != null ? '('+fixture.goals.home+')' : ''}</div>
+                                              <div><Image src={fixture.teams.home.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'left',paddingRight: '5px'}}/> {`${fixture.teams.home.name}`} {fixture.goals.home != null ? (fixture.goals.home) : ''}</div>
                                               <div className={leaguefixturestyle.vs}>Vs</div>
-                                              <div>{`${fixture.teams.away.name}`} {fixture.goals.away != null ? '('+fixture.goals.away+')' : ''}</div>
+                                              <div>{fixture.goals.away != null ? (fixture.goals.away) : ''} {`${fixture.teams.away.name}`} <Image src={fixture.teams.away.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'right',paddingLeft: '5px'}} /></div>
                                             </div>
                                           </div>
                                           <div className={leaguefixturestyle.openbet}>

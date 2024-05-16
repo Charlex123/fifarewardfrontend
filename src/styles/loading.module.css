@@ -6,11 +6,11 @@
   right: 0;
   z-index: 99999999;
   display: inline-block;
-  width: 60px;
-  height: 60px;
-  border: 6px solid rgba(255,255,255,.3);
+  width: 45px;
+  height: 45px;
+  border: 3px solid rgba(255,255,255,.3);
   border-radius: 50%;
-  border-top-color: #e28305;
+  border-top-color: #fa940ee3;
   animation: spin .5s ease-in-out infinite;
   -webkit-animation: spin .5s ease-in-out infinite;
 }

@@ -10,12 +10,11 @@ export interface NFTFullMetadata {
     creator: string,
     owner: any,
     // following properties only exist if the NFT has been minted
-    tokenId?: string,
+    tokenId?: BigNumber,
     tokenURI?: string,
     // following properties only exist if the NFT is listed for sale
     price?: BigNumber,
-    itemId?: string,
+    itemId?: BigNumber,
     biddingduration: BigNumber,
-    minbidamount: BigNumber,
-    sold: boolean
+    minbidamount: BigNumber
 }

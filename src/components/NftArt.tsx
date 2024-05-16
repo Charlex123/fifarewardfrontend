@@ -58,6 +58,8 @@ const NFTArt: React.FC<{}> = () =>  {
     const [itemprice, setItemPrice] = useState<any>(0);
     const [itemprice2, setItemPrice2] = useState<any>(0);
     const [itemname, setItemName] = useState<any>('');
+    const [auctiontimeremaining,setAuctionTimeRemaining] = useState<number>();
+    const [isauctionremainingtimeset,setIsAuctionRemainingTimeSet] = useState<boolean>(false);
     const [minbidamount, setMinBidAmount] = useState<any>(0);
     const [showbidmodal, setShowBidModal] = useState<boolean>(false);
     const { theme } = useContext(ThemeContext);
@@ -117,15 +119,14 @@ const NFTArt: React.FC<{}> = () =>  {
                 }
                 if(signer) {
                     /* next, create the item */
-                    let contract = new ethers.Contract(NFTFeatureCA!, NFTMarketPlaceFeaturesabi, signer);
-                    
-                    if(contract) {
+                    let featurescontract = new ethers.Contract(NFTFeatureCA!, NFTMarketPlaceFeaturesabi, signer);
+                    let nftcontract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
+                    if(featurescontract) {
                         // const nftitemremtime = await contract.getAuctionItemRemainingTime(nft[1]);
                         // console.log("ghyup opi",nftitemremtime)
-                        const nftitem = await contract.getAuctionItem(nft[1]);
-
+                        const nftitem = await featurescontract.getAuctionItem(nft[1]);
                         if(nftitem && nftitem !== "") {
-                            let ipfsurl = nftitem[2];
+                            let ipfsurl = nftitem[3];
                             let ipfsurlarray = ipfsurl.split('//');
                             
                             let ipfsmetarray = ipfsurlarray[1].split('/');
@@ -147,8 +148,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                 price: nftitem.sellingprice,
                                 itemId: nftitem.itemId,
                                 biddingduration: nftitem.biddingduration,
-                                minbidamount: nftitem.minbidamount,
-                                sold: nftitem.sold
+                                minbidamount: nftitem.minbidamount
                             }
                             
                             setNftAuctItem(item);
@@ -162,7 +162,14 @@ const NFTArt: React.FC<{}> = () =>  {
                                     setBnbDollarPrice(bnbPriceInUsd)
                                 }
                             });
-                            const getitembids = await contract.getBidsForItem(item.itemId?.toString());
+                            const gettimeremaining = await featurescontract.getAuctionItemRemainingTime(item.itemId?.toNumber());
+                            console.log(" get rem time",gettimeremaining.toNumber());
+                            if(gettimeremaining) {
+                                setAuctionTimeRemaining(gettimeremaining.toNumber());
+                                setIsAuctionRemainingTimeSet(true);
+                            }
+                            
+                            const getitembids = await nftcontract.getAllBidsForItem(item.itemId?.toNumber());
                             if(getitembids.length > 0) {
                                 await getitembids.forEach(async (element:any) => {
                                     if(element[1] && element[1] !== "") {
@@ -228,8 +235,6 @@ const NFTArt: React.FC<{}> = () =>  {
             if(!isConnected) {
                 open();
             }else {
-                console.log("min bid p",minbidamount)
-                console.log(" bid p",bidPrice)
                 if(minbidamount > bidPrice) {
                     setShowAlertDanger(true);
                     seterrorMessage(`Minimum bid amount is ${minbidamount}`);
@@ -250,7 +255,7 @@ const NFTArt: React.FC<{}> = () =>  {
                     try {
                         
                         let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
-                        const bidnftC = await contract.bidNFT(_tokenId,_itemId,bidPrice,{gasLimit: 1000000});
+                        const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
                         
                         bidnftC.wait().then(async (receipt:any) => {
                             // console.log(receipt);
@@ -263,7 +268,6 @@ const NFTArt: React.FC<{}> = () =>  {
                          })
                         
                     } catch (error: any) {
-                        console.log("t error",error);
                         setShowLoading(false);
                         setShowBgOverlay(true);
                         setShowAlertDanger(true);
@@ -287,14 +291,14 @@ const NFTArt: React.FC<{}> = () =>  {
                 setShowAlertDanger(false);
                 setShowLoading(true);
                 setShowBidModal(false);
-                const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                const signer = provider.getSigner();
+                setShowBgOverlay(true);
                 
                 try {
-                    
+                    const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+                    const signer = provider.getSigner();
+
                     let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
-                    const purchasemethod: string = "Buy";
-                    const buynftC = await contract.createMarketSale(itemId,address,purchasemethod,price,username, {gasLimit: 1000000});
+                    const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});
                     
                     buynftC.wait().then(async (receipt:any) => {
                         // console.log(receipt);
@@ -307,7 +311,7 @@ const NFTArt: React.FC<{}> = () =>  {
                         })
                     
                 } catch (error: any) {
-                    console.log("t error",error);
+                    console.log("error c",error);
                     setShowLoading(false);
                     setShowBgOverlay(true);
                     setShowAlertDanger(true);
@@ -438,7 +442,7 @@ const NFTArt: React.FC<{}> = () =>  {
                     <div className={styles.bidnftitem_c_ina}>
                         <div className={styles.list_tc}>
                             <label>Enter bid amount</label>
-                            <input type='text' onChange={(e) => setBidPrice(e.target.value) } placeholder='200BNB'/>
+                            <input type='number' onChange={(e) => setBidPrice(e.target.value) } placeholder='20'/>
                         </div>
                     </div>
                     <div>
@@ -471,7 +475,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                 </div>
                                 <div className={styles.descp_m}>
                                     <div className={styles.descp_m_in}>
-                                        <span className={styles.by}>By</span> <span className={styles.fr}>FIFAREWARD {<FontAwesomeIcon icon={faCircleCheck} style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
+                                        <span className={styles.by}>By</span> <span className={styles.fr}>{username.toUpperCase()} {<FontAwesomeIcon icon={faCircleCheck} style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
                                     </div>
                                     <p>
                                         {nftauctItem?.description}
@@ -490,18 +494,22 @@ const NFTArt: React.FC<{}> = () =>  {
                             </div>
                             <div className={styles.intro_p}>
                             <p>
-                                Created By <span className={styles.createdby}>FIFAREWARD</span>
+                                Created By <span className={styles.createdby}>{username.toUpperCase()}</span>
                             </p>
                             </div>
                         </div>
                     </div>
                     <div className={styles.nft_auctbuy}>
-                        <div className={styles.sales_p}>
-                            <span>Sales ends </span> 
-                        </div>
-                        <div className={styles.timer}>
-                            <NFTCountdownTimer time={8640000}/>
-                        </div>
+                        {isauctionremainingtimeset &&
+                            <div>
+                                <div className={styles.sales_p}>
+                                    <span>Sales ends </span> 
+                                </div>
+                                <div className={styles.timer}>
+                                    <NFTCountdownTimer time={auctiontimeremaining}/>
+                                </div> 
+                            </div>
+                        }
                         <div className={styles.nft_p}>
                             <div className={styles.cp}>
                                 <span className={styles.cp_in}>Current price</span>
@@ -634,7 +642,7 @@ const NFTArt: React.FC<{}> = () =>  {
                             </div>
                             <div className={styles.descp_m}>
                                 <div className={styles.descp_m_in}>
-                                    <span className={styles.by}>By</span> <span className={styles.fr}>FIFAREWARD {<FontAwesomeIcon icon={faCircleCheck} style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
+                                    <span className={styles.by}>By</span> <span className={styles.fr}> {username.toUpperCase()} {<FontAwesomeIcon icon={faCircleCheck} style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
                                 </div>
                                 <p>
                                     {nftauctItem?.description}

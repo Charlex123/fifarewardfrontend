@@ -77,8 +77,8 @@ const Dapp:React.FC<{}> = () =>  {
   const closeDappConAlerted = () => {
     setisWalletAddressUpdated(!isWalletAddressUpdated);
   }
+
   useEffect(() => {
-    
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
