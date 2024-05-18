@@ -11,9 +11,18 @@ interface DragDropImageUploadProps {
 
 const DragDropImageUpload: React.FC<DragDropImageUploadProps> = ({ onFileUpload }) => {
   const [imagePreview, setImagePreview] = useState<string | null>(null);
-
+  const [error, setError] = useState<string>('');
   const onDrop = useCallback((acceptedFiles: File[]) => {
+    
     const file = acceptedFiles[0];
+    if (file) {
+      if (file.size > 5 * 1024 * 1024) {
+        setError('File size is too large. Maximum size is 5MB.');
+        return;
+      }
+      setError('');
+    }
+    
     onFileUpload(file);
 
     const reader = new FileReader();
@@ -52,9 +61,12 @@ const DragDropImageUpload: React.FC<DragDropImageUploadProps> = ({ onFileUpload 
           </div>
       }
       {imagePreview && (
-      <div className={styles.img_prev}>
-        <Image src={imagePreview} alt="Preview" className={styles.preview} width={100} height={100} style={{objectFit: 'cover',margin: '0 auto',width: '100%',position: 'absolute',height: '100%',zIndex: 0,borderRadius: '16px'}}/>
-      </div>
+      <>
+        <div className={styles.img_prev}>
+          <Image src={imagePreview} alt="Preview" className={styles.preview} width={100} height={100} style={{objectFit: 'cover',margin: '0 auto',width: '100%',position: 'absolute',height: '100%',zIndex: 0,borderRadius: '16px'}}/>
+        </div>
+        <div>{error}</div>
+      </>
       )}
     </div>
   );

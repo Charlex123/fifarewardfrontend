@@ -184,7 +184,7 @@ const toggleWA = (e: any) => {
               <div className={dappstyles.refbtn}><button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
             </div>
             <div><small>Share referral link to earn more FRD!</small></div>
-            <div className={dappstyles.cw}>Connected Wallet: <span style={{color: 'orange'}}>{shortwalletaddress}</span><div style={{color: 'orange'}} className={dappstyles.cws}><div>{walletaddress}</div></div><button onClick={(e) => toggleWA(e.target)}>view</button></div>
+            <div className={dappstyles.cw}>Connected Wallet: <span style={{color: 'orange'}}>{shortwalletaddress == "undefined" ? "Not connected" : 'Not connected'}</span> <div style={{color: 'orange'}} className={dappstyles.cws}><div>{walletaddress}</div></div><button onClick={(e) => toggleWA(e.target)}>view</button></div>
         </div>
     </>
   );

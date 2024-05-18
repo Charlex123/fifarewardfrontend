@@ -205,7 +205,7 @@ useEffect(() => {
           <div className={styles.hero_h1}>
             <div>
               <h1 className={styles.h1}>
-                FIFA REWARD  
+                FIFAREWARD  
               </h1>
             </div>
             <Typed
@@ -246,7 +246,7 @@ useEffect(() => {
             <Image src={Heroimg} alt='hero img' style={{objectFit: "contain",marginTop: '5rem'}} quality={90} />
           </div> */}
       </div>
-      {/* fifa reward betting */}
+      {/* fifareward betting */}
       <div className={styles.connectworld}>
           <h1>Connecting the world through football</h1>
           <div className={styles.conn_inner}>

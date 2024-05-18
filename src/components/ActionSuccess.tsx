@@ -40,7 +40,7 @@ const ActionSuccessModal:React.FC<Props> = ({prop,onChange}) => {
             <div className={actionsuccessmodalstyles.showactioncomp}>
                 <div className={actionsuccessmodalstyles.showactioncompin}>
                     <div className={actionsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FontAwesomeIcon icon={faXmark} onClick={(e) => closeActionModal()} />}</button></div>
-                    <h3>{prop} was successfull</h3>
+                    <h3>{prop} was successful</h3>
                     {/* <div className={actionsuccessmodalstyles.logbtn}>
                         <button type='button' title='button' onClick={(e) => showactionModal(e.target)}>Login {<FontAwesomeIcon icon={faRightFromBracket}/>}</button>
                     </div> */}

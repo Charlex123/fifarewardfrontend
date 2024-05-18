@@ -149,7 +149,7 @@ function Navbar() {
                       <a href='/nft/mynfts' rel='noopener noreferrer' className={styles.si}> NFTs</a>
                     </li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
-                        <a href='/mining' rel='noopener noreferrer' className={styles.si}>Mine FRD</a>
+                        <a href='/mining' rel='noopener noreferrer' className={styles.si}>Farm FRD</a>
                     </li>
                     <li>
                       <a href='/referrals' rel='noopener noreferrer' className={styles.si}>Referrals</a>

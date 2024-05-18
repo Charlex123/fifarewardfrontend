@@ -1,0 +1,490 @@
+.main {
+    width: 100%;margin-top: 0;margin-bottom: 0;
+    padding: 120px 0 120px 0;position: relative;
+}
+/* .main_bg_overlay {
+    position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
+} */
+.lighttheme {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+}
+.darktheme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+.main h1 {
+    font-family: "Poppins",sans-serif;font-size: 25px;text-align: center;padding: 0 20px;
+    font-weight: 800;color: #e3a204;position: relative;z-index: 9;margin: 1rem auto;
+}
+.main .intro_p {
+    z-index: 9;position: relative;width: 70%;margin: 1rem auto 2rem auto;text-align: center;
+}
+.main .intro_p p {
+    font-family: "Poppins", sans-serif;font-size: 18px;
+}
+.main_c {
+    width: 100%;display: flex;flex-direction: row;justify-content: space-between;margin-top: 50px;margin-bottom: 150px;
+    flex-wrap: wrap;
+}
+.settings_bg_overlay {
+    position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
+}
+.main .settings h2 {
+    font-size: 14px;font-weight: 600;text-align: center;margin: 1rem auto;
+}
+.main .settings .img_sel h2 {
+    width: fit-content;padding: 4px 50px;
+}
+.main .settings .settings_in {
+    position: relative;z-index: 9;
+}
+.main .settings .bg_option {
+    display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-evenly;align-items: flex-start;
+}
+.main .settings .bg_option .bg_options_ {
+    width: 140px;height: 150px;margin: 5px 0 5px 0;border-radius: 8px;
+}
+.main .settings .bg_option .bg_options_ .bg_opt_text {
+    margin: 5px auto 20px auto;text-align: center;font-size: 12px;font-family: "Poppins";font-weight: 900;
+}
+.chat{
+    margin: 0 auto;padding: 6px 12px 6px 12px;
+    width: 100%;
+    position: relative;
+    background-image: url("../assets/images/whatsappbgmain.png");background-size: cover;
+    background-repeat: no-repeat;
+}
+.card {
+    background-color: transparent !important;position : relative;z-index: 9;height: 100%;
+}
+.red_back {
+    margin: 1rem;z-index: 11;position: relative;
+}
+.red_back a {
+    color: white !important;font-family: "Poppins";z-index: 11 !important;font-size: 14px;
+}
+.chat_wrapper {
+    width: 100%;z-index: 10;margin-bottom: 9rem;height: 100%;
+}
+.contacts_body {
+    padding:  0.75rem 0 !important;
+    overflow-y: auto;
+    white-space: nowrap;
+}
+.msg_card_body{
+    overflow-y: auto !important;z-index: 0;position: relative;height: 100% !important;margin: 0 auto 4rem auto;
+}
+.card_header{
+    border-radius: 15px 15px 0 0 !important;
+    border-bottom: 0 !important;
+}
+.card_footer{
+    width: 100%;position: absolute;bottom: 0;margin-top: 130px;
+    border-top: 0 !important;margin-bottom: 1.5rem;
+}
+.container{
+    align-content: center;
+}
+.search{
+    border-radius: 15px 0 0 15px !important;
+    background-color: rgba(0,0,0,0.3) !important;
+    border:0 !important;
+    color:white !important;
+}
+.search:focus{
+     box-shadow:none !important;
+   outline:0px !important;
+}
+.input_group {
+    display: flex;flex-direction: row;align-items: flex-start;
+}
+.input_group .text_mic_icons {
+    align-items: center;margin: auto;margin-left: 10px;
+}
+.type_msg{
+    background-color: rgba(92, 90, 90, 0.3) !important;
+    border:0 !important;
+    color:white !important;
+    border-radius: 4px;
+    padding: 3px 4px 3px 4px;
+    min-height: 60px;
+    height: inherit;
+    width: 95%;
+    overflow-y: auto;font-size: 14px !important;
+}
+    .type_msg:focus{
+     box-shadow:none !important;
+   outline:0px !important;
+}
+.attach_btn{
+border-radius: 15px 0 0 15px !important;
+background-color: rgba(0,0,0,0.3) !important;
+    border:0 !important;
+    height: 40px;
+    color: white !important;
+    cursor: pointer;
+}
+.send_btn{
+border-radius: 0 10px 10px 0 !important;
+background-color: rgba(0,0,0,0.3) !important;
+    border:0 !important;
+    height: 40px;
+    color: white !important;
+    cursor: pointer;
+}
+.voice_btn{
+    margin: auto;text-align: center;
+    border:0 !important;
+    height: 40px;
+    color: white !important;
+    cursor: pointer;
+}
+.voice_btn .voice_btn_{
+    margin-left: 0;text-align: center;
+    cursor: pointer;margin-top: 10px;
+}
+.search_btn{
+    border-radius: 0 15px 15px 0 !important;
+    background-color: rgba(0,0,0,0.3) !important;
+    border:0 !important;
+    color: white !important;
+    cursor: pointer;
+}
+.contacts{
+    list-style: none;
+    padding: 0;
+}
+.contacts li{
+    width: 100% !important;
+    padding: 5px 10px;
+    margin-bottom: 15px !important;
+}
+.active{
+    background-color: rgba(0,0,0,0.3);
+}
+.user_img{
+    height: 40px;
+    width: 40px;
+    border: none;
+    border-radius: 50%;
+}
+.user_img_msg{
+    height: 40px;
+    width: 40px;
+    border:1.5px solid #f5f6fa;
+
+}
+.bot_img_msg{
+    height: 40px;
+    width: 40px;
+    border:1.5px solid #f5f6fa;
+
+}
+.user_file{
+    height: 150px;
+    width: 150px;
+    border-radius: 4px !important;
+}
+.doctor_file{
+    height: 150px;
+    width: 150px;
+    border-radius: 4px !important;
+}
+.img_cont{
+    position: relative;
+    height: 70px;
+    width: 70px;
+}
+.img_cont_msg{
+    height: 40px;
+    width: 40px;
+}
+.online_icon{
+position: absolute;
+height: 10px;
+width:10px;
+background-color: #4cd137;
+border-radius: 50%;
+bottom: 1.8em;
+right: 1.8em;
+border:1.5px solid white;
+}
+.offline{
+background-color: #c23616 !important;
+}
+.user_info{
+margin-top: -.2rem;
+margin-bottom: auto;
+margin-left: 1rem;font-family: "Poppins";
+}
+.user_info span{
+font-size: 14px;
+color: white;
+}
+.user_info_t{
+margin-top: auto;
+margin-bottom: 1rem;border-radius: 8px;
+margin-left: 15px;font-family: "Poppins";
+background-color: rgba(226, 248, 230, 0.23);padding: .4rem 1rem;
+}
+.user_info_t span{
+font-size: 14px;
+color: white;
+}
+.user_info p{
+font-size: 10px;
+color: rgba(255,255,255,0.6);
+}
+.video_cam{
+margin-left: 50px;
+margin-top: 5px;
+}
+.video_cam span{
+color: white;
+font-size: 20px;
+cursor: pointer;
+margin-right: 20px;
+}
+.chat_convo {
+    display: flex;flex-direction: row;justify-content: space-between;
+}
+.msg_cotainer{
+margin-top: auto;
+margin-bottom: auto;
+margin-left: 10px;
+border-radius: 25px;
+background-color: #82ccdd;
+padding: 10px;
+position: relative;
+}
+.u_name {
+font-family: "Poppins";font-size: 16px;color: white;margin-right: .5rem;text-align: right;
+}
+.doc_name {
+font-family: "Poppins";font-size: 16px;color: white !important;margin-left: .5rem;text-align: left;
+}
+.user_msg_cotainer_send {
+margin-top: 4px;
+margin-bottom: 4px;
+margin-left: 0;
+display: inline-flex;
+width: fit-content;
+padding: 2px;
+white-space: initial;
+position: relative;
+}
+.user_msg_cotainer_send .message {
+    position: relative;
+    font-family: "Montserrat";
+    font-size: 14.5px;
+    border-radius: 8px;
+    max-width: 450px;
+    margin-right: 5px;
+    background-color: #ffffff;
+    align-items: left !important;
+    padding: 6px 12px;
+    color: #000000 !important;
+    z-index: 9;
+  }
+/* Tooltip */
+.user_msg_cotainer_send .message:before,
+.user_msg_cotainer_send .message:after {
+  content: "";
+  position: absolute;
+  width: 20px; /* Adjusted width */
+  height: 20px; /* Adjusted height */
+  right: -8px; /* Negative of the width */
+  background-color: transparent;
+  border-top: 10px solid #ffffff;
+  border-right: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  border-left: 10px solid transparent; /* Adjusted shadow */
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 0;
+  border-bottom-left-radius: 20px;
+  border-top-left-radius: 20px;
+  top: 2px; /* Positioning to the middle vertically */
+}
+
+.user_msg_cotainer_send .message:before {
+  border-radius: 30px; /* Adjusted border radius */
+  /* top property adjusted to align with pseudo-element */
+  top: 2px;
+}
+.grpmembers_msg_cotainer_send {
+    margin-top: 4px;
+    margin-bottom: 4px;
+    margin-right: 0;
+    display: inline-flex;
+    width: fit-content;
+    padding: 2px;
+    white-space: initial;
+    position: relative;
+    text-align: left !important;
+}
+.grpmembers_msg_cotainer_send .message {
+    position: relative;
+    font-family: "Montserrat";
+    font-size: 14.5px;
+    border-radius: 8px;
+    max-width: 450px;
+    margin-left: 5px;
+    background-color: #e3a204;
+    align-items: left !important;
+    padding: 6px 12px;
+    margin-right: 0;
+    color: #000000 !important;
+    z-index: 9;
+}
+/* Tooltip */
+.grpmembers_msg_cotainer_send .message:before,
+.grpmembers_msg_cotainer_send .message:after {
+  content: "";
+  position: absolute;
+  width: 20px; /* Adjusted width */
+  height: 20px; /* Adjusted height */
+  left: -20px; /* Negative of the width */
+  top: 2px;
+  z-index: 0;
+  background-color: transparent;
+  box-shadow: 12px 0 0 0 #e3a204; /* Adjusted shadow */
+  bottom: 25px; /* Positioning to the middle vertically */
+}
+
+.grpmembers_msg_cotainer_send .message:before {
+  border-top-right-radius: 12px; /* Adjusted border radius */
+  bottom: 25px; /* Adjusted to align with pseudo-element */
+}
+.message a {
+color: rgb(214, 152, 7) !important;
+}
+.user_reactn {
+margin-left: .5rem;color: white !important;
+}
+.user_reactn span {
+color: white !important;
+}
+.user_reactn .fa-regular {
+font-size: 18px;
+}
+.msg_time{
+position: relative;
+left: 0;
+bottom: 0;
+color: rgba(255,255,255,0.5);
+font-size: 12px;
+font-family: "Ubuntu";
+}
+.msg_time_send{
+position: relative;
+right:0;
+bottom: 0;
+text-align: right;
+color: rgba(55, 55, 55, 1);
+font-size: 12px;
+}
+.doc_msg_time_send{
+position: relative;
+right:0;
+bottom: 0;
+text-align: right;
+color: rgba(55, 55, 55, 1);
+font-size: 12px;
+}
+.doc-con {
+float: left;margin: 1rem .2rem;text-align: left;background-color: orange !important;
+}
+.msg_head{
+position: relative;
+}
+.msg_head ul {
+    color: #e2d7d7;padding: 15px;
+}
+.msg_head ul li {
+    font-size: 13px;font-family: "Poppins", sans-serif;color: #a6a6a9;
+}
+#action_menu_btn{
+position: absolute;
+right: 10px;
+top: 10px;
+color: white;
+cursor: pointer;
+font-size: 20px;
+}
+.action_menu{
+z-index: 1;
+position: absolute;
+padding: 15px 0;
+background-color: rgba(0,0,0,0.5);
+color: white;
+border-radius: 15px;
+top: 30px;
+right: 15px;
+display: none;
+}
+.action_menu ul{
+list-style: none;
+padding: 0;
+margin: 0;
+}
+.action_menu ul li{
+width: 100%;
+padding: 10px 15px;
+margin-bottom: 5px;
+}
+.action_menu ul li i{
+padding-right: 10px;
+
+}
+.action_menu ul li:hover{
+cursor: pointer;
+background-color: rgba(0,0,0,0.2);
+}
+.p-outline {
+width: 100%;margin: 1rem auto 4rem auto;display: flex;flex-wrap: wrap;justify-content: space-around;
+}
+.p-outline .plo {
+margin: 2rem 0;color: white;cursor: pointer;
+}
+.p-outline .plo a{
+color: white;font-family: "Poppins";border-radius: 20px;width: max-content;padding: .6rem 1rem;background-color: rgba(34, 216, 34, 0.13);margin: 1rem 0;font-size: 14px;
+}
+.err-alat {
+padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "Poppins";border-radius: 8px;background: rgba(120, 224, 143, 1);
+}
+.div_overlay {
+    position:fixed; z-index: 50; background-color: rgba(55, 55, 55, 0.94);overflow-y: auto; 
+    height: 100%;width: 100%; padding: 1rem;top: 0;bottom: 0;right: 0;left: 0;display: none;
+}
+.div_overlay_inna {
+border-radius: 4px;width: 50%;margin: auto;background-color: white;
+}
+.div_overlay_inna button::first-of-type {
+background-color: white !important;color: rgba(55, 55, 55, 1) !important;
+}
+.div_overlay_inna button::last-of-type {
+background-color: green !important;color: rgba(255, 255, 255, 1) !important;
+}
+.terms {
+font-size: 13px;font-family: "Poppins";color: white;margin: -.4rem 0 0 .4rem;
+}
+.terms a {
+color: rgba(220, 156, 7);
+}
+.terms a:hover {
+color: rgba(200, 200, 200, 1);
+}
+.instructions {
+font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
+}
+.fa-microphone {
+font-size: 2rem;
+color: white;
+padding: 0.5rem;
+cursor: pointer;
+}
+.fa-microphone-slash {
+color: red;
+font-size: 2rem;
+}

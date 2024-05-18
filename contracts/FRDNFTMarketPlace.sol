@@ -16,6 +16,7 @@ struct AuctionItem {
     uint autionTime;
     string tokenURI;
     uint biddingduration;
+    uint bidduration;
     uint creatorsalesroyalty;
     uint256 minbidamount;
     uint256 sellingprice;
@@ -78,6 +79,11 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         uint256 amount
     );
 
+    event ItemTransferred (
+        uint256 indexed itemId,
+        address receiver
+    );
+
     event BidRefunded(
         uint256 indexed itemId,
         address bidderaddress,
@@ -138,6 +144,7 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
             block.timestamp,
             MintedNFTIds[tokenId].tokenURI,
             block.timestamp + (duration * 1 days),
+            duration,
             creatorsalesroyalty,
             minbidamount,
             sellingprice,
@@ -205,6 +212,26 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
             _saleNFT(itemId, lastBid.biddingprice,lastBid.bidderaddress);
         }
         
+    }
+
+    function transferNFT(address receiver, uint itemId) public payable nonReentrant {
+        if(msg.sender == owner && receiver != address(0)) {
+            directNFTTransfer(itemId, receiver);
+        }else {
+            revert("Unauthorized");
+        }
+    } 
+
+    function directNFTTransfer(uint itemId, address receiver) internal {
+        AuctionItem storage item = idToAuctionItem[itemId];
+        item.seller = payable (receiver);
+        item.owner = payable (receiver);
+        uint tokenId = item.tokenId;
+        MintedNFTIds[tokenId].owner = payable(receiver);
+        MintedNFTs[msg.sender].owner = payable(receiver);
+
+        _transfer(address(this), receiver, item.tokenId);
+        emit ItemTransferred(itemId, receiver);
     }
 
     function DirectNFTSale(uint256 itemId, uint amount) public payable nonReentrant {
@@ -296,6 +323,17 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
         return itemBids[itemId];
     }
 
+    function resetbiddingdurtion(uint _itemId) external nonReentrant {
+        AuctionItem storage item = idToAuctionItem[_itemId];
+        uint currentTime = block.timestamp;
+        uint biddingduration = item.biddingduration;
+        uint bidduration = item.bidduration;
+        
+        if (currentTime >= biddingduration) {
+            item.biddingduration = currentTime + (bidduration * 1 days);
+        } 
+    }
+
     /* Unlists an item previously listed for sale and transfer back to the creator */
     function unListAuctionItem(
       uint256 itemId
@@ -342,4 +380,5 @@ contract FRDNFTMarketPlace is ReentrancyGuard, ERC721URIStorage {
       
       emit updateBiddingPrice(tokenId, itemId, newminbidamount, newsellingprice);
     }
+
 }

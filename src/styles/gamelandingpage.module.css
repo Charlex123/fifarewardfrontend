@@ -1,0 +1,20 @@
+/* components/ImageSlider.module.css */
+.sliderContainer {
+    width: 250px;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+  }
+  
+  .sliderWrapper {
+    display: flex;
+    transition: transform 0.5s ease-in-out;
+  }
+  
+  .slide {
+    min-width: 250px;
+    height: 250px;
+    background-size: cover;
+    background-position: center;
+  }
+  

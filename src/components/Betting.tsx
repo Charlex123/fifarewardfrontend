@@ -466,7 +466,7 @@ const closeBgModal = () => {
     {/* <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div> */}
     <HelmetExport>
         <title>Bet - Bet on your best teams, competitions  and fixture | FifaReward</title>
-        <meta name='description' content='Participate in the FifaReward Airdrop and and accumulate as much tokens as you can. FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifareward a layer2 roll up'/>
     </HelmetExport>
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={bettingstyle.main}>

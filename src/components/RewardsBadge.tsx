@@ -16,7 +16,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import bronzemedal from '../assets/images/medal.png'
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
-import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
+import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { fas, faCheck, faCheckCircle,faAlignJustify } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
@@ -43,7 +43,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
   const { walletProvider } = useWeb3ModalProvider();
 
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
-  const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+  const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
   const NFTFeaturesCA = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
   
   useEffect(() => {
@@ -88,10 +88,11 @@ const RewardsBadge:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const BettingFeatureContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-          const reslt = await BettingFeatureContract.getUserBetCount(address);
-          setBetCount(reslt);
-          console.log(reslt)
+          const BettingFeatureContract = new ethers.Contract(BettingCA!, BettingFeaturesAbi, signer);
+          const createdbetreslt = await BettingFeatureContract.getBetIdsCreatedByUserCount(address);
+
+          const joinedbetreslt = await BettingFeatureContract.getBetIdsUserJoinedCount(address);
+          sumTwoIntegers(createdbetreslt.toNumber(),joinedbetreslt.toNumber());
         }
           
       } catch (error:any) {
@@ -110,7 +111,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
           
           const NFTFeatureContract = new ethers.Contract(NFTFeaturesCA!, FRDNFTFeaturesAbi, signer);
           const reslt = await NFTFeatureContract.getUserNFTMintedCount();
-          setBetCount(reslt);
+          setNFTCount(reslt);
           console.log(reslt)
         }
           
@@ -118,7 +119,22 @@ const RewardsBadge:React.FC<{}> = () =>  {
         console.log(error)
       }
     }
-    NFTCount()
+    NFTCount();
+
+    function sumTwoIntegers( createdbetcount: number, joinedbetcount: number) {
+      try {
+        if (Number.isInteger(createdbetcount) && Number.isInteger(joinedbetcount)) {
+          const sum = createdbetcount + joinedbetcount;
+          console.log("defttr", sum);
+          setBetCount(sum);
+          return sum;
+        } else {
+          throw new Error("All arguments must be integers.");
+        }
+      } catch (error: any) {
+        console.log("sum error", error);
+      }
+    }
   
  }, [userId,address,router,username,walletaddress,userObjId])
 

@@ -114,13 +114,14 @@ function Navbar() {
                     {isLoggedIn &&
                         <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
                     }
-                    <li><a href='/airdrop' rel='noopener noreferrer'>AirDrop</a></li>
+                    <li><a href='/chatforum' rel='noopener noreferrer'>Chat Forum</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
-                    <li><a href='/mining' rel='noopener noreferrer'>Mine</a></li>
+                    <li><a href='/mining' rel='noopener noreferrer'>Farm</a></li>
                     <li><a href='/nft' rel='noopener noreferrer'>NFT Market Place</a></li>
                     {/* <li><a href='/aichat' rel='noopener noreferrer'>Prediction AI</a></li> */}
                     <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li>
+                    <li><a href='/chatforum' rel='noopener noreferrer'>Chat Forum </a></li>
                     
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} onMouseOut={toggleIconDown2}>
                         Features {dropdwnIcon2}

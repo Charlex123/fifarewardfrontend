@@ -9,6 +9,7 @@ const nextConfig = {
     domains: ['i.ibb.co',
     'ibb.co',
     'imgbox.com',
+    'icon-library.com',
     'ipfs',
     'nftstorage.link',
     'media.api-sports.io',

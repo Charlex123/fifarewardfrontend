@@ -80,6 +80,30 @@
     border: 1px solid #96939386;background-color: #252525c2;border-radius: 0;
     color: var(--text-color-dark);
 }
+.main_w .main_c .uploadprof {
+    width: 100%;
+}
+.main_w .main_c .uploadprof  h3 {
+    margin: 20px auto 10px auto;text-align: center;
+}
+.main_w .main_c .dragdrop {
+    width: 96%;margin: 10px auto 50px auto;padding: 0 0 0 0;
+    border-radius: 16px;margin-top: 0;height: 350px;
+    border: 1px solid #3f3f3f;
+}
+.main .main_c .rwds {
+    width: 94%;margin: 25px auto;text-align: center;border-radius: 16px;padding: 10px;
+    font-size: 13px;
+}
+.main .main_c .rwds .ubagde {
+    color: #e3a204;text-transform: capitalize;
+}
+.main .main_c .rwds .cat {
+    color: #e3a204;
+}
+.main .main_c .rwds .points {
+    display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;padding: 10px 20px;
+}
 .main .width_stake {
     position: absolute;margin: 0 auto; width: 40%;
     border-radius: 16px;z-index: 99;text-align: center;left: 0;right: 0;
@@ -266,7 +290,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     width: fit-content;margin: 30px auto;
 }
 .main .mine_ {
-    width: 300px;margin: 30px auto;
+    width: 300px;margin: 30px auto;border-radius: 4px;
 }
 .main .mine_ .mine_r {
     font-size: 14px;text-align: left;margin: 20px 0 0 30px;
@@ -276,7 +300,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     width: fit-content;padding: 2px 0 2px 0;border-radius: 4px;
 }
 .main .mine_ .mine_m .mfrd {
-    border-radius: 50%;width: fit-content;background-color: #ffffff;color: #010101;
+    border-radius: 20px;width: fit-content;background-color: #ffffff;color: #010101;
     padding: 1px 4px;
 }
 .main .mine_ .mine_m .m_frd {
@@ -416,13 +440,22 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 .main .stake .stake_mod .s_m_in .cw_btn_div button.calcrwd {
     background-color: orange;
 }
+.main .stake .stake_mod .s_m_in .cw_btn_div button.calcrwd {
+    background-color: orange;
+}
+.main .stake .stake_mod .s_m_in .cw_btn_div button.stopmining {
+    background-color: rgb(255, 0, 0);
+}
 .main .stake .stake_mod .s_m_in .cw_btn_div button.withd {
     background-color: orangered;
+}
+.main .stake .stake_mod .s_m_in .cw_btn_div button.withde {
+    background-color: rgba(202, 163, 149, 0.547);color: #f1f1f1;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div button.stakebtn:active,.main .stake .stake_mod .s_m_in .cw_btn_div button.stakebtn:focus {
     background-color: #7e837e;
 }
-.main .stake .stake_mod .s_m_in .cw_btn_div button.calcrwd:active,.main .stake .stake_mod .s_m_in .cw_btn_div button.calcrwd:focus {
+.main .stake .stake_mod .s_m_in .cw_btn_div button.calcrwd:active,.main .stake .stake_mod .s_m_in .cw_btn_div button.calcrwd:focus,.main .stake .stake_mod .s_m_in .cw_btn_div button.stopmining:focus {
     background-color: #7e837e;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div button.withd:active,.main .stake .stake_mod .s_m_in .cw_btn_div button.withd:focus {

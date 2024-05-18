@@ -17,7 +17,7 @@ pragma solidity^0.8.9;
 import "./SafeMath.sol";
 import "./FRDNFTMarketPlace.sol";
 import "./IFRDNFTMarketPlace.sol";
-// import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
+import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
 import "hardhat/console.sol";
 
 contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
@@ -151,7 +151,14 @@ contract FRDNFTMarketPlaceFeatures is ReentrancyGuard {
     }
 
     function getAuctionItemRemainingTime(uint _itemId) public view returns (uint) {
-        return block.timestamp - FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(_itemId).autionTime;
+        uint currentTime = block.timestamp;
+        uint biddingdur = FRDNFTMarketPlaceContract.getNFTAuctionItemsMapping(_itemId).biddingduration;
+        
+        if (currentTime >= biddingdur) {
+            return 0;
+        } else {
+            return biddingdur - currentTime;
+        }
     }
 
 }

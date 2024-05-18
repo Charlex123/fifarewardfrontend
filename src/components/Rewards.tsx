@@ -7,7 +7,10 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
-
+import Image from 'next/image';
+import bronzemedal from '../assets/images/medal.png'
+import goldmedal from '../assets/images/gold-medal.png'
+import silvermedal from '../assets/images/silver-medal.png'
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import ConnectWallet from './ConnectWalletButton';
@@ -18,8 +21,9 @@ import ReferralLink from './ReferralLink';
 import { ethers } from 'ethers';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
+import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
+import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ThemeContext } from '../contexts/theme-context';
 import HelmetExport from 'react-helmet';
 import DappNav from './Dappnav';
@@ -40,21 +44,23 @@ const Rewards = () =>  {
 
   const router = useRouter();
 
-  const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOY_CA;
-  const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
-
   const { theme} = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
   const [username, setUsername] = useState("");
+  const [userbadge, setUserbadge] = useState("");
   const [userId, setUserId] = useState("");  
   const [dappConnector,setDappConnector] = useState(false);
 
   const [errorMessage, seterrorMessage] = useState("");
   const [walletaddress, setWalletAddress] = useState("NA"); 
   const [initialValues, setInitialValues] = useState<number[]>([]);
+  const [stakecount, setStakeCount] = useState<number>(0);
+  const [sumofcounts, setSumOfCounts] = useState<number>(0);
+  const [betcount, setBetCount] = useState<number>(0);  
+  const [nftcount, setNFTCount] = useState<number>(0);
   // const [deltaX, setDeltaX] = useState(0);
   // const [draggedRangeIndex, setDraggedRangeIndex] = useState<number | null>(null);
 
@@ -65,7 +71,12 @@ const Rewards = () =>  {
   const { address, chainId, isConnected } = useWeb3ModalAccount();
 
   const [referralLink, setreferralLink] = useState('');
+  const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOY_CA;
+  const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
+  const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+  const NFTFeaturesCA = process.env.NEXT_PUBLIC_FRD_NFTMARKETPLACE_FEATURES_CA;
   
+
   const closeDappConAlert = () => {
     setDappConnector(!dappConnector);
   }
@@ -74,17 +85,116 @@ const Rewards = () =>  {
   useEffect(() => {
     
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    
+    console.log("u det",udetails)
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
       if(username_) {
         setUsername(username_);
         setUserId(udetails.userId)
         setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
+        setUserbadge(udetails.badge);
       }
     }else {
       router.push(`/signin`);
     }
+
+    // get stake count
+    const StakeCount = async () => {
+      try {
+        // setWAlert(!wAlert);
+        if(walletProvider) {
+          const provider = new ethers.providers.Web3Provider(walletProvider as any)
+          const signer = provider.getSigner();
+          
+          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+          const reslt = await StakeContract.getUserStakeCount(address);
+          setStakeCount(reslt);
+          console.log(reslt)
+        }
+          
+      } catch (error:any) {
+        console.log(error)
+      }
+    }
+    StakeCount()
+
+    // get bet count
+    const BetCount = async () => {
+      try {
+        // setWAlert(!wAlert);
+        if(walletProvider) {
+          const provider = new ethers.providers.Web3Provider(walletProvider as any)
+          const signer = provider.getSigner();
+          
+          const BettingFeatureContract = new ethers.Contract(BettingCA!, BettingFeaturesAbi, signer);
+          const createdbetreslt = await BettingFeatureContract.getBetIdsCreatedByUserCount(address);
+
+          const joinedbetreslt = await BettingFeatureContract.getBetIdsUserJoinedCount(address);
+          sumTwoIntegers(createdbetreslt.toNumber(),joinedbetreslt.toNumber());
+        }
+          
+      } catch (error:any) {
+        console.log(error)
+      }
+    }
+    BetCount()
+
+    // get bet count
+    const NFTCount = async () => {
+      try {
+        // setWAlert(!wAlert);
+        if(walletProvider) {
+          const provider = new ethers.providers.Web3Provider(walletProvider as any)
+          const signer = provider.getSigner();
+          
+          const NFTFeatureContract = new ethers.Contract(NFTFeaturesCA!, FRDNFTFeaturesAbi, signer);
+          const reslt = await NFTFeatureContract.getUserNFTMintedCount();
+          setNFTCount(reslt);
+          console.log(reslt)
+        }
+          
+      } catch (error:any) {
+        console.log(error)
+      }
+    }
+    NFTCount();
+
+    function sumTwoIntegers( createdbetcount: number, joinedbetcount: number) {
+      try {
+        if (Number.isInteger(createdbetcount) && Number.isInteger(joinedbetcount)) {
+          const sum = createdbetcount + joinedbetcount;
+          console.log("defttr", sum);
+          setBetCount(sum);
+          return sum;
+        } else {
+          throw new Error("All arguments must be integers.");
+        }
+      } catch (error: any) {
+        console.log("sum error", error);
+      }
+    }
+
+    
+    function sumThreeIntegers(stakecount: number, betcount: number, nftcount: number) {
+      try {
+        if (Number.isInteger(stakecount) && Number.isInteger(betcount) && Number.isInteger(nftcount)) {
+          const sum = stakecount + betcount + nftcount;
+          console.log("defttr", sum);
+          setSumOfCounts(sum)
+          return sum;
+        } else {
+          throw new Error("All arguments must be integers.");
+        }
+      } catch (error: any) {
+        console.log("sum error", error);
+      }
+    }
+
+    // Call the function after 6 seconds
+setTimeout(() => {
+  sumThreeIntegers(stakecount, betcount, nftcount);
+}, 6000);
+
 
   // Function to handle window resize
   const handleResize = () => {
@@ -173,9 +283,25 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 <ReferralLink />
               </div>
 
-                <div>
-                  <div>
-                    <h3>No rewards found, keep performing actions like minting nfts, betting, staking and mining for more rewards </h3>
+                <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
+                  <div className={dappstyles.main_c}>
+                    <div className={`${dappstyles.rwds} ${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']} `}>
+                      <div>
+                        <div className={dappstyles.points}>
+                          <div>
+                            Total Points: {sumofcounts}
+                          </div>
+                          <div>
+                            <span><Image src={bronzemedal} alt='medal' height={30} width={25} style={{float: 'left'}}/> {userbadge}</span>
+                          </div>
+                        </div>
+                        <p>
+                          You're a <span className={dappstyles.ubagde}>{userbadge}</span> user with {sumofcounts} total points, you need a minimum of 50 points to be a <span className={dappstyles.ubagde}>silver</span> with it's benefits, engage more in <a href='/nft/createnft' className={dappstyles.cat}>Minting NFT</a>, <a href='/betting' className={dappstyles.cat}>Bet</a>, <a href='/gaming' className={dappstyles.cat}>Gaming</a>, <a href='/stakes' className={dappstyles.cat}>Staking NFT</a>, <a href='/mining' className={dappstyles.cat}>Farming</a>, etc to be upgraded
+                          to <span className={dappstyles.ubagde}>silver</span> membership
+                        </p>
+                      </div>
+                      <h3>No rewards found, keep performing actions like minting nfts, betting, staking and mining for more rewards </h3>
+                    </div>
                   </div>
                 </div>
 

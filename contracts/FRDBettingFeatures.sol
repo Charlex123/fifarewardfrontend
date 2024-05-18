@@ -68,7 +68,6 @@ contract FRDBettingFeatures is ReentrancyGuard {
         bool userFound = false;
         
         for (uint i = 0; i <= totalUsers; i++) {
-            console.log(" iui ", i,i+1);
             address addr = FRDBettingContract.userIdToAddress(i);
             if (compareStrings(FRDBettingContract.getUserRegistrationDetails(addr).username, _username)) {
                 userAddress = addr;
@@ -143,12 +142,9 @@ contract FRDBettingFeatures is ReentrancyGuard {
     // Function to list all the registered users' details
     function listRegisteredUsers() public view returns (User[] memory) {
         uint totalUsers = FRDBettingContract.nextUserId();
-        console.log("u ii",totalUsers);
         User[] memory userList = new User[](totalUsers);
         for (uint i = 1; i <= totalUsers; i++) {
-            console.log(" i ",i);
             address userAddress = FRDBettingContract.userIdToAddress(i);
-            console.log("u addr",userAddress);
             User memory currentItem = FRDBettingContract.getUserRegistrationDetails(userAddress);
             userList[i - 1] = currentItem;
         }

@@ -1,0 +1,38 @@
+.gameDisplay {
+    background-color: #1a1a1a;
+    padding: 20px;
+    border-radius: 10px;
+    width: 60%;
+    text-align: center;
+    border: 2px solid #00ff00;
+  }
+  
+  .title {
+    color: #00ff00;
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .gameScreen {
+    background-color: #333;
+    height: 400px;
+    margin: 20px 0;
+    border-radius: 10px;
+    border: 2px solid #00ff00;
+  }
+  
+  .startButton {
+    padding: 10px 20px;
+    font-size: 1em;
+    cursor: pointer;
+    background-color: #00ff00;
+    color: #000;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    font-family: 'Orbitron', sans-serif;
+  }
+  
+  .startButton:hover {
+    background-color: #00cc00;
+  }
+  
