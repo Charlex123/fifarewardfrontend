@@ -14,14 +14,14 @@ import MessageInput from '../components/MessageInput';
 import UserList from '../components/UserList';
 import HelmetExport from 'react-helmet';
 import { faEye, faEyeSlash, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faLocationArrow, faMicrophone, faPaperclip, faXmark  } from "@fortawesome/free-solid-svg-icons";
+// import { faLocationArrow, faMicrophone, faMicrophoneSlash, faPaperclip, faXmark  } from "@fortawesome/free-solid-svg-icons";
 // material
 import styles from "../styles/chatforum.module.css";
 import dotenv from 'dotenv';
 dotenv.config();
 // component
 // ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
+// library.add(faEye, faEyeSlash);
 
 let socket: Socket;
 
@@ -48,6 +48,9 @@ const ChatForum: React.FC<{}> = () =>  {
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<number>(); 
   const [profileimage,setProfileImage] = useState<string>('');
+  const [isListening, setIsListening] = useState(false);
+  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const interimTranscriptRef = useRef<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
   const [currentUser, setCurrentUser] = useState<string | null>(null);
@@ -71,6 +74,7 @@ const ChatForum: React.FC<{}> = () =>  {
     const fetchUsers = async () => {
         const {data} = await axios.get('http://localhost:9000/api/users/getusers');
         setUsers(data.data);
+        console.log("users data",data)
     };
 
 
@@ -83,11 +87,18 @@ const ChatForum: React.FC<{}> = () =>  {
         setUserId(udetails.userId);
         setProfileImage(udetails.pic);
         setCurrentUser(udetails._id);
-        socket = io('http://localhost:9000');
-        fetchMessages();
-        fetchUsers();
+        const SERVER = 'http://127.0.0.1:9000';  // Ensure this URL is correct
+        const socket = io('http://localhost:9000')
+        socket.on('connect', () => {
+            console.log('Connected to Socket.IO server');
+            fetchMessages();
+            fetchUsers();
+        });
         socket.on('message', handleNewMessage);
         socket.on('messages', handleMessages);
+        socket.on('connect_error', (error) => {
+            console.error('Connection error:', error);
+        });
       }
     }else {
       router.push(`/signin`);
@@ -100,10 +111,23 @@ const ChatForum: React.FC<{}> = () =>  {
 
   },[])
   
+  const sendMessage = async (text: string, file?: any) => {
+    if (currentUser) {
+      const message: Message = {
+        text,
+        user: currentUser,
+        file,
+        timestamp: new Date(),
+      };
+      socket.emit('sendMessage', message);  // Send the message to the server
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
     if (file && file != null) {
+        sendMessage(text);
       const formData = new FormData();
       formData.append('file', file);
 
@@ -119,17 +143,19 @@ const ChatForum: React.FC<{}> = () =>  {
                 "Content-type": "application/json"
             }
         }  
-        const content = response;
-        const {data} = await axios.post('http://localhost:9000/api/chatforum/sendmessage', {
-            userId,
-            currentUser,
-            content
-        }, config);
-        if(data) {
-            // setActionSuccess(true);
-            // setActionSuccessMessage("Profile upload ")
-        }
-        console.log('File uploaded successfully', data);
+        const content = response.data.fullUrl;
+        console.log("res pom",response.data.fullUrl)
+        // const {data} = await axios.post('http://localhost:9000/api/chatforum/sendmessage', {
+        //     userId,
+        //     currentUser,
+        //     content
+        // }, config);
+        // if(data) {
+        //     console.log("success",data)
+        //     // setActionSuccess(true);
+        //     // setActionSuccessMessage("Profile upload ")
+        // }
+        sendMessage(content);
       } catch (error) {
         console.error('Error uploading file', error);
       }
@@ -151,6 +177,7 @@ const ChatForum: React.FC<{}> = () =>  {
                 // setActionSuccess(true);
                 // setActionSuccessMessage("Profile upload ")
             }
+            sendMessage(text);
         } catch (error) {
             console.log("err mes",error)
         }
@@ -158,13 +185,14 @@ const ChatForum: React.FC<{}> = () =>  {
 
     setText('');
     setFile(null);
+    setFileName('');
   };
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
-      console.log("file to upload",e.target.files[0])
+      setFileName(e.target.files[0].name);
     }
     
   };
@@ -172,6 +200,54 @@ const ChatForum: React.FC<{}> = () =>  {
   const triggerFileInput = () => {
     if (fileInputRef.current) {
       fileInputRef.current.click();
+    }
+  };
+
+  const startListening = () => {
+    if (!('webkitSpeechRecognition' in window)) {
+      console.error('Speech recognition not supported in this browser');
+      return;
+    }
+
+    let talkdiv = document.getElementById("instructions") as HTMLDivElement;
+        talkdiv.innerHTML = "I'm listening ...";
+        talkdiv.style.color = 'orange';
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = 'en-US';
+
+    recognition.onresult = (event: SpeechRecognitionEvent) => {
+      let interimTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; i++) {
+        const transcript = event.results[i][0].transcript;
+        if (event.results[i].isFinal) {
+          setText((prevText) => prevText + transcript);
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+      interimTranscriptRef.current = interimTranscript;
+    };
+
+    recognition.onend = () => {
+      setIsListening(false);
+      interimTranscriptRef.current = ''; // Reset interim transcript when recognition ends
+    };
+
+    recognition.start();
+    recognitionRef.current = recognition;
+    setIsListening(true);
+  };
+
+  const stopListening = () => {
+    let talkdiv = document.getElementById("instructions") as HTMLDivElement;
+        talkdiv.innerHTML = "Click the microphone button to speak";
+        talkdiv.style.color = 'white';
+    if (recognitionRef.current) {
+      recognitionRef.current.stop();
+      setIsListening(false);
     }
   };
 
@@ -261,7 +337,7 @@ const ChatForum: React.FC<{}> = () =>  {
                         
                         <div id="success-pop" aria-hidden="true" className={styles.div_overlay}>
                             <div className={styles.div_overlay_inna}>
-                                <span className={styles.pull_right}>{<FontAwesomeIcon icon={faXmark}/>}</span>
+                                {/* <span className={styles.pull_right}>{<FontAwesomeIcon icon={faXmark}/>}</span> */}
                                 <div id="kkkd">
                                     <Image src={successimage} alt='image' className={styles.mx_auto}/>
                                     <div className={styles.mx_auto}>Success</div>
@@ -274,6 +350,7 @@ const ChatForum: React.FC<{}> = () =>  {
                     <div className={styles.card_footer}>
                         <form method="POST" onSubmit={handleSubmit}>
                             <div className={styles.instructions} id="instructions">Click the microphone button to speak</div>
+                            <div>{fileName && <span className={styles.fileName}>{fileName} selected</span>}</div>
                           <div className={styles.input_group}>
                             <input
                                 hidden
@@ -282,11 +359,11 @@ const ChatForum: React.FC<{}> = () =>  {
                                 accept="image/*,video/*"
                                 ref={fileInputRef}
                             />
-                            <span>{<FontAwesomeIcon icon={faPaperclip} onClick={triggerFileInput} className={styles.fileIcon}/>} {fileName && <span className={styles.fileName}>{fileName}</span>}</span>
-                            <textarea name="" id="message" className={`${styles.form_control} ${styles.type_msg}`} onChange={(e) => setText(e.target.value)} placeholder="Type your message..."></textarea>
+                            {/* <span>{<FontAwesomeIcon icon={faPaperclip} onClick={triggerFileInput} className={styles.fileIcon}/>} </span> */}
+                            <textarea name="" id="message" className={`${styles.form_control} ${styles.type_msg}`} value={text} onChange={(e) => setText(e.target.value)} placeholder="Type your message..."></textarea>
                             <div className={styles.text_mic_icons}>
-                              <div><span className={styles.send_btn}><button type='submit'>{<FontAwesomeIcon icon={faLocationArrow} size='lg' style={{color:'#e3a204'}}/>}</button></span></div>
-                              <div className={styles.voice_btn}><button className={styles.voice_btn_} type="button">{<FontAwesomeIcon icon={faMicrophone} size='lg' />}</button></div>
+                              {/* <div><span className={styles.send_btn}><button type='submit'>{<FontAwesomeIcon icon={faLocationArrow} size='lg' style={{color:'#e3a204'}}/>}</button></span></div> */}
+                              {/* <div className={styles.voice_btn}><button className={styles.voice_btn_} onClick={isListening ? stopListening : startListening} type="button">{<FontAwesomeIcon icon={isListening ? faMicrophoneSlash : faMicrophone} size='lg' />}</button></div> */}
                             </div>
                           </div>
                           

@@ -1,5 +1,5 @@
 import React from 'react'
-import { useContext } from 'react';
+import { useContext, useState, useEffect } from 'react';
 // import { Container } from '../App'
 // import { OutreachButton } from './styles/ButtonVariants.styled'
 // import {HashRouter as Router,} from "react-router-dom";
@@ -7,17 +7,16 @@ import { useContext } from 'react';
 import Image from 'next/image';
 import Helmet from 'react-helmet';
 import styles from '../../styles/landing.module.css'
-import { useState, useEffect } from 'react';
 import Typed from 'react-typed';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import dappimg from '../../assets/images/dapp.png';
-import bnblogo from '../../assets/images/blockchain-binance-white-71f5d555.png';
-import cronlogo from '../../assets/images/blockchain-cronos-light-78484d18.png';
-import ethlogo from '../../assets/images/blockchain-ethereum-white-c6bf63d1.png';
+// import dappimg from '../../assets/images/dapp.png';
+// import bnblogo from '../../assets/images/blockchain-binance-white-71f5d555.png';
+// import cronlogo from '../../assets/images/blockchain-cronos-light-78484d18.png';
+// import ethlogo from '../../assets/images/blockchain-ethereum-white-c6bf63d1.png';
 import stakeimg from '../../assets/images/stake.png';
 import betbg from '../../assets/images/betting.png'
 import binancelogo from '../../assets/images/binance.png';
@@ -27,8 +26,9 @@ import refgroup from '../../assets/images/refgroup.png';
 import huobilogo from '../../assets/images/huobi.png';
 import kucoinlogo from '../../assets/images/kucoin.png';
 import frdbanner from '../../assets/images/frdbanner.gif'
-import fworldmap from '../../assets/images/world-map.png'
-import teamwork from '../../assets/images/Teamwork.png'
+// import fworldmap from '../../assets/images/world-map.png'
+// import teamwork from '../../assets/images/Teamwork.png'
+import Loading from '../Loading';
 import betmob from '../../assets/images/betmob.png';
 import { ThemeContext } from '../../contexts/theme-context';
 import { library } from '@fortawesome/fontawesome-svg-core'
@@ -47,6 +47,7 @@ const [isNavOpen, setNavOpen] = useState(false);
 const [stakeReadMore, setStakeReadMore] = useState(false);
 const [refReadMore, setRefReadMore] = useState(false);
 const [aboutReadMore, setAboutReadMore] = useState(false);
+const [showLoading, setShowLoading] = useState(false);
 // Array of text values to toggle between
 const textValues = ["Read More ...", "Read Less ..."];
 // State to track the current index in the array
@@ -124,7 +125,7 @@ const showAboutReadMore =  () => {
 //  };
 
 useEffect(() => {
-
+  setShowLoading(true);
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
   if(udetails && udetails !== null && udetails !== "") {
   const username_ = udetails.username;  
@@ -172,6 +173,7 @@ useEffect(() => {
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
     </Helmet>
     <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+      {showLoading && <Loading />}
       <div className={styles.overlay_d}></div>
       <div className={styles.blk}>
           <div className={styles.blk_inner}>

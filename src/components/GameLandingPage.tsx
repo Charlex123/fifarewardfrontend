@@ -1,47 +1,118 @@
 // components/ImageSlider.tsx
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/gamelandingpage.module.css';
-import logo from '../assets/images/aibg.png';
-import Image from 'next/image';
+import Confetti from 'react-confetti-boom';
+import AlertDanger from './AlertDanger';
+import BgOverlay from './BgOverlay';
 
-interface ImageSliderProps {
-  images: string[];
-}
-
-const GameLandingPage: React.FC<ImageSliderProps> = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const GameLandingPage: React.FC<{}> = () => {
+  const [isExploding, setIsExploding] = useState(false);
+  const [showBgOverlay, setShowBgOverlay] = useState(false);
+  const [showalertDanger, setShowAlertDanger] = useState(false);
+  const [errorMessage, seterrorMessage] = useState('');
+  useEffect(() => {
+    setIsExploding(true);
+  },[isExploding])
+  
 
   const images = [
-    {logo},
-    {logo},
-    {logo}, // Add paths to your images here
+    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/guessfootballherogame', name: "Guess Football Hero", status: "Launched" },
+    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/#', name: "Soccer Casino Roulette", status: "Coming Soon" },
+    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/#', name: "Soccer Crush", status: "Coming Soon" },
+    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/#', name: "Football Arcade", status: "Coming Soon" },
   ];
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 3000);
+  const ComingSoon = () => {
+    setShowBgOverlay(true);
+    setShowAlertDanger(true);
+    seterrorMessage("Coming Soon");
+  }
 
-    return () => clearInterval(interval);
-  }, [images.length]);
+  const closeAlertModal = () => {
+    setShowAlertDanger(false);
+    setShowBgOverlay(false);
+  }
+
+  const closeBgModal = () => {
+    setShowBgOverlay(false);
+  }
 
   return (
-    <div className={styles.sliderContainer}>
-      <div
-        className={styles.sliderWrapper}
-        style={{ transform: `translateX(-${currentIndex * 250}px)` }}
-      >
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className={styles.slide}
-            style={{ backgroundImage: `url(${image})` }}
-          >
-            <Image src={image} alt='slider' width={250} height={250} />
+    <>
+    {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
+    {showalertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
+      <div className={styles.main}>
+          <div className={styles.confetti}>{isExploding && <Confetti mode='fall' colors={['#ff577f', '#ff884b', '#ffd384', '#fff9b0', '#3498db']} shapeSize={18}/>}</div>
+          <div className={styles.overlay}></div>
+          <div className={styles.top}>
+            <h1 className={styles.gameh1}>Welcome To Fifareward Games</h1>
+            <p>
+              We believe in the importance of games to the mind. Fifareward games are intuitively designed to be adventurous, educative and exciting.
+            </p>
+            <p>
+              Select any of the games below and enjoy. 
+            </p>
+            <p>
+              All Fifareward games are decentralized and are built on the blockchain to eliminate central control, result manipulation, enable security and trust.
+            </p>
           </div>
-        ))}
+          <div className={styles.sliderContainer}>
+            <div className={styles.sliderTrack}>
+              {images.map((image, index) => (
+                <div key={index + images.length} className={styles.slide}>
+                  {image.status == "Launched" ? 
+                  <a href={image.link} target="_blank" rel="noopener noreferrer">
+                    <div className={styles.img}>
+                      <img src={image.src} alt={`Slide ${index}`} className={styles.image} />
+                    </div>
+                    <div className={styles.name}>
+                      {image.name}
+                    </div>
+                    <div className={image.status == "Launched" ? styles.launched : styles.status}>{image.status}</div>
+                  </a> :
+                
+                  <button onClick={ComingSoon}>
+                    <div className={styles.img}>
+                      <img src={image.src} alt={`Slide ${index}`} className={styles.image} />
+                    </div>
+                    <div className={styles.name}>
+                      {image.name}
+                    </div>
+                    <div className={image.status == "Launched" ? styles.launched : styles.status}>{image.status}</div>
+                  </button>
+                }
+                </div>
+              ))}
+              {/* Repeat images to create a seamless loop */}
+              {images.map((image, index) => (
+                <div key={index + images.length} className={styles.slide}>
+                  {image.status == "Launched" ? 
+                  <a href={image.link} target="_blank" rel="noopener noreferrer">
+                    <div className={styles.img}>
+                      <img src={image.src} alt={`Slide ${index}`} className={styles.image} />
+                    </div>
+                    <div className={styles.name}>
+                      {image.name}
+                    </div>
+                    <div className={image.status == "Launched" ? styles.launched : styles.status}>{image.status}</div>
+                  </a> :
+                
+                  <button onClick={ComingSoon}>
+                    <div className={styles.img}>
+                      <img src={image.src} alt={`Slide ${index}`} className={styles.image} />
+                    </div>
+                    <div className={styles.name}>
+                      {image.name}
+                    </div>
+                    <div className={image.status == "Launched" ? styles.launched : styles.status}>{image.status}</div>
+                  </button>
+                }
+                </div>
+              ))}
+            </div>
+          </div>
       </div>
-    </div>
+    </>
   );
 };
 

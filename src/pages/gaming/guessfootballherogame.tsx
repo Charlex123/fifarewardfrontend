@@ -4,7 +4,7 @@ import Navbar from '../../components/navbar/MainNavbar';
 import Footer from '../../components/Footer'
 import BackToTop from '../../components/back-to-top/back-to-top';
 import Gamesdisplay from '../../components/GuessFootballHeroGame';
-import Leaderboard from '../../components/Leaderboard';
+import Leaderboard from '../../components/SoccerRouletteLeaderboard';
 import ChangeTheme from '../../components/change-theme/change-theme';
 
 function HomePage() {
@@ -13,10 +13,10 @@ function HomePage() {
     <>
       <BackToTop />
       <ChangeTheme />
-      <Navbar />
+      {/* <Navbar /> */}
       <Gamesdisplay />
       <Leaderboard />
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }

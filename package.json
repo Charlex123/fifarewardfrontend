@@ -1,5 +1,5 @@
 {
-  "name": "FifaReward",
+  "name": "Fifareward",
   "version": "1.1.0",
   "private": false,
   "dependencies": {
@@ -17,6 +17,7 @@
     "@openzeppelin/contracts-upgradeable": "4.8.3",
     "@react-pdf-viewer/core": "^3.12.0",
     "@react-pdf-viewer/default-layout": "^3.12.0",
+    "@react-pdf/renderer": "^3.4.4",
     "@uniswap/v2-core": "^1.0.1",
     "@walletconnect/encoding": "^1.0.2",
     "@walletconnect/modal": "^2.6.2",
@@ -31,6 +32,7 @@
     "axios": "^1.6.6",
     "blockies-ts": "^1.0.0",
     "chai": "4.2.0",
+    "classnames": "^2.5.1",
     "cosmos-wallet": "^1.1.0",
     "dotenv": "^16.3.1",
     "eslint": "^8.52.0",
@@ -55,8 +57,10 @@
     "qr-image": "^3.2.0",
     "raw-loader": "^4.0.2",
     "react": "^18.2.0",
-    "react-bootstrap": "^2.9.1",
+    "react-bootstrap": "^2.10.2",
     "react-calendar": "^4.8.0",
+    "react-confetti-boom": "^1.0.0",
+    "react-confetti-explosion": "^2.1.2",
     "react-dom": "^18.2.0",
     "react-dropzone": "^14.2.3",
     "react-fast-marquee": "^1.2.1",
@@ -66,9 +70,11 @@
     "react-pdf": "^7.5.1",
     "react-reveal": "^1.2.2",
     "react-router-dom": "^6.17.0",
+    "react-slick": "^0.30.2",
     "react-typed": "^1.2.0",
     "react-vertical-timeline-component": "^3.6.0",
     "sharp": "^0.32.6",
+    "slick-carousel": "^1.8.1",
     "socket.io-client": "^4.7.5",
     "solidity-coverage": "0.8.0",
     "tailwindcss": "^3.2.4",
@@ -128,6 +134,7 @@
     "@types/react": "^18.2.39",
     "@types/react-dom": "^18.2.17",
     "@types/react-helmet": "^6.1.11",
+    "@types/react-slick": "^0.23.13",
     "prettier": "^3.1.0"
   }
 }

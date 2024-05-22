@@ -1,37 +1,535 @@
-.spinnerContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 100vh;
-    position: relative;
-  }
-  .board {
-    position: absolute;
-    margin: auto auto;
-    z-index: 1;
-  }
+.lighttheme {
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
   
-  .pointer {
-    position: absolute;
-    top: calc(15% - 25px); /* Adjust based on pointer height */
-    left: calc(50% - 25px); /* Adjust based on pointer width */
-    z-index: 2;
+}
+.darktheme {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+}
+.main {
+  padding-top: 20px;
+  margin-top: 0;
+  width: 100%;
+  background-image: url("../assets/images/casinoroulettebg.webp");
+  height: 100%;margin: auto;text-align: center;
+  position: relative;background-size: cover;background-repeat: no-repeat;z-index: 0;
+  align-items: center;padding-bottom: 120px;
+}
+.overlay {
+  position: fixed;background-color: #000000c0;z-index: 9;top: 0;left: 0;right: 0;bottom: 0;
+}
+.top {
+  z-index: 999;
+  position: relative;
+  margin: auto auto 60px auto;
+  width: 90%;
+}
+.top .gameh1 {
+  z-index: 9999;
+  position: relative;
+  font-family: "Poppins",sans-serif;
+	font-size: 4em;
+	color: #fff;
+	text-align: center;
+	padding-top: 40px;
+  padding-bottom: 40px;
+	text-shadow: 0px 0px 10px #ffffff36,
+    0px 0px 20px #ffffff57,
+    0px 0px 20px #e282046a,
+    0px 0px 20px #ffffffac;
+}
+.top p {
+  color: #f1f1f1;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 20px 0;
+
+}
+.list_inline {
+  display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-evenly;
+  align-items: center;margin: 20px auto;
+}
+.bets {
+  margin: 20px auto;text-align: center;text-transform: uppercase;
+}
+.table {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px auto;
+  z-index: 999;
+  position: relative;
+  padding: 10px;
+  border-radius: 16px;
+  width: 100%;
+}
+.main .darkmod {
+  border: 1px solid #f1f1f13c;border-radius: 16px;background-color: #16131376;
+}
+.main .lightmod {
+  border: 1px solid #96939386;background-color: #6e6b6b64;border-radius: 16px;
+}
+.main .table .game {
+  width: 74%;padding: 10px;
+}
+.main .table .game .game_in {
+  margin: auto;
+}
+.main .table .game .game_in .casinotable {
+  width: 100%;
+}
+.main .table .game .game_in .casinoroulette {
+  width: 100%;
+}
+.main .table .leaderboard {
+  width: 25%;
+}
+.main .table .game .gamec {
+  margin: 5px auto;
+}
+.main .table .mainc .dc {
+  background-color: #db1f27;
+  align-items: center;
+}
+.main .table .mainc .dc .coins_col {
+  display: flex; align-items: center;justify-content: center;
+}
+.main .table .mainc .dc .col_md_8 {
+  flex: 1 1 0;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  flex-basis: 100%;
+}
+.text_uppercase {
+  text-transform: uppercase;
+}
+/* 8 out of 12 columns on medium screens (768px and up) */
+@media (min-width: 768px) {
+  .main .table .mainc .dc .col_md_8 {
+    flex-basis: 66.66667%;
   }
+}
+.divider_line {
+  position: relative;
+  border-top-width: 1px;
+
+  margin: 0 0 20px 0;
+  text-align: center;
+  left: auto;
+  right: auto;
   
-  .spinButton {
-    margin-top: 550px;
-    padding: 10px 20px;
-    font-size: 16px;
-    background-color: #ff4c4c;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
+}
+
+.divider_line_center {
+  text-align: center; 
+}
+
+.divider_line_linear_gradient {
+  height: 1px;
+  border: none;
+  background-image: linear-gradient(to right, transparent, #b0762b, #dcb44a, transparent);
+ }
+
+.diamond_line_icon {
+  position: absolute;
+  top: -11px;
+  width: 34px;
+  height: 24px;
+  font-size: 16px;
+  line-height: 16px;
+  text-align: left;
+  font-style: normal; 
+  color: #db1f27;
+  background-color: #8B0000; 
+}
+
+.divider_line_center .diamond_line_icon {
+  left: auto;
+  right: auto;
+  margin-left: -1.42857rem; }
+
+.bg_verdict {
+  margin-top: 20px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 3px solid #F2F098;
+  max-width: 700px!important;
+  flex-wrap: wrap;
+  word-wrap: break-word;
+  min-height: 100px;
+  color: #F2F098;
+}
+
+/* Global styles */
+
+.text_small {
+  font-size: 90%;
+}
+
+.pt_6 {
+  padding-top: 6px;
+}
+.bg_red {
+  background-color: #8B0000;
+}
+
+.text_light_gold {
+  color: cornsilk;
+}
+
+.text_gold {
+  color: #f1c876;
+}
+.dc {
+  position: relative;
+}
+.dc .coins_col {
+  background: url("../assets/images/button-bg.png") center center no-repeat;
+  background-size: contain;
+  min-height: 150px;
+  position: relative;
+}
+.dc .coins_col h4 {
+  margin: auto;position: absolute;left: 0;right: 0;top: 54px;font-size: 28px;
+  font-family: "Poppins", sans-serif;
+}
+
+.pretty_italic {
+  font-family: "Kaushan Script", "corsive";
+  color: #FB4264;
+  text-shadow: 0 0 3vw #F40A35;
+}
+
+.neon {
+  animation: neon 1s ease infinite;
+  -moz-animation: neon 1s ease infinite;
+  -webkit-animation: neon 1s ease infinite;
+}
+
+@keyframes neon {
+  0%,
+  100% {
+    text-shadow: 0 0 1vw #FA1C16, 0 0 3vw #FA1C16, 0 0 10vw #FA1C16, 0 0 10vw #FA1C16, 0 0 .4vw #FED128, .5vw .5vw .1vw #806914;
+    color: #FED128;
   }
-  
-  .spinButton:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
+  50% {
+    text-shadow: 0 0 .5vw #800E0B, 0 0 1.5vw #800E0B, 0 0 5vw #800E0B, 0 0 5vw #800E0B, 0 0 .2vw #800E0B, .5vw .5vw .1vw #40340A;
+    color: #806914;
   }
+}
+
+.blink {
+  animation: blink 1.2s infinite;
+}
+@keyframes blink{
+  0%    {color: #b0762b;}
+  50%   {color: #dcb44a;}
+  60%   {color: #dcb44a;}
+  70%   {color: #dcb44a;}
+  100%  {color: #b0762b;}
+}
+
+.custom_btn {
+  background: linear-gradient(to bottom , #b0762b, #dcb44a)!important;
   
+  border: 1px solid #f1c876!important;
+  color: #121212!important;
+  font-weight: 500!important;
+  font-family: 'Coda', cursive;
+  text-transform: uppercase;
+  padding: 6px 10px 2px 10px!important;
+}
+.custom_btn:hover {
+  background: linear-gradient(to bottom , #dcb44a, #b0762b)!important;
+  border-image-source: linear-gradient(45deg, #b0762b, #dcb44a, #b0762b)!important;
+  border-image-slice: 1!important;
+  border: 1px solid #f1c876!important;
+}
+
+.text_gold {
+  color: #f1c876;
+}
+
+.text_light_gold {
+  color: cornsilk;
+}
+
+.bg_blackish {
+  background-color: #121212!important;
+}
+
+.border_gold {
+  border: 1px solid #dcb44a;
+}
+
+.logo {
+  max-height: 120px;
+}
+
+
+/* Table only styles */
+.roulette_table {
+  display: flex; 
+  flex-direction: row; 
+  align-items: start;
+  width: 100%;
+}
+.roulette_table .roulettetable_main {
+  align-self: center;
+}
+.roulette_table .roulettetable_main .list_unstyled {
+  padding-top: 16px;
+}
+/* .roulette_table .roulettetable_main .list_unstyled.flexed {
+  display: flex;
+} */
+.blues {
+  background-color: navy;
+  color: white;
+  cursor: pointer;
+}
+
+.greens {
+  background-color: darkgreen;
+  color: white;
+  cursor: pointer;
+}
+
+.greens:hover {
+  background-color: greenyellow;
+  color: black;
+}
+
+.reds {
+  background-color: red;
+  color: red!important;
+  cursor: pointer;
+}
+
+.blacks {
+  background-color: black;
+  color: black!important;
+  cursor: pointer;
+}
+
+.cella  {
+  width: 35px!important;
+  height: 35px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.chip_container_cella {
+  line-height: 35px;
+  text-align: center;
+}
+
+.cella_z_top  {
+  width: 35px!important;
+  height: 70px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.cella_z_bottom  {
+  width: 35px!important;
+  height: 70px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 100%);
+}
+
+.chip_container_cella-z {
+  line-height: 76px;
+  text-align: center;
+}
+
+.cella_fourth  {
+  width: 158px!important;
+  height: 35px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.chip_container_cella_fifth {
+  line-height: 35px;
+  text-align: center;
+}
+
+.cella_fifth  {
+  width: 76px!important;
+  height: 35px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.chip_container_cella_fourth {
+  line-height: 35px;
+  text-align: center;
+}
+
+.bordo {
+  background-color: green;
+  width: 6px;
+  max-width: 6px;
+  height: 35px;
+  font-size:1px;
+  color: green;
+  cursor: pointer;
+}
+
+.bordo .chip {
+  margin-left: -8px;
+}
+
+.chip_container_bordo {
+  line-height: 35px;
+  position: relative;
+}
+
+.bordo:hover {
+  background-color: yellow;
+  color: yellow;
+}
+
+.bordo_h {
+  background-color: green;
+  height: 6px;
+  max-height: 6px;
+  width: 35px!important;
+  font-size:1px;
+  color: green;
+  cursor: pointer;
+}
+
+.bordo_h .chip {
+  margin-top: -6px;
+  margin-left: 12px;
+}
+
+.chip_container_bordo_h {
+  line-height: 6px;
+  position: relative;
+}
+
+.bordo_h:hover {
+  background-color: yellow;
+  color: yellow;
+}
+
+.space {
+  width: 6px;
+  height: 6px;
+  background-color: #F2F098;
+}
+
+.bet_space {
+  width: 6px;
+  height: 6px;
+  background-color: orange;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.bet_space:hover {
+  background-color: yellow;
+}
+
+.bet_space .chip {
+  margin-top: -6px;
+  margin-left: -6px;
+}
+
+.space_fourth {
+  width: 6px;
+  height: 35px;
+  background-color: #F2F098;
+}
+
+.space_2by1, .space_z {
+  width: auto;
+  height: 6px;
+  background-color: #F2F098;
+  margin: 0;
+  padding: 0;
+}
+
+.table_divider {
+  height: 6px!important;
+  width: 100%!important;
+  background-color: #F2F098;
+  margin: 0!important;
+}
+
+.divider_50 {
+  height: 6px!important;
+  width: 50%!important;
+  background-color: #F2F098;
+}
+
+.divider_invisible {
+  height: 6px!important;
+  width: 100%!important;
+  background-color: transparent!important;
+}
+
+.orange {
+  background-color: #e28304!important;
+}
+
+.black {
+  background-color: black!important;
+}
+
+.roulette_table ul {
+  margin: 0!important;
+}
+
+.no_cursor {
+  cursor: not-allowed;
+}
+
+.roulette_table button {
+  border: none!important;
+  outline: none!important;
+  margin: 0!important;
+  padding: 0!important;
+}
+
+
+@media (max-width: 991px) {
+  .top .gameh1 {
+    font-size: 2rem;
+  }
+  .top p {
+    font-size: 1rem;
+  }
+  .table {
+    display: block;
+    justify-content: unset;
+  }
+  .main .table .game {
+    width: 100%;padding: 10px;
+  }
+  .main .table .leaderboard {
+    width: 100%;margin-top: 60px;
+  }
+}

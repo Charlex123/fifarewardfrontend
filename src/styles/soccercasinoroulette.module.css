@@ -1,0 +1,204 @@
+
+  
+  .divider_line_center {
+    text-align: center; 
+  }
+  
+  .divider_line_linear_gradient {
+    height: 1px;
+    border: none;
+    background-image: linear-gradient(to right, transparent, #b0762b, #dcb44a, transparent);
+   }
+  
+  .diamond_line_icon {
+    position: absolute;
+    top: -11px;
+    width: 34px;
+    height: 24px;
+    font-size: 16px;
+    line-height: 16px;
+    text-align: left;
+    font-style: normal; 
+    color: #db1f27;
+    background-color: #8B0000; 
+  }
+  
+  .divider_line_center .diamond_line_icon {
+    left: auto;
+    right: auto;
+    margin-left: -1.42857rem; 
+  }
+    .text_uppercase {
+      text-transform: uppercase;
+    }
+
+  .bg_verdict {
+    margin-top: 20px;
+    padding: 10px;
+    border-radius: 10px;
+    border: 3px solid #F2F098;
+    max-width: 700px!important;
+    flex-wrap: wrap;
+    word-wrap: break-word;
+    min-height: 100px;
+    color: #F2F098;
+  }
+  
+  /* Global styles */
+  
+  .text_small {
+    font-size: 90%;
+  }
+  
+  .pt_6 {
+    padding-top: 6px;
+  }
+  .bg_red {
+    background-color: #e28304;
+  }
+  
+  .text_light_gold {
+    color: cornsilk;
+  }
+  
+  .text_gold {
+    color: #f1c876;
+  }
+  
+  .coins_col {
+    background: url("../assets/images/button-bg.png") center center no-repeat;
+    background-size: contain;
+    min-height: 150px;
+  }
+  
+  
+  .pretty_italic {
+    font-family: "Kaushan Script", "corsive";
+    color: #FB4264;
+    text-shadow: 0 0 3vw #F40A35;
+  }
+  
+  .neon {
+    animation: neon 1s ease infinite;
+    -moz-animation: neon 1s ease infinite;
+    -webkit-animation: neon 1s ease infinite;
+  }
+  
+  @keyframes neon {
+    0%,
+    100% {
+      text-shadow: 0 0 1vw #FA1C16, 0 0 3vw #FA1C16, 0 0 10vw #FA1C16, 0 0 10vw #FA1C16, 0 0 .4vw #FED128, .5vw .5vw .1vw #806914;
+      color: #FED128;
+    }
+    50% {
+      text-shadow: 0 0 .5vw #800E0B, 0 0 1.5vw #800E0B, 0 0 5vw #800E0B, 0 0 5vw #800E0B, 0 0 .2vw #800E0B, .5vw .5vw .1vw #40340A;
+      color: #806914;
+    }
+  }
+  .text_uppercase {
+    text-transform: uppercase;
+  }
+  .blink {
+    animation: blink 1.2s infinite;
+  }
+  @keyframes blink{
+    0%    {color: #b0762b;}
+    50%   {color: #dcb44a;}
+    60%   {color: #dcb44a;}
+    70%   {color: #dcb44a;}
+    100%  {color: #b0762b;}
+  }
+  
+  .custom_btn {
+    background: linear-gradient(to bottom , #b0762b, #dcb44a)!important;
+    
+    border: 1px solid #f1c876!important;
+    color: #121212!important;
+    font-weight: 500!important;
+    font-family: 'Coda', cursive;
+    text-transform: uppercase;
+    padding: 6px 10px 2px 10px!important;
+  }
+  .custom_btn:hover {
+    background: linear-gradient(to bottom , #dcb44a, #b0762b)!important;
+    border-image-source: linear-gradient(45deg, #b0762b, #dcb44a, #b0762b)!important;
+    border-image-slice: 1!important;
+    border: 1px solid #f1c876!important;
+  }
+  
+  .text_gold {
+    color: #f1c876;
+  }
+  
+  .text_light_gold {
+    color: cornsilk;
+  }
+  
+  .bg_blackish {
+    background-color: #121212!important;
+  }
+  
+  .border_gold {
+    border: 1px solid #dcb44a;
+  }
+  
+  .logo {
+    max-height: 120px;
+  }
+  
+  /* Weel only styles */
+  
+  .roulette_canvas {
+      margin:0;
+    }
+    
+    .roulette_container  {
+      width: 400px;
+      height: 400px;
+      position: relative;
+      align-self: self-start;
+      left:5px;
+      top:5px;
+      background: #000000 url("../assets/images/roulette-bg.png") top center no-repeat;
+      background-size: contain;
+      border-radius: 50%;
+      margin: 10px auto 40px auto;
+    }
+    
+    .spin_button {
+      border-radius: 50%;
+      border: 5px solid #fff294;
+      width: 200px;
+      height: 200px;
+      position: absolute;
+      top: 92px;
+      left: 92px;
+      background: url("../assets/images/button-bg.png") center center no-repeat;
+      background-size: cover;
+      color: #121212;
+    }
+    
+    
+    .text_black_ish {
+      color: #121212;
+    }
+    
+    .blinky_number {
+      font-size: 48px;
+      text-transform: uppercase;
+      font-family: 'Anton', sans-serif;
+      font-weight: 500;
+      animation: blinky_number 1s ease infinite;
+      -moz-animation: blinky_number 1s ease infinite;
+      -webkit-animation: blinky_number 1s ease infinite;
+    }
+    
+    @keyframes blinky_number {
+      0%,
+      100% {
+        color: #ff073a;
+      }
+      50% {
+        color: #fff294;
+      }
+    }

@@ -1,20 +1,158 @@
 /* components/ImageSlider.module.css */
-.sliderContainer {
-    width: 250px;
-    height: 250px;
-    overflow: hidden;
-    position: relative;
+.main {
+  background-image: url("../assets/images/gaminglandingpage.webp");
+  height: 100%;padding: 120px auto 120px auto;margin: auto;text-align: center;
+  position: relative;background-size: cover;background-repeat: no-repeat;z-index: 0;
+  align-items: center;padding-bottom: 120px;
+
+}
+.confetti {
+  position: absolute;z-index: 99;top: 0;left: 0;right: 0;bottom: 0;
+}
+.overlay {
+    position: fixed;background-color: #00000087;z-index: 9;top: 0;left: 0;right: 0;bottom: 0;
+}
+.top {
+  z-index: 999;
+  position: relative;
+  margin: auto;
+  width: 90%;
+}
+.top .gameh1 {
+  z-index: 9999;
+  position: relative;
+  font-family: "Poppins",sans-serif;
+	font-size: 4em;
+	color: #fff;
+	text-align: center;
+	padding-top: 40px;
+  padding-bottom: 40px;
+	text-shadow: 0px 0px 10px #ffffff36,
+    0px 0px 20px #ffffff57,
+    0px 0px 20px #e282046a,
+    0px 0px 20px #ffffffac;
+}
+.top p {
+  color: #f1f1f1;
+  font-size: 1.5rem;
+  text-align: left;
+  margin: 20px 0;
+}
+@keyframes lightson{
+  0%{
+    opacity:0;
+    text-shadow: 0px 0px 0px #ffffff, 0px 0px 0px #ffffff, 0px 0px 0px #ffffff;
+    box-shadow: 0px 0px 0px 0px #ffffff, 0px 0px 0px 0px #ffffff,0px 0px 0px 0px #ffffff, inset 0px 0px 0px #ffffff;
   }
+  20%{
+    opacity:0.5;
+    text-shadow: 0px 0px 2.5px #ffffff, 0px 0px 5px #ffffff, 1px 1px 25px #ffffff;
+    box-shadow: 0px 0px 5px 0px #ffffff, 0px 0px 10px 0px #ffffff,0px 0px 50px 0px #ffffff, inset 0px 0px 20px #ffffff;
+  }
+  40%{
+    opacity:0;
+    text-shadow: 0px 0px 1px #ffffff, 0px 0px 2px #ffffff, 0px 0px 10px #ffffff;
+    box-shadow: 0px 0px 2px 0px #ffffff, 0px 0px 5px 0px #ffffff,0px 0px 25px 0px #ffffff, inset 0px 0px 10px #ffffff;
+  }
+  50%{
+    opacity:1;
+    text-shadow: 0px 0px 5px #ffffff, 0px 0px 10px #ffffff, 1px 1px 50px #ffffff;
+    box-shadow: 0px 0px 10px 0px #ffffff, 0px 0px 20px 0px #ffffff,0px 0px 100px 0px #ffffff, inset 0px 0px 30px #ffffff;
+  }
+  100%{
+    opacity:1;
+    text-shadow: 0px 0px 5px #ffffff, 0px 0px 10px #ffffff, 1px 1px 50px #ffffff;
+    box-shadow: 0px 0px 10px 0px #ffffff, 0px 0px 30px 0px #ffffff,0px 0px 100px 0px #ffffff, inset 0px 0px 30px #ffffff;
+  }
+}
+@keyframes slide {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.sliderContainer {
+  text-align: center;
+  margin: 80px auto 0 auto;
   
-  .sliderWrapper {
-    display: flex;
-    transition: transform 0.5s ease-in-out;
+  left: 0;right: 0;
+  top: 0;bottom: 0;
+  display: flex;
+  padding: 5px 10px;
+  border: 2px solid #b0adad34;
+  border-radius: 60px;
+  justify-content: center;
+  align-items: center;
+  width: 90%;
+  z-index: 999;
+  position: relative;
+  height: auto; /* Adjust the height as needed */
+  overflow: hidden;
+}
+
+.sliderTrack {
+  margin: 10px;
+  display: flex;
+  width: calc(150px * 6); /* Adjust width based on the number of images to ensure seamless loop */
+  animation: slide 10s linear infinite;
+}
+
+.slide {
+  min-width: 150px;
+  margin: 5px 10px; /* Adjust the spacing as needed */
+}
+.slide .name {
+  color: #f1f1f1;background-color: #2f2922b6;border-radius: 20px;
+  margin: 10px;font-size: 12px;font-weight: 600;padding: 2px 5px;
+}
+.slide .status {
+  color: #e28304;font-size: 13px;text-shadow: 0px 0px 1px #ffffff,
+  0px 0px 1px #ffffff,
+  0px 0px 1px #ffffff,
+  0px 0px 1px #ffffff;
+}
+.slide .launched {
+  color: #73e204;font-size: 13px;
+}
+.image {
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+}
+
+.slide a {
+  text-decoration: none;
+  color: inherit;
+}
+
+@media (max-width: 991px) {
+  .top .gameh1 {
+    font-size: 2rem;
+  }
+  .top p {
+    font-size: 1rem;
+  }
+  .sliderContainer {
+    width: 90%;
+  }
+  .sliderTrack {
+    width: calc(100px * 6); /* Adjust width based on the number of images to ensure seamless loop */
   }
   
   .slide {
-    min-width: 250px;
-    height: 250px;
-    background-size: cover;
-    background-position: center;
+    min-width: 100px;
   }
-  
+  .image {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+@media (max-width: 567px) {
+  .sliderContainer {
+    width: 94%;
+  }
+}

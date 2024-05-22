@@ -14,6 +14,8 @@ const nextConfig = {
     'nftstorage.link',
     'media.api-sports.io',
     'api-sports.io',
+    'localhost:3000',
+    'localhost',
     'ipfs.nftstorage.link'],
   },
   webpack: (config) => {

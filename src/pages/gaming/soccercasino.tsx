@@ -1,22 +1,19 @@
 import React from 'react';
-import Home from '../../components/landing/Home';
 import Navbar from '../../components/navbar/MainNavbar';
 import Footer from '../../components/Footer'
 import BackToTop from '../../components/back-to-top/back-to-top';
 import SoccerCasino from '../../components/SoccerCasino';
-import Leaderboard from '../../components/Leaderboard';
 import ChangeTheme from '../../components/change-theme/change-theme';
 
-function HomePage() {
+function Casino() {
 
   return (
     <>
       <BackToTop />
       <ChangeTheme />
-      <Navbar />
+      {/* <Navbar /> */}
       <SoccerCasino />
-      <Leaderboard />
-      <Footer />
+      {/* <Footer /> */}
     </>
   )
 }
@@ -33,4 +30,4 @@ function HomePage() {
 //   };
 // }
 
-export default HomePage
+export default Casino

@@ -1,0 +1,202 @@
+.lighttheme {
+  background-color: var(--background-color-light);
+  color: var(--text-color-light);
+  
+}
+.darktheme {
+  background-color: var(--background-color-dark);
+  color: var(--text-color-dark);
+}
+.main {
+  padding-top: 20px;
+  margin-top: 0;
+  width: 100%;
+  background-image: url("../assets/images/guessfootballherobg.webp");
+  height: 100%;margin: auto;text-align: center;
+  position: relative;background-size: cover;background-repeat: no-repeat;z-index: 0;
+  align-items: center;padding-bottom: 120px;
+}
+.overlay {
+  position: fixed;background-color: #000000c0;z-index: 9;top: 0;left: 0;right: 0;bottom: 0;
+}
+.top {
+  z-index: 999;
+  position: relative;
+  margin: auto auto 60px auto;
+  width: 90%;
+}
+.top .gameh1 {
+  z-index: 9999;
+  position: relative;
+  font-family: "Poppins",sans-serif;
+	font-size: 4em;
+	color: #fff;
+	text-align: center;
+	padding-top: 40px;
+  padding-bottom: 40px;
+	text-shadow: 0px 0px 10px #ffffff36,
+    0px 0px 20px #ffffff57,
+    0px 0px 20px #e282046a,
+    0px 0px 20px #ffffffac;
+}
+.top p {
+  color: #f1f1f1;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 20px 0;
+
+}
+.list_inline {
+  display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-evenly;
+  align-items: center;margin: 20px auto;
+}
+.bets {
+  margin: 20px auto;text-align: center;text-transform: uppercase;
+}
+.table {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: row;
+  justify-content: space-between;
+  margin: 10px auto;
+  z-index: 999;
+  position: relative;
+  padding: 10px;
+  border-radius: 16px;
+  width: 100%;
+}
+.main .darkmod {
+  border: 1px solid #f1f1f13c;border-radius: 16px;background-color: #16131376;
+}
+.main .lightmod {
+  border: 1px solid #96939386;background-color: #6e6b6b64;border-radius: 16px;
+}
+.main .table .game {
+  width: 74%;padding: 10px;
+}
+.main .table .game .game_in {
+  margin: auto;
+}
+.main .table .game .game_in .casinotable {
+  width: 100%;
+}
+.main .table .game .game_in .casinoroulette {
+  width: 100%;
+}
+.main .table .leaderboard {
+  width: 25%;
+}
+.main .table .game .gamec {
+  margin: 5px auto;
+}
+.main .table .mainc .dc {
+  background-color: #db1f27;
+  align-items: center;
+}
+.main .table .mainc .dc .coins_col {
+  display: flex; align-items: center;justify-content: center;
+}
+.main .table .mainc .dc .col_md_8 {
+  flex: 1 1 0;
+  padding: 0.5rem;
+  box-sizing: border-box;
+  flex-basis: 100%;
+}
+.text_uppercase {
+  text-transform: uppercase;
+}
+/* 8 out of 12 columns on medium screens (768px and up) */
+@media (min-width: 768px) {
+  .main .table .mainc .dc .col_md_8 {
+    flex-basis: 66.66667%;
+  }
+}
+/* Global styles */
+
+.text_small {
+  font-size: 90%;
+}
+
+.pt_6 {
+  padding-top: 6px;
+}
+.bg_red {
+  background-color: #8B0000;
+}
+
+.text_light_gold {
+  color: cornsilk;
+}
+
+.text_gold {
+  color: #f1c876;
+}
+.dc {
+  position: relative;
+}
+.dc .coins_col {
+  background: url("../assets/images/button-bg.png") center center no-repeat;
+  background-size: contain;
+  min-height: 150px;
+  position: relative;
+}
+.dc .coins_col h4 {
+  margin: auto;position: absolute;left: 0;right: 0;top: 54px;font-size: 28px;
+  font-family: "Poppins", sans-serif;
+}
+
+.pretty_italic {
+  font-family: "Kaushan Script", "corsive";
+  color: #FB4264;
+  text-shadow: 0 0 3vw #F40A35;
+}
+
+.neon {
+  animation: neon 1s ease infinite;
+  -moz-animation: neon 1s ease infinite;
+  -webkit-animation: neon 1s ease infinite;
+}
+
+@keyframes neon {
+  0%,
+  100% {
+    text-shadow: 0 0 1vw #FA1C16, 0 0 3vw #FA1C16, 0 0 10vw #FA1C16, 0 0 10vw #FA1C16, 0 0 .4vw #FED128, .5vw .5vw .1vw #806914;
+    color: #FED128;
+  }
+  50% {
+    text-shadow: 0 0 .5vw #800E0B, 0 0 1.5vw #800E0B, 0 0 5vw #800E0B, 0 0 5vw #800E0B, 0 0 .2vw #800E0B, .5vw .5vw .1vw #40340A;
+    color: #806914;
+  }
+}
+
+.blink {
+  animation: blink 1.2s infinite;
+}
+@keyframes blink{
+  0%    {color: #b0762b;}
+  50%   {color: #dcb44a;}
+  60%   {color: #dcb44a;}
+  70%   {color: #dcb44a;}
+  100%  {color: #b0762b;}
+}
+
+
+
+@media (max-width: 991px) {
+  .top .gameh1 {
+    font-size: 2rem;
+  }
+  .top p {
+    font-size: 1rem;
+  }
+  .table {
+    display: block;
+    justify-content: unset;
+  }
+  .main .table .game {
+    width: 100%;padding: 10px;
+  }
+  .main .table .leaderboard {
+    width: 100%;margin-top: 60px;
+  }
+}

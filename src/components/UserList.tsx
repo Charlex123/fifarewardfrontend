@@ -13,10 +13,10 @@ interface UserListProps {
 const UserList: React.FC<UserListProps> = ({ users }) => {
   return (
     <div>
-      <h3>Online Users</h3>
+      <h3>Users Online</h3>
       <ul>
       {users.map((user, index) => (
-          <li key={index} className={styles.user}>
+          <li key={index} className={styles.users}>
             <img src={`http://localhost:9000/api/files/${user.profilePic}`} alt={`${user.username}'s profile`} className={styles.profilePic} />
             <span>{user.username}</span>
           </li>

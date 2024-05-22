@@ -132,6 +132,11 @@
             },
             {
               "internalType": "uint256",
+              "name": "bidduration",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
               "name": "creatorsalesroyalty",
               "type": "uint256"
             },

@@ -1,16 +1,17 @@
 .leaderboard {
-    background-color: #1a1a1a;
+    background-color: #1a1a1a9b;
     padding: 20px;
     border-radius: 10px;
-    width: 30%;
+    width: 100%;
     text-align: left;
-    border: 2px solid #00ff00;
+    border: 1px solid #5e605e85;
   }
   
   .title {
     margin-bottom: 20px;
-    color: #00ff00;
-    font-family: 'Orbitron', sans-serif;
+    color: #f1f1f1;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
   }
   
   .playerList {
@@ -19,12 +20,13 @@
   }
   
   .player {
-    background-color: #333;
+    background-color: #26262ddf;
     margin: 10px 0;
-    padding: 10px;
+    padding: 5px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-    font-family: 'Orbitron', sans-serif;
+    font-family: 'Montserrat', sans-serif;flex-wrap: nowrap;
+    display: flex;justify-content: space-between;flex-direction: row;
   }
   
   .player:hover {

@@ -1,0 +1,251 @@
+/* Table only styles */
+.roulette_table {
+  display: flex; 
+  flex-direction: row; 
+  align-items: start;
+  width: 100%;
+}
+.roulette_table .roulettetable_top {
+  align-self: center;width: 100%;
+}
+.roulette_table .roulettetable_top .list_unstyled {
+  padding-top: 0;width: 100%;
+}
+.roulette_table .roulettetable_main {
+  align-self: center;width: 100%;
+}
+.roulette_table .roulettetable_main .list_unstyled {
+  padding-top: 0;width: 100%;
+}
+.roulette_table .roulettetable_main .list_unstyled.flexed {
+  display: flex;
+}
+.blues {
+  background-color: navy;
+  color: white;
+  cursor: pointer;
+}
+
+.greens {
+  background-color: darkgreen;
+  color: white;
+  cursor: pointer;
+}
+
+.greens:hover {
+  background-color: greenyellow;
+  color: black;
+}
+
+.oranges {
+  background-color: orange;
+  color: orange!important;
+  cursor: pointer;
+}
+
+.blacks {
+  background-color: black;
+  color: black!important;
+  cursor: pointer;
+}
+
+.cella  {
+  width: 55px!important;
+  height: 55px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.chip_container_cella {
+  line-height: 35px;
+  text-align: center;
+}
+
+.cella_z_top  {
+  width: 55px!important;
+  height: 90px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  clip-path: polygon(50% 0, 100% 0, 100% 100%, 0% 100%);
+}
+
+.cella_z_bottom  {
+  width: 55px!important;
+  height: 90px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 100%);
+}
+
+.chip_container_cella-z {
+  line-height: 76px;
+  text-align: center;
+}
+
+.cella_fourth  {
+  width: 178px!important;
+  height: 55px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.chip_container_cella_fifth {
+  line-height: 35px;
+  text-align: center;
+}
+
+.cella_fifth  {
+  width: 96px!important;
+  height: 55px!important;
+  font-size: 12px;
+  color: white;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.chip_container_cella_fourth {
+  line-height: 35px;
+  text-align: center;
+}
+
+.bordo {
+  background-color: green;
+  width: 6px;
+  max-width: 6px;
+  height: 55px;
+  font-size:1px;
+  color: green;
+  cursor: pointer;
+}
+
+.bordo .chip {
+  margin-left: -8px;
+}
+
+.chip_container_bordo {
+  line-height: 35px;
+  position: relative;
+}
+
+.bordo:hover {
+  background-color: yellow;
+  color: yellow;
+}
+
+.bordo_h {
+  background-color: green;
+  height: 6px;
+  max-height: 6px;
+  width: 55px!important;
+  font-size:1px;
+  color: green;
+  cursor: pointer;
+}
+
+.bordo_h .chip {
+  margin-top: -6px;
+  margin-left: 12px;
+}
+
+.chip_container_bordo_h {
+  line-height: 6px;
+  position: relative;
+}
+
+.bordo_h:hover {
+  background-color: yellow;
+  color: yellow;
+}
+
+.space {
+  width: 6px;
+  height: 6px;
+  background-color: #F2F098;
+}
+
+.bet_space {
+  width: 6px;
+  height: 6px;
+  background-color: orange;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.bet_space:hover {
+  background-color: yellow;
+}
+
+.bet_space .chip {
+  margin-top: -6px;
+  margin-left: -6px;
+}
+
+.space_fourth {
+  width: 6px;
+  height: 55px;
+  background-color: #F2F098;
+}
+
+.space_2by1, .space_z {
+  width: auto;
+  height: 6px;
+  background-color: #F2F098;
+  margin: 0;
+  padding: 0;
+}
+
+.table_divider {
+  height: 6px!important;
+  width: 100%!important;
+  background-color: #F2F098;
+  margin: 0!important;
+}
+
+.divider_50 {
+  height: 6px!important;
+  width: 50%!important;
+  background-color: #F2F098;
+}
+
+.divider_invisible {
+  height: 6px!important;
+  width: 100%!important;
+  background-color: transparent!important;
+}
+
+.orange {
+  background-color: #e28304!important;
+}
+
+.black {
+  background-color: black!important;
+}
+
+.roulette_table ul {
+  margin: 0!important;
+}
+
+.no_cursor {
+  cursor: not-allowed;
+}
+
+.roulette_table button {
+  border: none!important;
+  outline: none!important;
+  margin: 0!important;
+  padding: 0!important;
+}
+

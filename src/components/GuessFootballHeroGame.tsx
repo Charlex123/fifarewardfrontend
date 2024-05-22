@@ -1,25 +1,43 @@
-import React, { useState } from 'react';
-import styles from '../styles/gamesdisplay.module.css';
+import React, { useState, useEffect, useContext } from 'react';
+import styles from '../styles/guessfootballhero.module.css';
+import Leaderboard from './GuessFootballHeroLeaderboard';
+import { ThemeContext } from '../contexts/theme-context';
 
-const Gamesdisplay: React.FC = () => {
-  const [score, setScore] = useState(0);
+const GuessFootballHeroGame: React.FC = () => {
 
-  const startGame = () => {
-    // Game logic goes here
-    setScore(Math.floor(Math.random() * 1000));
-  };
+  const { theme } = useContext(ThemeContext);
+  
+  useEffect(() => {
+    // Fetch user data from the database and set the state with that data
+  }, []);
+
+  
 
   return (
-    <div className={styles.gameDisplay}>
-      <h1 className={styles.title}>Current Game</h1>
-      <div className={styles.gameScreen}>
-        {/* Game screen content goes here */}
-        <p>Game will be displayed here.</p>
-        <p>Score: {score}</p>
+    <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+      <div className={styles.overlay}></div>
+      <div className={styles.top}>
+        <h1 className={styles.gameh1}>Guess Your Football Hero</h1>        
+        <p>
+          Guess Right And Get Rewarded
+        </p>
       </div>
-      <button className={styles.startButton} onClick={startGame}>Start Game</button>
+
+      <div className={styles.table}>
+        <div className={`${styles.game} ${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`}>
+          <div className={styles.game_in}>
+            
+          </div>
+          
+        </div>
+
+        {/* Leaderboard */}
+        <div className={`${styles.leaderboard}`}>
+          <Leaderboard />
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Gamesdisplay;
+export default GuessFootballHeroGame;
