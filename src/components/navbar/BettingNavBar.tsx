@@ -4,26 +4,21 @@ import styles from '../../styles/nftmarketplacenavbar.module.css';
 
 import logo from '../../assets/images/logo.png';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { ethers } from 'ethers';
+
 import ConnectWallet from '../ConnectWalletButton';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot,  faPeopleGroup, faChevronUp, faAngleRight, faFootball, faFootballBall, faRobot, faGamepad } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faArtstation } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle, faSoccerBall } from '@fortawesome/free-regular-svg-icons';
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
+import { FaAlignJustify, FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 
 function Navbar() {
     const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
     const [isNavOpen, setNavOpen] = useState(false);
     const [scrolling, setScrolling] = useState(false);
-    const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
-    const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
-    const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
+    const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
+    const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
+    const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
     const [username, setUsername] = useState<string>("");
     const [userId, setUserId] = useState<string>("");  
     const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
@@ -35,18 +30,6 @@ function Navbar() {
     console.log('chain id',chainId)
     useEffect(() => {
 
-        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-        if(udetails && udetails !== null && udetails !== "") {
-        const username_ = udetails.username;  
-        if(username_) {
-            setUsername(username_);
-            setUserId(udetails.userId);
-            setIsloggedIn(true);
-            
-        }
-        }else {
-            setIsloggedIn(false);
-        }
         // Function to handle window resize
         const handleResize = () => {
             // Check the device width and update isNavOpen accordingly
@@ -87,24 +70,24 @@ function Navbar() {
     };
 
     const toggleIconUp1 = () => {
-        setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon1(<FaChevronUp className={styles.navlisttoggle}/>)
     }
     const toggleIconUp2 = () => {
-        setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon2(<FaChevronUp className={styles.navlisttoggle}/>)
     }
     const toggleIconUp3 = () => {
-        setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon3(<FaChevronUp className={styles.navlisttoggle}/>)
     }
 
     const toggleIconDown1 = () => {
-        setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon1(<FaChevronDown className={styles.navlisttoggle}/>)
     }
     const toggleIconDown2 = () => {
-        setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon2(<FaChevronDown className={styles.navlisttoggle}/>)
     }
 
     const toggleIconDown3 = () => {
-        setDropdownIcon3(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon3(<FaChevronDown className={styles.navlisttoggle}/>)
     }
 
 
@@ -122,7 +105,7 @@ function Navbar() {
 
     return (
         <nav className={styles.nav}>
-            <button title='togglebtn' className={styles.nav_toggle_btn} type='button' onClick={toggleNav}><FontAwesomeIcon icon={faAlignJustify} size='lg' className={styles.toggle_icon}/></button>
+            <button title='togglebtn' className={styles.nav_toggle_btn} type='button' onClick={toggleNav}><FaAlignJustify className={styles.toggle_icon}/></button>
             <div className={`${styles.nav_container} ${navClass}`}>
                 <div className={styles.logo}>
                 <a title='link' href='/' rel='noopener noreferrer'><Image src={logo} alt='logo' className={styles.logoni}/></a>
@@ -140,14 +123,9 @@ function Navbar() {
                     <li><a href='/betting/' rel='noopener noreferrer'>Betting</a></li>
                     <li><a href='/betting/mybets' rel='noopener noreferrer'>My Bets</a></li>
                 </ul>
-                {!isLoggedIn && 
-                    <ul className={styles.upa}>
-                        <li className={styles.si}><a href='/signin' rel='noopener noreferrer'>Sign In</a></li>
-                        <li className={styles.ld}><a href='/register' rel='noopener noreferrer'>Join Us</a></li>
-                    </ul>
-                }
+                
                 <div className={styles.con_btns}>
-                {isLoggedIn ?  <ConnectWallet /> : ''}
+                {<ConnectWallet />}
                 </div>
                 </div>)
                 }

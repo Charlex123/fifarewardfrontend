@@ -3,7 +3,7 @@ import styles from '../styles/userlist.module.css';
 
 interface User {
   username: string;
-  profilePic: string;
+  pic: string;
 }
 
 interface UserListProps {
@@ -12,13 +12,12 @@ interface UserListProps {
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
   return (
-    <div>
-      <h3>Users Online</h3>
+    <div className={styles.userslist_main}>
+      <h3>Users Online <span className={styles.online_icon}></span></h3>
       <ul>
       {users.map((user, index) => (
           <li key={index} className={styles.users}>
-            <img src={`http://localhost:9000/api/files/${user.profilePic}`} alt={`${user.username}'s profile`} className={styles.profilePic} />
-            <span>{user.username}</span>
+            <img src={`${user.pic}`} alt={`${user.username}'s profile`} className={styles.profilePic} />
           </li>
         ))}
       </ul>

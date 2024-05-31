@@ -13,7 +13,7 @@
     box-shadow: 1px 1px 2px 2px #8b86862d;
 }
 .logoni {
-  width: 160px;
+  width: 160px;height: 25px;
 }
 .nav .nav_toggle_btn {
     position: fixed;right: 15px;top: 15px;background-color: transparent !important;border: none;

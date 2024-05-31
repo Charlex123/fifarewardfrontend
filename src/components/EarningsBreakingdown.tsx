@@ -16,11 +16,7 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
-import { fas, faCheck, faCheckCircle,faAlignJustify } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import { ThemeContext } from '../contexts/theme-context';
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
 
@@ -29,15 +25,12 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
   const router = useRouter();
   const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<number>();  
   const [stakecount, setStakeCount] = useState<number>(0);
   const [betcount, setBetCount] = useState<number>(0);  
-  const [nftcount, setNFTCount] = useState<number>(0);
-  const [walletaddress, setWalletAddress] = useState<any>("NA");  
+  // const [nftcount, setNFTCount] = useState<number>(0);
 
-  const [userObjId, setUserObjId] = useState(""); // Initial value
   
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { address } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
 
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
@@ -51,11 +44,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
       const username_ = udetails.username;  
       if(username_) {
         setUsername(username_);
-        setUserId(udetails.userId)
-        setUserObjId(udetails._id)
       }
-    }else {
-      router.push(`/signin`);
     }
 
     // get stake count
@@ -69,7 +58,6 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
           const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
           const reslt = await StakeContract.getUserStakeCount(address);
           setStakeCount(reslt);
-          console.log(reslt)
         }
           
       } catch (error:any) {
@@ -86,10 +74,9 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const BettingFeatureContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-          const reslt = await BettingFeatureContract.getUserBetCount(address);
+          const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
+          const reslt = await Betting.getUserBetCount(address);
           setBetCount(reslt);
-          console.log(reslt)
         }
           
       } catch (error:any) {
@@ -109,7 +96,6 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
           const NFTFeatureContract = new ethers.Contract(NFTFeaturesCA!, FRDNFTFeaturesAbi, signer);
           const reslt = await NFTFeatureContract.getUserNFTMintedCount();
           setBetCount(reslt);
-          console.log(reslt)
         }
           
       } catch (error:any) {
@@ -118,7 +104,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
     }
     NFTCount()
   
- }, [userId,address,router,username,walletaddress,userObjId])
+ }, [address,router,username])
 
 
   return (
@@ -128,7 +114,10 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
             <div>
                 <h1 className={`${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`}>Earning Summary</h1>
             </div>
-            <div className={styles.rwdbadge}>
+            <div className={styles.earnings_comingsoon}>
+              Coming Soon
+            </div>
+            {/* <div className={styles.rwdbadge}>
 
                 <div className={styles.d}>
                     <div>
@@ -180,7 +169,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> */}
           </div>
         </div>
     </>

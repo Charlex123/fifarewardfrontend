@@ -1,27 +1,34 @@
-.userList {
+
+  .userslist_main {
+    margin-left: 10px;
     padding: 10px;
     border-right: 1px solid #ccc;
   }
-  
-  .userList h3 {
-    margin-bottom: 10px;
+  .userslist_main h3 {
+    margin-bottom: 10px;position: relative;
+    font-size: 14px;font-family: "Poppins","Montserrat",sans-serif;
+    width: fit-content;
   }
-  
-  .userList ul {
+  .userslist_main h3 .online_icon {
+    background-color: #69f753;width: 10px;height: 10px;border-radius: 100%;max-width: 10px;max-height: 10px;
+    position: absolute;top: 6px;right: -12px;
+  }
+  .userslist_main ul {
     list-style: none;
     padding: 0;
+    margin-left: 10px;
   }
   
   .users {
-    display: flex;
+    display: inline-flex;flex-direction: row;justify-content: space-around;
     align-items: center;
     margin-bottom: 10px;
-    margin-left: -15px;
+    margin-left: -25px;
   }
   
   .profilePic {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     margin-right: 10px;
   }

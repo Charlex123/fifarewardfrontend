@@ -116,8 +116,6 @@ const MyNFTs: React.FC<{}> = () =>  {
             setIsloggedIn(false);
         }
 
-      if(windowloadgetbetruntimes <= 0) {
-
         const getContractAddress = async () => {
             try {
               setShowLoading(true);
@@ -273,10 +271,8 @@ const MyNFTs: React.FC<{}> = () =>  {
           
       }
       getMyListedNFTs();
-
-    }
-    console.log("c address",contractaddress)
-    },[username,userId,windowloadgetbetruntimes])
+      
+    },[])
   
     const getItemBidds = async (itemId: any,itemName: string) => {
       try {

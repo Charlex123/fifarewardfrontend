@@ -1,14 +1,11 @@
 import React, { useState } from 'react'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { library } from '@fortawesome/fontawesome-svg-core';
 import footerstyles from '../styles/footer.module.css';
 import FooterNavBar from './FooterNav';
+import { FaArtstation, FaBandcamp, FaCircleDollarToSlot, FaDiscord, FaGift, FaTelegram, FaTwitter } from 'react-icons/fa6';
+import { GiGamepad, GiMineralHeart } from 'react-icons/gi';
+import { IoIosFootball } from 'react-icons/io';
 // import cgk from '../assets/images/coingecko-aace8f3c.png';
 // import cmc from '../assets/images/coinmarketcap-a91aaec1.png';
-import { fas, faCheck, faCheckCircle, faCircleDollarToSlot, faGift, faPeopleGroup, faHamburger} from '@fortawesome/free-solid-svg-icons';
-import { faTwitter, faFontAwesome, faGoogle, faTelegram, faMedium, faArtstation, faBandcamp, faGalacticSenate, faDiscord } from '@fortawesome/free-brands-svg-icons'
-import { faSoccerBall } from '@fortawesome/free-regular-svg-icons';
-library.add(fas, faTwitter, faFontAwesome, faGoogle, faCheck,faCheckCircle, faCircleDollarToSlot, faGift, faPeopleGroup)
 
 const Footer = () => {
    const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
@@ -51,18 +48,18 @@ const handleCopyClick = () => {
                   <h3>Socials</h3>
                   <div className={footerstyles.f_c}>
                      <div>
-                        <a href='https://twitter.com/@FRD_Labs' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTwitter} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Twitter</span></a>
+                        <a href='https://twitter.com/@FRD_Labs' rel='noopener noreferrer' ><FaTwitter className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Twitter</span></a>
                      </div>
-                     <div><a href='https://www.dextools.io/app/en/bnb/pair-explorer/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1?t=1712569347593' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>DexTools</span></a></div>
+                     <div><a href='https://www.dextools.io/app/en/bnb/pair-explorer/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1?t=1712569347593' rel='noopener noreferrer' ><FaBandcamp className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>DexTools</span></a></div>
                      <div>
-                        <a href='https://t.me/FifarewardLabs' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTelegram} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
+                        <a href='https://t.me/FifarewardLabs' rel='noopener noreferrer' ><FaTelegram className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
                      </div>
                      <div>
-                        <a href='https://www.geckoterminal.com/bsc/pools/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
+                        <a href='https://www.geckoterminal.com/bsc/pools/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1' rel='noopener noreferrer' ><FaBandcamp className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
                      </div>
-                     <div><a href='https://discord.com/invite/DC5Ta8bb' rel='noopener noreferrer' ><FontAwesomeIcon icon={faDiscord} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div>
-                     {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faMedium} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Medium</span></a> </div>*/}
-                     {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faYoutube} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>YouTube</span></a> </div> */}
+                     <div><a href='https://discord.com/invite/DC5Ta8bb' rel='noopener noreferrer' ><FaDiscord className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div>
+                     {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faMedium} className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Medium</span></a> </div>*/}
+                     {/* <div><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faYoutube} className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>YouTube</span></a> </div> */}
                   </div>
                </div>
 
@@ -70,22 +67,22 @@ const handleCopyClick = () => {
                   <h3>Features</h3>
                   <div className={footerstyles.f_c}>
                      <div>
-                        <a href='/mining' rel='noopener noreferrer' ><FontAwesomeIcon icon={faHamburger} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Mine</span></a>
+                        <a href='/mining' rel='noopener noreferrer' ><GiMineralHeart className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Farm</span></a>
                      </div>
                      <div>
-                        <a href='/nft' rel='noopener noreferrer' ><FontAwesomeIcon icon={faArtstation} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>NFT MarketPlace</span></a>
+                        <a href='/nft' rel='noopener noreferrer' ><FaArtstation className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>NFT MarketPlace</span></a>
                      </div>
                      <div>
-                        <a href='/stake' rel='noopener noreferrer' ><FontAwesomeIcon icon={faCircleDollarToSlot} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Stake</span></a>
+                        <a href='/stake' rel='noopener noreferrer' ><FaCircleDollarToSlot className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Stake</span></a>
                      </div>
                      <div>
-                        <a href='/bet' rel='noopener noreferrer' ><FontAwesomeIcon icon={faSoccerBall} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Betting</span></a>
+                        <a href='/bet' rel='noopener noreferrer' ><IoIosFootball className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Betting</span></a>
                      </div>
                      <div>
-                        <a href='/airdrop' rel='noopener noreferrer' ><FontAwesomeIcon icon={faGift} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>AirDrop</span></a>
+                        <a href='/airdrop' rel='noopener noreferrer' ><FaGift className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>AirDrop</span></a>
                      </div>
                      <div>
-                        <a href='/gaming' rel='noopener noreferrer' ><FontAwesomeIcon icon={faGalacticSenate} size='sm' className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Gaming</span></a>
+                        <a href='/gaming' rel='noopener noreferrer' ><GiGamepad className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Gaming</span></a>
                      </div>
                   </div>
                </div>

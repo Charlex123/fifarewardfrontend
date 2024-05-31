@@ -27,6 +27,12 @@
 .main .betwrap .betwrapin .league_wrap .league_wrap_in {
     background-color: #ffffff;border-bottom: 2px solid #e2d7d7;
 }
+.main .betwrap .betwrapin .league_wrap .league_wrap_in a {
+    color: #151414;text-decoration: none;
+}
+.main .betwrap .betwrapin .league_wrap .league_wrap_in a .lg {
+    height: 25px;max-height: 25px;
+}
 .main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
     display: block;cursor: pointer;
 }
@@ -69,6 +75,9 @@
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams {
     display: flex;justify-content: center;padding: 0 6px;
+}
+.main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams .lg {
+    height: 30px !important;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams div {
     margin: 0 20px;

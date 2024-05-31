@@ -34,7 +34,7 @@ const ActionSuccessModal:React.FC<Props> = ({prop,onChange}) => {
     return(
         <>
                 <Helmet>
-                    <title>Register | FifaReward </title>
+                    <title>Action Success | FifaReward </title>
                     <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
                 </Helmet>
             <div className={actionsuccessmodalstyles.showactioncomp}>

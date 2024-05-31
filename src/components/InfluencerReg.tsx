@@ -1,127 +1,126 @@
 import { useContext,useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
+import ConnectWallet from './ConnectWalletButton';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 // material
+import { decode } from '../utils/hexUtils';
+
 import Loading from "./Loading";
 import AlertMessage from "./AlertMessage";
 import regstyles from "../styles/register.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 // component
-import Web3 from "web3";
-import { faLock } from '@fortawesome/free-solid-svg-icons';
+import HelmetExport from 'react-helmet';
+// import Web3 from "web3";
+import { useWeb3Modal } from '@web3modal/ethers5/react';
 
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
-const InfluencerRegisterForm = () =>  {
+const InfluencerReg = () =>  {
 
   const { theme } = useContext(ThemeContext);
   const router = useRouter();
-
-  const [email, setEmail] = useState("");
-  const [username, setUserame] = useState("");
   const [pic] = useState(
     "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg"
   );
-  const [password, setPassword] = useState<string>("");
-  const [confirmpassword, setConfirmPassword] = useState<string>("");
+  const { address, isConnected } = useWeb3ModalAccount();
+  const { open } = useWeb3Modal();
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
-  const [sponsorId, setSponsorId] = useState<any>("");
+  const [sponsoraddress, setSponsoraddress] = useState<string>("");
   const [badge] = useState<string>("Bronze");
-  const [tpin] = useState<any>(1234);
   const [loading, setLoading] = useState<boolean>(false);
+  const [issponsorinfluencer, setIssponsorinfluencer] = useState<boolean>(false);
+  const [username, setUsername] = useState("");
   const [isinfluencer] = useState<boolean>(true);
-  const [status] = useState<any>("Inactive");
-  const [passwordinputType, setpasswordinputType] = useState<string>("password");
-  const [eyeIcon, setEyeIcon] = useState(<FontAwesomeIcon icon={faEye} />);
+  const [wasreferred, setWasRefeered] = useState<boolean>(false);
   //   const [accounts, setAccounts] = useState([]);
 
 //   const isConnected = Boolean(accounts[0]);
 
-    const {id} = router.query
-
+    const {id} = router.query;
     useEffect(() => {
-      if(!id) {
+      if(!id || id == undefined) {
         return;
+      }else if(id[1] && id[1] != null && id[1] != undefined){
+        setWasRefeered(true);
+        setIssponsorinfluencer(true);
+        const decrypted = decode(id[1]);
+        setSponsoraddress(decrypted);
+        
+      }else {
+        setIssponsorinfluencer(false)
       }
-      setSponsorId(id);
-    },[id])
+      
+    },[id, router])
 
     // mainnet 
     // const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
     // testnet
-    const web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
+    // const web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
 
-    const bscaccount = web3.eth.accounts.create();
-    const bscwalletaddress = bscaccount.address;
-    const bscwalletprivatekey = bscaccount.privateKey;
+    // const bscaccount = web3.eth.accounts.create();
+    // const bscwalletaddress = bscaccount.address;
+    // const bscwalletprivatekey = bscaccount.privateKey;
 
-    const togglePasswordVisiblity = () => {
-    if(passwordinputType === "password") {
-      setpasswordinputType("text")
-      setEyeIcon(<FontAwesomeIcon icon={faEye} />)
-    }else {
-      setpasswordinputType("password")
-      setEyeIcon(<FontAwesomeIcon icon={faEyeSlash} />);
-    }
-  };
+//     const togglePasswordVisiblity = () => {
+//     if(passwordinputType === "password") {
+//       setpasswordinputType("text")
+//       setEyeIcon(<FontAwesomeIcon icon={faEye} />)
+//     }else {
+//       setpasswordinputType("password")
+//       setEyeIcon(<FontAwesomeIcon icon={faEyeSlash} />);
+//     }
+//   };
   
-  const checkPass = (e:any) => {
-    if (password !== confirmpassword) {
-      setError(true)
-      setErrorMessage("Passwords do not match");
-    }else {
-      setError(false);
-    }
-  } 
+//   const checkPass = (e:any) => {
+//     if (password !== confirmpassword) {
+//       setError(true)
+//       setErrorMessage("Passwords do not match");
+//     }else {
+//       setError(false);
+//     }
+//   } 
 
-  const checkUsername = async (e:any) => {
-    setLoading(true);
-    setUserame(e.target.value)
-    console.log(username)
-    const config = {
-      headers: {
-        "Content-type": "application/json"
-      }
-    }
-    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkusername", {
-          username,
-    }, config);
-    if(data) {
-      setLoading(false);
-      setError(true)
-      setErrorMessage(data.message)
-    }
-  }
+//   const checkUsername = async (e:any) => {
+//     setLoading(true);
+//     setUsername(e.target.value)
+//     console.log(username)
+//     const config = {
+//       headers: {
+//         "Content-type": "application/json"
+//       }
+//     }
+//     const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkusername", {
+//           username,
+//     }, config);
+//     if(data) {
+//       setLoading(false);
+//       setError(true)
+//       setErrorMessage(data.message)
+//     }
+//   }
 
-  const checkEmail = async (e:any) => {
-    setLoading(true);
-    setEmail(e.target.value)
-    const config = {
-      headers: {
-        "Content-type": "application/json"
-      }
-    }
-    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkemail", {
-          email,
-    }, config);
-    if(data) {
-      setLoading(false);
-      setError(true)
-      setErrorMessage(data.message)
-    }
-  }
+//   const checkEmail = async (e:any) => {
+//     setLoading(true);
+//     setEmail(e.target.value)
+//     const config = {
+//       headers: {
+//         "Content-type": "application/json"
+//       }
+//     }
+//     const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkemail", {
+//           email,
+//     }, config);
+//     if(data) {
+//       setLoading(false);
+//       setError(true)
+//       setErrorMessage(data.message)
+//     }
+//   }
 
   const submitHandler = async (e:any) => {
     e.preventDefault();
-    console.log('uname',username)
-    if (password !== confirmpassword) {
-      setError(true)
-      setErrorMessage('Passwords do not match')
-    }else {
+    if(isConnected) {
       setError(false);
       try {
         const config = {
@@ -129,32 +128,35 @@ const InfluencerRegisterForm = () =>  {
             "Content-type": "application/json"
           }
         }  
-        
+        console.log("address", address,sponsoraddress)
         setLoading(true);
-        const {data} = await axios.post("https://fifareward.onrender.com/api/users/register", {
+        const {data} = await axios.post("http://localhost:9000/api/users/addupdateuser", {
           username,
-          sponsorId,
-          email,
+          address,
+          sponsoraddress,
+          issponsorinfluencer,
           isinfluencer,
           badge,
-          tpin,
-          status,
-          password,
-          bscwalletaddress,
-          bscwalletprivatekey,
           pic
         }, config);
-  
-        console.log('Reg response data',data)
-        localStorage.setItem("userInfo", JSON.stringify(data))
         setLoading(false)
-        router.push(`/emailverifystatus/${data.message}`)
+        if(data.message == "You can't refer yourself") {
+          setError(true);
+          setErrorMessage(data.message)
+        }else {
+          router.push(`/dapp`)
+        }
+        console.log('Reg response data',data)
+        
       } catch (error:any) {
         setError(true)
         setErrorMessage(error.response.data)
         console.log(error.response.data)
       }
-  }
+    }else {
+      open()
+    }
+      
   
 }
 
@@ -168,69 +170,59 @@ const goBack = () => {
 
   return (
     <>
+        <HelmetExport>
+            <title>Influencer | Fifareward</title>
+            <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        </HelmetExport>
         <div className={`${regstyles.main} ${theme === 'dark' ? regstyles['darktheme'] : regstyles['lighttheme']}`}>
-            <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
+            <div className={regstyles.cbtn}>
+              <div>
+                <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
+              </div>
+              <div>
+                <ConnectWallet />
+              </div>
+            </div>
             <form className={regstyles.formTag} onSubmit={submitHandler}>
             
             {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
             {loading && <Loading />}
             
             <div className={regstyles.fhead}>
-                <h3>Create Influncer Account <FontAwesomeIcon icon={faLock} /></h3>
+                <h3>Create Influencer Account </h3>
             </div>
             
-            <div className={regstyles.form_group}>
-                <label className={regstyles.formlabel} htmlFor="grid-last-name">Username</label>
-                <input className={regstyles.forminput} id="grid_user_name" type="varchar" placeholder="Enter username" required
-                  value={username}
-                  onBlur={checkUsername}
-                  onChange={(e) => setUserame(e.target.value.replace(' ', ''))}
-                  />
-            </div>
                 
             <div className={regstyles.form_group}>
-              <label className={regstyles.formlabel} htmlFor="grid-email"> Email</label>
-                    <input className={regstyles.forminput} id="email" type="email" placeholder="Enter email" required
-                    value={email}
-                    onBlur={checkEmail}
-                    onChange={(e) => setEmail(e.target.value.replace(' ', ''))}
+              <label className={regstyles.formlabel} htmlFor="grid-email"> My Address</label>
+                    <input className={regstyles.forminput} id="myaddress" placeholder="My address" required
+                    value={address}
+                    readOnly
                     />
             </div>
 
-            <div className='form-group'>
-                <label className={regstyles.formlabel} htmlFor="chromegrid-password"> Password</label>
-                  <input className={regstyles.forminput} id="password" type={passwordinputType} placeholder="Enter password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value.replace(' ', ''))}
-                  />
-                  <button className={regstyles.passhideshowButton} onClick={togglePasswordVisiblity} type="button">{eyeIcon}</button>
-                  <p className={regstyles.formpTag}>Make it as long and as crazy as you'd like</p>
+            <div className={regstyles.form_group}>
+              <label className={regstyles.formlabel} htmlFor="grid-email"> Preferred Name (spaces are not allowed)</label>
+                    <input className={regstyles.forminput} id="username" placeholder="Enter username" required
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value.replace(/ /g,''))}
+                    />
             </div>
 
-            <div className={regstyles.form_group}>
-                <label className={regstyles.formlabel} htmlFor="grid-password">Confirm Password</label>
-                  <input className={regstyles.forminput} id="confirmpassword" type={passwordinputType} placeholder="Confirm password"
-                  value={confirmpassword}
-                  onBlur={checkPass}
-                  onChange={(e) => setConfirmPassword(e.target.value.replace(' ', ''))}
-                  />
-                  <button className={regstyles.passhideshowButton} onClick={togglePasswordVisiblity} type="button">{eyeIcon}</button>
-                <p className={regstyles.formpTag}>Your password is encrypted and secured, we will not disclose your password with any third</p>
-            </div>
-
-            <div className={regstyles.form_group}>
-                <label className={regstyles.formlabel} htmlFor="grid-password">SponsorID</label>
-                  <input className={regstyles.forminput} id="sponsor" type="text" placeholder="Sponsor"
-                  value={sponsorId}
-                  onChange={(e) => setSponsorId(e.target.value)}
-                  />
-            </div>
+            {wasreferred && 
+              <div className={regstyles.form_group}>
+                  <label className={regstyles.formlabel} htmlFor="grid-password">Sponsor Address</label>
+                    <input className={regstyles.forminput} id="sponsor" type="text" placeholder={sponsoraddress ? sponsoraddress : 'sponsor'}
+                    value={sponsoraddress}
+                    readOnly
+                    />
+              </div>
+            }
             
             <div className={regstyles.btns}>
               <button className={regstyles.registerButton} type="submit">
-                Register
+                Submit
               </button>
-              <div className={regstyles.alink}>Already have account? <a href='/signin' rel='noopener noreferrer'>Sign In</a></div>
             </div>
           </form>
         </div>
@@ -238,4 +230,4 @@ const goBack = () => {
   );
 }
 
-export default InfluencerRegisterForm
+export default InfluencerReg

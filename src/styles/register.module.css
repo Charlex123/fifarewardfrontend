@@ -21,20 +21,29 @@
     /* border: var(--border-dark) */
 }
 .main {
-    width: 100%;height: 100%;
+    width: 100%;height: 100vh;position: relative;
 }
 .form_group {
     margin: 1rem 0;
 }
+.main button {
+    background-color: transparent;background: none;border: none;
+}
+.main .cbtn {
+    display: flex;flex-direction: row;justify-content: space-between;padding-top: 10px;
+}
 .forminput {
     border-radius: 12px;width: 100% !important;height: 40px;padding: .2rem .8rem;
-    border: none;color: #000000;
+    border: none;color: #000000;margin-top: 5px;
 }
 .formlabel {
-    margin-top: 1rem;padding: .6rem 0;font-family: "Montserrat";font-size: 14px;
+    margin-top: 1rem;padding: .6rem 0 1rem 0;font-family: "Montserrat";font-size: 14px;margin-bottom: 5px;
 }
 .formTag {
     border-radius: 8px;padding: 1rem;margin: auto;height: 100%;width: 60vw;padding-top: 5rem;
+}
+.textarea {
+    width: 100%;border-radius: 8px;height: 140px;min-height: 140px;margin-top: 5px;
 }
 .formTag .fhead {
     margin: 1rem auto;
@@ -59,7 +68,7 @@
     font-family: "Montserrat", sans-serif;font-size: 14px;font-weight: 600;
 }
 .btns .registerButton {
-    border-radius: 120px;background-color: #e3a204;font-size: 16px;font-weight: 600;
+    border-radius: 120px;background-color: #e3a204;font-size: 16px;font-weight: 600;cursor: pointer;
     padding: .4rem 60px;border: none;color: #1c1f2b;font-family: "Poppins",sans-serif;
 }
 .passhideshowButton {
@@ -90,7 +99,7 @@
     padding: 4px 20px;
 }
 button.back {
-    padding: 5px 10px;font-size: 14px;font-family: "Poppins", sans-serif;
+    padding: 5px 10px;font-size: 14px;font-family: "Poppins", sans-serif;color: #e2d7d7;
 }
 @media (max-width: 991px) {
     .formTag {

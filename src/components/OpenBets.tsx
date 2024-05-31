@@ -11,7 +11,9 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { BigNumber } from "ethers";
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
+import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import { Bets } from './BetsMetadata';
+import { BetConditions } from './BetConditionsMetadata';
 import footballb from '../assets/images/footaballb.jpg';
 import AlertDanger from './AlertDanger';
 import footballg from '../assets/images/footballg.jpg';
@@ -20,8 +22,8 @@ import ActionSuccessModal from './ActionSuccess';
 import BgOverlay from './BgOverlay';
 import LoginModal from './LoginModal';
 import HelmetExport from 'react-helmet';
-import { faCircle, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaCircle, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
+import { tree } from 'next/dist/build/templates/app-page';
 dotenv.config();
 // material
 // component
@@ -32,15 +34,7 @@ interface KeyWordSearch {
   betstatus: string
 }
 
-interface betcondition {
-    bettingteam: string,
-    prediction: string
-}
-interface Betconditions {
-  _id: number,
-  username: string,
-  betcondition: betcondition[]
-}
+
 
 
 const OpenBets:React.FC<{}> = () => {
@@ -67,14 +61,16 @@ const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
 const [bettingteam,setBettingTeam] = useState<string>('');
 const [searchkeyword,setSearchKeyWord] = useState<string>('');
 const [betprediction,setBetPrediction] = useState<string>('');
-const [isBetDataLoaded, setIsBetDataLoaded] = useState<boolean>(false);
+const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
+const [frdusdprice, setFrdUsdPrice] = useState<any>();
 const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
+const [bnbPrice, setBnbPrice] = useState<number>();
+const [bnbdollarPrice, setBnbDollarPrice] = useState<number>();
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
-const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
-const [betconditions,setBetConditions] = useState<Betconditions[]>([]);
+const [betconditions,setBetConditions] = useState<BetConditions[]>([]);
 const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const [showbetconditions, setShowBetConditions] = useState<boolean>(false);
-const [filterbetAmount, setfilterbetamount] = useState<number>(50000);
+const [filterbetAmount, setfilterbetamount] = useState<number>(0);
 const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
 const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
@@ -83,6 +79,9 @@ const { walletProvider } = useWeb3ModalProvider();
 const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
 const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
 const { address, chainId, isConnected } = useWeb3ModalAccount();
+
+const minfilterbyamount = usdequivfrdamount;
+const maxfilterbyamount = 500000;
 
 useEffect(() => {
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
@@ -95,75 +94,9 @@ useEffect(() => {
       }
   }
   
-  // if(windowloadgetbetruntimes == 0) {
-    const fetchData = async () => {
-
-        let provider, signer;
-        
-        if(walletProvider) {
-          provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-          signer = provider.getSigner();
-        }else {
-          const provider = walletProvider as any || Wprovider as any;
-          const wallet = new ethers.Wallet(walletPrivKey as any, provider);
-          signer = provider.getSigner(wallet.address);
-        }
-        console.log(' s signer',signer)
-        if(signer) {
-          try {
-            console.log(" hop in")
-            setShowLoading(true);
-            const BetFeaturescontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-            console.log(" test a",BetFeaturescontract)
-            const loadBets = await BetFeaturescontract.loadAllBets();
-            // const loaduserBets = await BetFeaturescontract.getUserBets("0x6df7E51F284963b33CF7dAe442E5719da69c312d");
-          // console.log("g user bets",loaduserBets);
-            console.log(" loaded bets",loadBets)
-            await loadBets.forEach(async (element:any) => {
-                
-                let betAmt = Math.ceil((element.betamount.toString())/(10**18));
-                let item: Bets = {
-                  betId: element.betId,
-                  matchId: element.matchId,
-                  uniqueId: element.uniqueId,
-                  username: element.username,
-                  matchfixture: element.matchfixture,
-                  openedBy: element.openedBy,
-                  creationType: element.creationType,
-                  participant: element.participant,
-                  betamount: betAmt,
-                  totalbetparticipantscount: element.totalbetparticipantscount,
-                  remainingparticipantscount: element.remainingparticipantscount,
-                  prediction: element.prediction,
-                  bettingteam: element.bettingteam,
-                  betstatus: element.betstatus,
-                  participants: element.participants,
-                  betwinners: element.betwinners,
-                  betlosers: element.betlosers,
-                }
-                betData.push(item);
-                setBetData(betData);
-                setShowLoading(false);
-                // console.log("bet data",betData)
-                return item;
-            });
-          } catch (error) {
-            setShowAlertDanger(true);
-            seterrorMessage(error);
-            setShowLoading(false);
-          }
-          
-        }
-    };
-
-    fetchData();
-  // }else {
-
-  // }
-
   
-  let searchOptions = ["Bet Id","Match Id","Match","Username","Opened Bets"];
-  let currentSearchOptionIndex = 0;
+  // let searchOptions = ["Username","wallet address"];
+  // let currentSearchOptionIndex = 0;
 
   // const rotateSearchOption = () => {
   //   let searchinput = document.getElementById("search-input") as HTMLElement;
@@ -172,7 +105,7 @@ useEffect(() => {
   //   currentSearchOptionIndex = (currentSearchOptionIndex + 1) % searchOptions.length;
   // }
 
-  // const intervalId = setInterval(rotateSearchOption,2000);
+  // const intervalId = setInterval(rotateSearchOption,6000);
 
   const handleClickOutside = (event: MouseEvent) => {
     // Check if the clicked element is inside the input or not
@@ -193,53 +126,88 @@ useEffect(() => {
   
 },[betData,limit,currentPage])
 
-// const openBetC = async () => {
-//   if(walletProvider) {
-//     try {
-//         const provider = new ethers.providers.Web3Provider(walletProvider as any)
-//         const signer = provider.getSigner();
-//         // let rembetparticipantscount = parseInt(betParticipantsCount) - 1;
-//         let Betcontract = new ethers.Contract(BettingCA, BettingAbi, signer);
-//         const amt = betAmount + "000000000000000000";
-//         const tamount = ethers.BigNumber.from(amt);
-//         let bCOpenBet = await Betcontract.OpenBet(tamount,matchidparam,username,matchparam,betprediction,bettingteam,betParticipantsCount,rembetparticipantscount,{ gasLimit: 1000000 });
-        
-//         bCOpenBet.wait().then(async (receipt:any) => {
-//           // console.log(receipt);
-//           if (receipt && receipt.status == 1) {
-//              // transaction success.
-//              setShowLoading(false);
-//              setBetOpenSuccess(true);
-//           }
-//        })
-//       } catch (error) {
-//         setShowAlertDanger(true);
-//         seterrorMessage(error);
-//         setShowLoading(false);
-//       }
-//   }
-// }
+useEffect(() => {
 
-// const Approve = async (e:any) => {
-//   try {
-//     e.parentElement.parentElement.parentElement.style.display = 'none';
-//     if(walletProvider) {
-//         setShowLoading(true);
-//         const provider = new ethers.providers.Web3Provider(walletProvider as any);
-//         const signer = provider.getSigner();
-//         const FRDContract = new ethers.Contract(FRDAddress, FRDAbi, signer);
-//         const amt = betAmount + "000000000000000000";
-//         const tamount = ethers.BigNumber.from(amt);
-//         const reslt = await FRDContract.approve(BettingCA,tamount);
+      const getUSDEQUIVFRDAMOUNT =  async () => {
+        try {
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.get("../../../../api/gettokenprice", config);
+          setUsdEquivFrdAmount(data.usdequivalentfrdamount);
+          setFrdUsdPrice(data.usdprice);
+          setfilterbetamount(data.usdequivalentfrdamount);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      getUSDEQUIVFRDAMOUNT();
+      
+      const fetchData = async () => {
+
+        let provider, signer;
         
-//         if(reslt) {
-//           openBetC();
-//         }
-//     }
-//   } catch (error:any) {
-//     seterrorMessage("Connect Wallet First");
-//   }
-// }
+        if(walletProvider) {
+          provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+          signer = provider.getSigner();
+        }else {
+          const provider = walletProvider as any || Wprovider as any;
+          const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+          signer = provider.getSigner(wallet.address);
+        }
+        
+        if(signer) {
+          try {
+            setShowLoading(true);
+            const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+            const loadBets = await BetFeaturescontract.loadAllBets();
+            
+            await loadBets.forEach(async (element:any) => {
+              if(element.openedBy != 0x0000000000000000000000000000000000000000) {
+                let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+
+                let item: Bets = {
+                  betId: element.betId,
+                  matchId: element.matchId,
+                  uniquebetId: element.uniquebetId,
+                  betamount: betAmt,
+                  matchfixture: element.matchfixture,
+                  openedBy: element.openedBy,
+                  totalbetparticipantscount: element.totalbetparticipantscount,
+                  remainingparticipantscount: element.remainingparticipantscount,
+                  betstatus: element.betstatus,
+                  participants: element.participants,
+                  betwinners: element.betwinners,
+                  betlosers: element.betlosers,
+                }
+                // Prevent duplicate entries based on betId
+                setBetData(prevBetData => {
+                  if (!prevBetData.some(existingItem => existingItem.betId.toString() === item.betId.toString())) {
+                      return [...prevBetData, item];
+                  }
+                  return prevBetData;
+              });
+                setShowLoading(false);
+                return item;
+            }else {
+              setShowLoading(false);
+              setShowBgOverlay(false);
+            }
+            });
+          } catch (error: any) {
+            setShowAlertDanger(true);
+            seterrorMessage(error.code);
+            setShowLoading(false);
+          }
+          
+        }
+    };
+
+    fetchData();
+},[])
+
 
   const JoinBet = (e: any) => {
     if(username && username !== null && username !== undefined && username !== '') {
@@ -253,12 +221,62 @@ useEffect(() => {
       setShowBgOverlay(true);
       setShowLoginComp(true);
       e.parentElement.parentElement.parentElement.style.display = 'none';
-      console.log('showlogincomp',showloginComp)
     }
   }
 
-  const JoinBetNow = async (e:any,betId:number,betAmount:any,matchid:number,participantscount:number,openedby:string,status:string,totalparticipantscount:number,participants:string,remainingparticipantscount:number) => {
+  const submitPredictions = async (betId: number, betAmount: number) => {
+    let provider, signer;
+  
+    if (isConnected) {
+      if (walletProvider) {
+        try {
+          provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+          signer = provider.getSigner();
+  
+          if (signer) {
+            const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+            const amt = betAmount + "000000000000000000";
+            const tamount = ethers.BigNumber.from(amt);
+  
+            try {
+              const submitpred = await Betcontract.submitPrediction(
+                betId, 
+                tamount, 
+                username, 
+                betprediction, 
+                bettingteam, 
+                { gasLimit: 1000000 }
+              );
+  
+              const receipt = await submitpred.wait();
+  
+              if (receipt && receipt.status === 1) {
+                // transaction success
+                setShowLoading(false);
+                setBetOpenSuccess(true);
+              }
+            } catch (error: any) {
+              console.log(error)
+              setShowAlertDanger(true);
+              seterrorMessage(error.code || error.message);
+              setShowLoading(false);
+            }
+          }
+        } catch (error: any) {
+          setShowAlertDanger(true);
+          seterrorMessage(error.code || error.message);
+          setShowLoading(false);
+        }
+      }
+    } else {
+      open();
+    }
+  };
+
+  const JoinBetNow = async (e:any,betId:number,betAmount:any,openedby:string,participants:string,remainingparticipantscount:number) => {
     try {
+        let divP = e.parentElement.parentElement.parentElement;
+        
         if(username && username !== null && username !== undefined && username !== '') {
           setShowLoading(true);
             let erAlertDv = e.parentElement.parentElement.previousElementSibling;
@@ -292,47 +310,41 @@ useEffect(() => {
             }else {
               erAlertDv.innerHTML = "";
             }
-            
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            }  
-            
-            const {data} = await axios.post("https://fifareward.onrender.com/api/bets/joinbet", {
-                betAmount,
-                betId,
-                matchid,
-                participantscount,
-                bettingteam,
-                status,
-                totalparticipantscount,
-                participants,
-                remainingparticipantscount,
-                username,
-                userId,
-                openedby,
-                betprediction
-            }, config);
-            
-            if(data !== null) {
-                console.log('bet data',data)
-                // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-                // hiw_bgoverlay.style.display = 'block';
-                setShowBgOverlay(true);
-                let pDiv = e.parentElement.parentElement.parentElement;
-                pDiv.style.display = 'none';
-                setBetOpenSuccess(true);
-                setShowLoading(false);
-            }
+            divP.style.display = "none";
+            Approve(betId, betAmount)
         }else {
-            
+            setShowBgOverlay(true)
+            setShowLoginComp(true);
         }
         
-        console.log('submit handle ran')
-    } catch (error) {
+    } catch (error: any) {
       console.log(error)
     }
+}
+
+const Approve = async (betId: number,betAmount: number) => {
+  try {
+    if(isConnected) {
+        if(walletProvider) {
+          setShowLoading(true);
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
+          const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+          const amt = betAmount + "000000000000000000";
+          const tamount = ethers.BigNumber.from(amt);
+          const reslt = await FRDContract.approve(BettingCA,tamount);
+          
+          if(reslt) {
+            submitPredictions(betId, betAmount);
+          }
+      }
+    }else {
+      open()
+    }
+  } catch (error:any) {
+    setShowAlertDanger(true);
+    seterrorMessage(error.code);
+  }
 }
 
 const closeLoginModal = () => {
@@ -425,6 +437,9 @@ const gotoPage = (pageNumber: number) => {
 };
 
 const closeAlertModal = () => {
+  setShowAlertDanger(false);
+  setShowBgOverlay(false);
+  setShowLoading(false)
   setError(false)
 }
 
@@ -447,46 +462,98 @@ const getKeyWordSearchN = async (keyword:any) => {
 }
 
 const loadSearchResults = async () => {
-  // search database and return documents with similar keywords
+  setShowBgOverlay(true);
   setShowLoading(true);
-  console.log('search keyword',searchkeyword)
-  const config = {
-      headers: {
-          "Content-type": "application/json"
+
+    let provider, signer;
+    
+    if(walletProvider) {
+      provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+      signer = provider.getSigner();
+    }else {
+      const provider = walletProvider as any || Wprovider as any;
+      const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+      signer = provider.getSigner(wallet.address);
+    }
+    
+    if(signer) {
+      try {
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        let loadBets;
+        if(searchkeyword.length < 30) {
+          loadBets = await BetFeaturescontract.getBetsByUsername(searchkeyword);
+        }else {
+          loadBets = await BetFeaturescontract.getBetsByWallet(searchkeyword);
+        }
+        
+        await loadBets.forEach(async (element:any) => {
+            
+            let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+            
+            let item: Bets = {
+              betId: element.betId,
+              matchId: element.matchId,
+              uniquebetId: element.uniquebetId,
+              betamount: betAmt,
+              matchfixture: element.matchfixture,
+              openedBy: element.openedBy,
+              totalbetparticipantscount: element.totalbetparticipantscount,
+              remainingparticipantscount: element.remainingparticipantscount,
+              betstatus: element.betstatus,
+              participants: element.participants,
+              betwinners: element.betwinners,
+              betlosers: element.betlosers,
+            }
+            // Prevent duplicate entries based on betId
+              setBetData(prevBetData => {
+                if (!prevBetData.some(existingItem => existingItem.betId.toString() === item.betId.toString())) {
+                    return [...prevBetData, item];
+                }
+                return prevBetData;
+            });
+            setShowBgOverlay(false);
+            setShowLoading(false);
+            return item;
+        });
+      } catch (error: any) {
+        setShowAlertDanger(true);
+        seterrorMessage(error.code);
+        setShowLoading(false);
       }
-  }  
-  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/belistsearch", {
-      searchkeyword,
-      currentPage,
-      limit
-  }, config);
-  if(data) {
-    setShowLoading(false)
-    setBetData(data.loadbets);
-    setTotalPages(data.totalPages);
-    setIsBetDataLoaded(true);
-  }
+      
+    }
   
 }
 
 const viewBetDetails = async(e:any,betId:number) => {
-  setShowLoading(true);
-  const config = {
-      headers: {
-          "Content-type": "application/json"
-      }
-  }  
-  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/getbetconditions", {
-      betId
-  }, config);
-  if(data) {
-    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    // hiw_bgoverlay.style.display = 'block';
-    setShowBgOverlay(true);
-    console.log('bet conditions data',data.betconditions)
-    setShowBetConditions(true);
-    setShowLoading(false);
-    setBetConditions(data.betconditions)
+  let provider, signer;
+        
+  if(walletProvider) {
+    provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+    signer = provider.getSigner();
+  }else {
+    const provider = walletProvider as any || Wprovider as any;
+    const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+    signer = provider.getSigner(wallet.address);
+  }
+  
+  if(signer) {
+    try {
+      setShowLoading(true);
+      setShowBgOverlay(true);
+      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+          
+        const getbetpredictions = await Betcontract.getPredictions(betId);
+        setBetConditions(getbetpredictions);
+        setShowBetConditions(true);
+        setShowBgOverlay(true);
+        setShowLoading(false);
+    } catch (error: any) {
+      setShowAlertDanger(true);
+      seterrorMessage(error);
+      setShowLoading(false);
+    }
+    
   }
 }
 
@@ -499,76 +566,208 @@ const closeBetCondtns = (divId:any) => {
   setShowBetConditions(false);
 }
 
-const UpKeyWordSearch = (divId: any,match:string,openedby:string) => {
-  setSearchKeyWord(divId.innerHTML);
-  setShowSearchOptions(false)
-}
-
-const handleInputClick = () => {
-  // Handle the event when the input is clicked
-  setShowSearchOptions(true);
-  console.log('Input clicked. Do something!');
-};
-
 const FilterByBetAmount = async (event:any) => {
-  setShowLoading(true);
   const newValue = event.target.value;
   setfilterbetamount(newValue);
-  const config = {
-      headers: {
-          "Content-type": "application/json"
+  setShowBgOverlay(true);
+  setShowLoading(true);
+    let provider, signer;
+    
+    if(walletProvider) {
+      provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+      signer = provider.getSigner();
+    }else {
+      const provider = walletProvider as any || Wprovider as any;
+      const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+      signer = provider.getSigner(wallet.address);
+    }
+    
+    if(signer) {
+      try {
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const amt = filterbetAmount + "000000000000000000";
+        const tamount = ethers.BigNumber.from(amt);
+
+        const loadBets = await BetFeaturescontract.getBetsByAmount(tamount);
+        
+        await loadBets.forEach(async (element:any) => {
+          if(element.openedBy != 0x0000000000000000000000000000000000000000) {
+            let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+            
+              const getbetpredictions = await Betcontract.getPredictions(element.betId.toNumber());
+              setBetConditions(getbetpredictions);
+                let item: Bets = {
+                  betId: element.betId,
+                  matchId: element.matchId,
+                  uniquebetId: element.uniquebetId,
+                  betamount: betAmt,
+                  matchfixture: element.matchfixture,
+                  openedBy: element.openedBy,
+                  totalbetparticipantscount: element.totalbetparticipantscount,
+                  remainingparticipantscount: element.remainingparticipantscount,
+                  betstatus: element.betstatus,
+                  participants: element.participants,
+                  betwinners: element.betwinners,
+                  betlosers: element.betlosers,
+                }
+                // Prevent duplicate entries based on betId
+                  setBetData(prevBetData => {
+                    if (!prevBetData.some(existingItem => existingItem.betId.toString() === item.betId.toString())) {
+                        return [...prevBetData, item];
+                    }
+                    return prevBetData;
+                });
+                setShowBgOverlay(false);
+                setShowLoading(false);
+                return item;
+              }else {
+                setShowAlertDanger(true);
+                seterrorMessage("Bets not found, try again")
+                setShowLoading(false);
+              }
+            });
+      } catch (error: any) {
+        setShowAlertDanger(true);
+        seterrorMessage(error.code);
+        setShowLoading(false);
       }
-  }  
-  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/filterbybetamount", {
-      filterbetAmount,
-      currentPage,
-      limit
-  }, config);
-  if(data) {
-    setShowLoading(false)
-    setBetData(data.loadbets);
-    setTotalPages(data.totalPages);
-    setIsBetDataLoaded(true);
-  }
+      
+    }
 };
 
 const FilterByClosedBets = async () => {
+  setShowBgOverlay(true);
   setShowLoading(true);
-  const config = {
-    headers: {
-          "Content-type": "application/json"
+    let provider, signer;
+    
+    if(walletProvider) {
+      provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+      signer = provider.getSigner();
+    }else {
+      const provider = walletProvider as any || Wprovider as any;
+      const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+      signer = provider.getSigner(wallet.address);
+    }
+    
+    if(signer) {
+      try {
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const loadBets = await BetFeaturescontract.getBetsByStatus("closed");
+        console.log(" cloesd bets",loadBets)
+        await loadBets.forEach(async (element:any) => {
+         
+          if(element.openedBy != 0x0000000000000000000000000000000000000000) {
+            let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+            
+            const getbetpredictions = await Betcontract.getPredictions(element.betId.toNumber());
+            setBetConditions(getbetpredictions);
+              let item: Bets = {
+                betId: element.betId,
+                matchId: element.matchId,
+                uniquebetId: element.uniquebetId,
+                betamount: betAmt,
+                matchfixture: element.matchfixture,
+                openedBy: element.openedBy,
+                totalbetparticipantscount: element.totalbetparticipantscount,
+                remainingparticipantscount: element.remainingparticipantscount,
+                betstatus: element.betstatus,
+                participants: element.participants,
+                betwinners: element.betwinners,
+                betlosers: element.betlosers,
+              }
+              // Prevent duplicate entries based on betId
+                setBetData(prevBetData => {
+                  if (!prevBetData.some(existingItem => existingItem.betId.toString() === item.betId.toString())) {
+                      return [...prevBetData, item];
+                  }
+                  return prevBetData;
+              });
+              setShowBgOverlay(false);
+              setShowLoading(false);
+              return item;
+          }else {
+            setShowAlertDanger(true);
+            seterrorMessage("No closed bet found, try again")
+            setShowLoading(false);
+          }
+
+        });
+      } catch (error: any) {
+        setShowAlertDanger(true);
+        seterrorMessage(error.code);
+        setShowLoading(false);
       }
-  }  
-  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/filterbyclosedbets", {
-      currentPage,
-      limit
-  }, config);
-  if(data) {
-    setShowLoading(false)
-    setBetData(data.loadbets);
-    setTotalPages(data.totalPages);
-    setIsBetDataLoaded(true);
-  }
+      
+    }
 }
 
 const FilterByOpenBets = async () => {
-
-  const config = {
-    headers: {
-          "Content-type": "application/json"
+  setShowBgOverlay(true);
+  setShowLoading(true);
+    let provider, signer;
+    
+    if(walletProvider) {
+      provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+      signer = provider.getSigner();
+    }else {
+      const provider = walletProvider as any || Wprovider as any;
+      const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+      signer = provider.getSigner(wallet.address);
+    }
+    
+    if(signer) {
+      try {
+        
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const loadBets = await BetFeaturescontract.getBetsByStatus("open");
+        console.log("load open vbets",loadBets)
+        await loadBets.forEach(async (element:any) => {
+          if(element.openedBy != 0x0000000000000000000000000000000000000000) {
+            let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+            const getbetpredictions = await Betcontract.getPredictions(element.betId.toNumber());
+            setBetConditions(getbetpredictions);
+              let item: Bets = {
+                betId: element.betId,
+                matchId: element.matchId,
+                uniquebetId: element.uniquebetId,
+                betamount: betAmt,
+                matchfixture: element.matchfixture,
+                openedBy: element.openedBy,
+                totalbetparticipantscount: element.totalbetparticipantscount,
+                remainingparticipantscount: element.remainingparticipantscount,
+                betstatus: element.betstatus,
+                participants: element.participants,
+                betwinners: element.betwinners,
+                betlosers: element.betlosers,
+              }
+              // Prevent duplicate entries based on betId
+              setBetData(prevBetData => {
+                if (!prevBetData.some(existingItem => existingItem.betId.toString() === item.betId.toString())) {
+                    return [...prevBetData, item];
+                }
+                return prevBetData;
+            });
+              setShowBgOverlay(false);
+              setShowLoading(false);
+              return item;
+            }else {
+              setShowAlertDanger(true);
+              seterrorMessage("No open bet found, try again")
+              setShowLoading(false);
+            }
+          });
+          
+      } catch (error: any) {
+        setShowAlertDanger(true);
+        seterrorMessage(error.code);
+        setShowLoading(false);
       }
-  }  
-  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/filterbyopenbets", {
-      currentPage,
-      limit
-  }, config);
-  if(data) {
-    setShowLoading(false)
-    setBetData(data.loadbets);
-    setTotalPages(data.totalPages);
-    setIsBetDataLoaded(true);
-  }
-}
+      
+    }
+};
 
 const toggleAddress = (e:any) => {
   let fulladdress = e.previousElementSibling as HTMLSpanElement;
@@ -587,15 +786,15 @@ const closeBgModal = () => {
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
     </HelmetExport>
     {showloading && <Loading/>}
-    {error && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
+    {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {/* <div className={openbetsstyle.hiw_overlay} id="hiw_overlay"></div> */}
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={openbetsstyle.main}>
         <div className={openbetsstyle.search}>
           <div>
             <form>
-                <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={openbetsstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
-                {showsearchoptions && 
+                <input type='text' title='input' id="search-input" value={searchkeyword} ref={inputRef} onChange={loadSearchResults} placeholder='Search by username or wallet address'/><div className={openbetsstyle.searchicon}><FaMagnifyingGlass onClick={() => loadSearchResults()}/></div>
+                {/* {showsearchoptions && 
                   <div className={openbetsstyle.searchop} >
                     {keywordsearchresults?.map((result,index) => (
                     <div key={index}>
@@ -611,7 +810,7 @@ const closeBgModal = () => {
                     </div>
                     ))}
                   </div>
-                }
+                } */}
             </form>
           </div>
         </div>
@@ -636,21 +835,19 @@ const closeBgModal = () => {
         {showbetconditions && 
           <div className={openbetsstyle.betcondtns}>
             <div className={openbetsstyle.betcondtns_m}>
-              <div className={openbetsstyle.betcondtns_x} onClick={(e) => closeBetCondtns(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
+              <div className={openbetsstyle.betcondtns_x} onClick={(e) => closeBetCondtns(e.target)}>{<FaXmark />}</div>
                 <h3>Bet participants and their predictions</h3>
-                {betconditions.map(betcon => (
-                  <div key={betcon._id} className={openbetsstyle.betprd}>
+                {betconditions.map((betcon, index) => (
+                  <div key={index} className={openbetsstyle.betprd}>
                     <div>
                       <div>{betcon.username}</div>
                     </div>
                     <div>
                       <h3>Prediction</h3>
-                      {betcon.betcondition.map(betc => (
-                        <div>
-                          <div>{betc.bettingteam}</div>
-                          <div>{betc.prediction}</div>
-                        </div>
-                      ))}
+                      <div>
+                        <div><span>Team: </span> {betcon.bettingteam}</div>
+                        <div><span>Prediction: </span> {betcon.prediction}</div>
+                      </div>
                     </div>
                   </div>
                 ))}
@@ -661,35 +858,35 @@ const closeBgModal = () => {
         {/* how it works div starts */}
         <div id='howitworks' className={openbetsstyle.hiwmain}>
           <div className={openbetsstyle.hiw_c}>
-            <div className={openbetsstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
+            <div className={openbetsstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FaXmark />}</div>
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='fifareward'>Join Fifa Reward</a>
+                <FaCircle className={openbetsstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='fifareward'>Join Fifa Reward</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
+                <FaCircle className={openbetsstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} />  Visit the betting page
+                <FaCircle className={openbetsstyle.hiwlistcircle} />  Visit the betting page
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
+                <FaCircle className={openbetsstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
+                <FaCircle className={openbetsstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a>open bets</a>
+                <FaCircle className={openbetsstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a>open bets</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
+                <FaCircle className={openbetsstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
+                <FaCircle className={openbetsstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={openbetsstyle.hiwlistcircle} /> Draw bets are carried over to a next match
+                <FaCircle className={openbetsstyle.hiwlistcircle} /> Draw bets are carried over to a next match
               </li>
             </ul>
           </div>
@@ -716,20 +913,20 @@ const closeBgModal = () => {
               <h3>Filter By</h3>
               <div>
                 <div>
-                  <button type='button' title='button' onClick={FilterByOpenBets}>Open Bets {'>>'}</button>
+                  <button type='button' title='button' onClick={FilterByOpenBets} style={{cursor: 'pointer'}}>Open Bets {'>>'}</button>
                 </div>
                 <div>
-                  <button type='button' title='button' onClick={FilterByClosedBets}>Closed Bets {'>>'}</button>
+                  <button type='button' title='button' onClick={FilterByClosedBets} style={{cursor: 'pointer'}}>Closed Bets {'>>'}</button>
                 </div>
                 <div className={openbetsstyle.amountprog}>
                   <div>Bet Amount </div>
-                  <div className={openbetsstyle.fba}>{`${filterbetAmount}`} <span>FRD</span></div>
+                  <div className={openbetsstyle.fba}>{`${filterbetAmount.toLocaleString()}`} <span>FRD</span></div>
                   <div>
                     <input title='bet amount'
                       type="range"
                       id="horizontalInput"
-                      min={50000}
-                      max={50000000}
+                      min={minfilterbyamount}
+                      max={maxfilterbyamount}
                       step={1}
                       value={filterbetAmount}
                       onChange={FilterByBetAmount}
@@ -767,14 +964,14 @@ const closeBgModal = () => {
                   {betData.map((openbet, index) => (
                     <tr key={index}>
                       {/* <td><div className={openbetsstyle.div}>{index+1}</div></td> */}
-                      <td><div className={openbetsstyle.div}>{openbet.betId.toString()}</div></td>
-                      <td><div className={openbetsstyle.div}>{openbet.uniqueId.toString()}</div></td>
+                      <td><div className={openbetsstyle.div}>{index+1}</div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.uniquebetId.toString()}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.matchId.toString()}</div></td>
-                      <td><div className={openbetsstyle.div}>{(openbet.betamount.toString())}{<span className={openbetsstyle.amtunit}>FRD</span>}</div></td>
+                      <td><div className={openbetsstyle.div}>{(openbet.betamount.toLocaleString())} {<span className={openbetsstyle.amtunit}>FRD</span>} ({`$${Math.ceil(openbet.betamount * frdusdprice)}`}) </div></td>
                       <td><div className={openbetsstyle.divaddress}><span>{openbet.openedBy.substring(0,8)+'...'}</span><span className={openbetsstyle.fulladdr}>{openbet.openedBy}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>
                       <td><div className={openbetsstyle.div}>{openbet.totalbetparticipantscount.toString()}</div></td>
                       <td><div className={openbetsstyle.div}>{(openbet.totalbetparticipantscount.toNumber()) - (openbet.remainingparticipantscount.toNumber())}</div></td>
-                      <td><div className={openbetsstyle.div}>({openbet.participants}) <div className={openbetsstyle.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())}> view bet details </button></div></div></td>
+                      <td><div className={openbetsstyle.div}>({openbet.participants}) <div className={openbetsstyle.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())} style={{cursor: 'pointer'}}> view bet details </button></div></div></td>
                       <td><div className={openbetsstyle.div}>{openbet.remainingparticipantscount.toString()}</div></td>
                       <td className={openbetsstyle.stat}><div className={openbetsstyle.div}>{openbet.betstatus == 'open' ? <span className={openbetsstyle.betstatusopened}>{openbet.betstatus}</span> : <span className={openbetsstyle.betstatusclosed}>{openbet.betstatus}</span>}</div></td>
                       {openbet.betstatus === 'open' 
@@ -783,107 +980,107 @@ const closeBgModal = () => {
                       : 
                       <td className={openbetsstyle.jb}><div className={openbetsstyle.div}><button className={openbetsstyle.closed} type='button' title='button' disabled >Bet Closed</button></div></td>}
                       <td>
-                      <div className={openbetsstyle.pbet}>
-                        <div className={openbetsstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
-                            <h3>Bet Details</h3>
-                            <div><p>Below are the details of this <span className={openbetsstyle.obet}>Open Bet</span></p></div>
-                              <div className={openbetsstyle.form_g}>
-                                <ul>
-                                  <li>
-                                      <div>
-                                          <div>
-                                              Bet Id
-                                          </div>
-                                          <div className={openbetsstyle.betdet}>
-                                            {openbet.betId.toString()}
-                                          </div>
-                                      </div>
-                                    </li>
+                        <div className={openbetsstyle.pbet}>
+                          <div className={openbetsstyle.pbet_x} >{<FaXmark onClick={(e) => closePBET(e.target)}/>}</div>
+                              <h3>Bet Details</h3>
+                              <div><p>Below are the details of this <span className={openbetsstyle.obet}>Open Bet</span></p></div>
+                                <div className={openbetsstyle.form_g}>
+                                  <ul>
                                     <li>
-                                      <div>
-                                          <div>
-                                              Match Id
-                                          </div>
-                                          <div className={openbetsstyle.betdet}>
-                                            {openbet.matchId.toString()}
-                                          </div>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div>
-                                          <div>
-                                              Match
-                                          </div>
-                                          <div className={openbetsstyle.betdet}>
-                                            {openbet.matchfixture}
-                                          </div>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div>
-                                          <div>
-                                              Max no of participants
-                                          </div>
-                                          <div className={openbetsstyle.betdet}>
-                                            {openbet.totalbetparticipantscount.toString()}
-                                          </div>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div>
-                                          <div>
-                                              Remaining Participants
-                                          </div>
-                                          <div className={openbetsstyle.betdet}>
-                                            {openbet.remainingparticipantscount.toString()}
-                                          </div>
-                                      </div>
-                                    </li>
-                                </ul>
-                              </div>
-                              <div className={openbetsstyle.form_g}>
-                                  <div className={openbetsstyle.betp}>
-                                      Participants joined
-                                  </div>
-                                  <div className={openbetsstyle.betpp}>
-                                    <div>
-                                    {openbet.participants}
+                                        <div>
+                                            <div>
+                                                Bet Id
+                                            </div>
+                                            <div className={openbetsstyle.betdet}>
+                                              {openbet.uniquebetId.toString()}
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li>
+                                        <div>
+                                            <div>
+                                                Match Id
+                                            </div>
+                                            <div className={openbetsstyle.betdet}>
+                                              {openbet.matchId.toString()}
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li>
+                                        <div>
+                                            <div>
+                                                Match
+                                            </div>
+                                            <div className={openbetsstyle.betdet}>
+                                              {`${openbet.matchfixture.replace(/-/g, ' ')}`}
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li>
+                                        <div>
+                                            <div>
+                                                Max no of participants
+                                            </div>
+                                            <div className={openbetsstyle.betdet}>
+                                              {openbet.totalbetparticipantscount.toString()}
+                                            </div>
+                                        </div>
+                                      </li>
+                                      <li>
+                                        <div>
+                                            <div>
+                                                Remaining Participants
+                                            </div>
+                                            <div className={openbetsstyle.betdet}>
+                                              {openbet.remainingparticipantscount.toString()}
+                                            </div>
+                                        </div>
+                                      </li>
+                                  </ul>
+                                </div>
+                                <div className={openbetsstyle.form_g}>
+                                    <div className={openbetsstyle.betp}>
+                                        Participants joined
                                     </div>
-                                  </div>
-                              </div>
-                              <div className={openbetsstyle.form_g}>
-                                  <label>Which team are you betting on?</label>
-                                  <div>
-                                      <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
-                                          <option value={openbet.matchfixture.split('vs')[0]}>{openbet.matchfixture.split('vs')[0]}</option>
-                                          <option value={openbet.matchfixture.split('vs')[1]}>{openbet.matchfixture.split('vs')[1]}</option>
-                                      </select>
-                                  </div>
-                                  <small id='teamalert'></small>
-                              </div>
-                              <div className={openbetsstyle.form_g}>
-                                  <label>Select Prediction</label>
-                                  <div>
-                                      <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
-                                          <option value='Win'>Win</option>
-                                          <option value='Draw'>Draw</option>
-                                      </select>
-                                  </div>
-                              </div>
-                              <div className={openbetsstyle.form_g}>
-                                  <p>You are joining this bet with {openbet.betamount.toString()}FRD</p>
-                              </div>
-                              <div className={openbetsstyle.error_alert}></div>
-                              <div className={openbetsstyle.form_btn}>
-                                  <div>
-                                    <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betId.toNumber(),openbet.betamount,openbet.matchId.toNumber(),openbet.totalbetparticipantscount.toNumber(),openbet.openedBy,openbet.betstatus,openbet.totalbetparticipantscount.toNumber(),openbet.participants,openbet.remainingparticipantscount.toNumber())} title='button'>Confirm</button>
-                                  </div>
-                                  <div>
-                                    <button type='button' className={openbetsstyle.cancel_btn} onClick={(e) => Cancel(e.target)} title='button'>Cancel</button>
-                                  </div>
-                              </div>
-                          </div>
-                        <div>
+                                    <div className={openbetsstyle.betpp}>
+                                      <div>
+                                      {openbet.participants}
+                                      </div>
+                                    </div>
+                                </div>
+                                <div className={openbetsstyle.form_g}>
+                                    <label>Which team are you betting on?</label>
+                                    <div>
+                                        <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
+                                            <option value={`${openbet.matchfixture.split('vs')[0].replace(/-/g, ' ')}`}>{`${openbet.matchfixture.split('vs')[0].replace(/-/g,' ')}`}</option>
+                                            <option value={`${openbet.matchfixture.split('vs')[1].replace(/-/g, ' ')}`}>{`${openbet.matchfixture.split('vs')[1].replace(/-/g, ' ')}`}</option>
+                                        </select>
+                                    </div>
+                                    <small id='teamalert'></small>
+                                </div>
+                                <div className={openbetsstyle.form_g}>
+                                    <label>Select Prediction</label>
+                                    <div>
+                                        <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
+                                            <option value='Win'>Win</option>
+                                            <option value='Lose'>Lose</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div className={openbetsstyle.form_g}>
+                                    <p>You are joining this bet with {openbet.betamount.toLocaleString()}FRD</p>
+                                </div>
+                                <div className={openbetsstyle.error_alert}></div>
+                                <div className={openbetsstyle.form_btn}>
+                                    <div>
+                                      <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betId.toNumber(),openbet.betamount,openbet.totalbetparticipantscount.toString(),openbet.openedBy,openbet.remainingparticipantscount.toNumber())} title='button'>Confirm</button>
+                                    </div>
+                                    <div>
+                                      <button type='button' className={openbetsstyle.cancel_btn} onClick={(e) => Cancel(e.target)} title='button'>Cancel</button>
+                                    </div>
+                                </div>
+                            </div>
+                          <div>
 
                         </div>
                       </td>
@@ -892,7 +1089,7 @@ const closeBgModal = () => {
                 </tbody>
               </table>
             </div>
-            {betData.length > 0 &&
+            {betData.length > 10 &&
               <div className={openbetsstyle.paginate_btns}>
               <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
                 {'<<'}

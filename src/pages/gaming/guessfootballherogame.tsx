@@ -1,22 +1,19 @@
 import React from 'react';
-import Home from '../../components/landing/Home';
-import Navbar from '../../components/navbar/MainNavbar';
+import Navbar from '../../components/navbar/GamingNavBar'
 import Footer from '../../components/Footer'
 import BackToTop from '../../components/back-to-top/back-to-top';
-import Gamesdisplay from '../../components/GuessFootballHeroGame';
-import Leaderboard from '../../components/SoccerRouletteLeaderboard';
-import ChangeTheme from '../../components/change-theme/change-theme';
+import Guessfootballhero from '../../components/GuessFootballHero';
+// import ChangeTheme from '../../components/change-theme/change-theme';
 
 function HomePage() {
 
   return (
     <>
       <BackToTop />
-      <ChangeTheme />
-      {/* <Navbar /> */}
-      <Gamesdisplay />
-      <Leaderboard />
-      {/* <Footer /> */}
+      {/* <ChangeTheme /> */}
+      <Navbar />
+      <Guessfootballhero />
+      <Footer />
     </>
   )
 }

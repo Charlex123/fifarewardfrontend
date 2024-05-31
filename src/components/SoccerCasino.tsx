@@ -4,6 +4,9 @@ import SoccerCasinoRoulette from './SoccerCasinoRoulette';
 import SoccerCasinoTable from './SoccerCasinoTable';
 import Leaderboard from './SoccerRouletteLeaderboard';
 import { GiDiamonds } from 'react-icons/gi';
+import UserList from './UserList';
+import axios from 'axios';
+import HelmetExport from 'react-helmet';
 import { ThemeContext } from '../contexts/theme-context';
 import firstRow from '../components/RouletteTableRows/FirstRow.json';
 import firstBorder from '../components/RouletteTableRows/FirstBorder.json';
@@ -15,6 +18,7 @@ import fourthRow from '../components/RouletteTableRows/FourthRow.json';
 import fifthRow from '../components/RouletteTableRows/FifthRow.json';
 import columnLeft from '../components/RouletteTableRows/ColumnLeft.json';
 import columnRight from '../components/RouletteTableRows/ColumnRight.json';
+
 
 const SoccerCasino: React.FC = () => {
   const [num, setNum] = useState<string>('');
@@ -68,6 +72,7 @@ const SoccerCasino: React.FC = () => {
 
   useEffect(() => {
     // Fetch user data from the database and set the state with that data
+    
   }, []);
 
   const isSpinning = (isspinning: boolean) => {
@@ -185,92 +190,98 @@ const SoccerCasino: React.FC = () => {
   };
 
   return (
-    <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
-      <div className={styles.overlay}></div>
-      <div className={styles.top}>
-        <h1 className={styles.gameh1}>Fifareward Soccer Roulette Game</h1>        
-        <p>
-          Spin And Win
-        </p>
-      </div>
+    <>
+      <HelmetExport>
+          <title> FootBall Casino Roulette | FifaReward</title>
+          <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+      </HelmetExport>
+      <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+        <div className={styles.overlay}></div>
+        <div className={styles.top}>
+          <h1 className={styles.gameh1}>Fifareward Soccer Roulette Game</h1>        
+          <p>
+            Spin And Win
+          </p>
+        </div>
 
-      <div className={styles.table}>
-        <div className={`${styles.game} ${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`}>
-          <div className={styles.game_in}>
-            {/* Casino Roulette */}
-            <div className={styles.casinoroulette}>
-              <SoccerCasinoRoulette isSpinning={isSpinning} updateNum={updateNum} num={num} arr={arr} count={count} />
-            </div>
-            {/* game results */}
-            <div className={styles.col_md_8}>
-              <div className={styles.dc}>
-                <div className={styles.coins_col}>
-                  <h4 className="m-0">${coins}</h4>
-                </div>
+        <div className={styles.table}>
+          <div className={`${styles.game} ${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`}>
+            <div className={styles.game_in}>
+              {/* Casino Roulette */}
+              <div className={styles.casinoroulette}>
+                <SoccerCasinoRoulette isSpinning={isSpinning} updateNum={updateNum} num={num} arr={arr} count={count} />
               </div>
-              <div className={styles.text_center}>
-                <h6 className={styles.text_uppercase}>{message}</h6>
-              </div>
-              <div className={styles.text_center}>
-                <div className={`${styles.divider_line} ${styles.divider_line_center} ${styles.divider_line_linear_gradient}`}>
-                  <GiDiamonds className={styles.diamond_line_icon} />
-                </div>
-                <ul className={styles.list_inline}>
-                  <li className={styles.list_inline_item}>Spins: {count}</li>
-                  <li className={styles.list_inline_item}>Wins: {wins}</li>
-                  <li className={styles.list_inline_item}>Losses: {losses}</li>
-                </ul>
-              </div>
-
-              {/* bets array */}
-              <div className={styles.bets}>
-                <div>
-                  <div className="text-light-gold" style={{color: 'gold'}}>
-                    My bets: {arr.join(', ')}
+              {/* game results */}
+              <div className={styles.col_md_8}>
+                <div className={styles.dc}>
+                  <div className={styles.coins_col}>
+                    <h4 className="m-0">${coins}</h4>
                   </div>
+                </div>
+                <div className={styles.text_center}>
+                  <h6 className={styles.text_uppercase}>{message}</h6>
+                </div>
+                <div className={styles.text_center}>
+                  <div className={`${styles.divider_line} ${styles.divider_line_center} ${styles.divider_line_linear_gradient}`}>
+                    <GiDiamonds className={styles.diamond_line_icon} />
+                  </div>
+                  <ul className={styles.list_inline}>
+                    <li className={styles.list_inline_item}>Spins: {count}</li>
+                    <li className={styles.list_inline_item}>Wins: {wins}</li>
+                    <li className={styles.list_inline_item}>Losses: {losses}</li>
+                  </ul>
+                </div>
+
+                {/* bets array */}
+                <div className={styles.bets}>
+                  <div>
+                    <div className="text-light-gold" style={{color: 'gold'}}>
+                      My bets: {arr.join(', ')}
+                    </div>
+                  </div>
+                </div>
+                
+              </div>
+              
+              {/* Casino table */}
+              <div className={styles.casinotable}>
+                <div>
+                  <SoccerCasinoTable
+                    firstRow={tableData.firstRow}
+                    firstBorder={tableData.firstBorder}
+                    secondRow={tableData.secondRow}
+                    secondBorder={tableData.secondBorder}
+                    thirdRow={tableData.thirdRow}
+                    thirdBorder={tableData.thirdBorder}
+                    fourthRow={tableData.fourthRow}
+                    fifthRow={tableData.fifthRow}
+                    columnLeft={tableData.columnLeft}
+                    columnRight={tableData.columnRight}
+                    updateRow={updateRow}
+                    updateArr={updateArr}
+                    updateCoins={updateCoins}
+                    num={num}
+                    arr={arr}
+                    count={count}
+                    coins={coins}
+                    chip={chip}
+                    spinning={spinning}
+                  />
                 </div>
               </div>
               
             </div>
             
-            {/* Casino table */}
-            <div className={styles.casinotable}>
-              <div>
-                <SoccerCasinoTable
-                  firstRow={tableData.firstRow}
-                  firstBorder={tableData.firstBorder}
-                  secondRow={tableData.secondRow}
-                  secondBorder={tableData.secondBorder}
-                  thirdRow={tableData.thirdRow}
-                  thirdBorder={tableData.thirdBorder}
-                  fourthRow={tableData.fourthRow}
-                  fifthRow={tableData.fifthRow}
-                  columnLeft={tableData.columnLeft}
-                  columnRight={tableData.columnRight}
-                  updateRow={updateRow}
-                  updateArr={updateArr}
-                  updateCoins={updateCoins}
-                  num={num}
-                  arr={arr}
-                  count={count}
-                  coins={coins}
-                  chip={chip}
-                  spinning={spinning}
-                />
-                
-              </div>
-            </div>
-            
           </div>
-          
-        </div>
 
-        {/* Leaderboard */}
-        <div className={`${styles.leaderboard}`}>
-          <Leaderboard />
+          {/* Leaderboard */}
+          <div className={`${styles.leaderboard}`}>
+            <Leaderboard />
+          </div>
         </div>
       </div>
-    </div>
+    </>
+    
   );
 };
 

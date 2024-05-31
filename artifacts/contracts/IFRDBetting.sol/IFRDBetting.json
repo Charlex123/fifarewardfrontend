@@ -131,6 +131,11 @@
               "type": "uint256"
             },
             {
+              "internalType": "uint256",
+              "name": "betamount",
+              "type": "uint256"
+            },
+            {
               "internalType": "string",
               "name": "matchfixture",
               "type": "string"

@@ -108,6 +108,25 @@ contract FRDBettingFeatures is ReentrancyGuard {
     }
 
     // Function to get bets by bet status
+    function getBetsByAmount(uint amount) public view returns (Bet[] memory) {
+        uint totalBets = FRDBettingContract.nextBetId();
+        uint currentIndex = 0;
+        
+        Bet[] memory bets = new Bet[](totalBets);
+        // Populate the array with bets that have the specified status
+        for (uint i = 0; i <= totalBets; i++) {
+            uint currentId = i + 1;
+            if (FRDBettingContract.getBetsMapping(currentId).betamount >= amount) {
+                Bet memory currentItem = FRDBettingContract.getBetsMapping(currentId);
+                bets[currentIndex] = currentItem;
+                currentIndex += 1;
+            }
+        }
+
+        return bets;
+    }
+
+    // Function to get bets by bet status
     function getBetsByStatus(string memory _betstatus) public view returns (Bet[] memory) {
         uint totalBets = FRDBettingContract.nextBetId();
         uint currentIndex = 0;

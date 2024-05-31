@@ -13,7 +13,7 @@ import ActionSuccessModal from './ActionSuccess';
 import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
 import BgOverlay from './BgOverlay';
-import LoadSampleOpenBetsData from './LoadSampleOpenBets';
+import LoadSampleOpenBetsData from './LoadOpenBets';
 import LoadFixturesSearchResults from './LoadFixturesSearchResults';
 import FixturesByDate from './FixturesByDate';
 import FixturesByCalenderDate from './FixturesByCalenderDate';

@@ -1,3 +1,3 @@
 export default function ConnectWallet() {
-    return <w3m-button size="sm" balance="hide"/>
+    return <w3m-button size="sm" balance="hide" label="Login"/>
   }

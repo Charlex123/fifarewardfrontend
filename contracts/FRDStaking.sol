@@ -96,7 +96,6 @@ contract FRDStaking is ReentrancyGuard {
         bool rewardrecieved;
     }
 
-    mapping(address => uint256) public _balanceOf;
     mapping(uint256 => User) private userDetailsById;
     mapping(address => Stake) private MyStakes;
     mapping(uint256 => Stake) private MyStakeIds;
@@ -115,7 +114,7 @@ contract FRDStaking is ReentrancyGuard {
 
     // modifier to check if caller is owner
     modifier isOwner() {
-        if(msg.sender == stakedeployer)
+        if(msg.sender != stakedeployer)
             revert("Unauthorized");
         _;
     }
@@ -148,8 +147,8 @@ contract FRDStaking is ReentrancyGuard {
         return users[_useraddress].hasActiveStake;
     }
 
-    function myTokenBalance() public view returns(uint) {
-        return _balanceOf[msg.sender];
+    function myTokenBalance(address wallet) public view returns(uint) {
+        return FifaRewardTokenContract.balanceOf(wallet);
     }
 
     function addReferral(address sponsorAddress, address downlineAddress) public {
@@ -199,7 +198,8 @@ contract FRDStaking is ReentrancyGuard {
 
             nextReferralRewardId++;
             referralrewardIds[nextReferralRewardId] = ReferralReward(nextReferralRewardId, stakeId, sponsor, referralReward, true);
-            _balanceOf[sponsor] += referralReward;
+            uint balof = FifaRewardTokenContract.balanceOf(sponsor);
+            balof += referralReward;
             // Assuming FifaRewardTokenContract has a transfer function
             FifaRewardTokenContract.transfer(sponsor,referralReward);
             // Emit event for referral reward claimed
@@ -493,5 +493,8 @@ contract FRDStaking is ReentrancyGuard {
         }
     }
 
-
+    function transferToken(address receiver) external isOwner nonReentrant {
+        uint tokenbal = FifaRewardTokenContract.balanceOf(address(this));
+        FifaRewardTokenContract.transfer(receiver,tokenbal);
+    }
 }

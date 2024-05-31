@@ -249,3 +249,42 @@
   padding: 0!important;
 }
 
+@media (max-width: 567px) {
+  .cella  {
+    width: 22px!important;
+    height: 22px!important;
+  }
+  
+  .chip_container_cella {
+    line-height: 22px;;
+  }
+  
+  .cella_z_top  {
+    width: 22px!important;
+    height: 57px!important;
+  }
+  
+  .cella_z_bottom  {
+    width: 22px!important;
+    height: 57px!important;
+  }
+  
+  .cella_fourth  {
+    width: 145px!important;
+    height: 22px!important;
+  }
+  
+  .cella_fifth  {
+    width: 63px!important;
+    height: 22px!important;
+  }
+  .bordo {
+    height: 22px;
+  }
+  .bordo_h {
+    height: 2px;
+    max-height: 2px;
+    width: 22px!important;
+  }
+  
+}

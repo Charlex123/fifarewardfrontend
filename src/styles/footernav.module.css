@@ -18,7 +18,7 @@
     margin: auto;z-index: 0;top: 0;right: 0;left: 0;padding: 5px 15px 5px 15px;
 }
 .footernav .nav_container .linka a {
-    font-size: 14px;text-align: center;margin: auto;margin-top: 0;
+    font-size: 14px;text-align: center;margin: auto;margin-top: 0;color: #e2d7d7;text-decoration: none;
 }
 .footernav .nav_container .linka a .tc {
     margin: 0 auto;text-align: center;margin-bottom: -5px;

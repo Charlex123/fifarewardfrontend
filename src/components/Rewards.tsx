@@ -22,7 +22,7 @@ import { ethers } from 'ethers';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
-import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ThemeContext } from '../contexts/theme-context';
 import HelmetExport from 'react-helmet';
@@ -30,14 +30,8 @@ import DappNav from './Dappnav';
 import DappFooter from './DappFooter';
 import FooterNavBar from './FooterNav';
 import RewardsBadge from './RewardsBadge';
-import { fas, faCheck, faCheckCircle,faAlignJustify, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { FaAlignJustify, FaXmark } from 'react-icons/fa6';
 
-
-
-
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 // ----------------------------------------------------------------------
 library.add(faEye, faEyeSlash);
 const Rewards = () =>  {
@@ -70,7 +64,6 @@ const Rewards = () =>  {
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
 
-  const [referralLink, setreferralLink] = useState('');
   const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOY_CA;
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
   const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
@@ -85,18 +78,6 @@ const Rewards = () =>  {
   useEffect(() => {
     
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    console.log("u det",udetails)
-    if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-        setUsername(username_);
-        setUserId(udetails.userId)
-        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
-        setUserbadge(udetails.badge);
-      }
-    }else {
-      router.push(`/signin`);
-    }
 
     // get stake count
     const StakeCount = async () => {
@@ -126,10 +107,10 @@ const Rewards = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const BettingFeatureContract = new ethers.Contract(BettingCA!, BettingFeaturesAbi, signer);
-          const createdbetreslt = await BettingFeatureContract.getBetIdsCreatedByUserCount(address);
+          const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
+          const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(address);
 
-          const joinedbetreslt = await BettingFeatureContract.getBetIdsUserJoinedCount(address);
+          const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(address);
           sumTwoIntegers(createdbetreslt.toNumber(),joinedbetreslt.toNumber());
         }
           
@@ -258,7 +239,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>
             <div className={dappconalertstyles.dappconalert}>
-              <div className={dappconalertstyles.dappconalertclosediv}><button title='button' type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
+              <div className={dappconalertstyles.dappconalertclosediv}><button title='button' type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FaXmark /></button></div>
               <div className={dappconalertstyles.dappconalert_in}>
                 {errorMessage}
               </div>
@@ -274,7 +255,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                   <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
               </button>
               <div>
                 <RewardsBadge />

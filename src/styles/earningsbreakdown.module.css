@@ -18,6 +18,17 @@
     width: 100%;text-align: right;margin: 30px 0 10px 0;border-top: 3px solid #827f7fc2;
     border-bottom: 3px solid #827f7fc2;padding: 10px 0 30px 0;
 }
+.earnings_comingsoon {
+    font-size: 22px;text-align: center;margin: 15px auto;font-weight: bolder;
+    animation: blink 1s infinite;font-family: 'Cinzel Black', sans-serif;
+}
+@keyframes blink {
+    0%    {color: #b0762b;}
+    50%   {color: #895c01;}
+    60%   {color: #dcb44a;}
+    70%   {color: #dcb44a;}
+    100%  {color: #b0762b;}
+  }
 .earnins .rwdb {
     width: 100%;
 }

@@ -1,6 +1,6 @@
-@tailwind base;
+/* @tailwind base;
 @tailwind components;
-@tailwind utilities;
+@tailwind utilities; */
 
 @import url("https://fonts.googleapis.com/css?family=Poppins");
 @import url("https://fonts.googleapis.com/css?family=Big+Shoulders+Text");
@@ -14,11 +14,11 @@
 
 
 @font-face {
-  font-family: "BestermindRegular";
-  src: url("../assets/fonts/Bestermind/BestermindRegular.ttf");
-  src: url("../assets/fonts/Bestermind/BestermindRegular.ttf")
-      format("embedded-opentype"),
-    url("../assets/fonts/Bestermind/BestermindRegular.ttf") format("truetype");
+  font-family: 'Cinzel Black';
+  src: url('/fonts/Cinzel-Black.ttf') format('truetype'),
+       url('/fonts/Cinzel-Black.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 :root {
@@ -46,8 +46,9 @@ body {
   box-sizing: border-box;
   width: 100%;
   margin: 0;padding: 0;
-  font-family: "Montserrat","Poppins",sans-serif;
+  font-family: 'Cinzel Black', sans-serif;
   overflow-x: hidden;
+  /* background-color: #161313ef; */
 }
 .darktheme {
   background-color: var(--background-color-dark);
@@ -58,15 +59,21 @@ body {
   background-color: var(--background-color-light);
   color: var(--text-color-dark);
 }
-/* a {
-  text-decoration: none;
+body button {
+  background-color: transparent;border: none;background-color: none;cursor: pointer;
+}
+body li {
+  list-style: none;
+}
+body a {
+  text-decoration: none;color: #e2d7d7;
 }
 
 .MuiPaper-root,
 .MuiBackdropRoot {
   background: rgba(33, 33, 33, 0.15) !important;
   backdrop-filter: blur(20px) !important;
-} */
+} 
 /* scrollBar */
 /* 
 ::-webkit-scrollbar {

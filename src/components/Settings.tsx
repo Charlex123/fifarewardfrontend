@@ -2,9 +2,6 @@ import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
 
@@ -12,37 +9,28 @@ import DappSideBar from './Dappsidebar';
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
 import dappconalertstyles from "../styles/dappconnalert.module.css";
-import dappsidebarstyles from '../styles/dappsidebar.module.css';
-import { ethers } from 'ethers';
 // component
+import { ethers } from 'ethers';
 import ConnectWallet from './ConnectWalletButton';
 import ReferralLink from './ReferralLink';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { ThemeContext } from '../contexts/theme-context';
 import DappNav from './Dappnav';
-import FRDabi from "../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json"
 import FooterNavBar from './FooterNav';
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import AlertDanger from './AlertDanger';
-import AlertMessage from './AlertMessage';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import DragDropImageUpload from './DragDropImageUpload';
 import RewardsBadge from './RewardsBadge';
 import ActionSuccessModal from './ActionSuccess';
 import HelmetExport from 'react-helmet';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome} from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import axios from 'axios';
-import { connected } from 'process';
+import { FaAlignJustify, FaXmark } from 'react-icons/fa6';
 
 
 
-
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const Settings = () =>  {
 
   const router = useRouter();
@@ -55,7 +43,6 @@ const Settings = () =>  {
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
   // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");  
   const [dappConnector,setDappConnector] = useState(false);
@@ -71,6 +58,7 @@ const Settings = () =>  {
   const [actionsuccess, setActionSuccess] = useState(false);
   const [actionsuccessmessage, setActionSuccessMessage] = useState<string>('');
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
+  const { open } = useWeb3Modal();
   // const [deltaX, setDeltaX] = useState(0);
   // const [draggedRangeIndex, setDraggedRangeIndex] = useState<number | null>(null);
 
@@ -80,9 +68,8 @@ const Settings = () =>  {
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
 
-  const [referralLink, setreferralLink] = useState('');
 
-  const FRDContractAddress = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
+  const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 
   
   const closeDappConAlert = () => {
@@ -91,20 +78,9 @@ const Settings = () =>  {
 
   useEffect(() => {
 
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-        console.log("u det",udetails);
-    if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-        setUsername(username_);
-        setUserId(udetails.userId)
-        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
-        
-      }
-    }else {
-      router.push(`/signin`);
+    if(!isConnected) {
+      open()
     }
-        
 
   // Function to handle window resize
   const handleResize = () => {
@@ -167,7 +143,7 @@ const Settings = () =>  {
         console.log(pair[0] + ', ' + pair[1]);
       }
     try {
-      const res = await axios.post('http://localhost:9000/upload', formData, {
+      const res = await axios.post('http://localhost:9000/uploadprofileimage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -183,7 +159,7 @@ const Settings = () =>  {
         }  
         const filePath_ = fullUrl;
         const {data} = await axios.post('http://localhost:9000/api/users/uploadprofilepicture', {
-            userId,
+            address,
             filePath_
         }, config);
         if(data) {
@@ -195,6 +171,39 @@ const Settings = () =>  {
       console.error(err);
     //   setError('Failed to upload the file');
     }
+}
+
+async function UpdateUsername(e: any) {
+  e.preventDefault()
+  try {
+    setShowLoading(true)
+    setShowBgOverlay(true)
+      const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+      }  
+      const {data} = await axios.post('http://localhost:9000/api/users/updateusername', {
+          address,
+          username
+      }, config);
+      if(data) {
+          try {
+            const provider = new ethers.providers.Web3Provider(walletProvider as any)
+            const signer = provider.getSigner();
+            const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+            await betContract.UpdateUsername(username);
+          } catch (error: any) {
+            console.log("add ref error",error.code || error.message)
+          }
+          setShowLoading(false)
+          setActionSuccess(true);
+          setActionSuccessMessage("Action was successful")
+      }
+  } catch (err) {
+    console.error(err);
+  //   setError('Failed to upload the file');
+  }
 }
 
   const closeBgModal = () => {
@@ -227,7 +236,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>
             <div className={dappconalertstyles.dappconalert}>
-              <div className={dappconalertstyles.dappconalertclosediv}><button title='button' type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
+              <div className={dappconalertstyles.dappconalertclosediv}><button title='button' type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FaXmark/></button></div>
               <div className={dappconalertstyles.dappconalert_in}>
                 {errorMessage}
               </div>
@@ -249,7 +258,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                   <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
               </button>
               <div>
                 <RewardsBadge />
@@ -264,7 +273,26 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                     <DragDropImageUpload onFileUpload={handleFileUpload}/>
                 </div>
               </div>
-                  {/* end of stake conntainer */}
+                  
+              {/* end of upload profile pics */}
+
+              <div className={dappstyles.upuname}>
+                  <h3>Update Username</h3>
+                  <div className={dappstyles.upunamec}>
+                    <form onSubmit={UpdateUsername}>
+                        <div>
+                          <input type='text' onChange={(e) => setUsername(e.target.value)} placeholder='enter username'/>
+                        </div>
+                        <div>
+                          <button type='submit'>
+                            Update
+                          </button>
+                        </div>
+                    </form>
+                  </div>
+              </div>
+
+              {/* end of update username */}
 
               </div>
             </div>

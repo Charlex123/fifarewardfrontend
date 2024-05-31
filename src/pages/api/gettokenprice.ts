@@ -29,7 +29,7 @@ let pancakeSwapAbi =  [
     
     let pancakeSwapContract = "0x10ED43C718714eb63d5aA57B78B54704E256024E".toLowerCase();
     
-    let usdequiv = 30;
+    let usdequiv = 10;
 
     async function calcSell( tokensToSell: any, tokenAddres: any){
         const web3 = new Web3("https://bsc-dataseed1.binance.org");
@@ -63,6 +63,7 @@ let pancakeSwapAbi =  [
         if(!amountOut) return 0;
         return amountOut;
     }
+    
     function setDecimals( number: any, decimals: any ){
         number = number.toString();
         let numberAbs = number.split('.')[0]
@@ -87,8 +88,8 @@ let pancakeSwapAbi =  [
             // Them amount of tokens to sell. adjust this value based on you need, you can encounter errors with high supply tokens when this value is 1.
             let tokens_to_sell = 1; 
             let priceInBnb: number = await calcSell(tokens_to_sell, tokenAddres) as number/(tokens_to_sell); // calculate TOKEN price in BNB
-            console.log( 'SHIT_TOKEN VALUE IN BNB : ' + priceInBnb + ' | Just convert it to USD ' );
-            console.log(`SHIT_TOKEN VALUE IN USD: ${priceInBnb*bnbPrice}`); // convert the token price from BNB to USD based on the retrived BNB value
+            console.log( 'FRD VALUE IN BNB : ' + priceInBnb + ' | Just convert it to USD ' );
+            console.log(`FRD VALUE IN USD: ${priceInBnb*bnbPrice}`); // convert the token price from BNB to USD based on the retrived BNB value
             res.status(200).json({ bnbprice: priceInBnb, usdprice: priceInBnb*bnbPrice, usdequivalentfrdamount: Math.floor(usdequiv/(priceInBnb*bnbPrice)) });
         } else {
             // Handle other HTTP methods

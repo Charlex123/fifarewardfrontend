@@ -17,7 +17,7 @@
   align-items: center;padding-bottom: 120px;
 }
 .overlay {
-  position: fixed;background-color: #000000c0;z-index: 9;top: 0;left: 0;right: 0;bottom: 0;
+  position: fixed;background-color: #0000005c;z-index: 9;top: 0;left: 0;right: 0;bottom: 0;
 }
 .top {
   z-index: 999;
@@ -66,7 +66,7 @@
   width: 100%;
 }
 .main .darkmod {
-  border: 1px solid #f1f1f13c;border-radius: 16px;background-color: #16131376;
+  border: 1px solid #f1f1f13c;border-radius: 16px;background-color: #161313ef;
 }
 .main .lightmod {
   border: 1px solid #96939386;background-color: #6e6b6b64;border-radius: 16px;

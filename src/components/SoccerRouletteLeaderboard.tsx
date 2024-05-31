@@ -1,7 +1,16 @@
-import React from 'react';
+import React,{useState, useEffect} from 'react';
 import styles from '../styles/leaderboard.module.css';
+import { useSearchParams } from 'next/navigation';
+import UserList from './UserList';
+import axios from 'axios';
+
+interface User {
+  username: string;
+  pic: string;
+}
 
 const SoccerRouletteLeaderboard: React.FC = () => {
+  const [users, setUsers] = useState<User[]>([])
   const players = [
     { name: 'Player1', score: 1500, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
     { name: 'Player2', score: 1400, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
@@ -10,8 +19,17 @@ const SoccerRouletteLeaderboard: React.FC = () => {
     { name: 'Player5', score: 1100, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
   ];
 
+  useEffect(() => {
+    const fetchUsers = async () => {
+        const {data} = await axios.get('http://localhost:9000/api/users/getusers');
+        setUsers(data.data);
+    };
+    fetchUsers();
+  },[])
+
   return (
     <div className={styles.leaderboard}>
+      <UserList users={users} />
       <h2 className={styles.title}>Leaderboard</h2>
       <ul className={styles.playerList}>
         {players.map((player, index) => (

@@ -17,6 +17,7 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import bronzemedal from '../assets/images/medal.png'
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { fas, faCheck, faCheckCircle,faAlignJustify } from '@fortawesome/free-solid-svg-icons'
 import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
@@ -31,13 +32,12 @@ const RewardsBadge:React.FC<{}> = () =>  {
   const router = useRouter();
   const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<number>();  
   const [stakecount, setStakeCount] = useState<number>(0);
   const [betcount, setBetCount] = useState<number>(0);  
   const [nftcount, setNFTCount] = useState<number>(0);
   const [walletaddress, setWalletAddress] = useState<any>("NA");  
 
-  const [userObjId, setUserObjId] = useState(""); // Initial value
+  const [badge, setBadge] = useState("bronze"); // Initial value
   
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
@@ -53,11 +53,8 @@ const RewardsBadge:React.FC<{}> = () =>  {
       const username_ = udetails.username;  
       if(username_) {
         setUsername(username_);
-        setUserId(udetails.userId)
-        setUserObjId(udetails._id)
+        setBadge(udetails.badge);
       }
-    }else {
-      router.push(`/signin`);
     }
 
     // get stake count
@@ -88,10 +85,10 @@ const RewardsBadge:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const BettingFeatureContract = new ethers.Contract(BettingCA!, BettingFeaturesAbi, signer);
-          const createdbetreslt = await BettingFeatureContract.getBetIdsCreatedByUserCount(address);
+          const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
+          const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(address);
 
-          const joinedbetreslt = await BettingFeatureContract.getBetIdsUserJoinedCount(address);
+          const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(address);
           sumTwoIntegers(createdbetreslt.toNumber(),joinedbetreslt.toNumber());
         }
           
@@ -125,7 +122,6 @@ const RewardsBadge:React.FC<{}> = () =>  {
       try {
         if (Number.isInteger(createdbetcount) && Number.isInteger(joinedbetcount)) {
           const sum = createdbetcount + joinedbetcount;
-          console.log("defttr", sum);
           setBetCount(sum);
           return sum;
         } else {
@@ -136,7 +132,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
       }
     }
   
- }, [userId,address,router,username,walletaddress,userObjId])
+ }, [address,router,username,walletaddress])
 
 
   return (
@@ -163,7 +159,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
                 </div>
                 <div className={styles.d}>
                   <Image src={bronzemedal} alt={'medal'} height={20} width = {20} style={{margin: '0 auto'}}/>
-                  <div> Badge</div>
+                  <div style={{textTransform: 'capitalize'}}> {badge} </div>
                 </div>
             </div>
           </div>

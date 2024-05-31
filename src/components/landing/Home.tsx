@@ -35,11 +35,11 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 // import { Chrono } from "react-chrono";
 import 'react-vertical-timeline-component/style.min.css';
 import dotenv from 'dotenv';
-import { fas, faCheck, faCheckCircle,faAlignJustify, faCircleChevronRight, faCheckSquare, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+// import { fas, faCheck, faCheckCircle,faAlignJustify, faCircleChevronRight, faCheckSquare, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+// import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
+// import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import Betting from '../../pages/betting';
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
+// library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 dotenv.config();
 const Home = () => {
 // Create a state variable to manage the visibility of the navigation menu
@@ -47,7 +47,6 @@ const [isNavOpen, setNavOpen] = useState(false);
 const [stakeReadMore, setStakeReadMore] = useState(false);
 const [refReadMore, setRefReadMore] = useState(false);
 const [aboutReadMore, setAboutReadMore] = useState(false);
-const [showLoading, setShowLoading] = useState(false);
 // Array of text values to toggle between
 const textValues = ["Read More ...", "Read Less ..."];
 // State to track the current index in the array
@@ -125,7 +124,6 @@ const showAboutReadMore =  () => {
 //  };
 
 useEffect(() => {
-  setShowLoading(true);
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
   if(udetails && udetails !== null && udetails !== "") {
   const username_ = udetails.username;  
@@ -173,7 +171,6 @@ useEffect(() => {
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
     </Helmet>
     <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
-      {showLoading && <Loading />}
       <div className={styles.overlay_d}></div>
       <div className={styles.blk}>
           <div className={styles.blk_inner}>
@@ -341,7 +338,7 @@ useEffect(() => {
                 FifaReward built staking and mining systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
                 <h4>WHY STAKE FRD?</h4> 
                 <ul>
-                  <li>
+                  {/* <li>
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn up to 0.1% FRD daily.
                   </li>
                   <li>
@@ -352,7 +349,7 @@ useEffect(() => {
                   </li>
                   <li>
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> FIFAREWARD is a DAO token governed by the community of validators and stakers. 
-                  </li>
+                  </li> */}
                 </ul>
                 {/*                 
                 {stakeReadMore && (

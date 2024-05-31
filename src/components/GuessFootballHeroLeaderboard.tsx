@@ -1,26 +1,102 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import styles from '../styles/leaderboard.module.css';
+import UserList from './UserList';
+import axios from 'axios';
+import { BigNumber, ethers } from 'ethers';
+import { useWeb3ModalProvider, useWeb3ModalAccount, useWeb3Modal } from '@web3modal/ethers5/react';
+import GuessfhAbi from "../../artifacts/contracts/FRDGuessFootBallHero.sol/GuessFootBallHero.json";
+
+interface User {
+    username: string,
+    pic: string
+}
+
+interface TopGamers {
+    address: string,
+    amount: BigNumber
+}
 
 const GuessFootballHeroLeaderboard: React.FC = () => {
-  const players = [
-    { name: 'Player1', score: 1500, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
-    { name: 'Player2', score: 1400, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
-    { name: 'Player3', score: 1300, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
-    { name: 'Player4', score: 1200, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
-    { name: 'Player5', score: 1100, address: '0x6cxs24eaxcbcdx22222221h2164sc' },
-  ];
+    const [users, setUsers] = useState<User[]>([]);
+    const GuessfhCA = process.env.NEXT_PUBLIC_GUESSFOOTBALLHERO_CA;
+    const { walletProvider } = useWeb3ModalProvider();
+    const { isConnected } = useWeb3ModalAccount();
+    const [leaderboard,setLeaderboard] = useState<TopGamers[]>([])
+    const { open } = useWeb3Modal();
+    const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
+    const [dollarequiv, setDollarEquiv] = useState<number>(0);
+    const [dollarprice, setDollarPrice] = useState<number>(0);
+
+    useEffect(() => {
+      if(!isConnected) {
+        open();
+      }
+
+      const getUSDEQUIVFRDAMOUNT =  async () => {
+        try {
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.get("../../../../api/gettokenprice", config);
+          setDollarPrice(data.usdprice);
+          setUsdEquivFrdAmount(data.usdequivalentfrdamount);
+          setDollarEquiv(data.usdequivalentfrdamount * data.usdprice)
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      }
+      getUSDEQUIVFRDAMOUNT();
+
+        const fetchUsers = async () => {
+            try {
+                const { data } = await axios.get('http://localhost:9000/api/users/getusers');
+                console.log("data", data.data);
+                setUsers(data.data);
+            } catch (error) {
+                console.error('Error fetching users:', error);
+            }
+        };
+    
+        fetchUsers();
+
+        const loadLeaderboard = async() => {
+          if (walletProvider) {
+            try {
+              const provider = new ethers.providers.Web3Provider(walletProvider as any);
+              const signer = provider.getSigner();
+              console.log('bet signer', signer);
+        
+              const guessfootballherocontract = new ethers.Contract(GuessfhCA!, GuessfhAbi, signer);
+              try {
+                const leaderbd = await guessfootballherocontract.getLeaderboard();
+                setLeaderboard(leaderbd);
+              } catch (transactionError: any) {
+                console.log('Transaction error', transactionError);
+              }
+            } catch (providerError: any) {
+              console.log('Provider error', providerError);
+            }
+          }
+        }
+        loadLeaderboard()
+
+    }, []); // Provide an empty dependency array
+        
 
   return (
     <div className={styles.leaderboard}>
+      <UserList users={users} />
       <h2 className={styles.title}>Leaderboard</h2>
       <ul className={styles.playerList}>
-        {players.map((player, index) => (
+        {leaderboard.map((gamer, index) => (
           <li key={index} className={styles.player}>
             <div>
-              {player.address.substring(0,8)} - 
+              {gamer.address.substring(0,8)}  
             </div>
             <div>
-              {player.score}
+              {gamer.amount.toNumber().toLocaleString()}FRD ${(gamer.amount.toNumber() * dollarprice).toLocaleString()}
             </div>
           </li>
         ))}

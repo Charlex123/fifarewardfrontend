@@ -2,8 +2,6 @@ import React, { useState, useEffect, useCallback } from 'react';
 import styles from '../styles/soccercasinotable.module.css';
 import '../styles/soccercasinotable.module.css';
 import Chip from '../components/SoccerCasinoChips';
-import { OverlayTrigger, Tooltip, Button } from 'react-bootstrap';
-import classNames from 'classnames';
 
 interface SoccerCasinoTableProps {
   firstRow: any[];
@@ -113,9 +111,9 @@ const SoccerCasinoTable: React.FC<SoccerCasinoTableProps> = (props) => {
           {state.columnLeft.map((num, index, arr) => (
             <>
               <li key={num.n + index + arr} className={`${styles[num.className.split(' ')[0]!]} ${styles[num.className.split(' ')[1]!]} ${styles[num.className.split(' ')[2]!]} ${styles.no_cursor}`} value={num.n}>
-                <OverlayTrigger overlay={<Tooltip id="tooltip-disabled">No bets on {num.n}!</Tooltip>}>
+                {/* <div overlay={<div id="tooltip-disabled">No bets on {num.n}!</div>}>
                   <span className="d-inline-block">{num.n}</span>
-                </OverlayTrigger>
+                </div> */}
               </li>
             </>
           ))}
@@ -243,7 +241,7 @@ const SoccerCasinoTable: React.FC<SoccerCasinoTableProps> = (props) => {
       </div>
       <div className={styles.roulettetable_main}>
         <div className={styles.table_divider}></div>
-        <ul className={styles.list_unstyled}>
+        {/* <ul className={styles.list_unstyled}>
           {state.columnRight.map((num, index, arr) => (
             <li className={`${`${styles[num.className.split(' ')[0]!]} ${styles[num.className.split(' ')[1]!]} ${styles[num.className.split(' ')[2]!]}`}`} key={num.n + index + arr}>
               <button
@@ -257,7 +255,7 @@ const SoccerCasinoTable: React.FC<SoccerCasinoTableProps> = (props) => {
               </button>
             </li>
           ))}
-        </ul>
+        </ul> */}
       </div>
     </div>
   );

@@ -157,8 +157,6 @@
       height: 400px;
       position: relative;
       align-self: self-start;
-      left:5px;
-      top:5px;
       background: #000000 url("../assets/images/roulette-bg.png") top center no-repeat;
       background-size: contain;
       border-radius: 50%;
@@ -171,8 +169,11 @@
       width: 200px;
       height: 200px;
       position: absolute;
-      top: 92px;
-      left: 92px;
+      top: 0;
+      bottom: 0;
+      margin: auto;
+      left: 0;
+      right: 0;
       background: url("../assets/images/button-bg.png") center center no-repeat;
       background-size: cover;
       color: #121212;
@@ -200,5 +201,25 @@
       }
       50% {
         color: #fff294;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .roulette_container  {
+        width: 300px;
+        height: 300px;
+        position: relative;
+        align-self: self-start;
+        left:5px;
+        top:5px;
+        background: #000000 url("../assets/images/roulette-bg.png") top center no-repeat;
+        background-size: contain;
+        border-radius: 50%;
+        margin: 10px auto 40px auto;
+      }
+      
+      .spin_button {
+        width: 150px;
+        height: 150px;
       }
     }

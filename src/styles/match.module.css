@@ -420,15 +420,15 @@
     text-align: left;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g input {
-    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
-    border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;margin-top: 5px;
+    border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;border: 1px solid #4f48484d;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g small {
     color: rgb(250, 68, 68);font-size: 12px;font-family: "Montserrat";font-weight: 600;margin-top: 5px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g select {
     width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
-    border-radius: 4px;font-weight: 500;background-color: #3332328c;
+    border-radius: 4px;font-weight: 500;background-color: #3332328c;border: 1px solid #4f48484d;margin-top: 5px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g button {
     background-color: #e28305;margin: 13px auto 3px auto;text-align: center;width: 100%;

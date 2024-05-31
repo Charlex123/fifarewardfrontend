@@ -1,7 +1,6 @@
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from "react";
 import alertstyles from '../styles/alertmessage.module.css'
+import { FaXmark } from "react-icons/fa6";
 
 interface Props {
   errorMessage: string,
@@ -16,7 +15,7 @@ const AlertMessage:React.FC<Props> = ({errorMessage,onChange}) => {
   return (
     <>
       <div className={alertstyles.main}>
-        <div className={alertstyles.closebtn}><button type="button" title="button" onClick={closeAlertMessageModule}>{<FontAwesomeIcon icon={faXmark} />}</button></div>
+        <div className={alertstyles.closebtn}><button type="button" title="button" onClick={closeAlertMessageModule}>{<FaXmark />}</button></div>
         <div className={alertstyles.alert}>
           <strong>{errorMessage}</strong>
         </div>

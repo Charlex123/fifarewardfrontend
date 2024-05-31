@@ -41,18 +41,11 @@ const Referrals = () =>  {
   const { theme } = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
+  const [stakereferrals, setStakeReferrals] = useState<[]>([]);
+  const [betreferrals, setBetReferrals] = useState<[]>([]);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
-  const [username, setUsername] = useState("");
-  const [userId, setUserId] = useState("");  
-  const [walletaddress, setWalletAddress] = useState("NA");  
-  const [isWalletAddressUpdated,setisWalletAddressUpdated] = useState(false);
   // const [dappConnector,setDappConnector] = useState(false);
-
-  const [sponsorWalletAddress, setsponsorWalletAddress] = useState("");
-  const [userObjId, setUserObjId] = useState(""); // Initial value
-  const [verified, setVerified] = useState();
-  const [firstgenreferrals, setFirstGenReferrals] = useState<any>([]);
   
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { open, close } = useWeb3Modal();
@@ -60,144 +53,28 @@ const Referrals = () =>  {
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { disconnect } = useDisconnect();
   
-  const [referralLink, setreferralLink] = useState('');
-  const [buttonText, setButtonText] = useState("Copy");
-
-const handleCopyClick = () => {
-   // Create a temporary textarea element
-   const textArea = document.createElement('textarea');
-   
-   // Set the value of the textarea to the text you want to copy
-   textArea.value = referralLink;
-
-   // Append the textarea to the document
-   document.body.appendChild(textArea);
-
-   // Select the text inside the textarea
-   textArea.select();
-
-   // Execute the copy command
-   document.execCommand('copy');
-
-   // Remove the temporary textarea
-   document.body.removeChild(textArea);
-
-   // Set the state to indicate that the text has been copied
-   setButtonText("Copied");
-
-   // Reset the state after a brief period (optional)
-   setTimeout(() => {
-      setButtonText("Copy");
-   }, 1500);
- };
-  // const closeDappConAlert = () => {
-  //   setDappConnector(!dappConnector);
-  // }
-
-  const closeDappConAlerted = () => {
-    setisWalletAddressUpdated(!isWalletAddressUpdated);
-  }
   useEffect(() => {
     
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    
-    if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-        setUsername(username_);
-        setUserId(udetails.userId)
-        setUserObjId(udetails._id)
-        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
-      }
-    }else {
-      router.push(`/signin`);
-    }
-
-  async function getWalletAddress() {
-    console.log('wall address',walletaddress)
-    try {
-      const config = {
-      headers: {
-          "Content-type": "application/json"
-      }
-      }  
-      const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
-        username
-      }, config);
-      console.log('update wallet data', data.message);
-      setWalletAddress(data.message);
-    } catch (error) {
-      console.log(error)
-    }
-}
-getWalletAddress();
-
-
-    async function getreferrals() {
+    async function GetReferrals() {
       try {
-         const {data} = await axios.get(`https://fifareward.onrender.com/api/users/getreferrals/${udetails.userId}`, {
-         });
-         setFirstGenReferrals(data.firstgendownlines);
-         console.log('ref data',data.firstgendownlines);
-      } catch (error) {
+        const provider = new ethers.providers.Web3Provider(walletProvider as any)
+        const signer = provider.getSigner(address);
+        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
+        const stakeref = await StakeContract.getReferrals(address);
+        setStakeReferrals(stakeref);
+        const BetContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
+        const betref = await BetContract.getReferrals(address);
+        setBetReferrals(betref)
+      } catch (error: any) {
+        
       }
-   }
-   getreferrals();
-
-   
-
-  if(isConnected) {
-
-    async function getSponsorWalletAddress() {
-      console.log('u objid',userObjId)
-      try {
-        const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-        }  
-        const {data} = await axios.post("https://fifareward.onrender.com/api/users/getsponsorwalletaddress", {
-          userObjId,
-        }, config);
-        if(data.message === "You do not have a sponsor") {
-        }else {
-          setsponsorWalletAddress(data.message);
-          Addreferrer();
-        }
-      } catch (error) {
-        console.log(error)
-      }
-  }
-  getSponsorWalletAddress();
-
-    async function Addreferrer() {
-      // const [account] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const provider = new ethers.providers.JsonRpcProvider('https://data-seed-prebsc-1-s1.bnbchain.org:8545')
-      const signer = provider.getSigner(address);
-      const refbonus:number = 1;
-      const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
-      const reslt = await StakeContract.addReferrer(sponsorWalletAddress,refbonus);
-      console.log("Account Balance: ", reslt);
     }
 
-      async function updateWalletAddress() {
-        try {
-          const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-          }  
-          const {data} = await axios.post("https://fifareward.onrender.com/api/users/updatewalletaddress/", {
-            walletaddress,
-            username
-          }, config);
-          // setisWalletAddressUpdated(!isWalletAddressUpdated);
-        } catch (error) {
-          console.log(error)
-        }
+    if(isConnected) {
+      GetReferrals();
+    }else{
+      open()
     }
-    updateWalletAddress();
-  }
 
     // Function to handle window resize
     const handleResize = () => {
@@ -238,7 +115,7 @@ getWalletAddress();
   };
   
   
- }, [userId, router,address,isWalletAddressUpdated,username,walletaddress,userObjId,sponsorWalletAddress])
+ }, [ router,address])
 
  // Function to toggle the navigation menu
  const toggleSideBar = () => {
@@ -275,31 +152,58 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                     <h1>
                         MY REFERRALS 
                     </h1>
-                    { firstgenreferrals.length > 0 ?
+                    { betreferrals.length > 0 ?
                     (<div>
                         <h3>
-                            First Generation Referrals
+                            Bet Referrals
                         </h3>
                         <table id="resultTable" className="table01 margin-table">
                             <thead>
                                 <tr>
-                                    <th id="accountTh" className="align-L">UserId</th>
+                                    <th id="accountTh" className="align-L">S/N</th>
                                     <th id="balanceTh">Wallet Address</th>
                                 </tr>
                             </thead>
                             <tbody id="userData">
-                            {firstgenreferrals.map((downline:any) =>(
-                                <tr key={downline._id}>
-                                <td>{downline.userId}</td>
-                                <td>{downline.walletaddress}</td>
-                            </tr>
+                            {betreferrals.map((downline:any, index) =>(
+                                <tr key={index}>
+                                  <td>{index+1}</td>
+                                  <td>{downline.walletaddress}</td>
+                              </tr>
                             ))}
                             </tbody>
                         </table>
                     </div>) : 
                     <div className={dappstyles.notfound_p}>
-                      <div className={dappstyles.notfound}>Referrals not found </div>
+                      <div className={dappstyles.notfound}>No bet referrals found </div>
                     </div> 
+                    }
+
+                    { stakereferrals.length > 0 ?
+                      (<div>
+                          <h3>
+                              Stake Referrals
+                          </h3>
+                          <table id="resultTable" className="table01 margin-table">
+                              <thead>
+                                  <tr>
+                                      <th id="accountTh" className="align-L">S/N</th>
+                                      <th id="balanceTh">Wallet Address</th>
+                                  </tr>
+                              </thead>
+                              <tbody id="userData">
+                              {stakereferrals.map((downline:any, index) =>(
+                                  <tr key={index}>
+                                    <td>{index+1}</td>
+                                    <td>{downline.walletaddress}</td>
+                                </tr>
+                              ))}
+                              </tbody>
+                          </table>
+                      </div>) : 
+                      <div className={dappstyles.notfound_p}>
+                        <div className={dappstyles.notfound}>No stake referrals found </div>
+                      </div> 
                     }
 
                 </div>
@@ -316,16 +220,6 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               </div>
             </div>
           </>)} */}
-          {isWalletAddressUpdated &&
-          (<>
-            <div className={dappconalertstyles.overlay_dap}></div>
-            <div className={dappconalertstyles.dappconalerted}>
-              <div className={dappconalertstyles.dappconalertclosediv}><button type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlerted}><FontAwesomeIcon icon={faXmark}/></button></div>
-              <div className={dappconalertstyles.dappconalert_in}>
-                Wallet Address Connected To Dapp
-              </div>
-            </div>
-          </>)}
         <DappFooter />
     </>
   );

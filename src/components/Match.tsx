@@ -9,26 +9,28 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
+import BettingfeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
+import SportsWidget from './SportsWidget';
 // import '../../api-sports-widgets';
 // import pitch from '../assets/images/pitch.jpeg'
 import moment from 'moment';
 import Loading from './Loading';
 import AlertDanger from './AlertDanger';
 import BgOverlay from './BgOverlay';
-import { Bets } from './BetsMetadata';
 import ActionSuccessModal from './ActionSuccess';
-import LoadSampleOpenBetsData from './LoadSampleOpenBets';
+import LoadOpenBetsData from './LoadOpenBets';
 import LoginModal from './LoginModal';
 import HelmetExport from 'react-helmet';
 import { Fixture } from './FixtureMetadata';
 import { Team } from './FixtureStatisticMetadata';
 import { Events } from './FixtureEventsMetadata';
 import { Lineups } from './FixtureLineUpMetadata';
-import {  faCaretDown, faCircle,faMagnifyingGlass,faSoccerBall, faTools, faXmark  } from "@fortawesome/free-solid-svg-icons";
-import { faCalendarAlt, faFutbol } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaCaretDown, FaCircle, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
+import { GiToolbox } from 'react-icons/gi';
+import { IoIosFootball } from 'react-icons/io';
+
 // material
 // component
 
@@ -75,7 +77,6 @@ interface Countries {
 
 const inputRef = useRef<HTMLInputElement>(null);
 const divRef = useRef<HTMLDivElement>(null);
-const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
 const [loadedlaguedata,setLoadedLeagueData] = useState<boolean>(false);
 const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
 const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
@@ -84,7 +85,7 @@ const [userId, setUserId] = useState<string>("");
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 const [showloginComp,setShowLoginComp] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
-const [betData,setBetData] = useState<Bets[]>([]);
+const [frdusdprice, setFrdUsdPrice] = useState<any>();
 const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
 const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
 const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
@@ -117,6 +118,7 @@ const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>
 const router = useRouter();
 const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
 const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const { address, chainId, isConnected } = useWeb3ModalAccount();
@@ -133,6 +135,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
                 setIsloggedIn(true);
             }
         }
+
         
         const getUSDEQUIVFRDAMOUNT =  async () => {
           try {
@@ -143,33 +146,30 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             }  
             const {data} = await axios.get("../../../../api/gettokenprice", config);
             setUsdEquivFrdAmount(data.usdequivalentfrdamount);
-            setBetAmount(data.usdequivalentfrdamount);
+            setFrdUsdPrice(data.usdprice);
+            // setBetAmount(data.usdequivalentfrdamount);
           } catch (error) {
             console.error('Error fetching data:', error);
           }
         }
         getUSDEQUIVFRDAMOUNT();
         
-        if(windowloadgetbetruntimes == 0) {
-          const fetchData = async () => {
-            try {
-              const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-              }  
-              const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures/", config);
-              setCountryFixturesdata(data);
-              setwindowloadgetbetruntimes(1);
-            } catch (error) {
-              console.error('Error fetching data:', error);
-            }
-          };
-      
-          fetchData();
-        }else {
-      
-        }
+        const fetchData = async () => {
+          try {
+            const config = {
+              headers: {
+                  "Content-type": "application/json"
+              }
+            }  
+            const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures/", config);
+            setCountryFixturesdata(data);
+          } catch (error) {
+            console.error('Error fetching data:', error);
+          }
+        };
+    
+        fetchData();
+        
 
         const fixtureLineups = async (fixtureid: number) => {
           try {
@@ -289,61 +289,6 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
       console.log(error)
     }
 
-    const fetchPlacedBets = async () => {
-      if(!isConnected) {
-        open();
-        // router.reload();
-      }else {
-        if(walletProvider) {
-          try {
-            setShowLoading(true);
-            const provider = new ethers.providers.Web3Provider(walletProvider as any)
-            const signer = provider.getSigner();
-            let BetFeaturescontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-            let loadBets = await BetFeaturescontract.loadAllBets();
-            console.log("loadBets",loadBets);
-            setShowLoading(false);
-            await loadBets.forEach(async (element:any) => {
-                console.log(" loaded bets",element)
-                let betAmt = Math.ceil((element.betamount.toString())/(10**18));
-                let item: Bets = {
-                  betId: element.betId,
-                  matchId: element.matchId,
-                  uniqueId: element.uniqueId,
-                  username: element.username,
-                  matchfixture: element.matchfixture,
-                  openedBy: element.openedBy,
-                  creationType: element.creationType,
-                  participant: element.participant,
-                  betamount: betAmt,
-                  totalbetparticipantscount: element.totalbetparticipantscount,
-                  remainingparticipantscount: element.remainingparticipantscount,
-                  prediction: element.prediction,
-                  bettingteam: element.bettingteam,
-                  betstatus: element.betstatus,
-                  participants: element.participants,
-                  betwinners: element.betwinners,
-                  betlosers: element.betlosers,
-                }
-                betData.push(item);
-                setBetData(betData);
-                setShowLoading(false);
-                console.log("bet data",betData)
-                return item;
-            });
-          } catch (error) {
-            // setShowAlertDanger(true);
-            console.log("error huipo",error)
-            // seterrorMessage('');
-            setShowLoading(false);
-          }
-        }
-      }
-    };
-    if(isLoggedIn) {
-      fetchPlacedBets();
-    }
-
     // let searchOptions = ["Team","Match"];
     // let currentSearchOptionIndex = 0;
 
@@ -377,91 +322,73 @@ const handleClickOutside = (event: MouseEvent) => {
 // Add event listener to the body
 document.body.addEventListener('click', handleClickOutside);
 
-// Define a type for the function loadAPISportsWidget
-interface WidgetScript {
-  loadAPISportsWidget: Function;
-}
-
-const loadAPISportsWidget = async () => {
-  // @ts-ignore
-  const importedModule = await import(/* webpackIgnore: true */ "https://widgets.api-sports.io/2.0.3/widgets.js");
-  console.log("impotrtec module", importedModule)
-}
-loadAPISportsWidget()
-
-const script = document.createElement('script');
-  script.type = 'module';
-
-  // @ts-ignore
-  script.src = 'https://widgets.api-sports.io/2.0.3/widgets.js';
 
 
-  
-  // Define an event listener to handle script loading
-  const handleScriptLoad = () => {
-  // Access the function from the window object
-  const apiSportsWidget: WidgetScript = window as unknown as WidgetScript;
-  
-  // Call the function if it exists
-  if (apiSportsWidget.loadAPISportsWidget) {
-    apiSportsWidget.loadAPISportsWidget();
-    console.log('Script loaded successfully!');
-  } else {
-    console.error('loadAPISportsWidget function not found.');
-  }
-};
-
-  // Define an event listener to handle script errors
-  const handleScriptError = (error: any) => {
-    console.error('Script loading error:', error);
-  };
-
-  script.addEventListener('load', handleScriptLoad);
-  script.addEventListener('error', handleScriptError);
-
-  document.body.appendChild(script);
-  
 return () => {
   // Clean up the event listener when the component is unmounted
-  script.removeEventListener('load', handleScriptLoad);
-  script.removeEventListener('error', handleScriptError);
   document.body.removeEventListener('click', handleClickOutside);
-  document.body.removeChild(script)
   // clearInterval(intervalId);
 };
   
 },[countryfixturesdata,router.query.match,matchidparam,username,isConnected,isLoggedIn])
 
 const openBetC = async () => {
-  if(walletProvider) {
+  if (walletProvider) {
     try {
-        const provider = new ethers.providers.Web3Provider(walletProvider as any)
-        const signer = provider.getSigner();
-        console.log('bet signer', signer);
-        const rembetparticipantscount = parseInt(betParticipantsCount) - 1;
-        console.log("rem bet part",rembetparticipantscount)
-        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-        const amt = betAmount + "000000000000000000";
-        const tamount = ethers.BigNumber.from(amt);
-        const betId: number = 0;
-        const uniqueId = Math.floor(100000 + Math.random() * 900000);
-        const bCOpenBet = await Betcontract.PlaceBet(tamount,matchidparam,username,betId,uniqueId,address,matchparam,betprediction,bettingteam,betParticipantsCount,{ gasLimit: 1000000 });
-        bCOpenBet.wait().then(async (receipt:any) => {
-          // console.log(receipt);
-          if (receipt && receipt.status == 1) {
-             // transaction success.
-             setShowLoading(false);
-             setBetOpenSuccess(true);
+      const provider = new ethers.providers.Web3Provider(walletProvider as any);
+      const signer = provider.getSigner();
+      console.log('bet signer', signer);
+
+      const rembetparticipantscount = parseInt(betParticipantsCount) - 1;
+      console.log("rem bet part", rembetparticipantscount);
+
+      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+      const amt = betAmount + "000000000000000000";
+      const tamount = ethers.BigNumber.from(amt);
+      const uniqueId = Math.floor(100000 + Math.random() * 900000);
+
+      try {
+        const bCOpenBet = await Betcontract.createBet(
+          tamount,
+          betprediction,
+          bettingteam,
+          username,
+          matchidparam,
+          uniqueId,
+          matchparam,
+          address,
+          betParticipantsCount,
+          { gasLimit: 1000000 }
+        );
+
+        try {
+          const receipt = await bCOpenBet.wait();
+          if (receipt && receipt.status === 1) {
+            // transaction success
+            setShowLoading(false);
+            setBetOpenSuccess(true);
           }
-       })
-      } catch (error: any) {
-        console.log('open bet error',error)
+        } catch (receiptError: any) {
+          console.log('Transaction receipt error', receiptError);
+          setShowAlertDanger(true);
+          seterrorMessage(receiptError.code || receiptError.message);
+          setShowLoading(false);
+        }
+      } catch (transactionError: any) {
+        console.log('Transaction error', transactionError);
         setShowAlertDanger(true);
-        seterrorMessage(error.code)
+        seterrorMessage(transactionError.code || transactionError.message);
         setShowLoading(false);
       }
+    } catch (providerError: any) {
+      console.log('Provider error', providerError);
+      setShowAlertDanger(true);
+      seterrorMessage(providerError.code || providerError.message);
+      setShowLoading(false);
+    }
   }
-}
+};
+
 
 const Approve = async (e:any) => {
   try {
@@ -510,14 +437,22 @@ const handleOpenBetForm = async (e:any) => {
                 let frdBal = ethers.utils.formatEther(transaction);
                 let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
                 let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
-                if(betAmount && (parseInt(betAmount) < 50000)) {
-                    inputAlertDiv.innerHTML = "You can't bet below 50,000FRD";
+                console.log("bet amount ooooooo",betAmount)
+                inputAlertDiv.innerHTML = `You below ${betAmount} FRD`;
+                
+                if((parseInt(betAmount) < usdequivfrdamount) || betAmount == "") {
+                    inputAlertDiv.innerHTML = `You can't bet below ${usdequivfrdamount.toLocaleString()} FRD`;
+                    setShowLoading(false);
                     return;
+                }else {
+                  inputAlertDiv.innerHTML = ``;
                 }
+                
                 if(betprediction && betprediction !== '' && betprediction !== null && betprediction !== undefined) {
                   selectAlertDiv.innerHTML = "";    
                 }else {
                     selectAlertDiv.innerHTML = "Select prediction first";
+                    setShowLoading(false);
                     return;
                 }
 
@@ -525,13 +460,12 @@ const handleOpenBetForm = async (e:any) => {
                   selectAlertDiv.innerHTML = "";
                 }else {
                   selectAlertDiv.innerHTML = "Select team first";
+                  setShowLoading(false);
                     return;
                 }
-                console.log("frdBal gg",parseInt(frdBal));
-                console.log("betAmount gg",parseInt(betAmount));
-                if(parseInt(frdBal) < parseInt(betAmount)) {
+                if(parseInt(frdBal) < usdequivfrdamount) {
                   setShowAlertDanger(true);
-                  seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!`)
+                  seterrorMessage(`You need a minimum of ${usdequivfrdamount.toLocaleString()}FRD to proceed!`)
                   setShowLoading(false);
                 }else {
                   Approve(e);
@@ -614,15 +548,16 @@ const toggleFixturesH = (divId:any) => {
 }
 
 const closeLeagueFixtures = (divId:any) => {
-  console.log('huo',divId);
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  if(svg !== null && svg !== undefined) {
-    divId.parentElement.parentElement.parentElement.remove();
-  }
-  if(path !== null && path !== undefined) {
-    divId.parentElement.parentElement.parentElement.parentElement.remove()
-  }
+  
+  divId.parentElement.parentElement.parentElement.remove();
+  // let svg = divId.getAttribute('data-icon');
+  // let path = divId.getAttribute('fill');
+  // if(svg !== null && svg !== undefined) {
+  //   divId.parentElement.parentElement.parentElement.remove();
+  // }
+  // if(path !== null && path !== undefined) {
+  //   divId.parentElement.parentElement.parentElement.parentElement.remove()
+  // }
 }
 
 const toggleFixtureAct = (divId:any) => {
@@ -658,6 +593,8 @@ const toggleFixtureActH = (divId:any) => {
 }
 
 const closeLeagueFixtureAct = (divId:any) => {
+  setShowBgOverlay(false);
+  setShowLoading(false);
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
   if(svg !== null && svg !== undefined) {
@@ -669,29 +606,33 @@ const closeLeagueFixtureAct = (divId:any) => {
 }
 
 const closeHIWDiv = (divId:any) => {
-  console.log('huo',divId);
-  console.log('huo pareant',divId.parentElement.parentElement);
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  if(svg !== null && svg !== undefined) {
-    divId.parentElement.parentElement.style.display = 'none';
-  }
-  if(path !== null && path !== undefined) {
-    divId.parentElement.parentElement.parentElement.style.display = 'none';
-  }
+  setShowBgOverlay(false);
+  setShowLoading(false);
+  divId.parentElement.parentElement.style.display = "none";
+  // let svg = divId.getAttribute('data-icon');
+  // let path = divId.getAttribute('fill');
+  // if(svg !== null && svg !== undefined) {
+  //   divId.parentElement.parentElement.style.display = 'none';
+  // }
+  // if(path !== null && path !== undefined) {
+  //   divId.parentElement.parentElement.parentElement.style.display = 'none';
+  // }
 }
 
 const closeHIWE = (divId:any) => {
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
+  let hiwDiv = document.getElementById("howitworks") as HTMLDivElement;
+  hiwDiv.style.display = "none";
+  // let svg = divId.getAttribute('data-icon');
+  // let path = divId.getAttribute('fill');
   
-  if(svg !== null && svg !== undefined) {
-    divId.parentElement.parentElement.parentElement.style.display = 'none';
-  }
-  if(path !== null && path !== undefined) {
-    divId.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
-  }
-  setShowBgOverlay(false)
+  // if(svg !== null && svg !== undefined) {
+  //   divId.parentElement.parentElement.parentElement.style.display = 'none';
+  // }
+  // if(path !== null && path !== undefined) {
+  //   divId.parentElement.parentElement.parentElement.parentElement.style.display = 'none';
+  // }
+  setShowBgOverlay(false);
+  setShowLoading(false);
 }
 
 const firstopenHIW = (divId:any) => {
@@ -754,19 +695,25 @@ const placeBet = (divId:any) => {
 }
 
 const closePBET = (divId:any) => {
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
+  setShowBgOverlay(false);
+  setShowLoading(false);
+  console.log("div id herer",divId)
+  divId.parentElement.parentElement.style.display = "none";
+  // let svg = divId.getAttribute('data-icon');
+  // let path = divId.getAttribute('fill');
   
   // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
 
-  if(svg !== null && svg !== undefined) {
-    // bgoverlay.style.display = 'none';
-    divId.parentElement.parentElement.style.display = 'none';
-  }
-  if(path !== null && path !== undefined) {
-    // bgoverlay.style.display = 'none';
-    divId.parentElement.parentElement.parentElement.style.display = 'none';
-  }
+  // if(svg !== null && svg !== undefined) {
+  //   // bgoverlay.style.display = 'none';
+  //   console.log("peeeee",divId.parentElement.parentElement)
+  //   // divId.parentElement.parentElement.style.display = 'none';
+  // }
+  // if(path !== null && path !== undefined) {
+  //   // bgoverlay.style.display = 'none';
+  //   console.log("opppppppp",divId.parentElement.parentElement)
+  //   // divId.parentElement.parentElement.parentElement.style.display = 'none';
+  // }
 }
 
 const setBetPredictn = (prediction:any) => {
@@ -867,7 +814,7 @@ const closeBgModal = () => {
       <div className={matchstyle.search} >
             <div>
               <form>
-                  <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={matchstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
+                  <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={matchstyle.searchicon}><FaMagnifyingGlass onClick={() => loadSearchResults()}/></div>
                   {showsearchoptions && 
                     <div className={matchstyle.searchop} ref={divRef} >
                       {keywordsearchresults?.map((result,index) => (
@@ -900,38 +847,38 @@ const closeBgModal = () => {
         {/* how it works div starts */}
         <div id='howitworks' className={matchstyle.hiwmain}>
           <div className={matchstyle.hiw_c}>
-            <div className={matchstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
+            <div className={matchstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<span style={{color: 'white', fontWeight: 'bolder'}}>x</span>}</div>
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Sign up with Fifa Reward using this link <a href='../../../../register'>Join FifaReward</a>
+                <FaCircle className={matchstyle.hiwlistcircle} /> Sign up with Fifa Reward using this link <a href='../../../../register'>Join FifaReward</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Fund your wallet with FRD from <a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc'>pancakeswap</a> or any other exchange of your choice
+                <FaCircle className={matchstyle.hiwlistcircle} />  Fund your wallet with FRD from <a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc'>pancakeswap</a> or any other exchange of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Visit the <a href='../../../../betting'>betting page</a>
+                <FaCircle className={matchstyle.hiwlistcircle} />  Visit the <a href='../../../../betting'>betting page</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
+                <FaCircle className={matchstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Click on Open Bets, and place a bet by selecting your betting team, prediction, bet participants and betting amount in FRD. 
+                <FaCircle className={matchstyle.hiwlistcircle} />  Click on Open Bets, and place a bet by selecting your betting team, prediction, bet participants and betting amount in FRD. 
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../../../../betting/openbetslists'>open bets</a>
+                <FaCircle className={matchstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../../../../betting/openbetslists'>open bets</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} />  Any user can join your bet.
+                <FaCircle className={matchstyle.hiwlistcircle} />  Any user can join your bet.
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> All placed bets are closed after the match or fixture, bet winners get their winning bets automatically in their wallets. 
+                <FaCircle className={matchstyle.hiwlistcircle} /> All placed bets are closed after the match or fixture, bet winners get their winning bets automatically in their wallets. 
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> If your bet didn't find a participant to join, after the fixture, if you win, your winnings will be transferred to your wallet. But if you lose, you can bet again to try your luck next time.  
+                <FaCircle className={matchstyle.hiwlistcircle} /> If your bet didn't find a participant to join, after the fixture, if you win, your winnings will be transferred to your wallet. But if you lose, you can bet again to try your luck next time.  
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={matchstyle.hiwlistcircle} /> Draw bets are carried over to a next match
+                <FaCircle className={matchstyle.hiwlistcircle} /> Draw bets are carried over to a next match
               </li>
             </ul>
           </div>
@@ -970,8 +917,8 @@ const closeBgModal = () => {
 
                           <div className={matchstyle.tgle} >
                             <div><h3 onClick={(e) => toggleFixturesH(e.target)}>{matchData?.league.name}</h3></div>
-                            <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                            <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                            <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<span style={{color: 'white', fontWeight: 'bolder'}}></span>}</div>
+                            <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<span style={{color: 'gray', fontWeight: 'bolder'}}>x</span>}</div>
                           </div>
                           <div className={matchstyle.league_wrap_in} >
                             <div className={matchstyle.fixt}>
@@ -1000,92 +947,92 @@ const closeBgModal = () => {
                                 </div>
                                 <div className={matchstyle.openbet}>
                                     <div className={matchstyle.opb_btns_div}>
-                                        <div className={matchstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                                        <div className={matchstyle.bt_close} onClick={(e) => closeHIWDiv(e.target)}><span style={{color: 'white',fontWeight: 'bolder'}}>x</span></div>
                                         <div className={matchstyle.opb_btns}>
-                                            <div className={matchstyle.opb_open} onClick={(e) => placeBet(e.target)}><button type='button' title='button'>Open Bet {<FontAwesomeIcon icon={faFutbol}/>}</button></div>
-                                            <div className={matchstyle.opb_hiw} onClick={() => openHIWE()}><button type='button' title='button'>How It Works {<FontAwesomeIcon icon={faTools} />}</button></div>
+                                            <div className={matchstyle.opb_open} onClick={(e) => placeBet(e.target)}><button type='button' title='button'>Open Bet {<IoIosFootball/>}</button></div>
+                                            <div className={matchstyle.opb_hiw} onClick={() => openHIWE()}><button type='button' title='button'>How It Works {<GiToolbox />}</button></div>
                                         </div>
                                     </div>
 
-                                    <div className={matchstyle.pbet}>
-                                    <div className={matchstyle.pbet_x} >{<FontAwesomeIcon icon={faXmark} onClick={(e) => closePBET(e.target)}/>}</div>
-                                    <form>
-                                        <h3>Open Bet</h3>
-                                        <div>
-                                          <p>Open bet by selecting the appropriate details</p>
-                                        </div>
-                                        <div className={matchstyle.form_g}>
-                                        <ul>
-                                            <li>
-                                            <div>
-                                                <div>
-                                                    Match Id :
-                                                </div>
-                                                <div className={matchstyle.fixid}>
-                                                    {matchData?.fixture.id}
-                                                </div>
-                                            </div>
-                                            </li>
-                                        </ul>
-                                        </div>
-                                        <div className={matchstyle.form_g}>
-                                        <ul>
-                                            <li>
-                                            <div>
-                                                <div>
-                                                    Match :
-                                                </div>
-                                                <div className={matchstyle.matchd}>
-                                                    <div>{matchData?.teams.home.name}</div>
-                                                    <div className={matchstyle.vs}>Vs</div>
-                                                    <div>{matchData?.teams.away.name}</div>
-                                                </div>
-                                            </div>
-                                            </li>
-                                        </ul>
-                                        </div>
-                                        <div className={matchstyle.form_g}>
-                                            <label>Which team are you betting on?</label>
-                                            <div>
-                                                <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
-                                                    <option value={matchData?.teams.home.name}>{matchData?.teams.home.name}</option>
-                                                    <option value={matchData?.teams.away.name}>{matchData?.teams.away.name}</option>
-                                                </select>
-                                            </div>
-                                            <small id='teamalert'></small>
-                                        </div>
-                                        <div className={matchstyle.form_g}>
-                                            <label>Select Prediction</label>
-                                            <div>
-                                                <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
-                                                    <option value='Win'>Win</option>
-                                                    <option value='Lose'>Lose</option>
-                                                </select>
-                                            </div>
-                                            <small id='predictionalert'></small>
-                                        </div>
-                                        <div className={matchstyle.form_g}>
-                                            <label>Enter amount ({`Min of ${usdequivfrdamount.toLocaleString()}FRD`})</label>
-                                            <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={`${usdequivfrdamount.toLocaleString()}FRD`} />
-                                            <small id='minamuntalert'></small>
-                                        </div>
-                                        <div className={matchstyle.form_g}>
-                                            <label>Select number of betting participants</label>
-                                            <div>
-                                                <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
-                                                    <option value='2'>2 Participants</option>
-                                                    <option value='4'>4 Participants</option>
-                                                    <option value='6'>6 Participants</option>
-                                                    <option value='8'>8 Participants</option>
-                                                    <option value='10'>10 Participants</option>
-                                                </select>
-                                            </div>
-                                            <small id='partpntsalert'></small>
-                                        </div>
-                                        <div className={matchstyle.form_g}>
-                                            <button type='button' onClick={(e) => handleOpenBetForm(e.target)} title='button'>Open Bet Now</button>
-                                        </div>
-                                    </form>
+                                    <div className={matchstyle.pbet} id="pbet_op">
+                                      <div className={matchstyle.pbet_x} ><span onClick={(e) => closePBET(e.target)} style={{color: 'white',fontWeight: 'bolder'}}>x</span></div>
+                                      <form>
+                                          <h3>Open Bet</h3>
+                                          <div>
+                                            <p>Open bet by selecting the appropriate details</p>
+                                          </div>
+                                          <div className={matchstyle.form_g}>
+                                          <ul>
+                                              <li>
+                                              <div>
+                                                  <div>
+                                                      Match Id :
+                                                  </div>
+                                                  <div className={matchstyle.fixid}>
+                                                      {matchData?.fixture.id}
+                                                  </div>
+                                              </div>
+                                              </li>
+                                          </ul>
+                                          </div>
+                                          <div className={matchstyle.form_g}>
+                                          <ul>
+                                              <li>
+                                              <div>
+                                                  <div>
+                                                      Match :
+                                                  </div>
+                                                  <div className={matchstyle.matchd}>
+                                                      <div>{matchData?.teams.home.name}</div>
+                                                      <div className={matchstyle.vs}>Vs</div>
+                                                      <div>{matchData?.teams.away.name}</div>
+                                                  </div>
+                                              </div>
+                                              </li>
+                                          </ul>
+                                          </div>
+                                          <div className={matchstyle.form_g}>
+                                              <label>Which team are you betting on?</label>
+                                              <div>
+                                                  <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
+                                                      <option value={matchData?.teams.home.name}>{matchData?.teams.home.name}</option>
+                                                      <option value={matchData?.teams.away.name}>{matchData?.teams.away.name}</option>
+                                                  </select>
+                                              </div>
+                                              <small id='teamalert'></small>
+                                          </div>
+                                          <div className={matchstyle.form_g}>
+                                              <label>Select Prediction</label>
+                                              <div>
+                                                  <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
+                                                      <option value='Win'>Win</option>
+                                                      <option value='Lose'>Lose</option>
+                                                  </select>
+                                              </div>
+                                              <small id='predictionalert'></small>
+                                          </div>
+                                          <div className={matchstyle.form_g}>
+                                              <label>Enter amount ({`Min of ${usdequivfrdamount.toLocaleString()}FRD ($10)`})</label>
+                                              <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={`${usdequivfrdamount.toLocaleString()}FRD`} />
+                                              <small id='minamuntalert'></small>
+                                          </div>
+                                          <div className={matchstyle.form_g}>
+                                              <label>Select number of betting participants</label>
+                                              <div>
+                                                  <select title='select' required onChange={(e) => setBetParticipantsCount(e.target.value)}>
+                                                      <option value='2'>2 Participants</option>
+                                                      <option value='4'>4 Participants</option>
+                                                      <option value='6'>6 Participants</option>
+                                                      <option value='8'>8 Participants</option>
+                                                      <option value='10'>10 Participants</option>
+                                                  </select>
+                                              </div>
+                                              <small id='partpntsalert'></small>
+                                          </div>
+                                          <div className={matchstyle.form_g}>
+                                              <button type='button' onClick={(e) => handleOpenBetForm(e.target)} title='button'>Open Bet Now</button>
+                                          </div>
+                                      </form>
                                     </div>
 
                                     <div className={matchstyle.sbtn}>
@@ -1137,8 +1084,8 @@ const closeBgModal = () => {
                         <div className={matchstyle.fixh2h}>
                           <div className={matchstyle.tgle} >
                             <div><h3 onClick={(e) => toggleFixtureActH(e.target)}>Head To Head</h3></div>
-                            <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtureAct(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                            <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtureAct(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                            <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtureAct(e.target)}>{<FaCaretDown/>}</div>
+                            <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtureAct(e.target)}>{<FaXmark/>}</div>
                           </div>
 
                           <div>
@@ -1179,8 +1126,8 @@ const closeBgModal = () => {
                         <div className={matchstyle.fixstats}>
                             <div className={matchstyle.tgle} >
                               <div><h3 onClick={(e) => toggleFixtureActH(e.target)}>Match Statistics </h3></div>
-                              <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtureAct(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                              <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtureAct(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                              <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtureAct(e.target)}>{<FaCaretDown/>}</div>
+                              <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtureAct(e.target)}>{<FaXmark/>}</div>
                             </div>
                           
                             <div>
@@ -1246,18 +1193,7 @@ const closeBgModal = () => {
                     </div> 
                   }
                   
-                      <div id="wg-api-football-standings"
-                          data-host="v3.football.api-sports.io"
-                          data-key="aa2a3bb1320411e0c7ad474b053c6514"
-                          data-league="39"
-                          data-team=""
-                          data-season="2023"
-                          data-theme="dark"
-                          data-show-errors="false"
-                          data-show-logos="true"
-                          className="wg_loader">
-                      </div>
-                        
+                      <SportsWidget />
 
                   </div>
               </div>
@@ -1282,7 +1218,7 @@ const closeBgModal = () => {
                 {/* {isbetDataLoaded ? */}
                 <div>
                   <h3>Open Bets</h3>
-                  {<LoadSampleOpenBetsData onMount={setLoadOpenBetsDataStatus}/>}
+                  {<LoadOpenBetsData onMount={setLoadOpenBetsDataStatus}/>}
                 </div> 
                 {/* <div><Loading /></div>
                 } */}

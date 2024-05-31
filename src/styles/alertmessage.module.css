@@ -1,12 +1,18 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:100);
 
 .main {
-  position: relative;width: auto;
+  width: 100%;top: 15%;position: absolute;
 }
 .closebtn {
-    position: absolute;right: 8px;top: 4px;color: white;background-color: none;
+    position: fixed;right: 1%;top: 13%;cursor: pointer;
+    color: #f1f1f1 !important;background-color: none;z-index: 99999999999999 !important;
+}
+.closebtn button {
+  position: fixed;right: 1%;top: 13%;cursor: pointer;
+    color: #f1f1f1 !important;background-color: none;z-index: 99999999999999 !important;
 }
 .alert {
     font-size: 14px; text-align: center;font-family: 'Poppins';background: #e3a204;min-height: 40px;
     margin:12px auto;padding: 8px 20px;color: #111313;border-radius: 120px; font-weight: lighter;
+    position: fixed;left: 10px;right: 10px;
 }

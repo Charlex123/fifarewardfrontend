@@ -1,0 +1,400 @@
+.main {
+    width: 100%;margin-top: 0;margin-bottom: 0;
+    padding: 80px 12px 12px 12px;position: relative;
+}
+/* .main_bg_overlay {
+    position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 1;border-radius: 0;opacity: .85;
+} */
+.lighttheme {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+}
+.darktheme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+}
+.lightmod {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    border: 1px solid #0f0c0c;
+}
+.darkmod {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+    border: 1px solid #6d6b6bc5;
+}
+.notfound {
+    margin: 20px auto;text-align: center;
+}
+.main .openbetmain {
+    width: 100%;height: fit-content;
+}
+.main .openbetmain .table_c {
+    width: 100%;overflow-x: auto;position: relative;
+}
+.main .openbetmain table {
+    width: 100%;margin: 0 auto 10px auto;background-color: transparent;padding: 5px 5px 5px 5px;
+    font-size: 14px;border: 1px solid #757474de;border-radius: 8px;
+}
+.main .openbetmain table tbody {
+    width: 100%;
+}
+.main .openbetmain table tbody tr {
+    width: 100%;border: 1px solid #757474de;
+}
+.main .openbetmain table thead tr th {
+    margin: 15px auto 15px auto;color: #f1f1f1;padding: 10px;
+    font-weight: 600;font-size: 13px;border: 1px solid #757474a4;
+}
+.main .openbetmain table thead tr td {
+    border-bottom: 1px solid #f1f1f1;border-bottom: 1px solid #757474de !important;
+}
+.main .openbetmain table tbody tr td .div {
+    margin-top: 2px;margin-bottom: 2px;padding: 3px;text-align: left;
+    text-transform: capitalize;white-space: nowrap;
+}
+.main .openbetmain table tbody tr td .divaddress {
+    margin-top: 2px;margin-bottom: 2px;padding: 3px;text-align: left;
+    text-transform: capitalize;position: relative;
+}
+.main .openbetmain table tbody tr td .divaddress button {
+    font-size: 11px;text-align: right;background-color: #ffffff;padding: 0 4px;
+    border-radius: 8px;border: 1px solid #0000005d;
+}
+.main .openbetmain table tbody tr td .divaddress .fulladdr {
+    position: absolute;background-color: #ffffff;left: 0;top: 0;padding: 0 3px;
+    border-radius: 4px;border: 1px solid #c6c4c4;display: none;
+}
+.main .openbetmain table tbody tr td .bdet button {
+    margin-top: 2px;margin-bottom: 2px;padding: 2px 6px 2px 6px;background-color: #ffffff;text-align: center;
+    margin: auto;border-radius: 20px;border: 2px solid #c5bdbd;color: #151515;font-size: 12px;width: fit-content;
+}
+.main .openbetmain table tbody tr td div .amtunit {
+    font-size: 12px;margin-left: 0;color: #f1f1f1;
+}
+.main .openbetmain table tbody tr td .betstatusopened {
+    background-color: #e28305;padding: 2px 6px;border-radius: 120px;color: #ffffff;text-align: center;
+}
+.main .openbetmain table tbody tr td .betstatusclosed {
+    background-color: #f64141;padding: 2px 6px;border-radius: 120px;color: #ffffff;text-align: center;
+}
+.main .openbetmain .pbet {
+    position: absolute;z-index: 999;background-color: #000000de;padding: 10px 24px 10px 24px;
+    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 10px;display: none;
+    left: 0;right: 0;color: #ffffff;margin: auto;
+}
+.main .openbetmain .pbet .pbet_x {
+    color: #ffffff;position: absolute;right: 8px;top: 4px;cursor: pointer;
+}
+.main .openbetmain .pbet h3 {
+    color: #ffffff;margin: 15px 15px;
+} 
+.main .openbetmain .pbet p .obet {
+    color: #e28305;font-weight: 600;
+}
+.main .openbetmain .pbet .form_g {
+    text-align: left;margin: 10px 0 15px 0;
+}
+.main .openbetmain .pbet .form_g ul li {
+    margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
+    font-family: "Montserrat";
+}
+.main .openbetmain .pbet .form_g ul li div {
+    display: flex;flex-direction: row;justify-content: space-between;margin: 5px 0;
+}
+.main .openbetmain .pbet .form_g input {
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;margin-top: 5px;
+    border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;border: 1px solid #4f48484d;
+}
+.main .openbetmain .pbet .form_g p {
+    color: #f1f1f1;font-size: 14px;
+}
+.main .openbetmain .pbet .form_g label {
+    font-size: 13px;margin-bottom: 5px;
+}
+.main .openbetmain .pbet .form_g small {
+    color: rgb(250, 68, 68);font-size: 12px;font-family: "Montserrat";font-weight: 600;
+}
+.main .openbetmain .pbet .form_g select {
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
+    border-radius: 4px;font-weight: 500;background-color: #3332328c;border: 1px solid #4f48484d;
+    margin-top: 5px;
+}
+.main .openbetmain .pbet .form_g ul li div .betdet {
+    text-transform: capitalize;color: #e28305;font-weight: 600;margin-top: 20px;
+}
+.main .openbetmain .pbet .form_g .betp {
+    text-align: left;font-size: 14px;color: #f1f1f1;
+}
+.main .openbetmain .pbet .form_g .betpp {
+    text-align: left;font-size: 14px;margin-top: 5px;color: #e28305;
+}
+.main .openbetmain .pbet .error_alert {
+    color: #f51919;font-size: 12px;font-weight: 600;margin: 5px 0 5px 0;
+}
+.main .openbetmain .pbet .form_btn {
+    display: flex;flex-direction: row;margin: 15px auto;justify-content: space-evenly;
+}
+.main .openbetmain .pbet .form_btn .sub_btn {
+    background-color: #e28305;border-radius: 60px;color: #151414;padding: 2px 26px;font-weight: 900;
+}
+.main .openbetmain .pbet .form_btn .cancel_btn {
+    background-color: #e20505;border-radius: 60px;color: #ffffff;padding: 2px 26px;font-weight: 900;
+}
+.main .openbetmain table .jb button {
+    background-color: #3aa33d;padding: 3px 8px;border-radius: 4px;color: #ffffff;border-radius: 60px;
+    outline: none;width: max-content;
+}
+.main .openbetmain table .jb .open {
+    background-color: #3aa33d;
+}
+.main .openbetmain table .jb .closed {
+    background-color: #07060679;
+}
+
+.main .openbetmain .paginate_btns {
+    margin: 15px 0;padding: 15px 15px 15px 15px;width: 100%;
+}
+.main .openbetmain .paginate_btns button {
+    margin: 4px 8px 4px 8px;background-color: none;padding: 2px 8px 2px 8px;border-radius: 4px;
+    border: 1px solid #929292;font-size: 14px;
+    font-weight: 600;
+}
+.main .openbetmain .paginate_btns button.number {
+    margin: 4px 2px 4px 2px;border-radius: 50%;font-weight: 500;font-size: 13px;padding: 2px 8px;
+}
+.main .openbetmain button:focus,.main .openbetmain button:active {
+    outline: none;
+}
+.main .nft_offer {
+    position: absolute;width: 90%;z-index: 99999;margin: 3rem auto;text-align: center;
+    background-color: #161616;left: 0;right: 0;border-radius: 8px;color: #e2d7d7;
+}
+.main .nft_offer .closebtn {
+    position: absolute;right: 2%;top: 6px;
+}
+.main .nft_offer .offer_p {
+    border-bottom: 1px solid #6d6b6bc5;
+}
+.main .nft_offer .offer_p_in {
+    padding: 10px 20px;
+}
+.main .nft_offer .offer_list {
+    padding: 10px 20px;margin-top: 15px;
+}
+/* .main .tablec {
+    overflow-x: auto;position: relative;
+}  */
+/* .main table {
+    width: 100%;margin: auto;margin-left: 0;text-align: left;border-radius: 8px;
+}
+.main table th {
+    font-size: 14px;border-bottom: 1px solid #5a585883;
+    border-radius: 8px;padding: 3px;font-weight: 900;
+}
+.main table td {
+    font-size: 12px;font-weight: 600;border-left: 1px solid #5a585883;
+    border-radius: 2px;padding: 6px 3px;border-right: 1px solid #5a585883;
+}
+.main table td button {
+    font-size: 14px;font-weight: 500;background-color: #e28305;color: #e2d7d7;
+    border-radius: 8px;padding: 0 3px;border-right: 1px solid #5a585883;
+} */
+.main .listnftitem {
+    position: absolute;margin: 0 auto; width: 40%;
+    border-radius: 16px;z-index: 99;text-align: center;left: 0;right: 0;
+    padding: 10px 10px 10px 10px;background-color: #525050;
+}
+.main .listnftitem .listnftitem_h {
+    display: flex;flex-direction: row;justify-content: space-between;margin: 0 0 35px 0;
+    border-bottom: 1px solid #8d8f9161;
+}
+.main .listnftitem .listnftitem_h h1 {
+    font-weight: 600;font-size: 16px;text-align: left;
+}
+.main .listnftitem .listnftitem_c_ina {
+    display: flex;flex-direction: row;justify-content: space-between;margin: 15px 0;
+}
+.main .listnftitem .listnftitem_c_ina .list_tc {
+    width: 45%;text-align: left;
+}
+.main .listnftitem .listnftitem_c_ina label {
+    text-align: left;width: 100%;font-size: 14px;font-weight: 600;
+}
+.main .listnftitem .listnftitem_c_ina input {
+    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 14px;
+}
+.main .listnftitem .listnftitem_c_ina select {
+    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 14px;
+}
+.main .listnftitem .listnftitem_c_in button.createlistitem_ {
+        background-color: #e3a204;width: 100%;padding: 4px 6px;border-radius: 8px;margin: 35px auto;
+        text-align: center;color: #454545;font-weight: 800;
+}
+.main h1 {
+    font-family: "Poppins",sans-serif;font-size: 35px;text-align: center;
+    font-weight: 800;position: relative;z-index: 0;margin: .1rem auto;
+}
+.main .intro_p {
+    z-index: 0;position: relative;width: 70%;margin: 1rem auto 2rem auto;text-align: center;
+}
+.main .intro_p p {
+    font-family: "Poppins", sans-serif;font-size: 18px;
+}
+.main .hero_banner {
+    position: relative;z-index: 1;
+}
+.main .main_c {
+    width: 100%;margin: 20px 0 10px 0;
+}
+.main .settings {
+    width: 100%;position: relative;z-index: 1;color: #e2d7d7;height: inherit;margin-bottom: 30px;
+}
+/* .settings_bg_overlay {
+    position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
+} */
+.main .settings .notfound_p {
+    width: 100%;margin: auto;text-align: center;
+}
+.main .settings .notfound {
+    text-align: center;font-family: "Montserrat",sans-serif;margin: 20px auto;
+}
+.main .settings .img_sel h2 {
+    background-color: #000000d3;width: fit-content;padding: 4px 50px;margin: 15px 0 50px 0;text-align: left;
+    font-size: 40px;
+}
+.main .settings .settings_in {
+    position: relative;z-index: 0;
+}
+.main .main_c .settings .h1 {
+    font-weight: 600;font-size: 24px;text-align: center;font-family: "Montserrat", sans-serif;
+    margin: 0 auto 20px auto;
+}
+.main .settings .nft_option {
+    display: flex;flex-direction: row;flex-wrap: wrap;justify-content: flex-start;
+    align-items: stretch;text-align: left;margin: auto ;width: 100%;
+}
+.main .settings .nft_option .nft_options_ {
+    width: 24%;height: inherit;margin: 0 .5% 0 .5%;text-align: left;
+}
+
+.main .settings .nft_option .nft_options_ .nft_options__ {
+    border-top-left-radius: 16px;border-top-right-radius: 16px;background-color: #3d3c3ce6;
+    margin-bottom: 40px;border-bottom-left-radius: 16px;border-bottom-right-radius: 16px;border: 1px solid #615f5faf;
+}
+.main .settings .nft_option .nft_options_ .nft_head {
+    margin-top: 10px;text-align: left;
+}
+.main .settings .nft_option .nft_options_ .nft_head h2 {
+    margin: 2px 0 auto 15px;text-align: left;font-size: 16px;font-weight: 800;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_price {
+    display: flex;justify-content: space-between;margin: 5px auto 0 auto;text-align: center;
+    flex-direction: row;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_desc {
+    text-align: left;margin-left: 15px;font-size: 13px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_addbtn {
+    display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;
+    margin: 10px 15px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_addr {
+    font-size: 12px;font-family: "Montserrat";color: #e28305;
+    font-weight: 900;position: relative;
+}
+.main .settings .nft_option .nft_options_ .nft_head .c_nft_addr {
+    font-size: 12px;font-family: "Montserrat";left: 0;border-radius: 4px;padding: 0 2px;
+    height: min-content;font-weight: 900;position: absolute;top: -20px;bottom: 0;
+    background-color: #f8f8f8d3;color: #3d3c3ce6;display: none;
+}
+.main .settings .nft_option .nft_options_ .nft_head .addr_btn {
+    color: #e2d7d7;height: min-content;border-radius: 2px;
+    padding: 0 2px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_list {
+    width: fit-content;
+}
+.main .settings .nft_option .nft_options_ .nft_head .listed {
+    color: #e2d7d7;height: min-content;border-radius: 2px;
+    padding: 0 2px;font-size: 13px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_list button {
+    background-color: #ffffff;color: #000000d3;font-size: 13px;font-weight: 900;padding: 2px 10px 2px 10px;
+    width: fit-content;border-radius: 60px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_list_p {
+    display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;
+    margin: 10px 15px;border-top: 1px solid #525050;padding-top: 4px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .listedp {
+    color: #e2d7d7;height: min-content;border-radius: 2px;
+    padding: 0 2px;font-size: 13px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_list_b {
+    display: flex;flex-direction: row;flex-wrap: nowrap;justify-content: space-between;
+    margin: 10px 15px;border-top: 1px solid #525050;padding-top: 4px;
+}
+.main .settings .nft_option .nft_options_ .nft_head .nft_list_b button {
+    border: 1px solid #e2d7d7;border-radius: 8px;padding: 0 6px 0 6px;
+}
+.main .settings .nft_option .nft_options_ .nft_pf {
+    margin: 0 auto 10px auto;text-align: center;font-size: 18px;font-family: "Poppins";font-weight: 900;
+}
+.main .settings .nft_option .nft_options_ .nft_pf_btn {
+    margin: 0 auto 10px auto;text-align: center;font-size: 14px;font-family: "Poppins",sans-serif;font-weight: 900;
+    background-color: #e28305;border-radius: 16px;padding: 3px 22px 0 22px;width: fit-content;color: #000000;
+}
+
+.err-alat {
+padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "Poppins";border-radius: 8px;background: rgba(120, 224, 143, 1);
+}
+.div_overlay {
+    position:fixed; z-index: 50; background-color: rgba(55, 55, 55, 0.94);overflow-y: auto; 
+    height: 100%;width: 100%; padding: 1rem;top: 0;bottom: 0;right: 0;left: 0;display: none;
+}
+.div_overlay_inna {
+border-radius: 4px;width: 50%;margin: auto;background-color: white;
+}
+.div_overlay_inna button::first-of-type {
+background-color: white !important;color: rgba(55, 55, 55, 1) !important;
+}
+.div_overlay_inna button::last-of-type {
+background-color: green !important;color: rgba(255, 255, 255, 1) !important;
+}
+.terms {
+font-size: 13px;font-family: "Poppins";color: white;margin: -.4rem 0 0 .4rem;
+}
+.terms a {
+color: rgba(220, 156, 7);
+}
+.terms a:hover {
+color: rgba(200, 200, 200, 1);
+}
+.instructions {
+font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
+}
+
+@media (max-width: 1200px) {
+    .main .settings .nft_option .nft_options_ {
+        width: 32%;
+    }
+}
+@media (max-width: 991px) {
+    .main .settings .nft_option .nft_options_ {
+        width: 49%;
+    }
+    .main .listnftitem {
+        width: 80%;
+    }
+}
+@media (max-width: 767px) {
+    .main .settings .nft_option .nft_options_ {
+        width: 100%;
+    }
+    .main .listnftitem {
+        width: 90%;
+    }
+}

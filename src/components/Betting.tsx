@@ -9,21 +9,20 @@ import footballb from '../assets/images/footaballb.jpg';
 import moment from 'moment';
 import Calendar from 'react-calendar';
 import Loading from './Loading';
+import { Bets } from './BetsMetadata';
 import ActionSuccessModal from './ActionSuccess';
 import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
 import BgOverlay from './BgOverlay';
-import LoadSampleOpenBetsData from './LoadSampleOpenBets';
+import LoadSampleOpenBetsData from './LoadOpenBets';
 import LoadFixturesSearchResults from './LoadFixturesSearchResults';
 import FixturesByDate from './FixturesByDate';
 import FixturesByCalenderDate from './FixturesByCalenderDate';
 import TodaysFixtures from './TodaysFixtures';
 import LiveFixtures from './LiveFixtures';
 import { Fixture } from './FixtureMetadata';
-import { faCaretDown, faCircle, faFilter, faL, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
-import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import HelmetExport from 'react-helmet';
+import { FaCaretDown, FaCircle, FaFilter, FaMagnifyingGlass, FaRegCalendar, FaXmark } from 'react-icons/fa6';
 dotenv.config();
 // material
 // component
@@ -75,8 +74,8 @@ const LoadBetData:React.FC<{}> = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
-  const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
-  const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
+  const [calendarIcon] = useState<any>(<FaRegCalendar/>);
+  const [drpdwnIcon] = useState<any>(<FaCaretDown/>);
   const [today_d,setToday_d] = useState<any>();
   const [today_dm,setToday_dm] = useState<any>();
   const [todaym,setTodaym] = useState<any>();
@@ -473,7 +472,7 @@ const closeBgModal = () => {
         <div className={bettingstyle.search} >
           <div>
             <form>
-                <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
+                <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FaMagnifyingGlass onClick={() => loadSearchResults()}/></div>
                 {showsearchoptions &&
                   <div className={bettingstyle.searchop} ref={divRef} >
                     { keywordsearchresults?.map((result,index) => (
@@ -510,35 +509,35 @@ const closeBgModal = () => {
         {/* how it works div starts */}
         <div id='howitworks' className={bettingstyle.hiwmain}>
           <div className={bettingstyle.hiw_c}>
-            <div className={bettingstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
+            <div className={bettingstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FaXmark />}</div>
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='./register'>Join Fifa Reward</a>
+                <FaCircle className={bettingstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='./register'>Join Fifa Reward</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Visit the betting page
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Visit the betting page
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../betting/openbetslists' target='_blank'>open bets</a>
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../betting/openbetslists' target='_blank'>open bets</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
+                <FaCircle className={bettingstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Draw bets are carried over to a next match
+                <FaCircle className={bettingstyle.hiwlistcircle} /> Draw bets are carried over to a next match
               </li>
             </ul>
           </div>
@@ -571,7 +570,7 @@ const closeBgModal = () => {
             <div className={bettingstyle.filter_c}>
                 <div>
                   <button type="button" title='filter bet' onClick={toggleBetFilter}>
-                    <FontAwesomeIcon icon={faFilter} style={{color: '#e28305'}}/><span>Filter</span>
+                    <FaFilter style={{color: '#e28305'}}/><span>Filter</span>
                   </button>
                 </div>
                 <div>
@@ -582,7 +581,7 @@ const closeBgModal = () => {
         
         <div className={bettingstyle.main_in}>
           <div className={bettingstyle.leagues} id="betsbyleagues">
-            <div className={bettingstyle.filterclose}><button className={bettingstyle.filterclosebtn} onClick={closeBetFilter}><FontAwesomeIcon icon={faXmark} size='xl'/></button></div>
+            <div className={bettingstyle.filterclose}><button className={bettingstyle.filterclosebtn} onClick={closeBetFilter}><FaXmark size='xl'/></button></div>
             <div className={bettingstyle.gf}><h3>Fixtures</h3></div>
             {/* {countryfixturesdata && 
               <div className={bettingstyle.filter}>

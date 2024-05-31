@@ -1,24 +1,19 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../contexts/theme-context';
+import Image from 'next/image';
 import styles from '../styles/dappnav.module.css';
 import logo from '../assets/images/logo.png';
-import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import { providers } from "ethers";
-import { library } from '@fortawesome/fontawesome-svg-core'
 import ConnectWallet from './ConnectWalletButton';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
+import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
 
 
 
 function Navbar() {
     const { theme } = useContext(ThemeContext);
     const [isNavOpen, setNavOpen] = useState(false);
-    const [scrolling, setScrolling] = useState(false);const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>);
+    const [scrolling, setScrolling] = useState(false);const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown size='22px' className={styles.navlisttoggle}/>);
 
     const router = useRouter();
 
@@ -90,18 +85,18 @@ function Navbar() {
     };
 
     const toggleIconUp3 = () => {
-        setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon3(<FaChevronUp size='22px' className={styles.navlisttoggle}/>)
     }
 
     const toggleIconDown3 = () => {
-        setDropdownIcon3(<FontAwesomeIcon icon={faChevronDown} size='lg' className={styles.navlisttoggle}/>)
+        setDropdownIcon3(<FaChevronDown size='22px' className={styles.navlisttoggle}/>)
     }
 
-    const logout = () => {
-      // Simulate a logout action
-      localStorage.removeItem('userInfo');
-      router.push(`/signin`);
-    };
+    // const logout = () => {
+    //   // Simulate a logout action
+    //   localStorage.removeItem('userInfo');
+    //   router.push(`/signin`);
+    // };
 
     // const shortname = (name) => {
     //     if (name.length > 12) {
@@ -118,7 +113,7 @@ function Navbar() {
             {/* <button title='togglebtn' className={styles.nav_toggle_btn} type='button' onClick={toggleNav}><FontAwesomeIcon icon={faAlignJustify} size='lg' className={styles.toggle_icon}/></button> */}
             <div className={`${styles.nav_container} ${navClass}`}>
                 <div className={styles.logo}>
-                <a href='/' rel='noopener noreferrer'><Image src={logo} alt='logo' className={styles.logoni}/></a>
+                  <a href='/' rel='noopener noreferrer'><Image src={logo} alt='logo' className={styles.logoni}/></a>
                 </div> 
                 
                 {isNavOpen && (
@@ -146,6 +141,9 @@ function Navbar() {
                       <a href='/betting/mybets' rel='noopener noreferrer' className={styles.si}>Bets</a>
                     </li>
                     <li>
+                      <a href='/betting/mygames' rel='noopener noreferrer' className={styles.si}>Games</a>
+                    </li>
+                    <li>
                       <a href='/nft/mynfts' rel='noopener noreferrer' className={styles.si}> NFTs</a>
                     </li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
@@ -159,7 +157,7 @@ function Navbar() {
                 </ul>
                 <ul className={styles.upa}>
                         <ConnectWallet />
-                    <li className={styles.si}><button onClick={logout} type='button'>Logout</button></li>
+                    {/* <li className={styles.si}><button onClick={logout} type='button'>Logout</button></li> */}
                 </ul>
                 </div>)
                 }

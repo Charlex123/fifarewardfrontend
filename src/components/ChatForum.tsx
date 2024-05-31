@@ -34,7 +34,7 @@ interface Message {
   
   interface User {
     username: string;
-    profilePic: string;
+    pic: string;
   }
 
 const ChatForum: React.FC<{}> = () =>  {
@@ -87,6 +87,7 @@ const ChatForum: React.FC<{}> = () =>  {
         setUserId(udetails.userId);
         setProfileImage(udetails.pic);
         setCurrentUser(udetails._id);
+        fetchUsers();
         const SERVER = 'http://127.0.0.1:9000';  // Ensure this URL is correct
         const socket = io('http://localhost:9000')
         socket.on('connect', () => {
@@ -109,7 +110,7 @@ const ChatForum: React.FC<{}> = () =>  {
     if (socket) socket.disconnect();
     };
 
-  },[])
+  },[socket, username, userId])
   
   const sendMessage = async (text: string, file?: any) => {
     if (currentUser) {
@@ -127,12 +128,12 @@ const ChatForum: React.FC<{}> = () =>  {
     e.preventDefault();
 
     if (file && file != null) {
-        sendMessage(text);
+      sendMessage(text);
       const formData = new FormData();
       formData.append('file', file);
 
       try {
-        const response = await axios.post('http://localhost:9000/upload', formData, {
+        const response = await axios.post('http://localhost:9000/uploadforumfile', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -306,6 +307,7 @@ const ChatForum: React.FC<{}> = () =>  {
                              </ul>
                             </div> */}
                         </div>
+                        <UserList users={users} />
 
                         <div className={styles.chat_convo} id="chat-convo">
                           <div className={styles.justify_content_start}>
@@ -332,7 +334,6 @@ const ChatForum: React.FC<{}> = () =>  {
                           </div>
                         </div>
 
-                        <UserList users={users} />
                         <MessageList messages={messages} currentUser={currentUser} />
                         
                         <div id="success-pop" aria-hidden="true" className={styles.div_overlay}>

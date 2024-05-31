@@ -1,33 +1,29 @@
 import React, { useContext,useState,useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import AlertDanger from './AlertDanger';
 import { useRouter } from 'next/router';
+import ConnectWallet from './ConnectWalletButton';
 import { ThemeContext } from '../contexts/theme-context';
-import axios from 'axios';
-import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
-import NFTMarketPlaceFeaturesContractAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
+import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
+import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import { ethers } from 'ethers';
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { faCheck, faCircleCheck, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
-import { NFTMetadata } from './NFTMetadata';
-import { NFTFullMetadata } from './NFTFullMetadata';
+import { Bets } from './BetsMetadata';
+import axios from 'axios';
+import { BetConditions } from './BetConditionsMetadata';
 import HelmetExport from 'react-helmet';
 // material
-import styles from "../styles/mynfts.module.css";
+import styles from "../styles/mybets.module.css";
 import dotenv from 'dotenv';
+import { FaXmark } from 'react-icons/fa6';
 dotenv.config();
 // component
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const MyBets: React.FC<{}> = () =>  {
 
     const divRef = useRef<HTMLDivElement>(null);
@@ -35,296 +31,194 @@ const MyBets: React.FC<{}> = () =>  {
     const [showchangepriceModal, setShowChangePriceModal] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
+    const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
+    const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any; 
     const { chainId, isConnected } = useWeb3ModalAccount();
     const { disconnect } = useDisconnect();
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const [limit] = useState<number>(10)
+    const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
+    const [frdusdprice, setFrdUsdPrice] = useState<any>();
+    const [totalPages, setTotalPages] = useState(0);
+    const [betconditions,setBetConditions] = useState<BetConditions[]>([]);
+    const [betData,setBetData] = useState<Bets[]>([]);
     const [username, setUsername] = useState<string>("");
-    const [nftLoaded,setNFTLoaded] = useState<boolean>(false);
     const [userId, setUserId] = useState<number>();
     const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
     const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
     const [errorMessage,seterrorMessage] = useState<string>("");
-    const [showListNFTDiv,setShowListNFTDiv] = useState<boolean>(false);
+    const [showbetconditions, setShowBetConditions] = useState<boolean>(false);
     const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
-    const [listingItemTokenId,setListingItemTokenId] = useState<any>(null);
-    const [nftItemPrice, setNftItemPrice] = useState<string>("");
-    const [bidduration, setBidDuration] = useState<any>(0);
-    const [reservedbuyer, setReservedBuyer] = useState<any>("0x0000000000000000000000000000000000000000");
-    const [minbidamount, setMinBidAmount] = useState<any>(0);
-    const [salesroyaltyfee, setSalesRoyaltyFee] = useState<any>(2);
     const { theme } = useContext(ThemeContext);
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
-    const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
 
-    const [_itemId, set_ItemId] = useState<number>();
-    const [newbidduration,setNewBidDuration] = useState<number>();
-    const [newItemPrice, setNewItemPrice] = useState<string>("");
-    const [newminbidamount, setNewMinBidAmount] = useState<any>(0);
     
-    const [nftcontractAddress] = useState<any>("0xb84F7AA7BbB58f7Ba9fa9B8dBF9bdBEf2e9624a7");
-    const [nftfeaturescontractAddress] = useState<any>("0x18B2Be8468B276F0A643b8d922Ebb3C7cE137DF8");
-
-    const [myunlistedNFTs,setmyUnlistedNFTS] = useState<NFTMetadata[]>([]);
-
-    const [mylistedNFTs,setmyListedNFTS] = useState<NFTFullMetadata[]>([]);
+    const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
+    const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
 
     const router = useRouter();
 
     useEffect(() => {
-        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-        if(udetails && udetails !== null && udetails !== "") {
-        const username_ = udetails.username;  
-        if(username_) {
-            setUsername(username_);
-            setUserId(udetails.userId);
-            setIsloggedIn(true);
-            }
-            if(!isConnected) {
-              open();
-
-            }
-        }else {
-            setIsloggedIn(false);
+        if(!isConnected) {
+          open();
         }
-
-      if(windowloadgetbetruntimes <= 0) {
-        const getMyUnlistedNFTs = async () => {
-          try {
-              setShowLoading(true);
-              if(walletProvider) {
-                  const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                  const signer = provider.getSigner();
-                  /* next, create the item */
-                  let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
-                  
-                  if(contract) {
-                      let mintednfts = await contract.getMintedNfts();
-                      console.log(" unlisted nfts",mintednfts)
-                      await mintednfts.forEach(async (element:any) => {
-                        if(element[1] && element[1] !== "") {
-                          let ipfsurl = element[1];
-                          let ipfsurlarray = ipfsurl.split('//');
-                          
-                          let ipfsmetarray = ipfsurlarray[1].split('/');
-                          const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
-                          const { name, description, traits, image } = metadata.data;
-                          let img = image.split('//');
-                          const image_ = `https://nftstorage.link/ipfs/${img[1]}`;
-                          let item: NFTMetadata = {
-                            name: name,
-                            image: image_,
-                            description: description,
-                            traits: traits,
-                            chainId: chainId,
-                            creator: element.creator,
-                            owner: element.owner,
-                            hascreatedToken: element.hascreatedToken,
-                            // following properties only exist if the NFT has been minted
-                            tokenId: element.tokenId,
-                            tokenURI: element.tokenURI,
-                          }
-                          myunlistedNFTs.push(item);
-                          setmyUnlistedNFTS(myunlistedNFTs);
-                          setNFTLoaded(true);
-                          setShowLoading(false);
-                          setwindowloadgetbetruntimes(1);
-                          console.log('myunlistedNFTs ssss---',myunlistedNFTs)
-                          return item;
-                        }
-                      });
-                      
-                  }
-              }
-          } catch (error) {
-              console.error('Error creating Web3Provider:', error);
-              // Handle or rethrow the error as needed
-          }
-          
-      }
-      getMyUnlistedNFTs();
-
-        const getMyListedNFTs = async () => {
-          try {
-              setShowLoading(true);
-              if(walletProvider) {
-                  const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                  const signer = provider.getSigner();
-                  /* next, create the item */
-                  let contract = new ethers.Contract(nftfeaturescontractAddress, NFTMarketPlaceFeaturesContractAbi, signer);
-                  
-                  if(contract) {
-                      let listednfts = await contract.fetchItemsCreated();
-                      
-                      await listednfts.forEach(async (element:any) => {
-                        if(element[1] && element[1] !== "") {
-                          let ipfsurl = element[2];
-                          let ipfsurlarray = ipfsurl.split('//');
-                          
-                          let ipfsmetarray = ipfsurlarray[1].split('/');
-                          const metadata = await axios.get(`https://${ipfsmetarray[0]}.ipfs.nftstorage.link/metadata.json`);
-                          const { name, description, traits, image } = metadata.data;
-                          let img = image.split('//');
-                          const image_ = `https://nftstorage.link/ipfs/${img[1]}`;
-                          console.log("image_",image_)
-                          let item: NFTFullMetadata = {
-                            name: name,
-                            image: image_,
-                            description: description,
-                            traits: traits,
-                            chainId: chainId,
-                            creator: element.creator,
-                            owner: element.owner,
-                            hascreatedToken: element.hascreatedToken,
-                            // following properties only exist if the NFT has been minted
-                            tokenId: element.tokenId,
-                            tokenURI: element.tokenURI,
-                            price: element.sellingprice,
-                            seller: element.seller,
-                            itemId: element.itemId,
-                            biddingduration: element.biddingduration,
-                            minbidamount: element.minbidamount,
-                            sold: element.sold,
-                          }
-                          mylistedNFTs.push(item);
-                          setmyListedNFTS(mylistedNFTs);
-                          setNFTLoaded(true);
-                          setShowLoading(false);
-                          setwindowloadgetbetruntimes(1);
-                          console.log('mylistedNFTs ssss---',mylistedNFTs)
-                          return item;
-                        }
-                      });
-                      
-                  }
-              }
-          } catch (error) {
-              console.error('Error creating Web3Provider:', error);
-              // Handle or rethrow the error as needed
-          }
-          
-      }
-      getMyListedNFTs();
-
-      }
-          
-    },[username,userId,windowloadgetbetruntimes])
+    },[])
   
-    const createNftItem = async () => {
-      const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-      const signer = provider.getSigner();
-      /* next, create the item */
-      if(listingItemTokenId && nftItemPrice && bidduration > 0 && minbidamount > 0) {
+    useEffect(() => {
+
+      const getUSDEQUIVFRDAMOUNT =  async () => {
         try {
-          setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
-          let transaction = contract.createAuctionItem(listingItemTokenId,nftItemPrice,bidduration,reservedbuyer,minbidamount,salesroyaltyfee );
-          console.log(transaction.hash);
-          if(transaction) {
-            // setActionSuccess(true);
-          }
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.get("../../../../api/gettokenprice", config);
+          setUsdEquivFrdAmount(data.usdequivalentfrdamount);
+          setFrdUsdPrice(data.usdprice);
+          console.log("usd price",data.usdprice);
         } catch (error) {
-          console.log("t error",error);
-          setShowAlertDanger(true);
-          seterrorMessage("Transaction failed, try again");
+          console.error('Error fetching data:', error);
         }
+      }
+      getUSDEQUIVFRDAMOUNT();
+      
+
+      const fetchData = async () => {
+
+        let provider, signer;
+        
+        if(walletProvider) {
+          provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+          signer = provider.getSigner();
+          
+          if(signer) {
+            try {
+              setShowLoading(true);
+              const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+              const loadBets = await BetFeaturescontract.loadAllBets();
+              await loadBets.forEach(async (element:any) => {
+                if(element.openedBy != 0x0000000000000000000000000000000000000000) {
+                  let betAmt = Math.ceil((element.betamount.toString())/(10**18));
+                  
+                  let item: Bets = {
+                    betId: element.betId,
+                    matchId: element.matchId,
+                    uniquebetId: element.uniquebetId,
+                    betamount: betAmt,
+                    matchfixture: element.matchfixture,
+                    openedBy: element.openedBy,
+                    totalbetparticipantscount: element.totalbetparticipantscount,
+                    remainingparticipantscount: element.remainingparticipantscount,
+                    betstatus: element.betstatus,
+                    participants: element.participants,
+                    betwinners: element.betwinners,
+                    betlosers: element.betlosers,
+                  }
+                  // Prevent duplicate entries based on betId
+                  setBetData(prevBetData => {
+                    if (!prevBetData.some(existingItem => existingItem.betId.toString() === item.betId.toString())) {
+                        return [...prevBetData, item];
+                    }
+                    return prevBetData;
+                });
+                  setShowLoading(false);
+                  return item;
+              }else {
+                setShowLoading(false);
+                setShowBgOverlay(false);
+              }
+              });
+            } catch (error: any) {
+              setShowAlertDanger(true);
+              seterrorMessage(error.code);
+              setShowLoading(false);
+            }
+            
+          }
+        }
+    };
+
+    fetchData();
+    },[])
+    
+    const toggleAddress = (e:any) => {
+      let fulladdress = e.previousElementSibling as HTMLSpanElement;
+      fulladdress.style.display = (fulladdress.style.display === 'block') ? 'none' : 'block';
+    }
+
+    const viewBetDetails = async(e:any,betId:number) => {
+      let provider, signer;
+            
+      if(walletProvider) {
+        provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+        signer = provider.getSigner();
       }else {
-        setShowAlertDanger(true);
-        seterrorMessage("NFT item price, bidding duration and minimum bid amount required");
+        const provider = walletProvider as any || Wprovider as any;
+        const wallet = new ethers.Wallet(walletPrivKey as any, provider);
+        signer = provider.getSigner(wallet.address);
       }
       
-    }
-
-    const unlistItem = async (itemId:string) => {
-      const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-      const signer = provider.getSigner();
-      
+      if(signer) {
         try {
           setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
-          let transaction = contract.unListAuctionItem(itemId);
-          console.log(transaction.hash);
-          if(transaction) {
-            // setActionSuccess(true);
-          }
-        } catch (error) {
-          console.log("t error",error);
+          setShowBgOverlay(true);
+          const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+              
+            const getbetpredictions = await Betcontract.getPredictions(betId);
+            setBetConditions(getbetpredictions);
+            setShowBetConditions(true);
+            setShowBgOverlay(true);
+            setShowLoading(false);
+        } catch (error: any) {
           setShowAlertDanger(true);
-          seterrorMessage("Transaction failed, try again");
+          seterrorMessage(error);
+          setShowLoading(false);
         }
+        
+      }
+    }
+    
+    const goBack = () => {
+        router.back()
+    }
+    
+    const closePBET = (divId:any) => {
+      let svg = divId.getAttribute('data-icon');
+      let path = divId.getAttribute('fill');
       
+      // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
+    
+      if(svg !== null && svg !== undefined) {
+        setShowBgOverlay(false);
+        divId.parentElement.parentElement.style.display = 'none';
+      }
+      if(path !== null && path !== undefined) {
+        setShowBgOverlay(false);
+        divId.parentElement.parentElement.parentElement.style.display = 'none';
+      }
+    }
+    
+    const Cancel = (e:any) => {
+      console.log(e)
     }
 
-    const listbackItem = async (itemId:string) => {
-      const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-      const signer = provider.getSigner();
-      
-        try {
-          setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
-          let transaction = contract.ListBackAuctionItem(itemId);
-          console.log(transaction.hash);
-          if(transaction) {
-            // setActionSuccess(true);
-          }
-        } catch (error) {
-          console.log("t error",error);
-          setShowAlertDanger(true);
-          seterrorMessage("Transaction failed, try again");
-        }
-      
-    }
-
-    const updateBiddingOptions = async () => {
-      const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-      const signer = provider.getSigner();
-      
-        try {
-          setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress, NFTMarketPlace, signer);
-          let transaction = contract.updateBiddingOptions();
-          console.log(transaction.hash);
-          if(transaction) {
-            // setActionSuccess(true);
-          }
-        } catch (error) {
-          console.log("t error",error);
-          setShowAlertDanger(true);
-          seterrorMessage("Transaction failed, try again");
-        }
-      
-    }
-
-    const toggleAddr = (e:any) => {
-      e.previousElementSibling.style.display = (e.previousElementSibling.style.display === 'block') ? 'none' : 'block';
-    }
-
-    const changeitemPrice = async ( event: React.MouseEvent) => {
-      event.preventDefault();
-        setShowBgOverlay(true);
-        setShowChangePriceModal(true);
-        setTimeout(function() {
-          if(divRef.current) {
-            divRef.current.focus()
-          }
-        }, 2000);
-    }
-
-    const openListItemDiv = (tokenid: any, event: React.MouseEvent) => {
-      event.preventDefault();
-      setListingItemTokenId(tokenid);
-      setShowBgOverlay(true);
-      setShowListNFTDiv(true);
-      setTimeout(function() {
-        if(divRef.current) {
-          divRef.current.focus()
-        }
-      }, 2000);
-    }
-
-    const closeListItemModalDiv = () => {
-      setShowBgOverlay(false);
-      setShowListNFTDiv(false);
-      setShowChangePriceModal(false);
-    }
+    const gotoPage = (pageNumber: number) => {
+      setCurrentPage(pageNumber);
+    };
+    
+    // Function to render page numbers
+    const renderPageNumbers = () => {
+      let pages = [];
+      for (let i = 1; i <= totalPages; i++) {
+        pages.push(
+          <button className={styles.number} type='button' title='button' key={i} onClick={() => setCurrentPage(i)} disabled={i === currentPage}>
+            {i}
+          </button>
+        );
+      }
+      return pages;
+    };
 
     const closeAlertModal = () => {
       setShowAlertDanger(false);
@@ -347,8 +241,8 @@ const MyBets: React.FC<{}> = () =>  {
   return (
     <>
     <HelmetExport>
-        <title> My Bets | FifaReward</title>
-        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+        <title> My Bets | Fifareward</title>
+        <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
     </HelmetExport>
     {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
@@ -358,225 +252,82 @@ const MyBets: React.FC<{}> = () =>  {
     }
      
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
-        {showchangepriceModal && 
-          <div className={styles.listnftitem} ref={divRef} tabIndex={-1}>
-            <div className={styles.listnftitem_c}>
-              <div className={styles.listnftitem_h}>
-                  <div>
-                    
-                  </div>
-                  <div>
-                    <h1>Update Item Bidding Options </h1>
-                  </div>
-                  <div>
-                    <button type='button' onClick={closeListItemModalDiv}>{<FontAwesomeIcon icon={faXmark}/>}</button>
-                  </div>
-              </div>
-              <div className={styles.listnftitem_c_in}>
-                  <div className={styles.listnftitem_c_ina}>
-                      <div className={styles.list_tc}>
-                        <label>NFT item id</label>
-                        <input type='text' value={listingItemTokenId} readOnly/>
-                      </div>
-                      <div className={styles.list_tc}>
-                        <label>New listing price(BNB/MATIC)</label>
-                        <input type='text' onChange={(e) => setNftItemPrice(e.target.value) } placeholder='200BNB'/>
-                      </div>
-                  </div>
-                  <div className={styles.listnftitem_c_ina}>
-                      <div className={styles.list_tc}>
-                        <label>New bidding duration(days)</label>
-                        <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
-                      </div>
-                      <div className={styles.list_tc}>
-                        <label>New min. bid amount</label>
-                        <input type='number' onChange={(e) => setMinBidAmount(e.target.value) } placeholder='1'/>
-                      </div>
-                  </div>
-                  <div>
-                    <button className={styles.createlistitem_} onClick={updateBiddingOptions}>Update Bidding Options</button>
-                  </div>
-              </div>
-            </div>
-        </div>
-        }
-        {showListNFTDiv && 
-          <div className={styles.listnftitem} ref={divRef} tabIndex={-1}>
-            <div className={styles.listnftitem_c}>
-              <div className={styles.listnftitem_h}>
-                  <div>
-                    
-                  </div>
-                  <div>
-                    <h1>List NFT In Our Auction Market</h1>
-                  </div>
-                  <div>
-                    <button type='button' onClick={closeListItemModalDiv}>{<FontAwesomeIcon icon={faXmark}/>}</button>
-                  </div>
-              </div>
-              <div className={styles.listnftitem_c_in}>
-                  <div className={styles.listnftitem_c_ina}>
-                      <div className={styles.list_tc}>
-                        <label>NFT token id</label>
-                        <input type='text' value={listingItemTokenId} readOnly/>
-                      </div>
-                      <div className={styles.list_tc}>
-                        <label>Listing price(BNB/MATIC)</label>
-                        <input type='text' onChange={(e) => setNftItemPrice(e.target.value) } placeholder='200BNB'/>
-                      </div>
-                  </div>
-                  <div className={styles.listnftitem_c_ina}>
-                      <div className={styles.list_tc}>
-                        <label>Bidding duration(days)</label>
-                        <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
-                      </div>
-                      <div className={styles.list_tc}>
-                        <label>Min. bid amount</label>
-                        <input type='number' onChange={(e) => setMinBidAmount(e.target.value) } placeholder='1'/>
-                      </div>
-                  </div>
-                  <div className={styles.listnftitem_c_ina}>
-                      <div className={styles.list_tc}>
-                        <label>Have a reserved buyer?(optional)</label>
-                        <input type='text' onChange={(e) => setReservedBuyer(e.target.value)} placeholder="0x0643892354..."/>
-                      </div>
-                      <div className={styles.list_tc}>
-                        <label>Set royalty fee</label>
-                        <select onChange={(e) => setSalesRoyaltyFee(e.target.value)}>
-                          <option value={2}>2% Fee</option>
-                          <option value={3}>3% Fee</option>
-                          <option value={4}>4% Fee</option>
-                          <option value={5}>5% Fee</option>
-                          <option value={6}>6% Fee</option>
-                          <option value={7}>7% Fee</option>
-                        </select>
-                      </div>
-                  </div>
-                  <div>
-                    <button className={styles.createlistitem_} onClick={createNftItem}>List NFT In Market Place</button>
-                  </div>
-              </div>
-            </div>
-        </div>
-        }
         <div className={styles.main_bg_overlay}></div>
           <div>
             <div>
-              <h1>MY NFTs</h1>
+              <h1>MY Bets</h1>
             </div>
           </div>
           {/* banner header */}
           
-          <div className={styles.main_c}>
-            <div className={styles.settings}>
-              <div className={styles.settings_bg_overlay}></div>
-              <div className={styles.settings_in}>
-                <div>
-                  <h1 className={styles.h1}>My Unlisted NFTs</h1>
-                </div>
-
-                <div className={styles.nft_option}>
-                {nftLoaded && myunlistedNFTs.length > 0 ? myunlistedNFTs?.map((myunlistedNFT:NFTMetadata,index:number) => (
-                    <div key={index} className={styles.nft_options_}>
-                      <div className={styles.nft_options__} key={index}>
-                          <Image src={myunlistedNFT.image} width={100} height={100} priority style={{objectFit:'cover',width: '100%',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
-                            <div className={styles.nft_head}>
-                                <div className={styles.nft_pfh}><h2>{myunlistedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                                <div className={styles.nft_desc}>
-                                    <span>{myunlistedNFT.description.substring(0, 40)+' ...'}</span>
-                                </div>
-                                <div className={styles.nft_addbtn}>
-                                    <div className={styles.nft_addr}>
-                                      <span>{myunlistedNFT.creator.substring(0, 8)+' ...'}</span>
-                                      <span className={styles.c_nft_addr}>{myunlistedNFT.creator}</span>
-                                      <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
-                                    </div>
-                                    <div className={styles.nft_list}>
-                                      {myunlistedNFT.owner == myunlistedNFT.creator ? <button type='button' className={styles.listnft} onClick={(e) => openListItemDiv(myunlistedNFT.tokenId,e)}>List NFT</button> : ""}
-                                  </div>
-                                </div>
-                            </div>
-                      </div>
-                    </div>
-                  )) : 
-                  <div className={styles.notfound_p}>
-                    <div className={styles.notfound}>No items were found</div>
-                  </div>}
-                </div>
-              </div>
+          {betData && betData.length > 0 ? 
+            <div className={styles.openbetmain}>
+            <div className={styles.table_c}>
+              <table>
+                <thead>
+                  <tr>
+                    {/* <th>S/N</th> */}
+                    <th>S/N Id</th>
+                    <th>Id</th>
+                    <th>Match Id</th>
+                    <th>Bet Amount</th>
+                    <th>Opened BY</th>
+                    <th>Max. Participants</th>
+                    <th>Participants Joined Count</th>
+                    <th>Participants Joined</th>
+                    <th>Remaining Participants</th>
+                    <th>Status</th>
+                    <th>Join Bet</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {betData.map((openbet, index) => (
+                    <tr key={index}>
+                      {/* <td><div className={styles.div}>{index+1}</div></td> */}
+                      <td><div className={styles.div}>{index+1}</div></td>
+                      <td><div className={styles.div}>{openbet.uniquebetId.toString()}</div></td>
+                      <td><div className={styles.div}>{openbet.matchId.toString()}</div></td>
+                      <td><div className={styles.div}>{(openbet.betamount.toLocaleString())}{<span className={styles.amtunit}>FRD</span>} ({`$${Math.ceil(openbet.betamount * frdusdprice)}`})</div></td>
+                      <td><div className={styles.divaddress}><span>{openbet.openedBy.substring(0,8)+'...'}</span><span className={styles.fulladdr}>{openbet.openedBy}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>
+                      <td><div className={styles.div}>{openbet.totalbetparticipantscount.toString()}</div></td>
+                      <td><div className={styles.div}>{(openbet.totalbetparticipantscount.toNumber()) - (openbet.remainingparticipantscount.toNumber())}</div></td>
+                      <td><div className={styles.div}>({openbet.participants}) <div className={styles.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())} style={{cursor: 'pointer'}}> view bet details </button></div></div></td>
+                      <td><div className={styles.div}>{openbet.remainingparticipantscount.toString()}</div></td>
+                      <td className={styles.stat}><div className={styles.div}>{openbet.betstatus == 'open' ? <span className={styles.betstatusopened}>{openbet.betstatus}</span> : <span className={styles.betstatusclosed}>{openbet.betstatus}</span>}</div></td>
+                      {openbet.betstatus === 'open' 
+                      ? 
+                      <td className={styles.jb}><div className={styles.div}><button className={styles.closed} type='button' title='button' disabled >Print Slip</button></div></td>
+                      : 
+                      <td className={styles.jb}><div className={styles.div}><button className={styles.closed} type='button' title='button' disabled >Print Slip</button></div></td>}
+                      
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </div>
-          </div>
-
-
-          {/* listed nft */}
-
-          <div className={styles.main_c}>
-            <div className={styles.settings}>
-              <div className={styles.settings_bg_overlay}></div>
-              <div className={styles.settings_in}>
-                <div>
-                  <h1 className={styles.h1}>My Listed NFTs</h1>
-                </div>
-
-                <div className={styles.nft_option}>
-                {nftLoaded && mylistedNFTs.length > 0 ? mylistedNFTs?.map((mylistedNFT:NFTFullMetadata,index:number) => (
-                    <div key={index} className={styles.nft_options_}>
-                      <div className={styles.nft_options__} key={index}>
-                          <a href={`/nft/${mylistedNFT.name.replace(/[ ]+/g, "-")}/${mylistedNFT.tokenId!.toString()}`}>
-                            <Image src={mylistedNFT.image} width={100} priority height={100}  style={{objectFit:'cover',width: '100%',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
-                          </a>
-                          <div className={styles.nft_head}>
-                              <a href={`/nft/${mylistedNFT.name.replace(/[ ]+/g, "-")}/${mylistedNFT.tokenId!.toString()}`}>
-                                <div className={styles.nft_pfh}><h2>{mylistedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
-                                <div className={styles.nft_desc}>
-                                    <span>{mylistedNFT.description.substring(0, 40)+' ...'}</span>
-                                </div>
-                                <div className={styles.nft_addbtn}>
-                                    <div className={styles.nft_addr}>
-                                      <span>{mylistedNFT.owner.substring(0, 8)+' ...'}</span>
-                                      <span className={styles.c_nft_addr}>{mylistedNFT.owner}</span>
-                                      <button type='button' onClick={(e) => toggleAddr(e.target)} className={styles.addr_btn}>view</button>
-                                    </div>
-                                    <div className={styles.nft_list}>
-                                      <span className={styles.listed}>Listed {<FontAwesomeIcon icon={faCheck} style={{color:'#e3a204'}}/>}</span> 
-                                    </div>
-                                </div>
-                                <div className={styles.nft_list_p}>
-                                  <div>
-                                    <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{mylistedNFT.price?.toNumber()}{mylistedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
-                                  </div>
-                                  <div>
-                                    <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{mylistedNFT.minbidamount?.toNumber()}{mylistedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
-                                  </div>
-                                  <div>
-                                    <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{mylistedNFT.sold == false ? 'No' : 'Yes'}</div>
-                                  </div>
-                                </div>
-                                <div className={styles.nft_list_p}>
-                                  <div>
-                                    <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor(mylistedNFT.biddingduration?.toNumber()/86400000)} Days</span>
-                                  </div>
-                                </div>
-                              </a>
-                              <div className={styles.nft_list_b}>
-                                <div>
-                                  {mylistedNFT.owner == mylistedNFT.creator ? <button className={styles.listedp} type='button' onClick={() => unlistItem(mylistedNFT.itemId!.toString())}>Unlist</button> : <button className={styles.listedp} type='button' onClick={() => listbackItem(mylistedNFT.itemId!.toString())}>Unlist</button>} 
-                                </div>
-                                <div>
-                                  <button className={styles.listedp} type='button' onClick={(e) => changeitemPrice(e)}>Update Bid Price</button> 
-                                </div>
-                              </div>
-                          </div>
-                      </div>
-                    </div>
-                  )) : 
-                  <div className={styles.notfound_p}>
-                    <div className={styles.notfound}>No items were found</div>
-                  </div>}
-                </div>
+            {betData.length > 10 &&
+              <div className={styles.paginate_btns}>
+              <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
+                {'<<'}
+              </button>
+              <button type='button' title='button' onClick={() => gotoPage(currentPage - 1)} disabled={currentPage === 1}>
+                {'<'}
+              </button>
+              {renderPageNumbers()}
+              <button type='button' title='button' onClick={() => gotoPage(currentPage + 1)} disabled={currentPage === totalPages}>
+                {'>'}
+              </button>
+              <button type='button' title='button' onClick={() => gotoPage(totalPages)} disabled={currentPage === totalPages}>
+                {'>>'}
+              </button>
               </div>
-            </div>
-          </div>
+            }
+            
+          </div> :
+          <div className={styles.notfound}>
+            <div>You've not created any bets</div>
+          </div>  
+          }
 
       </div>
     </>

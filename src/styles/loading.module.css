@@ -2,12 +2,14 @@
 .spinner {
   position: fixed;
   margin: auto;
+  top: 0;
   left: 0;
   right: 0;
+  bottom: 0;
   z-index: 99999999;
   display: inline-block;
-  width: 45px;
-  height: 45px;
+  width: 65px;
+  height: 65px;
   border: 3px solid rgba(255,255,255,.3);
   border-radius: 50%;
   border-top-color: #fa940ee3;

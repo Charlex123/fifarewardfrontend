@@ -1,34 +1,30 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
-// import axios from 'axios';
+import axios from 'axios';
 // import DappSideBar from './Dappsidebar';
 // material
-
+import { encode } from '../utils/hexUtils';
 import { ethers } from 'ethers';
-import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { useWeb3Modal, useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import dappstyles from "../styles/dapp.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
-import axios from 'axios';
+
 const ReferralLink:React.FC<{}> = () =>  {
 
   const router = useRouter();
   const { theme } = useContext(ThemeContext);
-  const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<number>();  
-  const [sponsorId, setIsSponsorId] = useState<number>(0);  
-  const [walletaddress, setWalletAddress] = useState<any>("NA");
+  const [cipherText, setCipherText] = useState('');
+  const [walletaddress,setWalletAddress] = useState<string>("");
   const [shortwalletaddress, setShortWalletAddress] = useState<any>("NA");
-  const [sponsorWalletAddress, setsponsorWalletAddress] = useState<any>("NA");  
   const { walletProvider } = useWeb3ModalProvider();
   const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
-  const [userObjId, setUserObjId] = useState(""); // Initial value
   
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-  
+  const { open } = useWeb3Modal();
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
 
@@ -62,113 +58,83 @@ const ReferralLink:React.FC<{}> = () =>  {
   
   useEffect(() => {
 
-    async function Addreferrer() {
-      // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const provider = new ethers.providers.Web3Provider(walletProvider as any)
-      const signer = provider.getSigner();
-      const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-      const tnx = await StakeContract.addReferrer(sponsorWalletAddress,1);
-      console.log("Account Balance: ", tnx);
-      const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-      const reslt = await betContract.addReferrer(sponsorWalletAddress,1);
-      console.log("Account Balance: ", reslt);
-    }
+    if(isConnected) {
+      setWalletAddress(address!);
+      const shrtwa = address?.substring(0,18)+' ...';
+          setShortWalletAddress(shrtwa);
 
-    async function getSponsorWalletAddress(sponsorId: any) {
-      try {
-        const config = {
-        headers: {
-            "Content-type": "application/json"
+      async function Addreferrer(sponsoraddress: string, username: string) {
+        try {
+          let uname: string;
+          if(username && username != '' && username != null) {
+            uname = username;
+          }else {
+            uname = 'frduser';
+          }
+          // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+          const provider = new ethers.providers.Web3Provider(walletProvider as any)
+          const signer = provider.getSigner();
+          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+          const tnx = await StakeContract.addReferrer(sponsoraddress,address);
+          console.log("Account Balance: ", tnx);
+          const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+          const reslt = await betContract.addReferrer(sponsoraddress,address,uname);
+          console.log("Account Balance: ", reslt);
+        } catch (error: any) {
+          console.log("add ref error",error.code || error.message)
         }
-        }  
-        const {data} = await axios.post("https://fifareward.onrender.com/api/users/getsponsorwalletaddress", {
-          sponsorId,
-        }, config);
-        if(data.message === "You do not have a sponsor") {
+      }
+
+      const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+      if(udetails && udetails != null && udetails != undefined) {
+        if(udetails.encryptedreflinkid && udetails.encryptedreflinkid != null && udetails.encryptedreflinkid != undefined) {
+          if(udetails.isinfluencer === true) {
+            setreferralLink(`https://www.fifareward.io/referrals/${udetails.username}/${udetails.encryptedreflinkid}`)
+          }else {
+            setreferralLink(`https://www.fifareward.io/referrals/${udetails.encryptedreflinkid}`)
+          }
         }else {
-          setsponsorWalletAddress(data.message);
-          Addreferrer();
+          const encrypted = encode(udetails.address);
+          setCipherText(encrypted);
+              const updateUser = async () => {
+                try {
+                    const config = {
+                        headers: {
+                            "Content-type": "application/json"
+                        }
+                    };
+                    const response = await axios.post("http://localhost:9000/api/users/updatereflinkid/", {
+                        address,
+                        encrypted
+                    }, config);
+                    const data = response.data;
+                    if(data.encryptedreflinkid != undefined) {
+                      if(udetails.isinfluencer === true) {
+                        setreferralLink(`https://www.fifareward.io/referrals/${udetails.username}/${data.encryptedreflinkid}`)
+                      }else {
+                        setreferralLink(`https://www.fifareward.io/referrals/${data.encryptedreflinkid}`)
+                      }
+                    }
+                    
+                } catch (error) {
+                    console.log(error);
+                }
+            };
+            updateUser();
         }
         
-      } catch (error) {
-        console.log(error)
+
+        if(udetails.sponsoraddress && udetails.sponsoraddress != '') {
+          Addreferrer(udetails.sponsoraddress, udetails.username)
+        }
       }
-  }
-    
-    async function getWalletAddress(username: string) {
       
-        try {
-          const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-          }  
-          const {data} = await axios.post("https://fifareward.onrender.com/api/users/getwalletaddress/", {
-            username
-          }, config);
-          setWalletAddress(data.message);
-          const shrtwa = walletaddress?.substring(0,18)+' ...';
-          setShortWalletAddress(shrtwa);
-          console.log(" wall addres", data.message)
-        } catch (error) {
-          console.log(error)
-        }
-    }
 
-    async function updateWalletAddress(username: string) {
-        try {
-          const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-          }  
-          const addr = address;
-          console.log("addr ",addr)
-          const {data} = await axios.post("https://fifareward.onrender.com/api/users/updatewalletaddress/", {
-            addr,
-            username
-          }, config);
-          if(data) {
-            getWalletAddress(username);
-          }
-          // setisWalletAddressUpdated(!isWalletAddressUpdated);
-
-        } catch (error) {
-          console.log(error)
-        }
-    }
-
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;
-      // if(udetails.isinfluencer == true) {
-      //   setIsinfluencer(true);
-      // }  
-      
-      if(username_) {
-        setUsername(username_);
-        setIsSponsorId(udetails.sponsorId);
-        setUserId(udetails.userId)
-        setUserObjId(udetails._id);
-        if(udetails.isinfluencer == true) {
-          setreferralLink(`https://fifareward.io/register/${udetails.userId}/${username_}`);
-        }else {
-          setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
-        }
-        updateWalletAddress(username_);
-        getSponsorWalletAddress(udetails.sponsorId);
-      }
     }else {
-      router.push(`/signin`);
+      open()
     }
 
-// if(isConnected) {
-//   if(sponsorId != 0) {
-      
-//   }
-// }
-
- }, [userId,address,router,username,walletaddress,sponsorId,userObjId,shortwalletaddress])
+ }, [address,router,shortwalletaddress])
 
 const toggleWA = (e: any) => {
   let tbtn = e as HTMLButtonElement;
@@ -184,7 +150,7 @@ const toggleWA = (e: any) => {
               <div className={dappstyles.refbtn}><button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
             </div>
             <div><small>Share referral link to earn more FRD!</small></div>
-            <div className={dappstyles.cw}>Connected Wallet: <span style={{color: 'orange'}}>{shortwalletaddress == "undefined" ? "Not connected" : 'Not connected'}</span> <div style={{color: 'orange'}} className={dappstyles.cws}><div>{walletaddress}</div></div><button onClick={(e) => toggleWA(e.target)}>view</button></div>
+            <div className={dappstyles.cw}>Connected Wallet: <span style={{color: 'orange'}}>{shortwalletaddress ? shortwalletaddress : 'Not connected'}</span> <div style={{color: 'orange'}} className={dappstyles.cws}><div>{walletaddress}</div></div><button onClick={(e) => toggleWA(e.target)}>view</button></div>
         </div>
     </>
   );

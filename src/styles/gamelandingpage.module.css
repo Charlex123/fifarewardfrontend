@@ -101,8 +101,14 @@
 }
 
 .slide {
+  background-color: transparent;
   min-width: 150px;
   margin: 5px 10px; /* Adjust the spacing as needed */
+}
+.slide button {
+  background-color: transparent;
+  background: none;
+  border: none;
 }
 .slide .name {
   color: #f1f1f1;background-color: #2f2922b6;border-radius: 20px;
@@ -115,7 +121,10 @@
   0px 0px 1px #ffffff;
 }
 .slide .launched {
-  color: #73e204;font-size: 13px;
+  color: #73e204;font-size: 13px;text-shadow: 0px 0px 1px #ffffff,
+  0px 0px 1px #ffffff,
+  0px 0px 1px #ffffff,
+  0px 0px 1px #ffffff;
 }
 .image {
   width: 150px;

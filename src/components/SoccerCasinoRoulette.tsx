@@ -19,10 +19,10 @@ const SoccerCasinoRoulette: React.FC<SoccerCasinoRouletteProps> = ({ isSpinning,
   const [spinTime, setSpinTime] = useState(0);
   const [text, setText] = useState("");
   const arc = Math.PI / (options.length / 2);
-  const baseSize = 200;
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const spinTimer = useRef<number | null>(null);
   let spinAngleStart = Math.random() * 10 + 10;
+  const [baseSize, setBaseSize] = useState<number>(200);
   console.log("freeeee",spinAngleStart,startAngle,spinTimeTotal)
   
   // drawRouletteWheel() {
@@ -74,6 +74,33 @@ const SoccerCasinoRoulette: React.FC<SoccerCasinoRouletteProps> = ({ isSpinning,
   //   isSpinning(true);
   // };
 
+  useEffect(() => {
+    console.log("terrrrrr")
+    drawRouletteWheel();
+
+    // Function to handle window resize
+    const handleResize = () => {
+      // Check the device width and update isNavOpen accordingly
+      if (window.innerWidth <= 480) {
+        setBaseSize(150);
+      } else {
+        setBaseSize(200);
+      }
+    };
+
+    // Initial check when the component mounts
+    handleResize();
+
+    // Add a resize event listener to update isNavOpen when the window is resized
+    window.addEventListener('resize', handleResize);
+
+    // Clean up the event listener when the component unmounts
+    return () => {
+      stopRotateWheel();
+      window.removeEventListener('resize', handleResize);
+    };
+  }, [baseSize]);
+
   const drawRouletteWheel = () => {
     const canvas = canvasRef.current;
     if (canvas && canvas.getContext) {
@@ -115,17 +142,6 @@ const SoccerCasinoRoulette: React.FC<SoccerCasinoRouletteProps> = ({ isSpinning,
       }
     }
   };
-
-  // useEffect(() => {
-  //   drawRouletteWheel();
-  // }, [startAngle]);
-  useEffect(() => {
-    console.log("terrrrrr")
-    drawRouletteWheel();
-    return () => {
-      stopRotateWheel();
-    };
-  }, []);
   
   // const spin = () => {
   //   spinTimer = null;

@@ -1,12 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
-
+import UserComponent from './UserComponent';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
@@ -30,13 +27,9 @@ import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import DappFooter from './DappFooter';
 import EarningsBreakDown from './EarningsBreakingdown';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { FaAlignJustify, FaChevronDown, FaChevronUp, FaXmark } from 'react-icons/fa6';
+import { userInfo } from 'os';
 
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 
 
 const Dapp:React.FC<{}> = () =>  {
@@ -59,7 +52,7 @@ const Dapp:React.FC<{}> = () =>  {
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
   // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<number>();  
   const [walletaddress, setWalletAddress] = useState<any>("NA");  
@@ -79,54 +72,7 @@ const Dapp:React.FC<{}> = () =>  {
   }
 
   useEffect(() => {
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-        setUsername(username_);
-        setUserId(udetails.userId)
-        setUserObjId(udetails._id)
-      }
-    }else {
-      router.push(`/signin`);
-    }
-
-  if(isConnected) {
-    setWalletAddress(address)
-
-    async function getSponsorWalletAddress() {
-      try {
-        const config = {
-        headers: {
-            "Content-type": "application/json"
-        }
-        }  
-        const {data} = await axios.post("https://fifareward.onrender.com/api/users/getsponsorwalletaddress", {
-          userObjId,
-        }, config);
-        if(data.message === "You do not have a sponsor") {
-        }else {
-          setsponsorWalletAddress(data.message);
-          Addreferrer();
-        }
-        
-      } catch (error) {
-        console.log(error)
-      }
-  }
-  getSponsorWalletAddress();
-
-    async function Addreferrer() {
-      // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-      const provider = new ethers.providers.Web3Provider(walletProvider as any)
-      const signer = provider.getSigner();
-      const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-      const reslt = await StakeContract.addReferrer(sponsorWalletAddress);
-      console.log("Account Balance: ", reslt);
-    }
-    
-  }  
-
+  
 // Create an EtherscanProvider with your API key
 // const provider = new ethers.providers.EtherscanProvider('bsc', apiKey);
 
@@ -214,7 +160,7 @@ const Dapp:React.FC<{}> = () =>  {
   //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   const toggleIconUp3 = () => {
-      setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+      setDropdownIcon3(<FaChevronUp size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
   // const toggleIconDown1 = () => {
@@ -225,7 +171,7 @@ const Dapp:React.FC<{}> = () =>  {
   // }
 
   const toggleIconDown3 = () => {
-      setDropdownIcon3(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+      setDropdownIcon3(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
   const logout = () => {
@@ -265,6 +211,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
         <DappNav/>
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>
+              <UserComponent />
               <div className={`${dappstyles.sidebar} ${sideBarToggleCheck}`}>
                 <DappSideBar onChange={toggleSideBar} />
               </div>
@@ -278,7 +225,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
               </button>
               
               <div className={dappstyles.head}>
@@ -311,7 +258,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
           (<>
             <div className={dappconalertstyles.overlay_dap}></div>
             <div className={dappconalertstyles.dappconalerted}>
-              <div className={dappconalertstyles.dappconalertclosediv}><button title="button" type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlerted}><FontAwesomeIcon icon={faXmark}/></button></div>
+              <div className={dappconalertstyles.dappconalertclosediv}><button title="button" type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlerted}><FaXmark/></button></div>
               <div className={dappconalertstyles.dappconalert_in}>
                 Wallet Address Connected To Dapp
               </div>

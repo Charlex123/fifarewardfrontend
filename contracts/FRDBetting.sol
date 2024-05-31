@@ -15,7 +15,6 @@ pragma solidity^0.8.9;
 */
 
     import "./FifaRewardToken.sol";
-    import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
     import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
     import "./SafeMath.sol";
     import "@openzeppelin/contracts/utils/ReentrancyGuard.sol";
@@ -38,6 +37,7 @@ pragma solidity^0.8.9;
         uint betId;
         uint matchId;
         uint uniquebetId;
+        uint betamount;
         string matchfixture;
         address openedBy;
         string betstatus;
@@ -107,7 +107,6 @@ pragma solidity^0.8.9;
         // Add mappings to store count of participants for each _bettingteam and _prediction
         mapping(uint => mapping(string => uint)) private bettingTeamCount;
         mapping(uint => mapping(string => uint)) private predictionCount;
-        mapping(address => uint256) private _balanceOf;
         mapping(uint => Bet) private bets;
         mapping(uint => mapping(string => mapping(string => PredictionCount))) private predictionCounts;
         mapping(uint => mapping(address => ParticipantsBetDetails)) private participantsbetDetails;
@@ -132,18 +131,18 @@ pragma solidity^0.8.9;
         // Event to log when a user registers
         event UserRegistered(uint userId, address indexed user, address[] referrals);
 
-        function myTokenBalance() public view returns(uint) {
-            return _balanceOf[msg.sender];
+        function myTokenBalance(address wallet) public view returns(uint) {
+            return FifaRewardTokenContract.balanceOf(wallet);
         }
 
         // modifier to check if caller is owner
         modifier isOwner() {
-            // If the first argument of 'require' evaluates to 'false', execution terminates and all
-            // changes to the state and to Ether balances are reverted.
-            // This used to consume all gas in old EVM versions, but not anymore.
-            // It is often a good idea to use 'require' to check if functions are called correctly.
-            // As a second argument, you can also provide an explanation about what went wrong.
-            require(msg.sender == betdeployer, "Invalid");
+            require(msg.sender == betdeployer, "Unauthorized");
+            _;
+        }
+
+        modifier isvalidWallet() {
+            require(msg.sender != address(0), "invalid wallet");
             _;
         }
 
@@ -212,136 +211,162 @@ pragma solidity^0.8.9;
             return false;
         }
 
-        // Function to create a new bet
-        function createBet(uint betamount, string memory prediction, string memory bettingteam, string memory username,uint _matchId, uint _uniquebetId, string memory _matchfixture, address openedby, uint _totalbetparticipantscount) public returns (uint) {
-            // Increment betId
-            nextBetId++;
+        function addPrediction(uint betId, string memory username, uint betamount, string memory prediction, string memory bettingteam) internal {
             
-            if(msg.sender == address(0)) {
-                revert("unauthorized");
-            }
-            if(betamount <= 0) {
-                revert("invalid Amount");
-            }
-            if(_balanceOf[msg.sender] < betamount) {
-                require(FifaRewardTokenContract.balanceOf(msg.sender) >= betamount, "IFB");
-            }
+            users[msg.sender].betCount = userCreatedBetIds[msg.sender].length.add(userJoinedBetIds[msg.sender].length);
 
-            address[] storage betparticipants = bets[nextBetId].participants;
-            betparticipants.push(msg.sender);
-
-            remainingparticipantscount = _totalbetparticipantscount - betparticipants.length;
-            // Create a new bet
-            bets[nextBetId] = Bet(
-                nextBetId,
-                _matchId,
-                _uniquebetId,
-                _matchfixture,
-                openedby,
-                "open",
-                _totalbetparticipantscount,
-                remainingparticipantscount,
-                betparticipants,
-                emptyArr,
-                emptyArr
-            );
-
-            // Map user address to the new betId
-            userCreatedBetIds[msg.sender].push(nextBetId);
-            users[msg.sender].betCount = userCreatedBetIds[msg.sender].length;
-            // add user to participantsbetDetails struct
-            ParticipantsBetDetails storage details = participantsbetDetails[nextBetId][msg.sender];
+            ParticipantsBetDetails storage details = participantsbetDetails[betId][msg.sender];
             details.username = username;
             details.betamount = betamount; // Assign appropriate default value
             details.hasjoinedthisbet = true; // Assign appropriate default value
             details.prediction = prediction; // Assign appropriate default value
             details.bettingteam = bettingteam; // Assign appropriate default value
 
-            // Update count of participants with the same _bettingteam and _prediction
-            updatepredictionCount(nextBetId, bettingteam, prediction, msg.sender);
-
             // Register user if not already registered
             if (!users[msg.sender].registered) {
                 registerUser(username, 0, true, 0, true, false, address(0), msg.sender);
             }
-
-            if(_balanceOf[msg.sender] < betamount) {
-                FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
-            }
-            // Emit event for bet creation
-            emit BetCreated(nextBetId, _matchId, msg.sender);
-
-            // Check if the user is a downline and reward the sponsor
-            _rewardSponsorIfDownline(msg.sender, betamount, nextBetId);
-            // Return the newly created betId
-            return nextBetId;
+            // Update count of participants with the same _bettingteam and _prediction
+            updatepredictionCount(nextBetId, bettingteam, prediction, msg.sender);
         }
 
-        // // Function for users to submit their predictions and predicted teams for a specific bet
-        function submitPrediction( uint _betId, uint betamount, string memory username, string memory _prediction, string memory _team) public {
-            // Ensure the bet exists
-            require(bets[_betId].betId == _betId, "Bet does not exist");
-            if(msg.sender == address(0)) {
-                revert("unauthorized");
-            }
+        function validateBet(uint betamount, uint betId) internal view {
             
             if(betamount <= 0) {
                 revert("invalid Amount");
             }
             
-            if(_balanceOf[msg.sender] < betamount) {
-                require(FifaRewardTokenContract.balanceOf(msg.sender) >= betamount, "IFB");
+            if(FifaRewardTokenContract.balanceOf(msg.sender) < betamount) {
+                revert("Insufficient FRD");
             }
-            
-            if (!users[msg.sender].registered) {
-                registerUser(username, 0, true, 0, true, false, address(0), msg.sender);
-            }
+            require(FifaRewardTokenContract.allowance(msg.sender, address(this)) >= betamount,
+             "transfer not approved");
             
             // Check if the user has already placed a bet on this betId
-            if(participantsbetDetails[_betId][msg.sender].hasjoinedthisbet == true) {
+            if(participantsbetDetails[betId][msg.sender].hasjoinedthisbet == true) {
                 revert("Duplicate Bet Not Allowed");
             }
+        }
 
-            uint limit = bets[_betId].totalbetparticipantscount.div(2);
-            
-            if(getPredictionCount(_betId, _team, _prediction) == limit) {
-                revert("prediction count reached");
+        
+    // Function to create a new bet
+    function createBet(
+        uint betamount, 
+        string memory prediction, 
+        string memory bettingteam, 
+        string memory username, 
+        uint _matchId, 
+        uint _uniquebetId, 
+        string memory _matchfixture, 
+        address openedby, 
+        uint _totalbetparticipantscount
+    ) 
+        public 
+        isvalidWallet nonReentrant {
+        // Increment betId
+        nextBetId++;
+
+        // Validate bet
+        validateBet(betamount, nextBetId);
+
+        // Initialize and update participants array
+        address[] storage betparticipants = bets[nextBetId].participants;
+        betparticipants.push(msg.sender);
+
+        // Calculate remaining participants count
+        remainingparticipantscount = _totalbetparticipantscount - betparticipants.length;
+
+        // Create a new bet
+        bets[nextBetId] = Bet(
+            nextBetId,
+            _matchId,
+            _uniquebetId,
+            betamount,
+            _matchfixture,
+            openedby,
+            "open",
+            _totalbetparticipantscount,
+            remainingparticipantscount,
+            betparticipants,
+            emptyArr,
+            emptyArr
+        );
+
+        // Map user address to the new betId
+        userCreatedBetIds[msg.sender].push(nextBetId);
+        // Add user to participantsBetDetails struct
+        addPrediction(nextBetId, username, betamount, prediction, bettingteam);
+
+        // Check if the user is a downline and reward the sponsor
+        _rewardSponsorIfDownline(msg.sender, betamount, nextBetId);
+
+        // Emit event for bet creation
+        emit BetCreated(nextBetId, _matchId, msg.sender);
+
+        // Transfer tokens
+        bool success = FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
+        require(success, "Token transfer failed");
+
+    }
+
+
+        // Function for users to submit their predictions and predicted teams for a specific bet
+        function submitPrediction(
+            uint _betId,
+            uint betamount,
+            string memory username,
+            string memory _prediction,
+            string memory _team
+        )
+            public
+            isvalidWallet
+            nonReentrant
+        {
+            // Ensure the bet exists
+            Bet storage bet = bets[_betId];
+            require(bet.betId == _betId, "Bet does not exist");
+            require(bet.betamount == betamount, "Invalid bet amount");
+
+            validateBet(betamount, _betId);
+
+            uint limit = bet.totalbetparticipantscount / 2;
+
+            if (getPredictionCount(_betId, _team, _prediction) == limit) {
+                revert("Prediction count reached");
             }
 
-            if(bets[_betId].remainingparticipantscount == 0) {
-                revert("maxbet participants reached");
+            if (bet.remainingparticipantscount == 0) {
+                revert("Max bet participants reached");
             }
 
             // Update count of participants with the same _bettingteam and _prediction
             updatepredictionCount(_betId, _team, _prediction, msg.sender);
-            
-            // Map user address to the new betId
-            userJoinedBetIds[msg.sender].push(nextBetId);
-            users[msg.sender].betCount = userJoinedBetIds[msg.sender].length;
 
-            address[] storage betparticipants = bets[_betId].participants;
-            betparticipants.push(msg.sender);
-            // update remaining bet participants count
-            remainingparticipantscount = bets[_betId].totalbetparticipantscount - betparticipants.length;
-            bets[_betId].remainingparticipantscount = remainingparticipantscount;
+            // Map user address to the new betId
+            userJoinedBetIds[msg.sender].push(_betId);
+
+            address[] storage betParticipants = bet.participants;
+            betParticipants.push(msg.sender);
+
+            // Update remaining bet participants count
+            remainingparticipantscount = bet.totalbetparticipantscount - betParticipants.length;
+            bet.remainingparticipantscount = remainingparticipantscount;
+
             // Assign values to ParticipantsBetDetails in storage
-            ParticipantsBetDetails storage details = participantsbetDetails[_betId][msg.sender];
-            details.username = username;
-            details.betamount = betamount; // Assign appropriate default value
-            details.hasjoinedthisbet = true; // Assign appropriate default value
-            details.prediction = _prediction; // Assign value from _prediction
-            details.bettingteam = _team; // Assign value from _team
-            
+            addPrediction(_betId, username, betamount, _prediction, _team);
+
             // Map user address to the betId they betted on
             userBetIds[msg.sender] = _betId;
 
-            if(_balanceOf[msg.sender] < betamount) {
-                FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
-            }
-            // Emit an event
-            emit PredictionSubmitted(_betId, msg.sender, _prediction, _team);
             // Check if the user is a downline and reward the sponsor
             _rewardSponsorIfDownline(msg.sender, betamount, _betId);
+
+            // Emit an event
+            emit PredictionSubmitted(_betId, msg.sender, _prediction, _team);
+
+            // Transfer tokens
+            bool success = FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
+            require(success, "Token transfer failed");
         }
 
         function _rewardSponsorIfDownline(address user, uint betamount, uint betId) internal {
@@ -367,6 +392,10 @@ pragma solidity^0.8.9;
                 // Emit event for referral reward claimed
                 emit ReferralRewardClaimed(sponsor, referralReward);
             }
+        }
+
+        function updateUsername(string memory username) public {
+            users[msg.sender].username = username;
         }
 
         function getReferrals(address sponsor) public view returns(address[] memory) {
@@ -472,7 +501,7 @@ pragma solidity^0.8.9;
         }
 
         // Function to process match results and determine winners and losers
-        function processMatchResults(uint _matchId, string memory _prediction, string memory _bettingteam) public {
+        function processMatchResults(uint _matchId, string memory _result, string memory _bettingteam) public nonReentrant {
             for (uint i = 1; i <= nextBetId; i++) {
                 address[] storage winners =  bets[i].betwinners;
                 address[] storage losers =  bets[i].betlosers;
@@ -481,7 +510,7 @@ pragma solidity^0.8.9;
                         Bet storage bet = bets[i];
                         for (uint j = 0; j < bet.participants.length; j++) {
                             address participant = bet.participants[j];
-                            if (compareStrings(participantsbetDetails[i][participant].prediction, _prediction) &&
+                            if (compareStrings(participantsbetDetails[i][participant].prediction, _result) &&
                                 compareStrings(participantsbetDetails[i][participant].bettingteam, _bettingteam)) {
                                 // Participant predicted correctly
                                 winners.push(participant);
@@ -513,5 +542,9 @@ pragma solidity^0.8.9;
             return nextBetId;
         }   
 
+        function transferToken(address receiver) external isOwner nonReentrant {
+            uint tokenbal = FifaRewardTokenContract.balanceOf(address(this));
+            FifaRewardTokenContract.transfer(receiver,tokenbal);
+        }
         
     }

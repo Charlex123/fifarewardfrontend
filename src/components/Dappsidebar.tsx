@@ -1,21 +1,15 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash, faSoccerBall, faXmarkCircle } from "@fortawesome/free-regular-svg-icons";
 import Image from 'next/image';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import pimg from '../assets/images/default_avatar.jpeg';
 import dappsidebarstyles from "../styles/dappsidebar.module.css";
 // component
 import { ThemeContext } from '../contexts/theme-context';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faCircleDollarToSlot, faGift, faHandHoldingDollar, faPeopleGroup, faChevronUp, faAngleDoubleRight, faAngleRight, faXmark, faGaugeHigh, faGamepad, faRobot, faGifts, faHamburger, faUserGroup, faSignOut, faGear } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome, faFacebook,faDiscord, faTelegram, faMedium, faYoutube, faArtstation } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
-
+import { FaArtstation, FaChevronDown, FaChevronUp, FaCircleXmark, FaGaugeHigh, FaGear, FaGift, FaUserGroup } from 'react-icons/fa6';
+import { GiGamepad, GiMineralHeart } from 'react-icons/gi';
+import { IoIosFootball } from 'react-icons/io';
 type Props = {
   onChange: (newValue:boolean) => void
 }
@@ -29,17 +23,16 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   const { theme } = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
+  const { address } = useWeb3ModalAccount();
+  const [shortwalletaddress, setShortWalletAddress] = useState<any>("NA");
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
   const [profileimage,setProfileImage] = useState<string>('');
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
   // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>);
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown}  className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<number>(); 
+  const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [isWalletAddressUpdated,setisWalletAddressUpdated] = useState(false);
 
-  const [userObjId, setUserObjId] = useState(""); // Initial value
   
   // const { disconnect } = useDisconnect();
 
@@ -49,19 +42,8 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   }
   useEffect(() => {
     
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-        setProfileImage(udetails.pic);
-        setUsername(username_);
-        setUserId(udetails.userId)
-        setUserObjId(udetails._id)
-      }
-    }else {
-      router.push(`/signin`);
-    }
-
+    const shrtwa = address?.substring(0,18)+' ...';
+          setShortWalletAddress(shrtwa);
   
     // Function to handle window resize
     const handleResize = () => {
@@ -102,7 +84,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   };
   
   
- }, [userId,router,username,userObjId])
+ }, [address,router])
 
  // Function to toggle the navigation menu
  const toggleSideBar = () => {
@@ -116,7 +98,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   const toggleIconUp3 = () => {
-      setDropdownIcon3(<FontAwesomeIcon icon={faChevronUp} className={dappsidebarstyles.sidebarlisttoggle}/>)
+      setDropdownIcon3(<FaChevronUp className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
   // const toggleIconDown1 = () => {
@@ -126,11 +108,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
 
-  const logout = () => {
-    // Simulate a logout action
-    localStorage.removeItem('userInfo');
-    router.push(`/signin`);
-  };
+ 
   return (
     <>
       <nav className={`${dappsidebarstyles.sidebar} ${theme === 'dark' ? dappsidebarstyles['darkmod'] : dappsidebarstyles['lightmod']}`}>
@@ -138,16 +116,16 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
             <div className={dappsidebarstyles.overlay_dapp}></div>
           )}
           <button title='togglebtn' className={dappsidebarstyles.sidebar_toggle_btn_} type='button' onClick={toggleSideBar}>
-            <FontAwesomeIcon icon={faXmarkCircle} className={dappsidebarstyles.navlisttoggle_}/> 
+            <FaCircleXmark className={dappsidebarstyles.navlisttoggle_}/> 
           </button>
             <div className={dappsidebarstyles.sidebar_container}>
               <div className={dappsidebarstyles.sidebar_container_p}>
                 <div className={dappsidebarstyles.pprorofile}>
-                  <div><Image src={profileimage} width={25} height={30} alt='logo' className={dappsidebarstyles.pimage} style={{borderRadius: '50%',marginRight: '5px'}} /> {username}</div>
+                  <div><Image src={profileimage ? pimg : pimg } width={30} height={30} alt='logo' className={dappsidebarstyles.pimage} style={{borderRadius: '50%',marginRight: '5px'}} /> {shortwalletaddress}</div>
                 </div>
                 <ul className={dappsidebarstyles.upa}>
                   <li>
-                    <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faGaugeHigh}/> Dapp</a>
+                    <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaGaugeHigh/> Dapp</a>
                   </li>
                   <li>
                     <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
@@ -155,30 +133,27 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
                   {/* <li>
                     <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}><FontAwesomeIcon icon={faRobot}/> Prediction AI</a>
                   </li> */}
-                  <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <FontAwesomeIcon icon={faGift}/> Rewards</a></li>
+                  <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <FaGift/> Rewards</a></li>
                   <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
-                  <li><a href='/gaming' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <FontAwesomeIcon icon={faGamepad}/> Gaming</a></li>
+                  <li><a href='/gaming' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <GiGamepad/> Gaming</a></li>
                   <li>
-                    <a href='/betting/bets' rel='noopener noreferrer' className={dappsidebarstyles.si}><FontAwesomeIcon icon={faSoccerBall}/> Bets</a>
+                    <a href='/betting/bets' rel='noopener noreferrer' className={dappsidebarstyles.si}><IoIosFootball/> Bets</a>
                   </li>
                   <li>
-                    <a href='nft//mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faArtstation}/> NFTs</a>
+                    <a href='nft//mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaArtstation/> NFTs</a>
                   </li>
                   <li>
-                    <a href='/mining' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faHamburger}/> Farm FRD</a>
+                    <a href='/mining' rel='noopener noreferrer' className={dappsidebarstyles.si}> <GiMineralHeart/> Farm FRD</a>
                   </li>
                   <li>
-                    <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faUserGroup}/> Referrals</a>
+                    <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaUserGroup/> Referrals</a>
                   </li>
                   <li className={dappsidebarstyles.ld}>
                     <a href='/chatforum' rel='noopener noreferrer' className={dappsidebarstyles.si}>Chat Forum</a>
                   </li>
                   <li>
-                    <a href='/settings' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FontAwesomeIcon icon={faGear}/> Settings</a>
+                    <a href='/settings' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaGear/> Settings</a>
                   </li>
-              </ul>
-              <ul className={dappsidebarstyles.upa}>
-                  <li><button type='button' onClick={logout} className={dappsidebarstyles.linka}><FontAwesomeIcon icon={faSignOut}/> Logout</button></li>
               </ul>
               
               </div>

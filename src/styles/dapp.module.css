@@ -104,6 +104,20 @@
 .main .main_c .rwds .points {
     display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;padding: 10px 20px;
 }
+.main .upuname {
+    width: 96%;margin: 20px auto;text-align: center;
+}
+.main .upuname .upunamec {
+    border: 1px solid #3f3f3f;border-radius: 16px;padding: 20px;margin: 8px auto;
+}
+.main .upuname .upunamec  input {
+    width: 100%;background-color: #16131376;border: 1px solid #3f3f3f;padding: 4px;border-radius: 4px;
+    height: 35px;color: #f1f1f1;
+}
+.main .upuname .upunamec button {
+    background-color: #e3a204;padding: 4px 36px;width: fit-content;font-size: 14px;font-weight: 900;
+    border-radius: 4px;margin: 20px auto auto auto;
+}
 .main .width_stake {
     position: absolute;margin: 0 auto; width: 40%;
     border-radius: 16px;z-index: 99;text-align: center;left: 0;right: 0;
@@ -185,6 +199,7 @@
 .main .reflink .cw .cws div{ 
     position: relative;
 }
+
 .navlisttoggle {
     font-size: 28px;margin: 2px 0 2px 0;padding-left: 15px;
 }
