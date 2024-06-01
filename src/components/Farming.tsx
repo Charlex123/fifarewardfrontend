@@ -42,9 +42,7 @@ const Farming = () =>  {
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
   // const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
-  const [userId, setUserId] = useState("");  
   const [dappConnector,setDappConnector] = useState(false);
   const [wAlert,setWAlert] = useState(false);
   let [amountmined, setAmountMined] = useState<number>(0.00005);
@@ -71,7 +69,6 @@ const Farming = () =>  {
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { open } = useWeb3Modal();
-  const [referralLink, setreferralLink] = useState('');
 
   const FRDContractAddress = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
 

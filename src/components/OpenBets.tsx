@@ -70,7 +70,7 @@ const [filterbetAmount, setfilterbetamount] = useState<number>(0);
 const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
 const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
-const { open, close } = useWeb3Modal();
+const { open } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
 const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
@@ -208,17 +208,8 @@ useEffect(() => {
 
 
   const JoinBet = (e: any) => {
-    if(username && username !== null && username !== undefined && username !== '') {
-      // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-      // hiw_bgoverlay.style.display = 'block';
-      setShowBgOverlay(true);
+    setShowBgOverlay(true);
       e.parentElement.parentElement.nextElementSibling.firstElementChild.style.display = 'block';
-    }else {
-      // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-      // hiw_bgoverlay.style.display = 'block';
-      setShowBgOverlay(true);
-      e.parentElement.parentElement.parentElement.style.display = 'none';
-    }
   }
 
   const submitPredictions = async (betId: number, betAmount: number) => {
