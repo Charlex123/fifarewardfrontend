@@ -14,7 +14,7 @@ import { ethers } from 'ethers';
 // component
 import ConnectWallet from './ConnectWalletButton';
 import ReferralLink from './ReferralLink';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { ThemeContext } from '../contexts/theme-context';
 import DappNav from './Dappnav';
@@ -70,7 +70,7 @@ const Farming = () =>  {
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-
+  const { open } = useWeb3Modal();
   const [referralLink, setreferralLink] = useState('');
 
   const FRDContractAddress = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
@@ -84,7 +84,7 @@ const Farming = () =>  {
   useEffect(() => {
 
     if(!isConnected) {
-      open()
+      open();
     }
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
