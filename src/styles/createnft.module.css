@@ -43,8 +43,8 @@
     text-align: left;width: 100%;font-size: 14px;font-weight: 600;color: #e2d7d7;
 }
 .main .addtraits .addtraits_c_ina input {
-    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
-    font-size: 14px;color: #e2d7d7;
+    width: 100%;background-color: #070707cf !;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 14px;color: #e2d7d7 !important;
 }
 .main .addtraits .addtraits_c_in button.addnewtrait {
     font-size: 14px;font-weight: 600;text-decoration: underline;
@@ -72,15 +72,15 @@
     font-size: 14px;font-weight: 600;
 }
 .main .main_cc .nft_art_desc .form_g .input_ {
-    width: 100%;background-color: #e2d7d74b;height: 40px;border-radius: 8px;padding-left: 4px;
-    font-size: 14px;
+    width: 100%;background-color: #0b0b0b4b;height: 40px;border-radius: 8px;padding-left: 4px;
+    font-size: 14px;color: #f1f1f1;border: 1px solid #3f3f3f;
 }
 /* .main .main_cc .nft_art_desc .form_g .input_::placeholder {
     
 } */
 .main .main_cc .nft_art_desc .form_g .textarea_ {
-    width: 100%;background-color: #e2d7d74b;border-radius: 8px;
-    min-height: 180px;font-size: 14px;
+    width: 100%;background-color: #0b0b0b4b;border-radius: 8px;
+    min-height: 180px;font-size: 14px;color: #f1f1f1;border: 1px solid #3f3f3f;
 }
 .main .main_cc .nft_art_desc .form_g .textarea_::placeholder {
     padding-left: 4px;

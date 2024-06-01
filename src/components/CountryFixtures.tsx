@@ -7,10 +7,10 @@ import Image from 'next/image';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
 import moment from 'moment';
+import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import Calendar from 'react-calendar';
 import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
-import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
 import BgOverlay from './BgOverlay';
 import LoadSampleOpenBetsData from './LoadOpenBets';
@@ -20,9 +20,7 @@ import FixturesByCalenderDate from './FixturesByCalenderDate';
 import TodaysFixtures from './TodaysFixtures';
 import LiveFixtures from './LiveFixtures';
 import { Fixture } from './FixtureMetadata';
-import { faCaretDown, faCircle, faL, faMagnifyingGlass, faXmark  } from "@fortawesome/free-solid-svg-icons";
-import { faCalendarAlt } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaCalendarDays, FaCaretDown, FaCircle, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 dotenv.config();
 // material
 // component
@@ -74,8 +72,8 @@ const CountryFixtures:React.FC<{}> = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
-  const [calendarIcon] = useState<any>(<FontAwesomeIcon icon={faCalendarAlt}/>);
-  const [drpdwnIcon] = useState<any>(<FontAwesomeIcon icon={faCaretDown}/>);
+  const [calendarIcon] = useState<any>(<FaCalendarDays/>);
+  const [drpdwnIcon] = useState<any>(<FaCaretDown/>);
   const [today_d,setToday_d] = useState<any>();
   const [today_dm,setToday_dm] = useState<any>();
   const [todaym,setTodaym] = useState<any>();
@@ -98,13 +96,12 @@ const CountryFixtures:React.FC<{}> = () => {
   const [cupfixturesdata, setCupFixturesdata] = useState<CupLeagues[]>([]);
   const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
   const [loadcount, setLoadCount] = useState<number>(0);
-
+  const { open } = useWeb3Modal();
+  const { address, isConnected } = useWeb3ModalAccount();
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
-  const [showloginComp,setShowLoginComp] = useState<boolean>(false);
   const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<string>("");  
   const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
   const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
   const[searchkeyword,setSearchKeyWord] = useState<string>('');
@@ -121,16 +118,8 @@ const CountryFixtures:React.FC<{}> = () => {
     try {
 
       const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-      if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-          setUsername(username_);
-          setUserId(udetails.userId);
-          setIsloggedIn(true);
-          
-      }
-      }else {
-          setIsloggedIn(false);
+      if(!isConnected) {
+        open()
       }
       
       const getDates:any = () => {
@@ -360,20 +349,6 @@ const closeActionModalComp = () => {
   router.push('openbets');
 }
 
-const closeLoginModal = () => {
-  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  // hiw_bgoverlay.style.display = 'none';
-  setShowBgOverlay(false);
-  setShowLoginComp(false);
-}
-
-const showloginCompNow = () => {
-  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  // hiw_bgoverlay.style.display = 'block';
-  setShowBgOverlay(true);
-  setShowLoginComp(true);
-}
-
 const goBack = () => {
   router.back()
 }
@@ -438,7 +413,7 @@ const closeBgModal = () => {
         <div className={bettingstyle.search} >
             <div>
               <form>
-                  <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FontAwesomeIcon icon={faMagnifyingGlass} onClick={() => loadSearchResults()}/></div>
+                  <input type='text' title='input' id="search-input" value={searchkeyword} onClick={handleInputClick} ref={inputRef} onChange={(e) => getKeyWordSearchN(e.target.value)} placeholder='Search by'/><div className={bettingstyle.searchicon}><FaMagnifyingGlass onClick={() => loadSearchResults()}/></div>
                   {showsearchoptions &&
                     <div className={bettingstyle.searchop} ref={divRef} >
                       { keywordsearchresults?.map((result,index) => (
@@ -463,47 +438,42 @@ const closeBgModal = () => {
         <div className={bettingstyle.breadcrum}>
           <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${normalizedLeagueCountry?.replace(/-/g, ' ')}`}>{normalizedLeagueCountry?.replace(/-/g, ' ')}</a>
         </div>
-        {showloginComp && 
-            <div>
-                <LoginModal prop={'Open Bet'} onChange={closeLoginModal}/>
-            </div>
-        }
-
+        
         {betopensuccess && 
             <ActionSuccessModal prop='Bet' onChange={closeActionModalComp}/>
         }
         {/* how it works div starts */}
         <div id='howitworks' className={bettingstyle.hiwmain}>
           <div className={bettingstyle.hiw_c}>
-            <div className={bettingstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FontAwesomeIcon icon={faXmark} />}</div>
+            <div className={bettingstyle.hiw_x} onClick={(e) => closeHIWE(e.target)}>{<FaXmark />}</div>
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='./register'>Join Fifa Reward</a>
+                <FaCircle className={bettingstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='./register'>Join Fifa Reward</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Visit the betting page
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Visit the betting page
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Search and choose a game/fixture of your choice
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../betting/openbetslists' target='_blank'>open bets</a>
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='../betting/openbetslists' target='_blank'>open bets</a>
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
+                <FaCircle className={bettingstyle.hiwlistcircle} /> Bet closed after the match, winners (must be a win) get funded according to their bets 
               </li>
               <li>
-                <FontAwesomeIcon icon={faCircle} className={bettingstyle.hiwlistcircle} /> Draw bets are carried over to a next match
+                <FaCircle className={bettingstyle.hiwlistcircle} /> Draw bets are carried over to a next match
               </li>
             </ul>
           </div>
@@ -599,8 +569,8 @@ const closeBgModal = () => {
                         <div className={bettingstyle.league_wrap}>
                           <div className={bettingstyle.tgle} >
                             <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                            <div className={bettingstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                            <div className={bettingstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                            <div className={bettingstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown />}</div>
+                            <div className={bettingstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FaXmark />}</div>
                           </div>
                           <div className={bettingstyle.league_wrap_in} >
                             {league.fixtures.map(fixture => (
@@ -759,20 +729,7 @@ const closeBgModal = () => {
           </div>
           <div className={bettingstyle.openbets_list}>
           <div className={bettingstyle.opb_h}>
-                {!isLoggedIn &&
-                    <div className={bettingstyle.opb_login} id="opb_login">
-                        <h3>Login To Open Bet</h3>
-                        <div className={bettingstyle.opblogin_btns}>
-                            <div>
-                                <button type='button' title='button' onClick={showloginCompNow}>Login </button>
-                            </div>
-                            <div>
-                                <a href='/register' title='link'>Register </a>
-                            </div>
-                        </div>
-                    </div>
-                }
-              
+                
               <div className={bettingstyle.opb}>
               {/* {isbetDataLoaded ? */}
                 <div>

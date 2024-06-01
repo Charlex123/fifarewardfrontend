@@ -1,9 +1,6 @@
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
 
@@ -24,15 +21,10 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import DappFooter from './DappFooter';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import ReferralLink from './ReferralLink';
 import HelmetExport from 'react-helmet';
+import { FaAlignJustify } from 'react-icons/fa6';
 
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const Referrals = () =>  {
 
   const router = useRouter();
@@ -142,7 +134,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               <div className={dappstyles.con_btns}>
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
               </button>
                 <div className={dappstyles.reflink}>
                     <ReferralLink />

@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/gamelandingpage.module.css';
 import Confetti from 'react-confetti-boom';
 import AlertDanger from './AlertDanger';
+import HelmetExport from 'react-helmet';
 import BgOverlay from './BgOverlay';
 
 const GameLandingPage: React.FC<{}> = () => {
@@ -16,10 +17,10 @@ const GameLandingPage: React.FC<{}> = () => {
   
 
   const images = [
-    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/guessfootballherogame', name: "Guess Football Hero", status: "Launched" },
-    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/#', name: "Soccer Casino Roulette", status: "Coming Soon" },
-    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/#', name: "Soccer Crush", status: "Coming Soon" },
-    { src: "http://localhost:3000/fifarewardlogo.png", link: '../gaming/#', name: "Football Arcade", status: "Coming Soon" },
+    { src: "http://localhost:3000/gamelogos/guessfootballherologo.png", link: '../gaming/guessfootballherogame', name: "Guess Football Hero", status: "Launched" },
+    { src: "http://localhost:3000/gamelogos/soccercasinologo.png", link: '../gaming/#', name: "Soccer Casino Roulette", status: "Coming Soon" },
+    { src: "http://localhost:3000/gamelogos/soccercrushlogo.webp", link: '../gaming/#', name: "Soccer Crush", status: "Coming Soon" },
+    { src: "http://localhost:3000/gamelogos/soccerarcadelogo.webp", link: '../gaming/#', name: "Football Arcade", status: "Coming Soon" },
   ];
 
   const ComingSoon = () => {
@@ -39,6 +40,10 @@ const GameLandingPage: React.FC<{}> = () => {
 
   return (
     <>
+    <HelmetExport>
+          <title> Fifareward Games | Fifareward</title>
+          <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
+    </HelmetExport>
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showalertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
       <div className={styles.main}>

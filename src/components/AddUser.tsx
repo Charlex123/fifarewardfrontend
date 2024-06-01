@@ -53,71 +53,7 @@ const AddUser = () =>  {
       
     },[id])
 
-    // mainnet 
-    // const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
-    // testnet
-    // const web3 = new Web3('https://data-seed-prebsc-1-s1.binance.org:8545');
-
-    // const bscaccount = web3.eth.accounts.create();
-    // const bscwalletaddress = bscaccount.address;
-    // const bscwalletprivatekey = bscaccount.privateKey;
-
-//     const togglePasswordVisiblity = () => {
-//     if(passwordinputType === "password") {
-//       setpasswordinputType("text")
-//       setEyeIcon(<FontAwesomeIcon icon={faEye} />)
-//     }else {
-//       setpasswordinputType("password")
-//       setEyeIcon(<FontAwesomeIcon icon={faEyeSlash} />);
-//     }
-//   };
-  
-//   const checkPass = (e:any) => {
-//     if (password !== confirmpassword) {
-//       setError(true)
-//       setErrorMessage("Passwords do not match");
-//     }else {
-//       setError(false);
-//     }
-//   } 
-
-//   const checkUsername = async (e:any) => {
-//     setLoading(true);
-//     setUsername(e.target.value)
-//     console.log(username)
-//     const config = {
-//       headers: {
-//         "Content-type": "application/json"
-//       }
-//     }
-//     const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkusername", {
-//           username,
-//     }, config);
-//     if(data) {
-//       setLoading(false);
-//       setError(true)
-//       setErrorMessage(data.message)
-//     }
-//   }
-
-//   const checkEmail = async (e:any) => {
-//     setLoading(true);
-//     setEmail(e.target.value)
-//     const config = {
-//       headers: {
-//         "Content-type": "application/json"
-//       }
-//     }
-//     const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkemail", {
-//           email,
-//     }, config);
-//     if(data) {
-//       setLoading(false);
-//       setError(true)
-//       setErrorMessage(data.message)
-//     }
-//   }
-
+    
   const submitHandler = async (e:any) => {
     e.preventDefault();
     if(isConnected) {

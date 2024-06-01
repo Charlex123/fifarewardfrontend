@@ -23,7 +23,7 @@ function FooterNavBar() {
                         <a href='/nft/createnft' rel='noopener noreferrer'> <div className={styles.tc}>{<FaArtstation />}</div>NFT</a>
                     </div>
                     {/* <div className={styles.linka}>
-                        <a href='/aichat' rel='noopener noreferrer'> <div className={styles.tc}>{<FontAwesomeIcon icon={faMessage}/>}</div> AI Q&A </a>
+                        <a href='/aichat' rel='noopener noreferrer'> <div className={styles.tc}>{<FaMessage />}</div> AI Q&A </a>
                     </div> */}
                     <div className={styles.linka}>
                         <a href='/betting' rel='noopener noreferrer'> <div className={styles.tc}>{<IoIosFootball />}</div> Betting </a>

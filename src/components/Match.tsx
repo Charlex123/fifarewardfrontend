@@ -81,11 +81,11 @@ const [loadedlaguedata,setLoadedLeagueData] = useState<boolean>(false);
 const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
 const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 const [username, setUsername] = useState<string>("");
-const [userId, setUserId] = useState<string>("");  
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 const [showloginComp,setShowLoginComp] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
-const [frdusdprice, setFrdUsdPrice] = useState<any>();
+const [dollarequiv, setDollarEquiv] = useState<number>();
+const [usdprice, setUsdPrice] = useState<any>();
 const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
 const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
 const [ismatchdataLoaded,setIsMatchDataLoaded] = useState<boolean>(false);
@@ -104,7 +104,7 @@ const [fixturelineupsdataloaded,setFixtureLineupsDataLoaded] = useState<boolean>
 const [fixturelineupsData,setFixtureLineupsData] = useState<Lineups[]>([]);
 const [bettingteam,setBettingTeam] = useState<string>('');
 const [betprediction,setBetPrediction] = useState<string>('');
-const [betAmount,setBetAmount] = useState<string>('');
+const [betAmount,setBetAmount] = useState<number>(0);
 const [betParticipantsCount,setBetParticipantsCount] = useState<string>('2');
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
 const [showloading, setShowLoading] = useState<boolean>(false);
@@ -131,7 +131,6 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             const username_ = udetails.username;  
             if(username_) {
                 setUsername(username_);
-                setUserId(udetails.userId);
                 setIsloggedIn(true);
             }
         }
@@ -146,8 +145,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             }  
             const {data} = await axios.get("../../../../api/gettokenprice", config);
             setUsdEquivFrdAmount(data.usdequivalentfrdamount);
-            setFrdUsdPrice(data.usdprice);
-            // setBetAmount(data.usdequivalentfrdamount);
+            setUsdPrice(data.usdprice);
           } catch (error) {
             console.error('Error fetching data:', error);
           }
@@ -161,7 +159,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
                   "Content-type": "application/json"
               }
             }  
-            const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures/", config);
+            const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
             setCountryFixturesdata(data);
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -269,7 +267,7 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
                         "Content-type": "application/json"
                     }
                 }  
-                const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/loadmatch", {
+                const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatch", {
                     matchidparam
                 }, config);
                 if(data.match !== null) {
@@ -440,7 +438,7 @@ const handleOpenBetForm = async (e:any) => {
                 console.log("bet amount ooooooo",betAmount)
                 inputAlertDiv.innerHTML = `You below ${betAmount} FRD`;
                 
-                if((parseInt(betAmount) < usdequivfrdamount) || betAmount == "") {
+                if((betAmount < usdequivfrdamount) || betAmount == 0) {
                     inputAlertDiv.innerHTML = `You can't bet below ${usdequivfrdamount.toLocaleString()} FRD`;
                     setShowLoading(false);
                     return;
@@ -743,6 +741,11 @@ const UpKeyWordSearch = (divId: any) => {
   setShowSearchOptions(false)
 }
 
+const setBetAmounts = (e: any) => {
+  setBetAmount(Math.ceil(e.target.value));
+  setDollarEquiv(Math.ceil(e.target.value * usdprice))
+}
+
 const handleInputClick = () => {
   // Handle the event when the input is clicked
   setShowSearchOptions(true);
@@ -757,7 +760,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/searchmatchbykeyword", {
+  const {data} = await axios.post("http://localhost:9000/api/fixtures/searchmatchbykeyword", {
       searchkeyword
   }, config);
   if(data) {
@@ -781,7 +784,7 @@ const loadSearchResults = async () => {
             "Content-type": "application/json"
         }
     }  
-    const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/loadmatchsearchresult", {
+    const {data} = await axios.post("http://localhost:9000/api/fixtures/loadmatchsearchresult", {
         hometeam,
         awayteam
     }, config);
@@ -1013,7 +1016,8 @@ const closeBgModal = () => {
                                           </div>
                                           <div className={matchstyle.form_g}>
                                               <label>Enter amount ({`Min of ${usdequivfrdamount.toLocaleString()}FRD ($10)`})</label>
-                                              <input type='number' title='input' required onChange={(e) => setBetAmount(e.target.value)} min={5} placeholder={`${usdequivfrdamount.toLocaleString()}FRD`} />
+                                              <div style={{color: 'white'}}>${dollarequiv?.toLocaleString()}</div>
+                                              <input type='number' title='input' required onChange={(e) => setBetAmounts(e)} min={5} placeholder={`${usdequivfrdamount.toLocaleString()}FRD`} />
                                               <small id='minamuntalert'></small>
                                           </div>
                                           <div className={matchstyle.form_g}>
@@ -1048,8 +1052,8 @@ const closeBgModal = () => {
                           <div className={matchstyle.fixevents}>
                             <div className={matchstyle.tgle} >
                               <div onClick={(e) => toggleFixtures(e.target)}><h3>Events</h3></div>
-                              <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                              <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                              <div className={matchstyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown />}</div>
+                              <div className={matchstyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FaXmark />}</div>
                             </div>
                             {fixtureeventsData.map((event,index) => (
                               <div key={index}>

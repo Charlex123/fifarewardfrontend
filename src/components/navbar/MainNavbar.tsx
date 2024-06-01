@@ -4,8 +4,8 @@ import styles from '../../styles/navbar.module.css';
 import logo from '../../assets/images/logo.png';
 import ConnectWallet from '../ConnectWalletButton';
 import Image from 'next/image';
-import { FaAlignJustify, FaAngleRight, FaArtstation, FaChevronDown, FaChevronUp, FaCircleDollarToSlot, FaRobot, FaUserGroup } from 'react-icons/fa6';
-import { IoIosFootball, IoLogoGameControllerA } from 'react-icons/io';
+import { FaAlignJustify, FaAngleRight, FaArtstation, FaBandcamp, FaChevronDown, FaChevronUp, FaCircleDollarToSlot, FaDiscord, FaFacebook, FaMedium, FaRobot, FaTelegram, FaTwitter, FaUserGroup, FaYoutube } from 'react-icons/fa6';
+import { IoIosFootball } from 'react-icons/io';
 import { GiGamepad } from 'react-icons/gi';
 
 function Navbar() {
@@ -13,9 +13,11 @@ function Navbar() {
     const [isNavOpen, setNavOpen] = useState(false);
     const [scrolling, setScrolling] = useState(false);
     const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
+    const [dropdwnIcon3] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
     const [username, setUsername] = useState<string>("");
     const [userId, setUserId] = useState<string>("");  
     const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
+    const [isMobile,setIsMobile] = useState<boolean>(false);
 
     useEffect(() => {
 
@@ -35,9 +37,11 @@ function Navbar() {
         const handleResize = () => {
             // Check the device width and update isNavOpen accordingly
             if (window.innerWidth <= 990) {
+            setIsMobile(true);
             setNavOpen(false);
             } else {
             setNavOpen(true);
+            setIsMobile(false);
             }
         };
 
@@ -74,6 +78,13 @@ function Navbar() {
         setDropdownIcon2(<FaChevronUp className={styles.navlisttoggle}/>)
     }
     const toggleIconDown2 = () => {
+        setDropdownIcon2(<FaChevronDown className={styles.navlisttoggle}/>)
+    }
+
+    const toggleIconUp3 = () => {
+        setDropdownIcon2(<FaChevronUp className={styles.navlisttoggle}/>)
+    }
+    const toggleIconDown3 = () => {
         setDropdownIcon2(<FaChevronDown className={styles.navlisttoggle}/>)
     }
 
@@ -115,12 +126,11 @@ function Navbar() {
                     }
                     <li><a href='/chatforum' rel='noopener noreferrer'>Chat Forum</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
-                    <li><a href='/mining' rel='noopener noreferrer'>Farm</a></li>
+                    <li><a href='/farming' rel='noopener noreferrer'>Farm</a></li>
                     <li><a href='/nft' rel='noopener noreferrer'>NFT Market Place</a></li>
                     {/* <li><a href='/aichat' rel='noopener noreferrer'>Prediction AI</a></li> */}
                     <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li>
-                    <li><a href='/chatforum' rel='noopener noreferrer'>Chat Forum </a></li>
                     
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} onMouseOut={toggleIconDown2}>
                         Features {dropdwnIcon2}
@@ -129,25 +139,27 @@ function Navbar() {
                             <li><a href='/#roadmap' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>RoadMap</span></a></li>
                             <li><a href='/whitepaper' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
                             <li><a href='/#frdstaking' rel='noopener noreferrer' ><FaCircleDollarToSlot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Staking Rewards</span></a></li>
-                            <li><a href='/#betting' rel='noopener noreferrer' ><FaRobot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Football AI</span></a></li>
-                            <li><a href='/#aichat' rel='noopener noreferrer' ><IoIosFootball className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Betting </span></a></li>
+                            <li><a href='/#betting' rel='noopener noreferrer' ><FaRobot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Chat Forum</span></a></li>
+                            <li><a href='/#chatforum' rel='noopener noreferrer' ><IoIosFootball className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Betting </span></a></li>
                             <li><a href='/#nft' rel='noopener noreferrer' ><FaArtstation className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>NFT Market Place</span></a></li>
                             <li><a href='/#freeclaim' rel='noopener noreferrer' ><GiGamepad className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Gaming </span></a></li>
                             <li><a href='/#referrals' rel='noopener noreferrer' ><FaUserGroup className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Referral</span></a></li>
                         </ul>
                     </li>
-                    {/* <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
-                        Community {dropdwnIcon3}
-                        <ul>
-                            <li><a href='twitter.com' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTwitter} className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Twitter</span></a></li>
-                            <li><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faFacebook} className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Facebook</span></a></li>
-                            <li><a href='https://t.me/frdxtraweb' rel='noopener noreferrer' ><FontAwesomeIcon icon={faTelegram} className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Telegram</span></a></li>
-                            <li><a href='https://www.geckoterminal.com/bsc/pools/0x7c0406a570ca1407c412238c173898cd145fd52e' rel='noopener noreferrer' ><FontAwesomeIcon icon={faBandcamp} className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Coin Gecko</span></a></li>
-                            <li><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faDiscord} className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Discord</span></a></li>
-                            <li><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faMedium} className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Medium</span></a></li>
-                            <li><a href='/' rel='noopener noreferrer' ><FontAwesomeIcon icon={faYoutube} className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>YouTube</span></a></li>
-                        </ul>
-                    </li> */}
+                    {isMobile && 
+                        <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
+                            Community {dropdwnIcon3}
+                            <ul>
+                                <li><a href='https://twitter.com/@FRD_Labs' rel='noopener noreferrer' ><FaTwitter className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Twitter</span></a></li>
+                                {/* <li><a href='/' rel='noopener noreferrer' ><FaFacebook className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Facebook</span></a></li> */}
+                                <li><a href='https://t.me/FifarewardLabs' rel='noopener noreferrer' ><FaTelegram className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Telegram</span></a></li>
+                                <li><a href='https://www.geckoterminal.com/bsc/pools/0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc' rel='noopener noreferrer' ><FaBandcamp className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Coin Gecko</span></a></li>
+                                <li><a href='/' rel='noopener noreferrer' ><FaDiscord className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Discord</span></a></li>
+                                {/* <li><a href='/' rel='noopener noreferrer' ><FaMedium className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Medium</span></a></li> */}
+                                {/* <li><a href='/' rel='noopener noreferrer' ><FaYoutube className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>YouTube</span></a></li> */}
+                            </ul>
+                        </li>
+                    }
                 </ul>
                 <ConnectWallet />
                 </div>)

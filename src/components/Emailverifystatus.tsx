@@ -2,17 +2,13 @@ import React from 'react';
 import { useState } from 'react'
 import { useRouter } from 'next/router';
 import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faCheckCircle, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 // material
 import Loading from "./Loading";
 import AlertMessage from "./AlertMessage";
 import regstyles from "../styles/register.module.css";
+import { FaCircleCheck } from 'react-icons/fa6';
 // component
 
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const EmailVStatus: React.FC<{}> = () =>  {
 
     const [loading, setLoading] = useState(false);
@@ -57,7 +53,7 @@ const EmailVStatus: React.FC<{}> = () =>  {
         {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
         {loading && <Loading />}
             <div className={regstyles.regs_in}>
-                <h3>Registration Successful <FontAwesomeIcon icon={faCheckCircle} /></h3>
+                <h3>Registration Successful <FaCircleCheck /></h3>
                 <div>
                     <p>Hello <span>{username}</span>, an email has been sent to the email you registered with</p>
                     <p>If you didn't see any email in 15 minutes, check your spam folder</p>

@@ -12,7 +12,6 @@ import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // import dappimg from '../../assets/images/dapp.png';
 // import bnblogo from '../../assets/images/blockchain-binance-white-71f5d555.png';
 // import cronlogo from '../../assets/images/blockchain-cronos-light-78484d18.png';
@@ -28,17 +27,11 @@ import kucoinlogo from '../../assets/images/kucoin.png';
 import frdbanner from '../../assets/images/frdbanner.gif'
 // import fworldmap from '../../assets/images/world-map.png'
 // import teamwork from '../../assets/images/Teamwork.png'
-import Loading from '../Loading';
 import betmob from '../../assets/images/betmob.png';
 import { ThemeContext } from '../../contexts/theme-context';
-import { library } from '@fortawesome/fontawesome-svg-core'
 // import { Chrono } from "react-chrono";
 import 'react-vertical-timeline-component/style.min.css';
 import dotenv from 'dotenv';
-// import { fas, faCheck, faCheckCircle,faAlignJustify, faCircleChevronRight, faCheckSquare, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-// import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-// import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
-import Betting from '../../pages/betting';
 // library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
 dotenv.config();
 const Home = () => {
@@ -50,8 +43,6 @@ const [aboutReadMore, setAboutReadMore] = useState(false);
 // Array of text values to toggle between
 const textValues = ["Read More ...", "Read Less ..."];
 // State to track the current index in the array
-const [currentStakeRMTextIndex, setCurrentStakeRMTextIndex] = useState(0);
-const [currentRefRMTextIndex, setCurrentRefRMTextIndex] = useState(0);
 const [currentAboutRMTextIndex, setCurrentAboutRMTextIndex] = useState(0);
 const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
 const { theme } = useContext(ThemeContext);
@@ -216,7 +207,7 @@ useEffect(() => {
                         'Betting',
                         'Gaming',
                         'Staking',
-                        'Mining',
+                        'Farming',
                         'Earn Rewards',
                         'Trusted']}
                     typeSpeed={40}
@@ -225,7 +216,7 @@ useEffect(() => {
                     style={{ color: '#e3a204', fontSize: '40px',fontWeight: 600,fontFamily: 'Verdana' }}
                     loop
                 />
-                <h1>AI Powered Mining, Staking, Gaming And Betting Dapp</h1>
+                <h1>AI Powered Farming, Staking, Gaming And Betting Dapp</h1>
             <div>
               <h4 className={styles.hero_h4}>The Leading Sport GameFi Protocol</h4>
             </div>
@@ -332,10 +323,10 @@ useEffect(() => {
       </div>
 
       <div className={`${styles.frdstaking} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="frdstaking">
-          {isMobile === true ? <h1>STAKING <div>AND</div> MINING</h1> : <h1>STAKING AND MINING</h1>}
+          {isMobile === true ? <h1>STAKING <div>AND</div> FARMING</h1> : <h1>STAKING AND FARMING</h1>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
-                FifaReward built staking and mining systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
+                FifaReward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
                 <h4>WHY STAKE FRD?</h4> 
                 <ul>
                   {/* <li>
@@ -377,7 +368,7 @@ useEffect(() => {
                   As a decentralized protocol, we understand that the power is with the people (users). We've built our system to give back to the people through the refer and earn system.
                 </h4>
                 <h5>
-                  For every user you referred, you earn 2% of each of their stakes, betting and mining rewards.
+                  For every user you referred, you earn 2% of each of their stakes, betting and farming rewards.
                 </h5>
                 {/* <ul>
                   <li>

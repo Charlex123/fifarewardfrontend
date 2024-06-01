@@ -65,10 +65,10 @@ const InfluencerReg = () =>  {
 //     const togglePasswordVisiblity = () => {
 //     if(passwordinputType === "password") {
 //       setpasswordinputType("text")
-//       setEyeIcon(<FontAwesomeIcon icon={faEye} />)
+//       setEyeIcon(<FaEye />)
 //     }else {
 //       setpasswordinputType("password")
-//       setEyeIcon(<FontAwesomeIcon icon={faEyeSlash} />);
+//       setEyeIcon(<FaEyeSlash />);
 //     }
 //   };
   

@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
 import chatbotlogo from '../assets/images/aichatbot.png';
 import successimage from '../assets/images/success1.png';
 import { ThemeContext } from '../contexts/theme-context';
@@ -11,10 +9,8 @@ import { faLocationArrow, faMicrophone, faXmark  } from "@fortawesome/free-solid
 // material
 import styles from "../styles/aichat.module.css";
 import dotenv from 'dotenv';
+import { FaLocationArrow, FaMicrophone, FaThumbsDown, FaThumbsUp, FaXmark } from 'react-icons/fa6';
 dotenv.config();
-// component
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const LoadOpenAI: React.FC<{}> = () =>  {
 
   const [showloading, setShowLoading] = useState<boolean>(false);
@@ -94,7 +90,7 @@ const LoadOpenAI: React.FC<{}> = () =>  {
                                         <div className={styles.doc_msg_cotainer_send}>
                                     <div className={`${styles.text_left} ${styles.message}`}>Hello I replied</div>
                                 </div><div style={{clear:'both'}}></div>
-                                <div className={styles.user_reactn}><span className={styles.like}>{<FontAwesomeIcon icon={faThumbsUp} />}</span> <span className={styles.dislike}>{<FontAwesomeIcon icon={faThumbsDown} />}</span></div>
+                                <div className={styles.user_reactn}><span className={styles.like}>{<FaThumbsUp />}</span> <span className={styles.dislike}>{<FaThumbsDown />}</span></div>
                                     </div>
                                 </div>
                           </div>
@@ -102,7 +98,7 @@ const LoadOpenAI: React.FC<{}> = () =>  {
 
                         <div id="success-pop" aria-hidden="true" className={styles.div_overlay}>
                             <div className={styles.div_overlay_inna}>
-                                <span className={styles.pull_right}>{<FontAwesomeIcon icon={faXmark}/>}</span>
+                                <span className={styles.pull_right}>{<FaXmark/>}</span>
                                 <div id="kkkd">
                                     <Image src={successimage} alt='image' className={styles.mx_auto}/>
                                     <div className={styles.mx_auto}>Success</div>
@@ -118,8 +114,8 @@ const LoadOpenAI: React.FC<{}> = () =>  {
                           <div className={styles.input_group}>
                             <textarea name="" id="message" className={`${styles.form_control} ${styles.type_msg}`} placeholder="Type your message..."></textarea>
                             <div className={styles.text_mic_icons}>
-                              <div><span className={styles.send_btn}>{<FontAwesomeIcon icon={faLocationArrow} size='lg' style={{color:'#e3a204'}}/>}</span></div>
-                              <div className={styles.voice_btn}><button className={styles.voice_btn_} type="button">{<FontAwesomeIcon icon={faMicrophone} size='lg' />}</button></div>
+                              <div><span className={styles.send_btn}>{<FaLocationArrow size='22px' style={{color:'#e3a204'}}/>}</span></div>
+                              <div className={styles.voice_btn}><button className={styles.voice_btn_} type="button">{<FaMicrophone size='22px' />}</button></div>
                             </div>
                           </div>
                           

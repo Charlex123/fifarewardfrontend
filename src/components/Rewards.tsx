@@ -2,9 +2,6 @@ import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
 import Image from 'next/image';
@@ -32,8 +29,6 @@ import FooterNavBar from './FooterNav';
 import RewardsBadge from './RewardsBadge';
 import { FaAlignJustify, FaXmark } from 'react-icons/fa6';
 
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const Rewards = () =>  {
 
   const router = useRouter();

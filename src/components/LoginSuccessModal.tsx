@@ -1,8 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import loginsuccessmodalstyles from '../styles/loginsuccessmodal.module.css'
+import { FaRightFromBracket, FaXmark } from 'react-icons/fa6';
 
 interface Props {
     prop: string
@@ -48,10 +47,10 @@ const LogInSuccessModal:React.FC<Props> = ({prop}) => {
         <>
             <div className={loginsuccessmodalstyles.showlogincomp} id="loginsuccessmodal">
                 <div className={loginsuccessmodalstyles.showlogincompin}>
-                    <div className={loginsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FontAwesomeIcon icon={faXmark} onClick={(e) => closeLoginModal(e.target)} />}</button></div>
+                    <div className={loginsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FaXmark onClick={(e) => closeLoginModal(e.target)} />}</button></div>
                     <p>Login was successfull, {prop}</p>
                     {/* <div className={loginsuccessmodalstyles.logbtn}>
-                        <button type='button' title='button' onClick={(e) => showLoginModal(e.target)}>Login {<FontAwesomeIcon icon={faRightFromBracket}/>}</button>
+                        <button type='button' title='button' onClick={(e) => showLoginModal(e.target)}>Login {<FaRightFromBracket/>}</button>
                     </div> */}
                 </div>
             </div>

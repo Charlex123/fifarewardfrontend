@@ -331,7 +331,7 @@
 }
 
 .blurred {
-  filter: blur(1px);
+  filter: blur(20px);
   border: 2px solid red; /* Add visible border to blurred images */
 }
 

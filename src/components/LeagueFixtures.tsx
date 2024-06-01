@@ -7,8 +7,8 @@ import Image from 'next/image';
 import moment from 'moment';
 import Loading from './Loading';
 import { Fixture } from './FixtureMetadata';
-import { faCalendar, faCalendarAlt, faFontAwesome } from '@fortawesome/free-regular-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaCaretDown, FaXmark } from 'react-icons/fa6';
+import { IoIosFootball } from 'react-icons/io';
 dotenv.config();
 // material
 // component
@@ -177,8 +177,8 @@ return (
                           <div className={leaguefixturestyle.league_wrap} key={index}>
                             <div className={leaguefixturestyle.tgle} >
                               <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                              <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                              <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                              <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown />}</div>
+                              <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FaXmark />}</div>
                             </div>
                             <div className={leaguefixturestyle.league_wrap_in} >
                               {league.fixtures.map((fixture, index) => (
@@ -203,7 +203,7 @@ return (
                                     </div>
                                     <div className={leaguefixturestyle.openbet}>
                                       <div>
-                                        <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                        <button type='button' title='button'>Open Bet <IoIosFootball /> </button>
                                       </div>
                                     </div>
                                 </div>
@@ -233,8 +233,8 @@ return (
                       </div>  :
                       <div className={leaguefixturestyle.league_wrap}>
                         <div className={leaguefixturestyle.tgle} >
-                          <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                          <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                          <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown />}</div>
+                          <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FaXmark />}</div>
                         </div>
                         <div className={leaguefixturestyle.notfound_p}>
                           <div className={leaguefixturestyle.notfound}>No league fixtures found at the moment, please check back later </div>

@@ -11,9 +11,10 @@ interface User {
     pic: string
 }
 
-interface TopGamers {
-    address: string,
-    amount: BigNumber
+interface Leaderboard {
+    walletaddress: string,
+    amountplayed: BigNumber,
+    rewardamount: BigNumber
 }
 
 const GuessFootballHeroLeaderboard: React.FC = () => {
@@ -21,7 +22,7 @@ const GuessFootballHeroLeaderboard: React.FC = () => {
     const GuessfhCA = process.env.NEXT_PUBLIC_GUESSFOOTBALLHERO_CA;
     const { walletProvider } = useWeb3ModalProvider();
     const { isConnected } = useWeb3ModalAccount();
-    const [leaderboard,setLeaderboard] = useState<TopGamers[]>([])
+    const [leaderboard,setLeaderboard] = useState<Leaderboard[]>([])
     const { open } = useWeb3Modal();
     const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
     const [dollarequiv, setDollarEquiv] = useState<number>(0);
@@ -93,10 +94,13 @@ const GuessFootballHeroLeaderboard: React.FC = () => {
         {leaderboard.map((gamer, index) => (
           <li key={index} className={styles.player}>
             <div>
-              {gamer.address.substring(0,8)}  
+              {gamer.walletaddress.substring(0,8)}  
             </div>
             <div>
-              {gamer.amount.toNumber().toLocaleString()}FRD ${(gamer.amount.toNumber() * dollarprice).toLocaleString()}
+              {gamer.amountplayed.toNumber().toLocaleString()}FRD ${(gamer.amountplayed.toNumber() * dollarprice).toLocaleString()}
+            </div>
+            <div>
+              {gamer.rewardamount.toNumber().toLocaleString()}FRD ${(gamer.rewardamount.toNumber() * dollarprice).toLocaleString()}
             </div>
           </li>
         ))}

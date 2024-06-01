@@ -3,18 +3,12 @@ import {useRouter} from 'next/navigation'
 // material
 import axios from 'axios';
 import loginstyles from '../styles/login.module.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash  } from "@fortawesome/free-regular-svg-icons";
-import { faChevronLeft  } from "@fortawesome/free-solid-svg-icons";
 // component
 import Loading from './Loading';
 import AlertMessage from './AlertMessage';
 import { ThemeContext } from '../contexts/theme-context';
 import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
-
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
+import { FaChevronLeft, FaEye, FaEyeSlash, FaLockOpen } from 'react-icons/fa6';
 
 export default function LoginForm() {
   
@@ -27,7 +21,7 @@ export default function LoginForm() {
   const [error, setError] = useState<boolean>(false);
 
   const [passwordinputType, setpasswordinputType] = useState("password");
-  const [eyeIcon, setEyeIcon] = useState(<FontAwesomeIcon icon={faEye} />);
+  const [eyeIcon, setEyeIcon] = useState(<FaEye />);
   
   const checkEmail = async (e:any) => {
     setLoading(true);
@@ -50,10 +44,10 @@ export default function LoginForm() {
   const togglePasswordVisiblity = () => {
     if(passwordinputType === "password") {
       setpasswordinputType("text")
-      setEyeIcon(<FontAwesomeIcon icon={faEye} />)
+      setEyeIcon(<FaEye />)
     }else {
       setpasswordinputType("password")
-      setEyeIcon(<FontAwesomeIcon icon={faEyeSlash} />);
+      setEyeIcon(<FaEyeSlash />);
     }
   };
   
@@ -103,12 +97,12 @@ export default function LoginForm() {
   return (
     <>
         <div className={`${loginstyles.main} ${theme === 'dark' ? loginstyles['darktheme'] : loginstyles['lighttheme']}`}>
-          <a href='/' rel='noopener noreferrer' className={loginstyles.back}> <FontAwesomeIcon icon={faChevronLeft} />Back to home</a>
+          <a href='/' rel='noopener noreferrer' className={loginstyles.back}> <FaChevronLeft />Back to home</a>
           <form className={loginstyles.formTag} onSubmit={submitHandler}>
           {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
           {loading && <Loading />}
           <div className={loginstyles.fhead}>
-              <h3>Sign In <FontAwesomeIcon icon={faLockOpen} /></h3>
+              <h3>Sign In <FaLockOpen /></h3>
           </div>
           <div className={loginstyles.form_group}>
               <label className={loginstyles.formlabel} htmlFor="grid-last-name">Email</label>

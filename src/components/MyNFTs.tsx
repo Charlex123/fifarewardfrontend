@@ -1,7 +1,5 @@
 import React, { useContext,useState,useEffect, useRef } from 'react';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
@@ -13,8 +11,6 @@ import axios from 'axios';
 import NFTMarketPlaceAbi from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
 import NFTMarketPlaceFeaturesContractAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ethers } from 'ethers';
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-import { faCheck, faCircleCheck, faMagicWandSparkles, faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
@@ -26,10 +22,9 @@ import HelmetExport from 'react-helmet';
 // material
 import styles from "../styles/mynfts.module.css";
 import dotenv from 'dotenv';
+import { FaCheck, FaCircleCheck, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
 dotenv.config();
-// component
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
+
 const MyNFTs: React.FC<{}> = () =>  {
 
     const divRef = useRef<HTMLDivElement>(null);
@@ -598,7 +593,9 @@ const MyNFTs: React.FC<{}> = () =>  {
       setIsSideBarToggled(!isSideBarToggled);
     };
   
-
+    const goBack = () => {
+        router.back()
+    }
     const sideBarToggleCheck = dappsidebartoggle ? styles.sidebartoggled : '';
 
   return (
@@ -616,16 +613,19 @@ const MyNFTs: React.FC<{}> = () =>  {
         <DappSideBar onChange={toggleSideBar} />
       </div> */}
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+        <div className={styles.goback}>
+          <button type='button' title='button' onClick={goBack} style={{color: 'white'}}> {'< '} back</button> 
+        </div>
       {showloading && <Loading/>}
         {nftbidsLoaded && itemBids.length > 0 ? 
           <div className={`${styles.nft_offer } ${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`} id="nft_offer">
             
             <div className={styles.offer_p} ref={divRef} tabIndex={-1}>
                 <div className={styles.offer_p_in}>
-                    {<FontAwesomeIcon icon={faMagicWandSparkles}/>} <span>Offers for {itemname} </span> 
+                    {<FaWandMagicSparkles/>} <span>Offers for {itemname} </span> 
                 </div>
                 <div className={styles.closebtn}>
-                  <button type='button' onClick={(e) => closeNFTItemOffersModalDiv(e)}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                  <button type='button' onClick={(e) => closeNFTItemOffersModalDiv(e)}>{<FaXmark/>}</button>
                 </div>
             </div>
             <div className={styles.offer_list} >
@@ -678,7 +678,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                     <h1>Update Item Bidding Options </h1>
                   </div>
                   <div>
-                    <button type='button' onClick={closeListItemModalDiv}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                    <button type='button' onClick={closeListItemModalDiv}>{<FaXmark/>}</button>
                   </div>
               </div>
               <div className={styles.listnftitem_c_in}>
@@ -720,7 +720,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                     <h1>List NFT In Our Auction Market</h1>
                   </div>
                   <div>
-                    <button type='button' onClick={closeListItemModalDiv}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                    <button type='button' onClick={closeListItemModalDiv}>{<FaXmark />}</button>
                   </div>
               </div>
               <div className={styles.listnftitem_c_in}>
@@ -779,7 +779,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                       <div className={styles.nft_options__} key={index}>
                           <Image src={myunlistedNFT.image} width={100} height={100} priority style={{objectFit:'cover',width: '100%',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
                             <div className={styles.nft_head}>
-                                <div className={styles.nft_pfh}><h2>{myunlistedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                                <div className={styles.nft_pfh}><h2>{myunlistedNFT.name} {<FaCircleCheck style={{color:'#e3a204'}}/>}</h2></div>
                                 <div className={styles.nft_desc}>
                                     <span>{myunlistedNFT.description.substring(0, 40)+' ...'}</span>
                                 </div>
@@ -825,7 +825,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                           </a>
                           <div className={styles.nft_head}>
                               <a href={`/nft/${mylistedNFT.name.replace(/[ ]+/g, "-")}/${mylistedNFT.tokenId!.toString()}`}>
-                                <div className={styles.nft_pfh}><h2>{mylistedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                                <div className={styles.nft_pfh}><h2>{mylistedNFT.name} {<FaCircleCheck style={{color:'#e3a204'}}/>}</h2></div>
                                 <div className={styles.nft_desc}>
                                     <span>{mylistedNFT.description.substring(0, 40)+' ...'}</span>
                                 </div>
@@ -840,11 +840,11 @@ const MyNFTs: React.FC<{}> = () =>  {
                                       {
                                         (() => {
                                           if(mylistedNFT.owner == contractaddress && mylistedNFT.seller == mylistedNFT.seller) {
-                                            return <span className={styles.listed}>Listed {<FontAwesomeIcon icon={faCheck} style={{color:'#e3a204'}}/>}</span>
+                                            return <span className={styles.listed}>Listed {<FaCheck style={{color:'#e3a204'}}/>}</span>
                                           }else if(mylistedNFT.owner == mylistedNFT.owner && mylistedNFT.seller == mylistedNFT.seller) {
                                             return <span className={styles.listed}>UnListed </span>
                                           }else if(mylistedNFT.owner == contractaddress && mylistedNFT.seller != mylistedNFT.seller) {
-                                            return <span className={styles.listed}>Sold {<FontAwesomeIcon icon={faCheck} style={{color:'#e3a204'}}/>}</span>
+                                            return <span className={styles.listed}>Sold {<FaCheck style={{color:'#e3a204'}}/>}</span>
                                           }
                                         })()
                                       }

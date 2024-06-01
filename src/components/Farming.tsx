@@ -2,9 +2,6 @@ import React from 'react';
 import { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
 
@@ -30,19 +27,10 @@ import AlertMessage from './AlertMessage';
 import RewardsBadge from './RewardsBadge';
 import ActionSuccessModal from './ActionSuccess';
 import HelmetExport from 'react-helmet';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp, faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome} from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
 import axios from 'axios';
-import { connected } from 'process';
+import { FaAlignJustify, FaChevronDown, FaXmark } from 'react-icons/fa6';
 
-
-
-
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
-const Mining = () =>  {
+const Farming = () =>  {
 
   const router = useRouter();
 
@@ -52,15 +40,17 @@ const Mining = () =>  {
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
-  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");  
   const [dappConnector,setDappConnector] = useState(false);
   const [wAlert,setWAlert] = useState(false);
   let [amountmined, setAmountMined] = useState<number>(0.00005);
-
+  // const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
+  // const [dollarequiv, setDollarEquiv] = useState<number>(0);
+  // const [dollarprice, setDollarPrice] = useState<number>(0);
   const [errorMessage, seterrorMessage] = useState("");
   const [miningstatus, setMiningStatus] = useState<string>("Inactive");
   const [walletaddress, setWalletAddress] = useState("NA"); 
@@ -93,54 +83,20 @@ const Mining = () =>  {
 
   useEffect(() => {
 
+    if(!isConnected) {
+      open()
+    }
+
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
     if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
       if(username_) {
         setUsername(username_);
-        setUserId(udetails.userId)
-        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
-        setTimeout(
-          function() {
-            getminingdetails(udetails.userId);
-          }, 3000
-        )
       }
-    }else {
-      router.push(`/signin`);
     }
 
-
-  const getminingdetails = async (userId:any) => {
-          // search database and return documents with similar keywords
-          const config = {
-              headers: {
-                  "Content-type": "application/json"
-              }
-          }  
-          const {data} = await axios.post("http://localhost:9000/api/mining/getminingdetails", {
-              userId
-          }, config);
-          if(data) {
-            if(data.message == "no mining details found") {
-              setAmountMined(0.00005);
-              setMiningStatus("Inactive");
-            }else {
-              setAmountMined(data.amountmined);
-              setMiningStatus(data.miningstatus);
-              
-              if(data.miningstatus == "Active") (
-                incrementMiningAmount(data.amountmined,data.miningstatus)
-              )
-            }
-            
-            console.log('mining details',data);
-          }
-          
-        }
-        
-
+    
   // Function to handle window resize
   const handleResize = () => {
       // Check the device width and update isNavOpen accordingly
@@ -180,10 +136,45 @@ const Mining = () =>  {
   };
   
   
- }, [userId, router,username,address,chainId,isConnected,walletaddress,wAlert,showTimer,walletProvider,isDragging,initialValues])
+ }, [router,username,address,chainId,isConnected,walletaddress,wAlert,showTimer,walletProvider,isDragging,initialValues])
+
+ useEffect(() => {
+  
+    const getminingdetails = async () => {
+        // search database and return documents with similar keywords
+        const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+        }  
+        const {data} = await axios.post("http://localhost:9000/api/mining/getminingdetails", {
+            address
+        }, config);
+        if(data) {
+          if(data.message == "no mining details found") {
+            setAmountMined(0.00005);
+            setMiningStatus("Inactive");
+          }else {
+            setAmountMined(data.amountmined);
+            setMiningStatus(data.miningstatus);
+            
+            if(data.miningstatus == "Active") (
+              incrementMiningAmount(data.amountmined,data.miningstatus)
+            )
+          }
+          
+          console.log('mining details',data);
+        }
+        
+      }
+      getminingdetails()
+
+ },[])
 
  const updateminedAmount = async (amountmined: number,miningstatus: string ) => {
     try {
+      setShowBgOverlay(true)
+      setShowLoading(true)
       if(miningstatus != "Stopped" && miningstatus != "Inactive") {
         const newamountmined = amountmined.toFixed(6)
         // search database and return documents with similar keywords
@@ -193,13 +184,15 @@ const Mining = () =>  {
             }
         }  
         const {data} = await axios.post("http://localhost:9000/api/mining/updateminedamount", {
-            userId, 
+            address, 
             newamountmined,
             miningstatus
         }, config);
         if(data) {
           setAmountMined(data.amountmined);
           setMiningStatus(data.miningstatus);
+          setShowLoading(false)
+          setShowBgOverlay(false)
           console.log('update mine was successful',data);
           console.log(`Total mined: ${newamountmined}`);
         }
@@ -233,6 +226,8 @@ const Mining = () =>  {
  const startMining = async (e: any) => {
   
   try {
+    setShowBgOverlay(true)
+    setShowLoading(true)
       // search database and return documents with similar keywords
       const config = {
           headers: {
@@ -240,7 +235,7 @@ const Mining = () =>  {
           }
       }  
       const {data} = await axios.post("http://localhost:9000/api/mining/startmining", {
-          userId, 
+          address, 
           amountmined,
           miningrate,
           miningstatus
@@ -249,6 +244,8 @@ const Mining = () =>  {
         setAmountMined(data.amountmined);
         setMiningStatus(data.miningstatus)
         incrementMiningAmount(data.amountmined,data.miningstatus);
+        setShowBgOverlay(false)
+        setShowLoading(false)
       }
   } catch (error) {
     console.error('Error incrementing count:', error);
@@ -262,6 +259,8 @@ const stopminingCount = async (e: any) => {
     // clearInterval(miningInterval);
     // miningInterval = null;
     console.log('Mining stopped.');
+    setShowLoading(true)
+    setShowBgOverlay(true)
       try {
         const config = {
             headers: {
@@ -269,12 +268,14 @@ const stopminingCount = async (e: any) => {
             }
         }  
         const {data} = await axios.post("http://localhost:9000/api/mining/stopmining", {
-            userId
+            address
         }, config);
         if(data) {
           setAmountMined(data.amountmined);
           setMiningStatus(data.miningstatus);
           console.log('Stoppend mining',data);
+          setShowLoading(false)
+          setShowBgOverlay(false)
         }
     } catch (error) {
       console.error('Error stopping mining:', error);
@@ -314,19 +315,25 @@ const stopminingCount = async (e: any) => {
           const withdamt = amountmined + "000000000000000000";
           const wamount = ethers.BigNumber.from(withdamt);
           const FRDContract = new ethers.Contract(FRDContractAddress!, FRDabi, signer);
-          const reslt = await FRDContract.transfer(address,wamount);
-          console.log("Account Balance: ", reslt);
-          reslt.wait().then(async (receipt:any) => {
-            // console.log(receipt);
-            if (receipt && receipt.status == 1) {
-                // transaction success.
+          
+          try {
+            const reslt = await FRDContract.transfer(address,wamount);;
+            const receipt = await reslt.wait();
+  
+            if (receipt && receipt.status === 1) {
                 setShowLoading(false);
                 setShowBgOverlay(false);
                 setActionSuccess(true);
                 setActionSuccessMessage('Stake withdrawal ');
                 updateminedAmount(0,"Stopped");
             }
-          })
+          } catch (error: any) {
+            console.log(error)
+            setShowAlertDanger(true);
+            seterrorMessage(error.code || error.message);
+            setShowLoading(false);
+          }
+
         }
       }else {
         open();
@@ -360,14 +367,14 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
   return (
     <>
         <HelmetExport>
-            <title>Mining | FifaReward</title>
+            <title>Farm FRD | FifaReward</title>
             <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
         </HelmetExport>
         <DappNav/>
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>
             <div className={dappconalertstyles.dappconalert}>
-              <div className={dappconalertstyles.dappconalertclosediv}><button title='button' type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FontAwesomeIcon icon={faXmark}/></button></div>
+              <div className={dappconalertstyles.dappconalertclosediv}><button title='button' type='button' className={dappconalertstyles.dappconalertclosedivbtn} onClick={closeDappConAlert}><FaXmark /></button></div>
               <div className={dappconalertstyles.dappconalert_in}>
                 {errorMessage}
               </div>
@@ -380,6 +387,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
             {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
             {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
+          
             <div className={dappstyles.main_c}>
               <div className={`${dappstyles.sidebar} ${sideBarToggleCheck}`}>
                   <DappSideBar onChange={toggleSideBar}/>
@@ -389,7 +397,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                   <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
               </button>
               <div>
                 <RewardsBadge />
@@ -446,4 +454,4 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
   );
 }
 
-export default Mining
+export default Farming

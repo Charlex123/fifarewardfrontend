@@ -1,8 +1,7 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import actionsuccessmodalstyles from '../styles/actionsuccessmodal.module.css'
 import Helmet from 'react-helmet'
+import { FaXmark } from 'react-icons/fa6';
 
 type Props = {
     prop: string,
@@ -39,7 +38,7 @@ const ActionSuccessModal:React.FC<Props> = ({prop,onChange}) => {
                 </Helmet>
             <div className={actionsuccessmodalstyles.showactioncomp}>
                 <div className={actionsuccessmodalstyles.showactioncompin}>
-                    <div className={actionsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FontAwesomeIcon icon={faXmark} onClick={(e) => closeActionModal()} />}</button></div>
+                    <div className={actionsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FaXmark onClick={(e) => closeActionModal()} />}</button></div>
                     <h3>{prop} was successful</h3>
                     {/* <div className={actionsuccessmodalstyles.logbtn}>
                         <button type='button' title='button' onClick={(e) => showactionModal(e.target)}>Login {<FontAwesomeIcon icon={faRightFromBracket}/>}</button>

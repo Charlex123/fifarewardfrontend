@@ -1,9 +1,6 @@
 import React, { useEffect, useState,useContext } from 'react';
 import Image from 'next/image';
 import { useRouter } from 'next/router';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 // material
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
@@ -12,7 +9,6 @@ import ActionSuccessModal from './ActionSuccess';
 import { ThemeContext } from '../contexts/theme-context';
 import axios from 'axios';
 import nftbg from '../assets/images/nftbg.jpg'
-import NFTMarketPlaceContractAbi from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
 import NFTMarketPlaceFeaturesContractAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ethers } from 'ethers';
 import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
@@ -25,10 +21,8 @@ import HelmetExport from 'react-helmet';
 
 import styles from "../styles/nftmarketplace.module.css";
 import dotenv from 'dotenv';
+import { FaCircleCheck } from 'react-icons/fa6';
 dotenv.config();
-// component
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const NFTMarketPlace: React.FC<{}> = () =>  {
 
   const [showloading, setShowLoading] = useState<boolean>(false);
@@ -110,8 +104,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                             price: element.sellingprice,
                             itemId: element.itemId,
                             biddingduration: element.biddingduration,
-                            minbidamount: element.minbidamount,
-                            sold: element.sold,
+                            minbidamount: element.minbidamount
                           }
                           listedNFTs.push(item);
                           setListedNFTS(listedNFTs);
@@ -227,7 +220,7 @@ const closeBgModal = () => {
                            <a href={`/nft/${listedNFT.name.replace(/[ ]+/g, "-")}/${listedNFT.tokenId!.toString()}`}>
                              <Image src={listedNFT.image} width={100} priority height={100}  style={{objectFit:'cover',width: '100%',margin: 'auto',textAlign: 'center',height: '250px',borderTopLeftRadius: '16px',borderTopRightRadius: '16px',padding: '0'}} alt='bg options'/>
                              <div className={styles.nft_head}>
-                                 <div className={styles.nft_pfh}><h2>{listedNFT.name} {<FontAwesomeIcon icon={faCircleCheck} style={{color:'#e3a204'}}/>}</h2></div>
+                                 <div className={styles.nft_pfh}><h2>{listedNFT.name} {<FaCircleCheck style={{color:'#e3a204'}}/>}</h2></div>
                                  <div className={styles.nft_desc}>
                                      <span>{listedNFT.description.substring(0, 40)+' ...'}</span>
                                  </div>
@@ -248,9 +241,9 @@ const closeBgModal = () => {
                                    <div>
                                      <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{listedNFT.minbidamount?.toNumber()}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
                                    </div>
-                                   <div>
+                                   {/* <div>
                                      <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{listedNFT.sold == false ? 'No' : 'Yes'}</div>
-                                   </div>
+                                   </div> */}
                                  </div>
                                  <div className={styles.nft_list_p}>
                                    <div>

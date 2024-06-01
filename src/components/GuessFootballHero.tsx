@@ -100,7 +100,6 @@ const GuessFootballHero: React.FC = () => {
         const {data} = await axios.post('http://localhost:9000/api/guessfootballhero/getusergames',{
           address
         },config);
-        console.log("user ganmes",data.games)
         if (data.games != null && data.games.length > 0) {
           setGameId(data.games[0].gameId);
           setRemainingCount(data.games[0].remaining);
@@ -185,6 +184,7 @@ const GuessFootballHero: React.FC = () => {
   };
 
   const HandleGamePlay = async (image: string, hint: string, name: string) => {
+    
     try {
       const provider = new ethers.providers.Web3Provider(walletProvider as any);
       const signer = provider.getSigner();
@@ -205,9 +205,6 @@ const GuessFootballHero: React.FC = () => {
         setShowBgOverlay(false);
         return;
       }else {
-        setSelectedImage(image);
-        setSelectedName(name);
-        setSelectedHint(hint);
 
         // setPlayedCount((previousplayed) => (previousplayed + 1));
         if(remainingcount < 32 && playedcount > 0) {
@@ -235,6 +232,29 @@ const GuessFootballHero: React.FC = () => {
       if(!isConnected) {
         open()
       }else {
+        try {
+          
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+
+          const {data} = await axios.post('http://localhost:9000/api/guessherohint/addupdatehint', {
+            address,
+            name,
+            image,
+            hint
+        }, config);
+        if(data.hint != null) {
+          setSelectedImage(data.hint.selectedImage);
+          setSelectedName(data.hint.selectedName);
+          setSelectedHint(data.hint.selectedHint);
+        }
+          
+        } catch (error) {
+          console.error('Error fetching items:', error);
+        }
         HandleGamePlay(image, hint, name);
       }
   };
@@ -252,10 +272,7 @@ const GuessFootballHero: React.FC = () => {
     }
   }
 
-  
-  const continueGame = async () => {
-    console.log("selecteds ",selectedHint, selectedImage, selectedName)
-    setAlertDanger(false);
+  const gamePlay = async (selectedHint: string, selectedImage: string, selectedName: string) => {
     if(!selectedHint && !selectedImage && !selectedName) {
       return;
     }else {
@@ -292,7 +309,6 @@ const GuessFootballHero: React.FC = () => {
           setShowGameResultModal(true);
           setTimeout(function() {
             if(divRef.current) {
-              console.log("div . current start",divRef.current)
               divRef.current.focus()
             }
           }, 2000);
@@ -308,9 +324,6 @@ const GuessFootballHero: React.FC = () => {
                     // add game data to database
           try {
             // setIsImageSelected(true);
-            console.log("played ccoun",playedcount);
-            console.log("rema co ccoun",remainingcount);
-            console.log("gmaeId ",gameId)
             const config = {
               headers: {
                   "Content-type": "application/json"
@@ -328,7 +341,6 @@ const GuessFootballHero: React.FC = () => {
               address,
               wincount
           }, config);
-          console.log("ggg data",data)
           if(data.getupgame != null && data.getupgame != undefined) {
             setLoading(false);
             setRemainingCount(data.getupgame.remaining);
@@ -338,7 +350,6 @@ const GuessFootballHero: React.FC = () => {
             setShowGameResultModal(true);
             setTimeout(function() {
               if(divRef.current) {
-                console.log("div . current up",divRef.current)
                 divRef.current.focus()
               }
             }, 2000);
@@ -366,10 +377,9 @@ const GuessFootballHero: React.FC = () => {
           const {data} = await axios.post('http://localhost:9000/api/guessfootballhero/updatewinslevel', {
             gameId
         }, config);
-        if(data.game != null) {
-          setWinCount(data.game.wins);
-          setLevel(data.game.level);
-          
+        if(data.getupgame != null) {
+          setWinCount(data.getupgame.wins);
+          setLevel(data.getupgame.level);
         }
           
         } catch (error) {
@@ -377,13 +387,11 @@ const GuessFootballHero: React.FC = () => {
         }
 
         if(level > 2 ) {
-          console.log("counta 1")
           
           if (walletProvider) {
             try {
               const provider = new ethers.providers.Web3Provider(walletProvider as any);
               const signer = provider.getSigner();
-              console.log('bet signer', signer);
         
               const guessfootballherocontract = new ethers.Contract(GuessfhCA!, GuessfhAbi, signer);
               const amt =  amount + "000000000000000000";
@@ -429,7 +437,6 @@ const GuessFootballHero: React.FC = () => {
           setShowGameResultModal(true);
           setTimeout(function() {
             if(divRef.current) {
-              console.log("div . current equ",divRef.current)
               divRef.current.focus()
             }
           }, 2000);
@@ -440,11 +447,9 @@ const GuessFootballHero: React.FC = () => {
           setShowGameResultModal(true);
           setTimeout(function() {
             if(divRef.current) {
-              console.log("div . current",divRef.current)
               divRef.current.focus()
             }
           }, 2000);
-          // console.log("feruyi")
           // setTimeout(function(){
           //   reloadGame();
           //   blurBackImage();
@@ -452,18 +457,42 @@ const GuessFootballHero: React.FC = () => {
         } 
         
       }else {
-        console.log("feruyi");
         setAmountModal(false);
         setLoading(false);
         // setShowBgOverlay(false);
         
       }
     }
+  }
+  
+  const continueGame = async () => {
+
+    try {
+          
+      const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+      }  
+
+      const {data} = await axios.post('http://localhost:9000/api/guessherohint/gethint', {
+        address
+    }, config);
+    if(data.hint != null) {
+      setSelectedImage(data.hint.selectedImage);
+      setSelectedName(data.hint.selectedName);
+      setSelectedHint(data.hint.selectedHint);
+      gamePlay(data.hint.selectedHint,data.hint.selectedImage,data.hint.selectedName);
+    }
+      
+    } catch (error) {
+      console.error('Error fetching items:', error);
+    }
+    
     
   }
 
   const setAmounts = (e: any) => {
-    console.log(" ee amount =", e.target.value)
     setAmount(e.target.value);
     setDollarEquiv(e.target.value * dollarprice);
 

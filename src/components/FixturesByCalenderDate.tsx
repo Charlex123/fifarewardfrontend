@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import { faCaretDown, faXmark, faSoccerBall  } from "@fortawesome/free-solid-svg-icons";
 import leaguefixturestyle from '../styles/leaguefixtures.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -8,7 +7,8 @@ import moment from 'moment';
 import Image from 'next/image';
 import Loading from './Loading';
 import { Fixture } from './FixtureMetadata';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FaCaretDown, FaXmark } from 'react-icons/fa6';
+import { IoIosFootball } from 'react-icons/io';
 dotenv.config();
 // material
 // component
@@ -44,7 +44,7 @@ const FixturesByCalenderDate:React.FC<MyComponentProps> = ({date}) => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/loadfixturesbydate", {
+          const {data} = await axios.post("http://localhost:9000/api/fixtures/loadfixturesbydate", {
             fixturedate,
             currentPage,
             limit
@@ -247,8 +247,8 @@ return (
                           <div className={leaguefixturestyle.league_wrap} key={index}>
                             <div className={leaguefixturestyle.tgle} >
                               <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
-                              <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FontAwesomeIcon icon={faCaretDown}/>}</div>
-                              <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FontAwesomeIcon icon={faXmark}/>}</div>
+                              <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown />}</div>
+                              <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FaXmark />}</div>
                             </div>
                             <div className={leaguefixturestyle.league_wrap_in} >
                               {league.fixtures.map((fixture,index) => (
@@ -273,7 +273,7 @@ return (
                                     </div>
                                     <div className={leaguefixturestyle.openbet}>
                                       <div>
-                                        <button type='button' title='button'>Open Bet <FontAwesomeIcon icon={faSoccerBall} /> </button>
+                                        <button type='button' title='button'>Open Bet <IoIosFootball /> </button>
                                       </div>
                                     </div>
                                 </div>

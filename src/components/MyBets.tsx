@@ -1,11 +1,9 @@
 import React, { useContext,useState,useEffect, useRef } from 'react';
-import Image from 'next/image';
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import AlertDanger from './AlertDanger';
 import { useRouter } from 'next/router';
-import ConnectWallet from './ConnectWalletButton';
 import { ThemeContext } from '../contexts/theme-context';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
@@ -21,7 +19,6 @@ import HelmetExport from 'react-helmet';
 // material
 import styles from "../styles/mybets.module.css";
 import dotenv from 'dotenv';
-import { FaXmark } from 'react-icons/fa6';
 dotenv.config();
 // component
 const MyBets: React.FC<{}> = () =>  {
@@ -248,10 +245,13 @@ const MyBets: React.FC<{}> = () =>  {
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {nftactionsuccess && 
-        <ActionSuccessModal prop='NFT Item Auction ' onChange={closeActionModalComp}/>
+        <ActionSuccessModal prop='Bets ' onChange={closeActionModalComp}/>
     }
      
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+        <div className={styles.goback}>
+          <button type='button' title='button' onClick={goBack} style={{color: 'white'}}> {'< '} back</button> 
+        </div>
         <div className={styles.main_bg_overlay}></div>
           <div>
             <div>

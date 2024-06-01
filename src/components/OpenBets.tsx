@@ -20,7 +20,6 @@ import footballg from '../assets/images/footballg.jpg';
 import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
 import BgOverlay from './BgOverlay';
-import LoginModal from './LoginModal';
 import HelmetExport from 'react-helmet';
 import { FaCircle, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 import { tree } from 'next/dist/build/templates/app-page';
@@ -41,9 +40,6 @@ const OpenBets:React.FC<{}> = () => {
   // types.ts
 
 const [username, setUsername] = useState<string>("");
-const [userId, setUserId] = useState<string>("");  
-const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
-const [showloginComp,setShowLoginComp] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
 
 const router = useRouter();
@@ -62,7 +58,7 @@ const [bettingteam,setBettingTeam] = useState<string>('');
 const [searchkeyword,setSearchKeyWord] = useState<string>('');
 const [betprediction,setBetPrediction] = useState<string>('');
 const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
-const [frdusdprice, setFrdUsdPrice] = useState<any>();
+const [usdprice, setUsdPrice] = useState<any>();
 const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
 const [bnbPrice, setBnbPrice] = useState<number>();
 const [bnbdollarPrice, setBnbDollarPrice] = useState<number>();
@@ -84,13 +80,15 @@ const minfilterbyamount = usdequivfrdamount;
 const maxfilterbyamount = 500000;
 
 useEffect(() => {
+  if(!isConnected) {
+    open()
+  }
+
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
   if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
       if(username_) {
           setUsername(username_);
-          setUserId(udetails.userId);
-          setIsloggedIn(true);
       }
   }
   
@@ -137,7 +135,7 @@ useEffect(() => {
           }  
           const {data} = await axios.get("../../../../api/gettokenprice", config);
           setUsdEquivFrdAmount(data.usdequivalentfrdamount);
-          setFrdUsdPrice(data.usdprice);
+          setUsdPrice(data.usdprice);
           setfilterbetamount(data.usdequivalentfrdamount);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -219,7 +217,6 @@ useEffect(() => {
       // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
       // hiw_bgoverlay.style.display = 'block';
       setShowBgOverlay(true);
-      setShowLoginComp(true);
       e.parentElement.parentElement.parentElement.style.display = 'none';
     }
   }
@@ -277,45 +274,40 @@ useEffect(() => {
     try {
         let divP = e.parentElement.parentElement.parentElement;
         
-        if(username && username !== null && username !== undefined && username !== '') {
-          setShowLoading(true);
-            let erAlertDv = e.parentElement.parentElement.previousElementSibling;
-            if(username === openedby) {
-              erAlertDv.innerHTML = "You can't join a bet you opened";
-              return;
-            }
-            if(remainingparticipantscount === 0) {
-              erAlertDv.innerHTML = "This bet is closed";
-              return;
-            }
-            if(bettingteam === '') {
-              erAlertDv.innerHTML = "You must select a team!";
-              return;
-            }else {
-              erAlertDv.innerHTML = "";
-            }
+        setShowLoading(true);
+          let erAlertDv = e.parentElement.parentElement.previousElementSibling;
+          if(address === openedby) {
+            erAlertDv.innerHTML = "You can't join a bet you opened";
+            return;
+          }
+          if(remainingparticipantscount === 0) {
+            erAlertDv.innerHTML = "This bet is closed";
+            return;
+          }
+          if(bettingteam === '') {
+            erAlertDv.innerHTML = "You must select a team!";
+            return;
+          }else {
+            erAlertDv.innerHTML = "";
+          }
 
-            if(betprediction === '') {
-              erAlertDv.innerHTML = "You must choose a prediction!";
-              return;
-            }else {
-              erAlertDv.innerHTML = "";
-            }
+          if(betprediction === '') {
+            erAlertDv.innerHTML = "You must choose a prediction!";
+            return;
+          }else {
+            erAlertDv.innerHTML = "";
+          }
 
-            const arrayofparticpants = participants.split(',');
-            
-            if(arrayofparticpants.indexOf(username) !== -1) {
-              erAlertDv.innerHTML = "You can't join this bet again!";
-              return;
-            }else {
-              erAlertDv.innerHTML = "";
-            }
-            divP.style.display = "none";
-            Approve(betId, betAmount)
-        }else {
-            setShowBgOverlay(true)
-            setShowLoginComp(true);
-        }
+          const arrayofparticpants = participants.split(',');
+          
+          if(arrayofparticpants.indexOf(username) !== -1) {
+            erAlertDv.innerHTML = "You can't join this bet again!";
+            return;
+          }else {
+            erAlertDv.innerHTML = "";
+          }
+          divP.style.display = "none";
+          Approve(betId, betAmount)
         
     } catch (error: any) {
       console.log(error)
@@ -345,13 +337,6 @@ const Approve = async (betId: number,betAmount: number) => {
     setShowAlertDanger(true);
     seterrorMessage(error.code);
   }
-}
-
-const closeLoginModal = () => {
-    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    // hiw_bgoverlay.style.display = 'none';
-    setShowBgOverlay(false);
-    setShowLoginComp(false);
 }
 
 const closeActionModalComp = () => {
@@ -420,13 +405,6 @@ const closeHIWE = (divId:any) => {
   }
   return pages;
 };
-
-const showloginCompNow = () => {
-  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  // hiw_bgoverlay.style.display = 'block';
-  setShowBgOverlay(true);
-  setShowLoginComp(true);
-}
 
 const goBack = () => {
     router.back()
@@ -822,12 +800,6 @@ const closeBgModal = () => {
           <button type='button' title='button' onClick={goBack}> {'<< '} back</button> 
         </div> 
 
-        {showloginComp && 
-            <div>
-                <LoginModal prop={'Join Bet'} onChange={closeLoginModal}/>
-            </div>
-        }
-
         {betopensuccess && 
             <ActionSuccessModal prop='Bet join' onChange={closeActionModalComp}/>
         }
@@ -895,19 +867,7 @@ const closeBgModal = () => {
 
         <div className={openbetsstyle.main_in}>
           <div className={openbetsstyle.opb_h}>
-          {!isLoggedIn &&
-            <div className={openbetsstyle.opb_login} id="opb_login">
-                <h3>Login To Join Bet</h3>
-                <div className={openbetsstyle.opblogin_btns}>
-                    <div>
-                        <button type='button' title='button' onClick={showloginCompNow}>Login </button>
-                    </div>
-                    <div>
-                        <a href='/register' title='link'>Register </a>
-                    </div>
-                </div>
-            </div>
-          }
+          
           {betData.length > 0 && 
             <div className={openbetsstyle.filter}>
               <h3>Filter By</h3>
@@ -920,6 +880,7 @@ const closeBgModal = () => {
                 </div>
                 <div className={openbetsstyle.amountprog}>
                   <div>Bet Amount </div>
+                  <div style={{color: 'white'}}>${filterbetAmount * usdprice}</div>
                   <div className={openbetsstyle.fba}>{`${filterbetAmount.toLocaleString()}`} <span>FRD</span></div>
                   <div>
                     <input title='bet amount'
@@ -967,7 +928,7 @@ const closeBgModal = () => {
                       <td><div className={openbetsstyle.div}>{index+1}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.uniquebetId.toString()}</div></td>
                       <td><div className={openbetsstyle.div}>{openbet.matchId.toString()}</div></td>
-                      <td><div className={openbetsstyle.div}>{(openbet.betamount.toLocaleString())} {<span className={openbetsstyle.amtunit}>FRD</span>} ({`$${Math.ceil(openbet.betamount * frdusdprice)}`}) </div></td>
+                      <td><div className={openbetsstyle.div}>{(openbet.betamount.toLocaleString())} {<span className={openbetsstyle.amtunit}>FRD</span>} ({`$${Math.ceil(openbet.betamount * usdprice)}`}) </div></td>
                       <td><div className={openbetsstyle.divaddress}><span>{openbet.openedBy.substring(0,8)+'...'}</span><span className={openbetsstyle.fulladdr}>{openbet.openedBy}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>
                       <td><div className={openbetsstyle.div}>{openbet.totalbetparticipantscount.toString()}</div></td>
                       <td><div className={openbetsstyle.div}>{(openbet.totalbetparticipantscount.toNumber()) - (openbet.remainingparticipantscount.toNumber())}</div></td>
@@ -1068,7 +1029,7 @@ const closeBgModal = () => {
                                     </div>
                                 </div>
                                 <div className={openbetsstyle.form_g}>
-                                    <p>You are joining this bet with {openbet.betamount.toLocaleString()}FRD</p>
+                                    <p>You are joining this bet with {openbet.betamount.toLocaleString()}FRD <span style={{color: '#e28304'}}>${Math.ceil((openbet.betamount * usdprice))+'.00'}</span> </p>
                                 </div>
                                 <div className={openbetsstyle.error_alert}></div>
                                 <div className={openbetsstyle.form_btn}>

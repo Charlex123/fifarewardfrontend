@@ -11,7 +11,6 @@ import Calendar from 'react-calendar';
 import Loading from './Loading';
 import { Bets } from './BetsMetadata';
 import ActionSuccessModal from './ActionSuccess';
-import LoginModal from './LoginModal';
 import LeagueFixtures from './LeagueFixtures';
 import BgOverlay from './BgOverlay';
 import LoadSampleOpenBetsData from './LoadOpenBets';
@@ -101,7 +100,6 @@ const LoadBetData:React.FC<{}> = () => {
 
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
-  const [showloginComp,setShowLoginComp] = useState<boolean>(false);
   const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<string>("");  
@@ -380,20 +378,6 @@ const closeActionModalComp = () => {
   router.push('openbets');
 }
 
-const closeLoginModal = () => {
-  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  // hiw_bgoverlay.style.display = 'none';
-  setShowBgOverlay(false);
-  setShowLoginComp(false);
-}
-
-const showloginCompNow = () => {
-  // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-  // hiw_bgoverlay.style.display = 'block';
-  setShowBgOverlay(true);
-  setShowLoginComp(true);
-}
-
 const goBack = () => {
   router.back()
 }
@@ -497,12 +481,6 @@ const closeBgModal = () => {
         <div className={bettingstyle.breadcrum}>
           <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a>
         </div>
-        {showloginComp && 
-            <div>
-                <LoginModal prop={'Open Bet'} onChange={closeLoginModal}/>
-            </div>
-        }
-
         {betopensuccess && 
             <ActionSuccessModal prop='Bet' onChange={closeActionModalComp}/>
         }
@@ -655,20 +633,7 @@ const closeBgModal = () => {
 
           <div className={bettingstyle.openbets_list}>
           <div className={bettingstyle.opb_h}>
-                {!isLoggedIn &&
-                    <div className={bettingstyle.opb_login} id="opb_login">
-                        <h3>Login To Open Bet</h3>
-                        <div className={bettingstyle.opblogin_btns}>
-                            <div>
-                                <button type='button' title='button' onClick={showloginCompNow}>Login </button>
-                            </div>
-                            <div>
-                                <a href='/register' title='link'>Register </a>
-                            </div>
-                        </div>
-                    </div>
-                }
-              
+                
               <div className={bettingstyle.opb}>
               {/* {isbetDataLoaded ? */}
                 <div>

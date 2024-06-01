@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: MIT
 
-pragma solidity^0.8.2;
+pragma solidity^0.8.20;
 
 /*
   8888888888   88888888       888888888
@@ -52,8 +52,15 @@ contract GuessFootBallHero is ReentrancyGuard {
         uint level;
         uint wins;
         uint remaining;
+        string status;
         string[] hint;
         address walletaddress;
+    }
+
+    struct LeaderboardEntry {
+        address walletaddress;
+        uint amountplayed;
+        uint rewardamount;
     }
 
     mapping(address => HeroGame) private Games;
@@ -61,6 +68,7 @@ contract GuessFootBallHero is ReentrancyGuard {
     mapping(address => WalletAddress) private walletaddresses; // Mapping of user addresses to user data
     mapping(address => uint[]) private addressCreatedGameIds; // Mapping of user addresses to the betIds they created
     mapping(uint => address) private playerdToAddress;
+
 
     event GamePlayed(uint indexed Id,uint indexed gameId,address indexed walletaddress, uint amount);
 
@@ -104,6 +112,7 @@ contract GuessFootBallHero is ReentrancyGuard {
             level: level,
             wins: wins,
             remaining: remaining,
+            status: "Win",
             hint: hint,
             walletaddress: msg.sender
         });
@@ -169,31 +178,29 @@ contract GuessFootBallHero is ReentrancyGuard {
         return walletaddresses[_useraddress].gameCount;
     }
 
-    function getLeaderboard() external view returns (address[] memory) {
+    function getLeaderboard() external view returns (LeaderboardEntry[] memory) {
         uint gamesCount = nextGameId;
-        address[] memory leaderboard = new address[](gamesCount);
-        uint[] memory amounts = new uint[](gamesCount);
+        LeaderboardEntry[] memory leaderboard = new LeaderboardEntry[](gamesCount);
 
         for (uint i = 0; i < gamesCount; i++) {
-            leaderboard[i] = GameIds[i + 1].walletaddress;
-            amounts[i] = GameIds[i + 1].amountplayed;
+            leaderboard[i] = LeaderboardEntry({
+                walletaddress: GameIds[i + 1].walletaddress,
+                amountplayed: GameIds[i + 1].amountplayed,
+                rewardamount: GameIds[i + 1].rewardamount
+            });
         }
 
         for (uint i = 0; i < gamesCount; i++) {
             for (uint j = i + 1; j < gamesCount; j++) {
-                if (amounts[j] > amounts[i]) {
-                    uint tempAmount = amounts[i];
-                    amounts[i] = amounts[j];
-                    amounts[j] = tempAmount;
-
-                    address tempAddress = leaderboard[i];
+                if (leaderboard[j].amountplayed > leaderboard[i].amountplayed) {
+                    LeaderboardEntry memory temp = leaderboard[i];
                     leaderboard[i] = leaderboard[j];
-                    leaderboard[j] = tempAddress;
+                    leaderboard[j] = temp;
                 }
             }
         }
 
         return leaderboard;
     }
-    
+
 }

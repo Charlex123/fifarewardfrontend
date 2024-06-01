@@ -1,8 +1,6 @@
 import { useEffect, useState , useContext} from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 // import DappSideBar from './Dappsidebar';
 // material
 
@@ -17,8 +15,6 @@ import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ThemeContext } from '../contexts/theme-context';
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 
 const EarningsBreakDown:React.FC<{}> = () =>  {
 

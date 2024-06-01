@@ -6,7 +6,7 @@ import styles from '../styles/dappnav.module.css';
 import logo from '../assets/images/logo.png';
 // import { providers } from "ethers";
 import ConnectWallet from './ConnectWalletButton';
-import { FaChevronDown, FaChevronUp } from 'react-icons/fa6';
+import { FaChevronDown, FaChevronUp, FaAlignJustify } from 'react-icons/fa6';
 
 
 
@@ -110,7 +110,7 @@ function Navbar() {
 
     return (
         <nav className={styles.nav}>
-            {/* <button title='togglebtn' className={styles.nav_toggle_btn} type='button' onClick={toggleNav}><FontAwesomeIcon icon={faAlignJustify} size='lg' className={styles.toggle_icon}/></button> */}
+            {/* <button title='togglebtn' className={styles.nav_toggle_btn} type='button' onClick={toggleNav}><FaAlignJustify size='22px' className={styles.toggle_icon}/></button> */}
             <div className={`${styles.nav_container} ${navClass}`}>
                 <div className={styles.logo}>
                   <a href='/' rel='noopener noreferrer'><Image src={logo} alt='logo' className={styles.logoni}/></a>
@@ -147,7 +147,7 @@ function Navbar() {
                       <a href='/nft/mynfts' rel='noopener noreferrer' className={styles.si}> NFTs</a>
                     </li>
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
-                        <a href='/mining' rel='noopener noreferrer' className={styles.si}>Farm FRD</a>
+                        <a href='/farming' rel='noopener noreferrer' className={styles.si}>Farm FRD</a>
                     </li>
                     <li>
                       <a href='/referrals' rel='noopener noreferrer' className={styles.si}>Referrals</a>

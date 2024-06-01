@@ -1,11 +1,6 @@
 import { useContext,useEffect, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 import axios from 'axios';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { library } from "@fortawesome/fontawesome-svg-core";
-// import { faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
-// material
-
 import Loading from "./Loading";
 import AlertMessage from "./AlertMessage";
 import regstyles from "../styles/register.module.css";
@@ -24,15 +19,11 @@ const AddGuessFootballHeroData = () =>  {
   const fileInputRef = useRef<HTMLInputElement | null>(null);  
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
-  const [email, setEmail] = useState("");
   const [name, setName] = useState("");
-  const [image, setImage] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [hint, setHint] = useState<string>('');
   const [loading, setLoading] = useState<boolean>(false);
-  const [isinfluencer] = useState<boolean>(false);
-  const [status] = useState<any>("Inactive");
 
   //   const [accounts, setAccounts] = useState([]);
 

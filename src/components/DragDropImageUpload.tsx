@@ -1,9 +1,8 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import styles from '../styles/dragdropimageupload.module.css';
-import { faUpload } from '@fortawesome/free-solid-svg-icons';
+import { FaUpload } from 'react-icons/fa6';
 
 interface DragDropImageUploadProps {
   onFileUpload: (file: File) => void;
@@ -46,7 +45,7 @@ const DragDropImageUpload: React.FC<DragDropImageUploadProps> = ({ onFileUpload 
             </div>
             <div>
               <div>
-                {<FontAwesomeIcon icon={faUpload} />}
+                {<FaUpload />}
               </div>
               <div>
                 <button type='button' title='browse files'>Browse Files</button>

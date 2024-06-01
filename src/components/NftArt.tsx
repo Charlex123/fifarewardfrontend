@@ -1,8 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
 import bnblogo from '../assets/images/bnb-bnb-logo.png'
 import messi from '../assets/images/messi.png';
 import { ThemeContext } from '../contexts/theme-context';
@@ -20,18 +18,13 @@ import { NFTFullMetadata } from './NFTFullMetadata';
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
-import LoginModal from './LoginModal';
 import AlertDanger from './AlertDanger';
 import HelmetExport from 'react-helmet';
-import { faEye, faEyeSlash, faHeart, } from "@fortawesome/free-regular-svg-icons";
-import { faAlignJustify, faCartShopping, faChevronLeft, faCircleCheck, faCircleChevronLeft, faCircleDollarToSlot, faGift, faGifts, faHammer, faMagicWandSparkles, faTag, faWandMagicSparkles, faXmark  } from "@fortawesome/free-solid-svg-icons";
-// material
 import styles from "../styles/nftart.module.css";
 import dotenv from 'dotenv';
+import { FaAlignJustify, FaCartShopping, FaChevronLeft, FaCircleCheck, FaCircleDollarToSlot, FaHeart, FaTag, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
 dotenv.config();
-// component
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
+
 const NFTArt: React.FC<{}> = () =>  {
 
     const [showloading, setShowLoading] = useState<boolean>(false);
@@ -47,8 +40,6 @@ const NFTArt: React.FC<{}> = () =>  {
     const [nftLoaded,setNFTLoaded] = useState<boolean>(false);
     const [nftbidsLoaded,setNFTBidsLoaded] = useState<boolean>(false);
     const [userId, setUserId] = useState<number>();
-    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
-    const [showlogginModal,setShowLoginModal] = useState<boolean>(false);
     const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
     const [errorMessage,seterrorMessage] = useState<string>("");
     const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
@@ -79,7 +70,10 @@ const NFTArt: React.FC<{}> = () =>  {
     
   useEffect(() => {
 
-    
+    if(!isConnected) {
+        open()
+    }
+
     async function getBnbPrice() {
         try {
             const url = 'https://api.coingecko.com/api/v3/simple/price?ids=binancecoin&vs_currencies=usd';
@@ -210,97 +204,38 @@ const NFTArt: React.FC<{}> = () =>  {
     }
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-        if(udetails && udetails !== null && udetails !== "") {
-        const username_ = udetails.username;  
-        if(username_) {
-            setUsername(username_);
-            setUserId(udetails.userId);
-            setIsloggedIn(true);
-            }
-            // if(!isConnected) {
-            //   open();
 
-            // }
-        }else {
-            setIsloggedIn(false);
-        }
-          
-    },[username,userId, nft, nftLoaded, walletPrivKey, walletProvider, isLoggedIn])
+        
+    },[ nft, nftLoaded, walletPrivKey, walletProvider])
 
     const bidNFTs = async () => {
         
-        if(isLoggedIn == false) {
-            setShowLoginModal(true);
+        if(!isConnected) {
+            open();
         }else {
-            if(!isConnected) {
-                open();
-            }else {
-                if(minbidamount > bidPrice) {
-                    setShowAlertDanger(true);
-                    seterrorMessage(`Minimum bid amount is ${minbidamount}`);
-                    return;
-                }
-                if(bidPrice == "") {
-                    setShowAlertDanger(true);
-                    seterrorMessage(`Enter bidding price`);
-                    return;
-                }
-                if(bidPrice >= minbidamount && bidPrice != ""){
-                    setShowAlertDanger(false);
-                    setShowLoading(true);
-                    setShowBidModal(false);
-                    const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                    const signer = provider.getSigner();
-                    
-                    try {
-                        
-                        let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
-                        const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
-                        
-                        bidnftC.wait().then(async (receipt:any) => {
-                            // console.log(receipt);
-                            if (receipt && receipt.status == 1) {
-                                // transaction success.
-                                setShowLoading(false);
-                                setShowBgOverlay(false);
-                                setActionSuccess(true);
-                            }
-                         })
-                        
-                    } catch (error: any) {
-                        setShowLoading(false);
-                        setShowBgOverlay(true);
-                        setShowAlertDanger(true);
-                        seterrorMessage(error.code);
-                    }
-                }
-                
+            if(minbidamount > bidPrice) {
+                setShowAlertDanger(true);
+                seterrorMessage(`Minimum bid amount is ${minbidamount}`);
+                return;
             }
-        }
-        
-    }
-
-    const BuyNFT = async (itemId: any, price: any) => {
-        
-        if(isLoggedIn == false) {
-            setShowLoginModal(true);
-        }else {
-            if(!isConnected) {
-                open();
-            }else {
+            if(bidPrice == "") {
+                setShowAlertDanger(true);
+                seterrorMessage(`Enter bidding price`);
+                return;
+            }
+            if(bidPrice >= minbidamount && bidPrice != ""){
                 setShowAlertDanger(false);
                 setShowLoading(true);
                 setShowBidModal(false);
-                setShowBgOverlay(true);
+                const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+                const signer = provider.getSigner();
                 
                 try {
-                    const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                    const signer = provider.getSigner();
-
-                    let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
-                    const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});
                     
-                    buynftC.wait().then(async (receipt:any) => {
+                    let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
+                    const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
+                    
+                    bidnftC.wait().then(async (receipt:any) => {
                         // console.log(receipt);
                         if (receipt && receipt.status == 1) {
                             // transaction success.
@@ -311,14 +246,52 @@ const NFTArt: React.FC<{}> = () =>  {
                         })
                     
                 } catch (error: any) {
-                    console.log("error c",error);
                     setShowLoading(false);
                     setShowBgOverlay(true);
                     setShowAlertDanger(true);
                     seterrorMessage(error.code);
                 }
-                
             }
+            
+        }
+        
+    }
+
+    const BuyNFT = async (itemId: any, price: any) => {
+        
+        if(!isConnected) {
+            open();
+        }else {
+            setShowAlertDanger(false);
+            setShowLoading(true);
+            setShowBidModal(false);
+            setShowBgOverlay(true);
+            
+            try {
+                const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+                const signer = provider.getSigner();
+
+                let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
+                const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});
+                
+                buynftC.wait().then(async (receipt:any) => {
+                    // console.log(receipt);
+                    if (receipt && receipt.status == 1) {
+                        // transaction success.
+                        setShowLoading(false);
+                        setShowBgOverlay(false);
+                        setActionSuccess(true);
+                    }
+                    })
+                
+            } catch (error: any) {
+                console.log("error c",error);
+                setShowLoading(false);
+                setShowBgOverlay(true);
+                setShowAlertDanger(true);
+                seterrorMessage(error.code);
+            }
+            
         }
         
     }
@@ -331,14 +304,6 @@ const NFTArt: React.FC<{}> = () =>  {
         setItemName(itemName);
         setShowBidModal(true);
         setShowBgOverlay(true);
-    }
-
-    const closeLoginModal = () => {
-        // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-        // hiw_bgoverlay.style.display = 'none';
-        setShowLoading(false);
-        setShowBgOverlay(false);
-        setShowLoginModal(false);
     }
 
     const closeBidItemModalDiv = () => {
@@ -408,9 +373,12 @@ const NFTArt: React.FC<{}> = () =>  {
     </HelmetExport>
     
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+        <div className={styles.goback}>
+          <button type='button' title='button' onClick={goBack} style={{color: 'white'}}> {'< '} back</button> 
+        </div>
+
         <div className={styles.main_bg_overlay}></div>
-        <div><button onClick={goBack}>{<FontAwesomeIcon icon={faChevronLeft}/>} back</button></div>
-        {showlogginModal && <LoginModal prop='Bid NFT' onChange={closeLoginModal}/>}
+        <div><button onClick={goBack}>{<FaChevronLeft/>} back</button></div>
         {showloading && <Loading/>}
         {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
@@ -425,7 +393,7 @@ const NFTArt: React.FC<{}> = () =>  {
                         <h1> Bid on {itemname}</h1>
                     </div>
                     <div>
-                        <button type='button' onClick={closeBidItemModalDiv}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                        <button type='button' onClick={closeBidItemModalDiv}>{<FaXmark/>}</button>
                     </div>
                 </div>
                 <div className={styles.bidnftitem_c_in}>
@@ -463,7 +431,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                     <Image src={bnblogo} alt='bnb logo' style={{width: '25px'}}/>
                                 </div>
                                 <div className={styles.nft_op_}>
-                                    <button>{<FontAwesomeIcon icon={faHeart}/>}</button>
+                                    <button>{<FaHeart/>}</button>
                                 </div>
                             </div>  
                         </div>
@@ -471,11 +439,11 @@ const NFTArt: React.FC<{}> = () =>  {
                             <Image src={nftauctItem!.image} alt='nft art' width={100} height={100} priority style={{objectFit: 'contain',width: '100%',height: 'inherit',marginTop: '0',borderBottomLeftRadius: '8px',borderBottomRightRadius: '8px'}}/>
                             <div className={styles.nft_desc0}>
                                 <div className={styles.descp}>
-                                    {<FontAwesomeIcon icon={faAlignJustify}/>} <span>Description</span>
+                                    {<FaAlignJustify/>} <span>Description</span>
                                 </div>
                                 <div className={styles.descp_m}>
                                     <div className={styles.descp_m_in}>
-                                        <span className={styles.by}>By</span> <span className={styles.fr}>{username.toUpperCase()} {<FontAwesomeIcon icon={faCircleCheck} style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
+                                        <span className={styles.by}>By</span> <span className={styles.fr}>{username.toUpperCase()} {<FaCircleCheck style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
                                     </div>
                                     <p>
                                         {nftauctItem?.description}
@@ -519,10 +487,10 @@ const NFTArt: React.FC<{}> = () =>  {
                             </div>
                             <div className={styles.b_btns}>
                                 <div>
-                                    <button className={styles.b_btn} onClick={() => BuyNFT(nftauctItem?.itemId?.toString(),nftauctItem?.price?.toString())}><span>{<FontAwesomeIcon icon={faCartShopping}/>}</span> Buy Now </button> 
+                                    <button className={styles.b_btn} onClick={() => BuyNFT(nftauctItem?.itemId?.toString(),nftauctItem?.price?.toString())}><span>{<FaCartShopping/>}</span> Buy Now </button> 
                                 </div>
                                 <div>
-                                    <button className={styles.b_btn1} onClick={() => openBidModal(nftauctItem?.tokenId?.toString(),nftauctItem?.itemId?.toString(),nftauctItem?.price?.toString(),nftauctItem?.minbidamount.toString(),nftauctItem?.name)}><span>{<FontAwesomeIcon icon={faCircleDollarToSlot}/>}</span> Make Offer </button> 
+                                    <button className={styles.b_btn1} onClick={() => openBidModal(nftauctItem?.tokenId?.toString(),nftauctItem?.itemId?.toString(),nftauctItem?.price?.toString(),nftauctItem?.minbidamount.toString(),nftauctItem?.name)}><span>{<FaCircleDollarToSlot/>}</span> Make Offer </button> 
                                 </div>
                             </div>
                         </div>
@@ -531,20 +499,20 @@ const NFTArt: React.FC<{}> = () =>  {
                     <div className={`${styles.tabc} ${theme === 'dark' ? styles['darkmod'] : styles['lighttmod']}`}>
                         <div className={`${styles.tabs}`}>
                             <div onClick={() => DetailsTab('nft_det','nft_offer','nft_desc')}>
-                                {<FontAwesomeIcon icon={faTag}/>} <span>Details </span> 
+                                {<FaTag/>} <span>Details </span> 
                             </div>
                             <div onClick={() => OffersTab('nft_det','nft_offer','nft_desc')}>
-                                {<FontAwesomeIcon icon={faWandMagicSparkles}/>} <span>Offers </span> 
+                                {<FaWandMagicSparkles/>} <span>Offers </span> 
                             </div>
                             <div onClick={() => DescsTab('nft_det','nft_offer','nft_desc')}>
-                                {<FontAwesomeIcon icon={faAlignJustify}/>} <span> Desc </span> 
+                                {<FaAlignJustify/>} <span> Desc </span> 
                             </div>
                         </div>
 
                         <div className={styles.nft_det} id="nft_det">
                             <div className={styles.det_p}>
                                 <div className={styles.det_p_in}>
-                                    {<FontAwesomeIcon icon={faTag}/>} <span>Details </span> 
+                                    {<FaTag/>} <span>Details </span> 
                                 </div>
                             </div>
                             <div className={styles.det_list}>
@@ -598,7 +566,7 @@ const NFTArt: React.FC<{}> = () =>  {
                         <div className={styles.nft_offer} id="nft_offer">
                             <div className={styles.offer_p}>
                                 <div className={styles.offer_p_in}>
-                                    {<FontAwesomeIcon icon={faMagicWandSparkles}/>} <span>Offers </span> 
+                                    {<FaWandMagicSparkles/>} <span>Offers </span> 
                                 </div>
                             </div>
                             <div className={styles.offer_list}>
@@ -638,11 +606,11 @@ const NFTArt: React.FC<{}> = () =>  {
 
                         <div className={styles.nft_desc} id="nft_desc">
                             <div className={styles.descp}>
-                                {<FontAwesomeIcon icon={faAlignJustify}/>} <span>Description</span>
+                                {<FaAlignJustify/>} <span>Description</span>
                             </div>
                             <div className={styles.descp_m}>
                                 <div className={styles.descp_m_in}>
-                                    <span className={styles.by}>By</span> <span className={styles.fr}> {username.toUpperCase()} {<FontAwesomeIcon icon={faCircleCheck} style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
+                                    <span className={styles.by}>By</span> <span className={styles.fr}> {username.toUpperCase()} {<FaCircleCheck style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
                                 </div>
                                 <p>
                                     {nftauctItem?.description}

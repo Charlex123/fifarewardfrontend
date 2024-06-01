@@ -1,27 +1,19 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
 import chatbotlogo from '../assets/images/aichatbot.png';
 import successimage from '../assets/images/success1.png';
 import { ThemeContext } from '../contexts/theme-context';
 import { io, Socket } from 'socket.io-client';
 import axios from 'axios';
-import jwtDecode from 'jwt-decode';
+import { useWeb3ModalAccount, useWeb3Modal } from '@web3modal/ethers5/react';
 import MessageList from '../components/MessageList';
-import MessageInput from '../components/MessageInput';
 import UserList from '../components/UserList';
 import HelmetExport from 'react-helmet';
-import { faEye, faEyeSlash, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-// import { faLocationArrow, faMicrophone, faMicrophoneSlash, faPaperclip, faXmark  } from "@fortawesome/free-solid-svg-icons";
-// material
 import styles from "../styles/chatforum.module.css";
 import dotenv from 'dotenv';
+import { FaThumbsDown, FaThumbsUp, FaXmark } from 'react-icons/fa6';
 dotenv.config();
-// component
-// ----------------------------------------------------------------------
-// library.add(faEye, faEyeSlash);
 
 let socket: Socket;
 
@@ -50,6 +42,8 @@ const ChatForum: React.FC<{}> = () =>  {
   const [profileimage,setProfileImage] = useState<string>('');
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const { open } = useWeb3Modal();
+  const { isConnected, address } = useWeb3ModalAccount();
   const interimTranscriptRef = useRef<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -80,7 +74,7 @@ const ChatForum: React.FC<{}> = () =>  {
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
-    if(udetails && udetails !== null && udetails !== "") {
+    if(isConnected) {
       const username_ = udetails.username;  
       if(username_) {
         setUsername(username_);
@@ -102,15 +96,14 @@ const ChatForum: React.FC<{}> = () =>  {
         });
       }
     }else {
-      router.push(`/signin`);
+      open()
     }
-
     
     return () => {
     if (socket) socket.disconnect();
     };
 
-  },[socket, username, userId])
+  },[socket, username])
   
   const sendMessage = async (text: string, file?: any) => {
     if (currentUser) {
@@ -328,7 +321,7 @@ const ChatForum: React.FC<{}> = () =>  {
                                             <div className={`${styles.text_left} ${styles.message}`}>I repliedHello I repliedHello I repliedHello I repliedHello I repliedHello I repliedHello I replied</div>
                                             <div><Image src={chatbotlogo} alt={'Image'} width={35} height={40} className={`${styles.rounded_circle} ${styles.user_img}`}/></div>
                                         </div>
-                                        {/* <div className={styles.user_reactn}><span className={styles.like}>{<FontAwesomeIcon icon={faThumbsUp} />}</span> <span className={styles.dislike}>{<FontAwesomeIcon icon={faThumbsDown} />}</span></div> */}
+                                        {/* <div className={styles.user_reactn}><span className={styles.like}>{<FaThumbsUp />}</span> <span className={styles.dislike}>{<FaThumbsDown />}</span></div> */}
                                     </div>
                                 </div>
                           </div>
@@ -338,7 +331,7 @@ const ChatForum: React.FC<{}> = () =>  {
                         
                         <div id="success-pop" aria-hidden="true" className={styles.div_overlay}>
                             <div className={styles.div_overlay_inna}>
-                                {/* <span className={styles.pull_right}>{<FontAwesomeIcon icon={faXmark}/>}</span> */}
+                                {/* <span className={styles.pull_right}>{<FaXmark/>}</span> */}
                                 <div id="kkkd">
                                     <Image src={successimage} alt='image' className={styles.mx_auto}/>
                                     <div className={styles.mx_auto}>Success</div>

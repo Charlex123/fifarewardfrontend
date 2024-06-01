@@ -11,24 +11,17 @@ import dappconalertstyles from "../styles/dappconnalert.module.css";
 import dappsidebarstyles from "../styles/dappsidebar.module.css";
 // component
 import ConnectWallet from './ConnectWalletButton';
-import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import axios from 'axios';
-import AlertMessage from './AlertMessage';
 import HelmetExport from 'react-helmet';
 import RewardsBadge from './RewardsBadge';
 import ReferralLink from './ReferralLink';
 import { ThemeContext } from '../contexts/theme-context';
 import FooterNavBar from './FooterNav';
 import DappNav from './Dappnav';
-import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
-import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
-import DappFooter from './DappFooter';
 import EarningsBreakDown from './EarningsBreakingdown';
 import { FaAlignJustify, FaChevronDown, FaChevronUp, FaXmark } from 'react-icons/fa6';
-import { userInfo } from 'os';
 
 
 
@@ -37,7 +30,6 @@ const Dapp:React.FC<{}> = () =>  {
   // const dotenv = require("dotenv");
   // dotenv.config();
   const router = useRouter();
-  const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
 
   console.log("stake ca", StakeCA)
@@ -50,8 +42,8 @@ const Dapp:React.FC<{}> = () =>  {
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
-  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState<string>("");
   const [userId, setUserId] = useState<number>();  
@@ -154,31 +146,31 @@ const Dapp:React.FC<{}> = () =>  {
   };
 
   // const toggleIconUp1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon1(<FaChevronUp size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   // const toggleIconUp2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon2(<FaChevronUp size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   const toggleIconUp3 = () => {
       setDropdownIcon3(<FaChevronUp size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
   // const toggleIconDown1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon1(<FfaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   // const toggleIconDown2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>)
+  //     setDropdownIcon2(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
 
   const toggleIconDown3 = () => {
       setDropdownIcon3(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
-  const logout = () => {
-    // Simulate a logout action
-    localStorage.removeItem('userInfo');
-    router.push(`/signin`);
-  };
+  // const logout = () => {
+  //   // Simulate a logout action
+  //   localStorage.removeItem('userInfo');
+  //   router.push(`/signin`);
+  // };
 //  async function connectAccount() {
 //     if(window.ethereum)  {
 //         // window.web3 = new Web3(web3.currentProvider);

@@ -1,34 +1,29 @@
 import React, { useContext,useState,useEffect, useRef } from 'react';
-import Image from 'next/image';
+
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import AlertDanger from './AlertDanger';
 import { useRouter } from 'next/router';
-import ConnectWallet from './ConnectWalletButton';
+import moment from 'moment';
 import { ThemeContext } from '../contexts/theme-context';
-import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
-import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
+import GFHAbi from '../../artifacts/contracts/FRDGuessFootBallHero.sol/GuessFootBallHero.json'
 import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
-import { Bets } from './BetsMetadata';
+import { GuessFootBallHeroMetadata } from './GuessFootballHeroMetadata';
 import axios from 'axios';
-import { BetConditions } from './BetConditionsMetadata';
 import HelmetExport from 'react-helmet';
 // material
 import styles from "../styles/mygames.module.css";
 import dotenv from 'dotenv';
-import { FaXmark } from 'react-icons/fa6';
 dotenv.config();
 // component
 const MyGames: React.FC<{}> = () =>  {
 
-    const divRef = useRef<HTMLDivElement>(null);
     const [showloading, setShowLoading] = useState<boolean>(false);
-    const [showchangepriceModal, setShowChangePriceModal] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
     const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
@@ -40,11 +35,7 @@ const MyGames: React.FC<{}> = () =>  {
     const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
     const [frdusdprice, setFrdUsdPrice] = useState<any>();
     const [totalPages, setTotalPages] = useState(0);
-    const [betconditions,setBetConditions] = useState<BetConditions[]>([]);
-    const [betData,setBetData] = useState<Bets[]>([]);
-    const [username, setUsername] = useState<string>("");
-    const [userId, setUserId] = useState<number>();
-    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
+    const [gameData,setGameData] = useState<GuessFootBallHeroMetadata[]>([]);
     const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
     const [errorMessage,seterrorMessage] = useState<string>("");
     const [showbetconditions, setShowBetConditions] = useState<boolean>(false);
@@ -53,8 +44,7 @@ const MyGames: React.FC<{}> = () =>  {
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
 
     
-    const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
-    const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
+    const GuessfhCA = process.env.NEXT_PUBLIC_GUESSFOOTBALLHERO_CA;
 
     const router = useRouter();
 
@@ -95,32 +85,31 @@ const MyGames: React.FC<{}> = () =>  {
           if(signer) {
             try {
               setShowLoading(true);
-              const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
-              const loadBets = await BetFeaturescontract.loadAllBets();
-              await loadBets.forEach(async (element:any) => {
+              const gfhcontract = new ethers.Contract(GuessfhCA!, GFHAbi, signer);
+              const loadGames = await gfhcontract.loadGames();
+              await loadGames.forEach(async (element:any) => {
+                console.log("load game s data", loadGames)
                 if(element.openedBy != 0x0000000000000000000000000000000000000000) {
-                  let betAmt = Math.ceil((element.betamount.toString())/(10**18));
                   
-                  let item: Bets = {
-                    betId: element.betId,
-                    matchId: element.matchId,
-                    uniquebetId: element.uniquebetId,
-                    betamount: betAmt,
-                    matchfixture: element.matchfixture,
-                    openedBy: element.openedBy,
-                    totalbetparticipantscount: element.totalbetparticipantscount,
-                    remainingparticipantscount: element.remainingparticipantscount,
-                    betstatus: element.betstatus,
-                    participants: element.participants,
-                    betwinners: element.betwinners,
-                    betlosers: element.betlosers,
+                  let item: GuessFootBallHeroMetadata = {
+                    Id: element.Id,
+                    gameId: element.gameId,
+                    amountplayed: element.amountplayed,
+                    rewardamount: element.rewardamount,
+                    time: element.time,
+                    played: element.played,
+                    level: element.level,
+                    wins: element.wins,
+                    remaining: element.remaining,
+                    hint: element.hint,
+                    walletaddress: element.walletaddress,
                   }
                   // Prevent duplicate entries based on betId
-                  setBetData(prevBetData => {
-                    if (!prevBetData.some(existingItem => existingItem.betId.toString() === item.betId.toString())) {
-                        return [...prevBetData, item];
+                  setGameData(prevGameData => {
+                    if (!prevGameData.some(existingItem => existingItem.Id.toString() === item.Id.toString())) {
+                        return [...prevGameData, item];
                     }
-                    return prevBetData;
+                    return prevGameData;
                 });
                   setShowLoading(false);
                   return item;
@@ -147,62 +136,12 @@ const MyGames: React.FC<{}> = () =>  {
       fulladdress.style.display = (fulladdress.style.display === 'block') ? 'none' : 'block';
     }
 
-    const viewBetDetails = async(e:any,betId:number) => {
-      let provider, signer;
-            
-      if(walletProvider) {
-        provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-        signer = provider.getSigner();
-      }else {
-        const provider = walletProvider as any || Wprovider as any;
-        const wallet = new ethers.Wallet(walletPrivKey as any, provider);
-        signer = provider.getSigner(wallet.address);
-      }
-      
-      if(signer) {
-        try {
-          setShowLoading(true);
-          setShowBgOverlay(true);
-          const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-              
-            const getbetpredictions = await Betcontract.getPredictions(betId);
-            setBetConditions(getbetpredictions);
-            setShowBetConditions(true);
-            setShowBgOverlay(true);
-            setShowLoading(false);
-        } catch (error: any) {
-          setShowAlertDanger(true);
-          seterrorMessage(error);
-          setShowLoading(false);
-        }
-        
-      }
-    }
     
     const goBack = () => {
         router.back()
     }
     
-    const closePBET = (divId:any) => {
-      let svg = divId.getAttribute('data-icon');
-      let path = divId.getAttribute('fill');
-      
-      // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
     
-      if(svg !== null && svg !== undefined) {
-        setShowBgOverlay(false);
-        divId.parentElement.parentElement.style.display = 'none';
-      }
-      if(path !== null && path !== undefined) {
-        setShowBgOverlay(false);
-        divId.parentElement.parentElement.parentElement.style.display = 'none';
-      }
-    }
-    
-    const Cancel = (e:any) => {
-      console.log(e)
-    }
-
     const gotoPage = (pageNumber: number) => {
       setCurrentPage(pageNumber);
     };
@@ -241,26 +180,29 @@ const MyGames: React.FC<{}> = () =>  {
   return (
     <>
     <HelmetExport>
-        <title> My Bets | Fifareward</title>
+        <title> My Games | Fifareward</title>
         <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
     </HelmetExport>
     {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {nftactionsuccess && 
-        <ActionSuccessModal prop='NFT Item Auction ' onChange={closeActionModalComp}/>
+        <ActionSuccessModal prop='Game ' onChange={closeActionModalComp}/>
     }
      
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+        <div className={styles.goback}>
+          <button type='button' title='button' onClick={goBack} style={{color: 'white'}}> {'< '} back</button> 
+        </div>
         <div className={styles.main_bg_overlay}></div>
           <div>
             <div>
-              <h1>MY Bets</h1>
+              <h1>My Games</h1>
             </div>
           </div>
           {/* banner header */}
           
-          {betData && betData.length > 0 ? 
+          {gameData && gameData.length > 0 ? 
             <div className={styles.openbetmain}>
             <div className={styles.table_c}>
               <table>
@@ -268,44 +210,48 @@ const MyGames: React.FC<{}> = () =>  {
                   <tr>
                     {/* <th>S/N</th> */}
                     <th>S/N Id</th>
-                    <th>Id</th>
-                    <th>Match Id</th>
-                    <th>Bet Amount</th>
-                    <th>Opened BY</th>
-                    <th>Max. Participants</th>
-                    <th>Participants Joined Count</th>
-                    <th>Participants Joined</th>
-                    <th>Remaining Participants</th>
+                    <th>gameId</th>
+                    <th>Amount Played</th>
+                    <th>Reward Amount</th>
+                    <th>Played</th>
+                    <th>Level</th>
+                    <th>Wins</th>
+                    <th>Remaining</th>
+                    <th>Hints</th>
                     <th>Status</th>
-                    <th>Join Bet</th>
+                    <th>Address</th>
+                    <th>Date</th>
                   </tr>
                 </thead>
                 <tbody>
-                  {betData.map((openbet, index) => (
+                  {gameData.map((herogame, index) => (
                     <tr key={index}>
                       {/* <td><div className={styles.div}>{index+1}</div></td> */}
                       <td><div className={styles.div}>{index+1}</div></td>
-                      <td><div className={styles.div}>{openbet.uniquebetId.toString()}</div></td>
-                      <td><div className={styles.div}>{openbet.matchId.toString()}</div></td>
-                      <td><div className={styles.div}>{(openbet.betamount.toLocaleString())}{<span className={styles.amtunit}>FRD</span>} ({`$${Math.ceil(openbet.betamount * frdusdprice)}`})</div></td>
-                      <td><div className={styles.divaddress}><span>{openbet.openedBy.substring(0,8)+'...'}</span><span className={styles.fulladdr}>{openbet.openedBy}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>
-                      <td><div className={styles.div}>{openbet.totalbetparticipantscount.toString()}</div></td>
-                      <td><div className={styles.div}>{(openbet.totalbetparticipantscount.toNumber()) - (openbet.remainingparticipantscount.toNumber())}</div></td>
-                      <td><div className={styles.div}>({openbet.participants}) <div className={styles.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())} style={{cursor: 'pointer'}}> view bet details </button></div></div></td>
-                      <td><div className={styles.div}>{openbet.remainingparticipantscount.toString()}</div></td>
-                      <td className={styles.stat}><div className={styles.div}>{openbet.betstatus == 'open' ? <span className={styles.betstatusopened}>{openbet.betstatus}</span> : <span className={styles.betstatusclosed}>{openbet.betstatus}</span>}</div></td>
-                      {openbet.betstatus === 'open' 
-                      ? 
-                      <td className={styles.jb}><div className={styles.div}><button className={styles.closed} type='button' title='button' disabled >Print Slip</button></div></td>
-                      : 
-                      <td className={styles.jb}><div className={styles.div}><button className={styles.closed} type='button' title='button' disabled >Print Slip</button></div></td>}
+                      <td><div className={styles.div}>{herogame.Id.toString()}</div></td>
+                      <td><div className={styles.div}>{herogame.gameId.toString()}</div></td>
+                      <td><div className={styles.div}>{(herogame.amountplayed.toNumber().toLocaleString())}{<span className={styles.amtunit}>FRD</span>} ({`$${Math.ceil(herogame.amountplayed.toNumber() * frdusdprice).toLocaleString()}`})</div></td>
+                      <td><div className={styles.div}>{herogame.rewardamount.toNumber().toLocaleString()}{<span className={styles.amtunit}>FRD</span>} ({`$${Math.ceil(herogame.rewardamount.toNumber() * frdusdprice).toLocaleString()}`})</div></td>
+                      <td><div className={styles.div}>{(herogame.played.toNumber().toLocaleString())}</div></td>
+                      <td><div className={styles.div}>({herogame.level.toNumber()})</div></td>
+                      <td><div className={styles.div}>{herogame.wins.toNumber()}</div></td>
+                      <td><div className={styles.div}>{herogame.remaining.toNumber()}</div></td>
+                      <td>
+                        <div className={styles.div}>
+                            <div>{herogame.hint[0]}</div>
+                            <div>{herogame.hint[1]}</div>
+                        </div>
+                      </td>
+                      <td><div className={styles.stat}>Win</div></td>
+                      <td><div className={styles.divaddress}><span>{herogame.walletaddress.substring(0,8)+'...'}</span><span className={styles.fulladdr}>{herogame.walletaddress}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>
+                      <td><div className={styles.div}>{moment(herogame.time.toNumber()).startOf('day').fromNow()}</div></td>
                       
                     </tr>
                   ))}
                 </tbody>
               </table>
             </div>
-            {betData.length > 10 &&
+            {gameData.length > 10 &&
               <div className={styles.paginate_btns}>
               <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
                 {'<<'}
@@ -325,7 +271,7 @@ const MyGames: React.FC<{}> = () =>  {
             
           </div> :
           <div className={styles.notfound}>
-            <div>You've not created any bets</div>
+            <div>You've not played any games yet, go to <a href='/gaming'>geames</a> to start the fun</div>
           </div>  
           }
 

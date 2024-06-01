@@ -7,7 +7,7 @@ import pimg from '../assets/images/default_avatar.jpeg';
 import dappsidebarstyles from "../styles/dappsidebar.module.css";
 // component
 import { ThemeContext } from '../contexts/theme-context';
-import { FaArtstation, FaChevronDown, FaChevronUp, FaCircleXmark, FaGaugeHigh, FaGear, FaGift, FaUserGroup } from 'react-icons/fa6';
+import { FaArtstation, FaChevronDown, FaChevronUp, FaCircleXmark, FaGaugeHigh, FaGear, FaGift, FaRobot, FaUserGroup } from 'react-icons/fa6';
 import { GiGamepad, GiMineralHeart } from 'react-icons/gi';
 import { IoIosFootball } from 'react-icons/io';
 type Props = {
@@ -28,8 +28,8 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
   const [profileimage,setProfileImage] = useState<string>('');
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
-  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>);
-  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [isWalletAddressUpdated,setisWalletAddressUpdated] = useState(false);
 
@@ -92,20 +92,20 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   };
 
   // const toggleIconUp1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronUp} className={dappsidebarstyles.sidebarlisttoggle}/>)
+      // setDropdownIcon1(<FaChevronUp className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   // const toggleIconUp2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronUp} className={dappsidebarstyles.sidebarlisttoggle}/>)
+      // setDropdownIcon2(<FaChevronUp className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   const toggleIconUp3 = () => {
       setDropdownIcon3(<FaChevronUp className={dappsidebarstyles.sidebarlisttoggle}/>)
   }
 
   // const toggleIconDown1 = () => {
-  //     setDropdownIcon1(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>)
+      // setDropdownIcon1(<FaChevronDown className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
   // const toggleIconDown2 = () => {
-  //     setDropdownIcon2(<FontAwesomeIcon icon={faChevronDown} className={dappsidebarstyles.sidebarlisttoggle}/>)
+      // setDropdownIcon2(<FaChevronDown className={dappsidebarstyles.sidebarlisttoggle}/>)
   // }
 
  
@@ -131,7 +131,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
                     <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
                   </li>
                   {/* <li>
-                    <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}><FontAwesomeIcon icon={faRobot}/> Prediction AI</a>
+                    <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}><FaRobot/> Prediction AI</a>
                   </li> */}
                   <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <FaGift/> Rewards</a></li>
                   <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
@@ -143,7 +143,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
                     <a href='nft//mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaArtstation/> NFTs</a>
                   </li>
                   <li>
-                    <a href='/mining' rel='noopener noreferrer' className={dappsidebarstyles.si}> <GiMineralHeart/> Farm FRD</a>
+                    <a href='/farming' rel='noopener noreferrer' className={dappsidebarstyles.si}> <GiMineralHeart/> Farm FRD</a>
                   </li>
                   <li>
                     <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaUserGroup/> Referrals</a>

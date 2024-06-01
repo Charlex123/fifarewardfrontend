@@ -2,18 +2,13 @@ import React, { useState, useContext } from 'react';
 // material
 import axios from 'axios';
 import loginmodalstyles from '../styles/loginmodal.module.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faEye, faEyeSlash  } from "@fortawesome/free-regular-svg-icons";
-import { faXmark  } from "@fortawesome/free-solid-svg-icons";
 import { ThemeContext } from '../contexts/theme-context';
 // component
 import Loading from './Loading';
 import LogInSuccessModal from './LoginSuccessModal';
 import AlertMessage from './AlertMessage';
+import { FaEye, FaEyeSlash, FaXmark } from 'react-icons/fa6';
 
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 interface ChildProps {
     prop: string,
     onChange: (newValue: boolean) => void;
@@ -28,7 +23,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
   const [error, setError] = useState<boolean>(false);
   const [isloginSuccess, setIsLoginSuccess] = useState<boolean>(false);
   const [passwordinputType, setpasswordinputType] = useState("password");
-  const [eyeIcon, setEyeIcon] = useState(<FontAwesomeIcon icon={faEye} />);
+  const [eyeIcon, setEyeIcon] = useState(<FaEye />);
   
   const checkEmail = async (e:any) => {
     setLoading(true);
@@ -51,10 +46,10 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
   const togglePasswordVisiblity = () => {
     if(passwordinputType === "password") {
       setpasswordinputType("text")
-      setEyeIcon(<FontAwesomeIcon icon={faEye} />)
+      setEyeIcon(<FaEye />)
     }else {
       setpasswordinputType("password")
-      setEyeIcon(<FontAwesomeIcon icon={faEyeSlash} />);
+      setEyeIcon(<FaEyeSlash />);
     }
   };
 
@@ -106,7 +101,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
     <>
         <div className={loginmodalstyles.loginmodalmain} id="loginmodalid">
             <div className={loginmodalstyles.loginmodalmainin}>
-                <div className={loginmodalstyles.closebtn}><button type='button' title='button'>{<FontAwesomeIcon icon={faXmark} onClick={closeModal} />}</button></div>
+                <div className={loginmodalstyles.closebtn}><button type='button' title='button'>{<FaXmark onClick={closeModal} />}</button></div>
                 <form className={loginmodalstyles.formTag} onSubmit={submitHandler}>
                 {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
                 {loading && <Loading />}

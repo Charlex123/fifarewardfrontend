@@ -4,7 +4,6 @@ import { NFTStorage, File } from 'nft.storage'
 import { useRouter } from 'next/router';
 import AlertDanger from './AlertDanger';
 import Loading from './Loading';
-import LoginModal from './LoginModal';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
@@ -18,10 +17,7 @@ import { useDisconnect } from '@web3modal/ethers5/react';
 import { ThemeContext } from '../contexts/theme-context';
 import HelmetExport from 'react-helmet';
 import styles from '../styles/createnft.module.css'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { setTimeout } from 'timers';
-import { connected } from 'process';
+import { FaXmark } from 'react-icons/fa6';
 const dotenv = require("dotenv");
 
 dotenv.config();
@@ -43,10 +39,7 @@ export default function CreateItem() {
   const { walletProvider } = useWeb3ModalProvider();
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { disconnect } = useDisconnect();
-  const [showloginComp,setShowLoginComp] = useState<boolean>(false);
   const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<number>();  
-  const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
   const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
   const [errorMessage,seterrorMessage] = useState<string>("");
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
@@ -61,18 +54,11 @@ export default function CreateItem() {
   
   useEffect(() => {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-      if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-          setUsername(username_);
-          setUserId(udetails.userId);
-          setIsloggedIn(true);
-      }
-      }else {
-          setIsloggedIn(false);
-      }
-    
-  },[username,userId])
+      
+    if(!isConnected) {
+      open()
+    }
+  },[])
 
   async function handleFileUpload(file: File) {
       console.log('File to upload:', file);
@@ -98,53 +84,49 @@ export default function CreateItem() {
   }
 
 
-  async function checkLogin() {
+  async function handleCreateNFT() {
     setShowBgOverlay(true);
     setShowLoading(true);
 
-    if(username && userId) {
+    if(!isConnected) {
+      open()
+      setShowBgOverlay(false);
+      setShowLoading(false);
+    }else {
+      // uploadToIPFS();
+      // check if user wallet address has FRD
       if(formInput.description === "" || formInput.name === "" || uploadedMedia === null || uploadedMedia  === "") {
         setShowAlertDanger(true);
         seterrorMessage("NFT art image, description and name are required!!");
         setShowLoading(false);
       }else {
-        if(!isConnected) {
-          open()
-          setShowBgOverlay(false);
-          setShowLoading(false);
-        }else {
-          // uploadToIPFS();
-          // check if user wallet address has FRD
-          try {
-            const provider = new ethers.providers.Web3Provider(walletProvider as any);
-            const signer = provider.getSigner();
+        try {
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
 
-            console.log('signer address',signer,signer.getAddress(),signer._address,address)
-            /* next, create the item */
-            let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken, signer.connectUnchecked());
-            let transaction = await contract.balanceOf(address);
-            let frdBal = ethers.utils.formatEther(transaction);
-            if(parseInt(frdBal) < 500) {
-              setShowAlertDanger(true);
-              seterrorMessage("You need a minimum of 500FRD (FifaRewardToken) to proceed!  ")
-              setShowLoading(false);
-              
-            }else {
-              console.log("upload Ipfs ran")
-              uploadToIPFS()
-            }
-            // setShowLoading(false);
-            // setShowBgOverlay(false);
-            // router.push('../nft/mynfts')
-          } catch (error) {
+          console.log('signer address',signer,signer.getAddress(),signer._address,address)
+          /* next, create the item */
+          let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken, signer.connectUnchecked());
+          let transaction = await contract.balanceOf(address);
+          let frdBal = ethers.utils.formatEther(transaction);
+          if(parseInt(frdBal) < 500) {
             setShowAlertDanger(true);
-            seterrorMessage(`transaction cancelled /${error}`);
-            setShowLoading(false)
+            seterrorMessage("You need a minimum of 500FRD (FifaRewardToken) to proceed!  ")
+            setShowLoading(false);
+            
+          }else {
+            console.log("upload Ipfs ran")
+            uploadToIPFS()
           }
+          // setShowLoading(false);
+          // setShowBgOverlay(false);
+          // router.push('../nft/mynfts')
+        } catch (error) {
+          setShowAlertDanger(true);
+          seterrorMessage(`transaction cancelled /${error}`);
+          setShowLoading(false)
         }
       }
-    }else {
-       setShowLoginComp(true)
     }
   }
 
@@ -169,11 +151,6 @@ export default function CreateItem() {
         setShowLoading(false)
       }
     }
-  }
-
-  const closeLoginModal = () => {
-    setShowBgOverlay(false);
-    setShowLoginComp(false);
   }
 
   const closeAlertModal = () => {
@@ -255,7 +232,6 @@ export default function CreateItem() {
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
       </HelmetExport>
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
-        {showloginComp && <LoginModal prop={'Create NFT'} onChange={closeLoginModal}/>}
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
         {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
         {showloading && <Loading/>}
@@ -270,7 +246,7 @@ export default function CreateItem() {
                       <h1>Add Traits</h1>
                     </div>
                     <div>
-                      <button type='button' onClick={closeAddTaits}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                      <button type='button' onClick={closeAddTaits}>{<FaXmark />}</button>
                     </div>
                 </div>
                 <div className={styles.addtraits_c_in}>
@@ -345,7 +321,7 @@ export default function CreateItem() {
               </div>
 
               <div className={styles.form_g}>
-                <button type='button' title='create nft' onClick={checkLogin} className={styles.create_btn}>
+                <button type='button' title='create nft' onClick={handleCreateNFT} className={styles.create_btn}>
                   Create NFT
                 </button>
               </div>

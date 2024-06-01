@@ -2,9 +2,6 @@ import React from 'react';
 import { useEffect, useState, useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 // import axios from 'axios';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { library } from "@fortawesome/fontawesome-svg-core";
-import { faClock, faEye, faEyeSlash } from "@fortawesome/free-regular-svg-icons";
 import DappSideBar from './Dappsidebar';
 // material
 import Loading from "./Loading";
@@ -26,20 +23,12 @@ import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import { ThemeContext } from '../contexts/theme-context';
 import DappNav from './Dappnav';
 import HelmetExport from 'react-helmet';
-import DappFooter from './DappFooter';
+import axios from 'axios';
 import FooterNavBar from './FooterNav';
 import RewardsBadge from './RewardsBadge';
 import { StakesMetadata } from './StakesMetaData';
-import { fas, faCheck, faCheckCircle, faChevronDown,faAlignJustify, faChevronUp,faXmark } from '@fortawesome/free-solid-svg-icons'
-import { faTwitter, faFontAwesome } from '@fortawesome/free-brands-svg-icons'
-import { faQuestionCircle } from '@fortawesome/free-regular-svg-icons';
+import { FaAlignJustify, FaChevronDown, FaClock, FaXmark } from 'react-icons/fa6';
 
-
-
-
-library.add(fas, faTwitter, faFontAwesome,faQuestionCircle, faCheck,faCheckCircle,faAlignJustify)
-// ----------------------------------------------------------------------
-library.add(faEye, faEyeSlash);
 const Staking = () =>  {
 
   const router = useRouter();
@@ -55,9 +44,9 @@ const Staking = () =>  {
   const [stakeactionsuccess, setActionSuccess] = useState(false);
   const [actionsuccessmessage, setActionSuccessMessage] = useState<string>('');
   const [dappsidebartoggle, setSideBarToggle] = useState(false);
-  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
-  const [dropdwnIcon3, setDropdownIcon3] = useState(<FontAwesomeIcon icon={faChevronDown} size='lg' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
+  // const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
   const [userId, setUserId] = useState("");  
   const [_stakeId, setStakeId] = useState<number>(); 
@@ -68,6 +57,9 @@ const Staking = () =>  {
   const [staketimeremaining,setStakeTimeRemaining] = useState<number>();
   const [isstakeremainingtimeset,setIsStakeRemainingTimeSet] = useState<boolean>(false);
   const [showwithdrawmodal,setShowWithdrawModal] = useState<boolean>(false);
+  const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
+  const [dollarequiv, setDollarEquiv] = useState<number>(0);
+  const [dollarprice, setDollarPrice] = useState<number>(0);
 
   const [stakesloaded, setStakesLoaded] = useState<boolean>(false);
   const [stakesdata,setStakesData] = useState<StakesMetadata[]>([]);
@@ -76,7 +68,7 @@ const Staking = () =>  {
   const [showLoading, setShowLoading] = useState(false);
   const [errorMessage, seterrorMessage] = useState("");
   const [earningprofitpercent, setEarningProfitPercent] = useState<any>(0.005);
-  const [stakeAmount, setstakeAmount] = useState<any>(500);
+  const [stakeAmount, setstakeAmount] = useState<any>(0);
   const [stakeduration, setstakeduration] = useState<any>(180);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<number[]>([]);
@@ -92,8 +84,8 @@ const Staking = () =>  {
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
 
-  const minInput1 = 500;
-  const maxInput1 = 50000;
+  const minInput1 = 0;
+  const maxInput1 = 1000000;
   const minInput2 = 180;
   const maxInput2 = 2360;
   const minProfitPercentage = 0.005;
@@ -147,18 +139,25 @@ const Staking = () =>  {
         const amt = stakeAmount + "000000000000000000";
         const stkamount = ethers.BigNumber.from(amt);
         const profpercent = profitpercent * 1000;
-        const reslt = await StakeContract.stake(stkamount,stakeduration,profpercent,{gasLimit: 4000000});
-        console.log(reslt)
-        reslt.wait().then(async (receipt:any) => {
-          // console.log(receipt);
-          if (receipt && receipt.status == 1) {
-              // transaction success.
+
+        try {
+          const reslt = await StakeContract.stake(stkamount,stakeduration,profpercent,{gasLimit: 3000000});
+          const receipt = await reslt.wait();
+
+          if (receipt && receipt.status === 1) {
+            // transaction success
               setShowLoading(false);
               setShowBgOverlay(false);
               setActionSuccess(true);
               setActionSuccessMessage('Stake ');
           }
-        })
+        } catch (error: any) {
+          console.log(error)
+          setShowAlertDanger(true);
+          seterrorMessage(error.code || error.message);
+          setShowLoading(false);
+        }
+
       }
         
     } catch (error:any) {
@@ -180,21 +179,29 @@ const Staking = () =>  {
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
             const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
-            const amt = stakeAmount + "000000000000000000";
-            const stkamount = ethers.BigNumber.from(amt);
-            const reslt = await FRDContract.approve(StakeCA,stkamount);
-            if(reslt) {
-              console.log("approve function",reslt)
-              StakeFRD(e);
-          }
+            if(stakeAmount < usdequivfrdamount) {
+              setShowAlertDanger(true);
+              seterrorMessage(`Minimum stake amount is ${usdequivfrdamount} FRD`);
+              setShowLoading(false);
+              return;
+            }else {
+              const amt = stakeAmount + "000000000000000000";
+              const stkamount = ethers.BigNumber.from(amt);
+              const reslt = await FRDContract.approve(StakeCA,stkamount);
+              if(reslt) {
+                console.log("approve function",reslt)
+                StakeFRD(e);
+              }
+            }
+            
         }
       }else {
         open();
       }
     } catch (error:any) {
-      console.log("approve error", error.code)
+      console.log("approve error", error)
       setShowAlertDanger(true);
-      seterrorMessage(error.code);
+      seterrorMessage(error.code || error.message);
     }
     
   }
@@ -376,60 +383,9 @@ const Staking = () =>  {
       const username_ = udetails.username;  
       if(username_) {
         setUsername(username_);
-        setUserId(udetails.userId)
-        setreferralLink(`https://fifareward.io/register/${udetails.userId}`);
-      }
-    }else {
-      router.push(`/signin`);
-    }
-
-    const getStakes = async () => {
-      try {
-        // setShowLoading(true);
-        // setShowBgOverlay(true);
-        if(walletProvider) {
-
-          const provider = new ethers.providers.Web3Provider(walletProvider as any);
-          const signer = provider.getSigner();
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const stks = await StakeContract.loadUserStakes(address);
-          console.log('stake data',stks);
-          await stks.forEach(async (element:any) => {
-            if(element) {
-              
-              let item: StakesMetadata = {
-                stakeId: element.stakeId,
-                rewardTime: element.rewardTime,
-                stakeDuration: element.stakeDuration,
-                profitpercent: element.profitpercent,
-                stakeAmount: element.stakeAmount,
-                currentstakeReward: element.currentstakeReward,
-                stakeRewardPerDay: element.stakeRewardPerDay,
-                totalstakeReward: element.totalstakeReward,
-                totalReward: element.totalReward,
-                isActive: element.isActive,
-                stakerAddress: element.stakerAddress
-              }
-              const getstaketimeremaining = await StakeContract.getStakeRemainingTime(item.stakeId?.toNumber());
-              console.log("remaining stake time",getstaketimeremaining);
-              setStakeTimeRemaining(getstaketimeremaining.toNumber());
-              console.log("st time oo",getstaketimeremaining.toNumber());
-              setIsStakeRemainingTimeSet(true);
-              stakesdata.push(item);
-              setStakesData(stakesdata);
-              setStakesLoaded(true);
-              setShowLoading(false);
-              return item;
-            }
-          });
-        }
-      }catch(error) {
-        setShowAlertDanger(true);
-        seterrorMessage("No active stake found");
       }
     }
-    getStakes();
-    
+
     // Calculate the profit percentage based on the new values of input1 and input2
     const calculateProfitPercentage = (val1: any, val2: any) => {
       const range1 = maxInput1 - minInput1;
@@ -494,8 +450,72 @@ const Staking = () =>  {
   };
   
   
- }, [userId, router,username,address,chainId,isConnected,stakeAmount,stakeduration,walletProvider,isDragging,initialValues])
+ }, [router,username,address,chainId,isConnected,stakeAmount,stakeduration,walletProvider,isDragging,initialValues])
 
+ useEffect(() => {
+  const getUSDEQUIVFRDAMOUNT =  async () => {
+    try {
+      const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+      }  
+      const {data} = await axios.get("../../../../api/gettokenprice", config);
+      setDollarPrice(data.usdprice);
+      setUsdEquivFrdAmount(data.usdequivalentfrdamount);
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    }
+  }
+  getUSDEQUIVFRDAMOUNT();
+
+  const getStakes = async () => {
+    try {
+      // setShowLoading(true);
+      // setShowBgOverlay(true);
+      if(walletProvider) {
+
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const stks = await StakeContract.loadUserStakes(address);
+        console.log('stake data',stks);
+        await stks.forEach(async (element:any) => {
+          if(element) {
+            
+            let item: StakesMetadata = {
+              stakeId: element.stakeId,
+              rewardTime: element.rewardTime,
+              stakeDuration: element.stakeDuration,
+              profitpercent: element.profitpercent,
+              stakeAmount: element.stakeAmount,
+              currentstakeReward: element.currentstakeReward,
+              stakeRewardPerDay: element.stakeRewardPerDay,
+              totalstakeReward: element.totalstakeReward,
+              totalReward: element.totalReward,
+              isActive: element.isActive,
+              stakerAddress: element.stakerAddress
+            }
+            const getstaketimeremaining = await StakeContract.getStakeRemainingTime(item.stakeId?.toNumber());
+            console.log("remaining stake time",getstaketimeremaining);
+            setStakeTimeRemaining(getstaketimeremaining.toNumber());
+            console.log("st time oo",getstaketimeremaining.toNumber());
+            setIsStakeRemainingTimeSet(true);
+            stakesdata.push(item);
+            setStakesData(stakesdata);
+            setStakesLoaded(true);
+            setShowLoading(false);
+            return item;
+          }
+        });
+      }
+    }catch(error) {
+      setShowAlertDanger(true);
+      seterrorMessage("No active stake found");
+    }
+  }
+  getStakes();
+ },[])
 
  const checkMobile = () => {
   if (window.innerWidth < 991) {
@@ -524,8 +544,8 @@ const Staking = () =>  {
     // Calculate the proportional change for input1
     const input2Ratio = (newValue - minInput2) / (maxInput2 - minInput2);
     const newInput1Value = minInput1 + input2Ratio * (maxInput1 - minInput1);
-
-    setstakeAmount(newInput1Value);
+    setDollarEquiv(Math.ceil(newInput1Value * dollarprice));
+    setstakeAmount(Math.ceil(newInput1Value));
   };
 
   const closeWAlert = () => {
@@ -567,12 +587,6 @@ const Staking = () =>  {
     setShowWithdrawModal(false);
   }
 
-  const logout = () => {
-    // Simulate a logout action
-    localStorage.removeItem('userInfo');
-    router.push(`/signin`);
-  };
-
   const closeBgModal = () => {
     setShowLoading(false);
     setShowBgOverlay(false);
@@ -598,7 +612,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                   <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FontAwesomeIcon icon={faAlignJustify} size='lg' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
               </button>
               <div>
                 <RewardsBadge />
@@ -629,7 +643,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                           <h1> Withdraw Stake </h1>
                         </div>
                         <div>
-                          <button type='button' onClick={closewithdrawModalDiv}>{<FontAwesomeIcon icon={faXmark}/>}</button>
+                          <button type='button' onClick={closewithdrawModalDiv}>{<FaXmark />}</button>
                         </div>
                     </div>
                     <div className={dappstyles.width_stake_c_in}>
@@ -663,7 +677,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                               <h3>Earn more FRD through staking</h3>
                               <div className={dappstyles.s_m_in }>
                                   <div className={dappstyles.s_m_inna}>
-                                    <div><label>Stake Amount</label><span className={dappstyles.stkamt_p}> {stakeAmount.toLocaleString()} FRD</span></div>
+                                    <div><label>Stake Amount</label><span className={dappstyles.stkamt_p}> {stakeAmount.toLocaleString()} FRD</span> ${dollarequiv.toLocaleString()+'.00'}</div>
                                     <div className={dappstyles.amountprog}>
                                       <input title='input'
                                         type="range"
@@ -767,12 +781,12 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                   <div className={dappstyles.s_m}>
                                     {isstakeremainingtimeset && 
                                           <>
-                                            <div className={dappstyles.staketimer}> <FontAwesomeIcon icon={faClock} style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={staketimeremaining} /></div>
+                                            <div className={dappstyles.staketimer}> <FaClock style={{marginRight: '5px',marginTop: '2px'}}/> <CountdownTimer time={staketimeremaining} /></div>
                                           </>
                                         }
                                     <div className={dappstyles.s_m_in }>
                                         <div className={dappstyles.cw_btn_div}>
-                                            <div className={dappstyles.crwd}>Reward: <span>{reward?.toString()}</span> FRD</div>
+                                            <div className={dappstyles.crwd}>Reward: <span>{Math.ceil(reward?.toString())}</span> FRD</div>
                                             <div className={dappstyles.st_btns}>
                                                 <div>
                                                     <button type='button' className={dappstyles.calcrwd} onClick={(e) => calculateReward(stake.stakeId.toNumber(),e.target)}>Calc Reward</button>

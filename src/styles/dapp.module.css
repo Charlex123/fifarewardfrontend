@@ -465,7 +465,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     background-color: orangered;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div button.withde {
-    background-color: rgba(202, 163, 149, 0.547);color: #f1f1f1;
+    background-color: rgba(202, 163, 149, 0.547);color: #f1f1f1;cursor: not-allowed;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div button.stakebtn:active,.main .stake .stake_mod .s_m_in .cw_btn_div button.stakebtn:focus {
     background-color: #7e837e;
