@@ -60,7 +60,6 @@ const [betprediction,setBetPrediction] = useState<string>('');
 const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
 const [usdprice, setUsdPrice] = useState<any>();
 const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
-const [bnbPrice, setBnbPrice] = useState<number>();
 const [bnbdollarPrice, setBnbDollarPrice] = useState<number>();
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
 const [betconditions,setBetConditions] = useState<BetConditions[]>([]);

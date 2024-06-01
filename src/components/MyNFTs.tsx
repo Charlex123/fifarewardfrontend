@@ -59,7 +59,6 @@ const MyNFTs: React.FC<{}> = () =>  {
     const [itemname, setItemName] = useState<any>('');
     const [contractaddress, setContractAddress] = useState<any>('');
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
-    const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
     const [isSideBarToggled, setIsSideBarToggled] = useState(false)
     const [_itemId, set_ItemId] = useState<number>();
     const [itemBids,setItemBids] = useState<NFTBidMetadata[]>([]);
@@ -172,7 +171,6 @@ const MyNFTs: React.FC<{}> = () =>  {
                             setNFTLoaded(true);
                             setShowUnListedNFT(true);
                             setShowLoading(false);
-                            setwindowloadgetbetruntimes(1);
                             return item;
                           }
                         });
@@ -236,7 +234,6 @@ const MyNFTs: React.FC<{}> = () =>  {
                             setNFTLoaded(true);
                             setShowLoading(false);
                             setShowListedNFT(true);
-                            setwindowloadgetbetruntimes(1);
                             // const getitembids = await contract.getBidsForItem(item.itemId?.toString());
                             getBnbPrice().then((bnbPriceInUsd: any) => {
                                 if (bnbPriceInUsd !== null) {
@@ -367,6 +364,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
       const signer = provider.getSigner();
       /* next, create the item */
+      console.log(" liste det",nftItemPrice,bidduration,minbidamount)
       if(listingItemTokenId && nftItemPrice && bidduration > 0 && minbidamount > 0) {
         try {
           setShowLoading(true);
