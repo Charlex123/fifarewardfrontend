@@ -9,6 +9,7 @@ export interface NFTFullMetadata {
     seller: string,
     creator: string,
     owner: any,
+    decimalplaces: BigNumber,
     // following properties only exist if the NFT has been minted
     tokenId?: BigNumber,
     tokenURI?: string,

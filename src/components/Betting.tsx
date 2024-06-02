@@ -637,7 +637,7 @@ const closeBgModal = () => {
               {/* {isbetDataLoaded ? */}
                 <div>
                   <h3>Open Bets</h3>
-                  {<LoadOpenBetsData onMount={setLoadOpenBetsDataStatus}/>}
+                  <LoadOpenBetsData onMount={setLoadOpenBetsDataStatus}/>
                 </div>  
                 {/* <div><Loading /></div> */}
                 {/* } */}

@@ -120,7 +120,7 @@ const NFTArt: React.FC<{}> = () =>  {
                         // console.log("ghyup opi",nftitemremtime)
                         const nftitem = await featurescontract.getAuctionItem(nft[1]);
                         if(nftitem && nftitem !== "") {
-                            let ipfsurl = nftitem[3];
+                            let ipfsurl = nftitem[4];
                             let ipfsurlarray = ipfsurl.split('//');
                             
                             let ipfsmetarray = ipfsurlarray[1].split('/');
@@ -137,6 +137,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                 seller: nftitem.seller,
                                 creator: nftitem.creator,
                                 owner: nftitem.owner,
+                                decimalplaces: nftitem.decimalplaces,
                                 tokenId: nftitem.tokenId,
                                 tokenURI: nftitem.tokenURI,
                                 price: nftitem.sellingprice,
@@ -206,7 +207,7 @@ const NFTArt: React.FC<{}> = () =>  {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
 
         
-    },[ nft, nftLoaded, walletPrivKey, walletProvider])
+    },[])
 
     const bidNFTs = async () => {
         

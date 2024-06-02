@@ -22,16 +22,10 @@ import ActionSuccessModal from './ActionSuccess';
 import BgOverlay from './BgOverlay';
 import HelmetExport from 'react-helmet';
 import { FaCircle, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
-import { tree } from 'next/dist/build/templates/app-page';
+
 dotenv.config();
 // material
 // component
-
-interface KeyWordSearch {
-  match: string,
-  openedby: string,
-  betstatus: string
-}
 
 
 
@@ -262,40 +256,64 @@ useEffect(() => {
         let divP = e.parentElement.parentElement.parentElement;
         
         setShowLoading(true);
-          let erAlertDv = e.parentElement.parentElement.previousElementSibling;
-          if(address === openedby) {
-            erAlertDv.innerHTML = "You can't join a bet you opened";
-            return;
-          }
-          if(remainingparticipantscount === 0) {
-            erAlertDv.innerHTML = "This bet is closed";
-            return;
-          }
-          if(bettingteam === '') {
-            erAlertDv.innerHTML = "You must select a team!";
-            return;
-          }else {
-            erAlertDv.innerHTML = "";
-          }
+          try {
+            const provider = new ethers.providers.Web3Provider(walletProvider as any);
+                const signer = provider.getSigner();
+    
+                /* next, create the item */
+                let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+                
+                let transaction = await FRDcontract.balanceOf(address);
+                
+                let frdBal = ethers.utils.formatEther(transaction);
 
-          if(betprediction === '') {
-            erAlertDv.innerHTML = "You must choose a prediction!";
-            return;
-          }else {
-            erAlertDv.innerHTML = "";
-          }
-
-          const arrayofparticpants = participants.split(',');
+                let erAlertDv = e.parentElement.parentElement.previousElementSibling;
           
-          if(arrayofparticpants.indexOf(address!) !== -1) {
-            erAlertDv.innerHTML = "You can't join this bet again!";
-            return;
-          }else {
-            erAlertDv.innerHTML = "";
+                if(address === openedby) {
+                  erAlertDv.innerHTML = "You can't join a bet you opened";
+                  return;
+                }
+                if(remainingparticipantscount === 0) {
+                  erAlertDv.innerHTML = "This bet is closed";
+                  return;
+                }
+                if(bettingteam === '') {
+                  erAlertDv.innerHTML = "You must select a team!";
+                  return;
+                }else {
+                  erAlertDv.innerHTML = "";
+                }
+
+                if(betprediction === '') {
+                  erAlertDv.innerHTML = "You must choose a prediction!";
+                  return;
+                }else {
+                  erAlertDv.innerHTML = "";
+                }
+
+                const arrayofparticpants = participants.split(',');
+                
+                if(arrayofparticpants.indexOf(address!) !== -1) {
+                  erAlertDv.innerHTML = "You can't join this bet again!";
+                  return;
+                }else {
+                  erAlertDv.innerHTML = "";
+                }
+
+                if(parseInt(frdBal) < betAmount) {
+                  setShowAlertDanger(true);
+                  seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!`)
+                  setShowLoading(false);
+                }else {
+                  divP.style.display = "none";
+                  Approve(betId, betAmount)
+                }
+                
+                
+          } catch (error) {
+            
           }
-          divP.style.display = "none";
-          Approve(betId, betAmount)
-        
+          
     } catch (error: any) {
       console.log(error)
     }
@@ -343,9 +361,9 @@ const setBetteam = (team:any) => {
 } 
 
 const closePBET = (divId:any) => {
-  let svg = divId.getAttribute('data-icon');
-  let path = divId.getAttribute('fill');
-  
+  let svg = divId.getAttribute('fill');
+  let path = divId.getAttribute('d');
+  console.log("here ppp",divId)
   // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
 
   if(svg !== null && svg !== undefined) {
@@ -358,9 +376,10 @@ const closePBET = (divId:any) => {
   }
 }
 
-const Cancel = (e:any) => {
-  console.log(e)
-}
+// const Cancel = (e:any) => {
+//   console.log("kerlopppppppp")
+//   console.log(e)
+// }
 
 // const setLoadOpenBetsDataStatus = () => {
 //   setIsBetDataLoaded(true)
@@ -1006,9 +1025,9 @@ const closeBgModal = () => {
                                     <div>
                                       <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betId.toNumber(),openbet.betamount,openbet.totalbetparticipantscount.toString(),openbet.openedBy,openbet.remainingparticipantscount.toNumber())} title='button'>Confirm</button>
                                     </div>
-                                    <div>
+                                    {/* <div>
                                       <button type='button' className={openbetsstyle.cancel_btn} onClick={(e) => Cancel(e.target)} title='button'>Cancel</button>
-                                    </div>
+                                    </div> */}
                                 </div>
                             </div>
                           <div>

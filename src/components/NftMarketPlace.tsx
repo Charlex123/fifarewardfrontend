@@ -80,7 +80,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                     if(listednfts.length > 0) {
                       await listednfts.forEach(async (element:any) => {
                         if(element[1] && element[1] !== "") {
-                          let ipfsurl = element[2];
+                          let ipfsurl = element[4];
                           let ipfsurlarray = ipfsurl.split('//');
                           
                           let ipfsmetarray = ipfsurlarray[1].split('/');
@@ -98,6 +98,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                             seller: element.seller,
                             creator: element.creator,
                             owner: element.owner,
+                            decimalplaces: element.decimalplaces,
                             // following properties only exist if the NFT has been minted
                             tokenId: element.tokenId,
                             tokenURI: element.tokenURI,
@@ -236,10 +237,10 @@ const closeBgModal = () => {
                                  </div>
                                  <div className={styles.nft_list_p}>
                                    <div>
-                                     <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{listedNFT.price?.toNumber()}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
+                                     <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{(listedNFT.price!.toNumber())/(listedNFT.decimalplaces!.toNumber())}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
                                    </div>
                                    <div>
-                                     <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{listedNFT.minbidamount?.toNumber()}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
+                                     <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{(listedNFT.minbidamount?.toNumber())/(listedNFT.decimalplaces!.toNumber())}{listedNFT.chainId = 97 ? 'BNB': 'MATIC'}</div>
                                    </div>
                                    {/* <div>
                                      <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{listedNFT.sold == false ? 'No' : 'Yes'}</div>
@@ -247,7 +248,7 @@ const closeBgModal = () => {
                                  </div>
                                  <div className={styles.nft_list_p}>
                                    <div>
-                                     <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{listedNFT.biddingduration?.toNumber()} Days</span>
+                                     <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor((listedNFT.biddingduration?.toNumber())/86400000)} Days</span>
                                    </div>
                                  </div>
                              </div>

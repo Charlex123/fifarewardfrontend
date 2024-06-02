@@ -6,19 +6,19 @@ import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react'
 const projectId = process.env.NEXT_PUBLIC_WALLETCONNECTPROJECTID;
 // 2. Set chains
 const mainnet = {
-  chainId: 1,
-  name: 'Ethereum',
-  currency: 'ETH',
-  explorerUrl: 'https://etherscan.io',
-  rpcUrl: 'https://cloudflare-eth.com'
+  chainId: 56,
+  name: 'BNB Chain',
+  currency: 'BNB',
+  explorerUrl: 'https://bscscan.com/',
+  rpcUrl: 'https://bsc-dataseed.binance.org/'
 }
 
-// 3. Create a metadata object
+// 3. Create modal
 const metadata = {
   name: 'FifaReward',
-  description: 'Web3Modal Example',
-  url: 'https://web3modal.com', // origin must match your domain & subdomain
-  icons: ['https://avatars.githubusercontent.com/u/37784886']
+  description: 'FifaReward Betting and Staking Dapp',
+  url: 'https://fifareward.io',
+  icons: ['https://avatars.mywebsite.com/']
 }
 
 // 4. Create Ethers config
@@ -31,22 +31,22 @@ const ethersConfig = defaultConfig({
   enableInjected: true, // true by default
   enableCoinbase: true, // true by default
   rpcUrl: '...', // used for the Coinbase SDK
-  defaultChainId: 1, // used for the Coinbase SDK
+  defaultChainId: 97 // used for the Coinbase SDK
 })
 
-// 5. Create a Web3Modal instance
+
 createWeb3Modal({
   ethersConfig,
-  chains: [mainnet],
-  projectId,
   themeVariables: {
-    '--w3m-accent' : '#E28304 !important'
+    '--w3m-accent': '#E28304 !important'
   },
+  chains: [mainnet],
   enableEmail: true,
+  projectId,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true // Optional - false as default
 })
 
 export function Web3Modal({ children }) {
-  return children
+  return children;
 }

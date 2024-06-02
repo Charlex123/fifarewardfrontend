@@ -7,21 +7,28 @@
 @import url("https://fonts.googleapis.com/css?family=Caveat");
 
 .footernav {
-    height: 50px;align-items: center;vertical-align: auto;position: fixed;
+    height: inherit;align-items: center;vertical-align: auto;position: fixed;
     bottom: 0;right: 0;left: 0;z-index: 99999999999999999999999999999999999999999999999999999999999999999999999999;
     background: rgb(13,20,24);
     background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);
 }
+.con {
+    width: 100%;text-align: right;margin-right: 0 !important;align-items: flex-end !important;display: flex;
+    flex-direction: row;margin-top: 5px;
+}
+.con div {
+    text-align: right;margin-right: 0;margin-left: auto;padding-right: 5px;
+}
 .footernav .nav_container {
     display: flex;vertical-align: auto;justify-content: space-between;width: 100%;align-items: center;
     font-family: "Poppins",sans-serif;color: rgb(230, 224, 224);height: inherit;
-    margin: auto;z-index: 0;top: 0;right: 0;left: 0;padding: 5px 15px 5px 15px;
+    margin: auto;z-index: 0;top: 0;right: 0;left: 0;padding: 5px 15px 5px 15px;bottom: 0;
 }
 .footernav .nav_container .linka a {
-    font-size: 14px;text-align: center;margin: auto;margin-top: 0;color: #e2d7d7;text-decoration: none;
+    font-size: 14px;text-align: center;margin: auto;margin-top: 0;color: #e2d7d7;text-decoration: none;margin-bottom: 5px;
 }
 .footernav .nav_container .linka a .tc {
-    margin: 0 auto;text-align: center;margin-bottom: -5px;
+    margin: 0 auto;text-align: center;margin-bottom: -5px;font-size: 22px;
 }
 .footernav .nav_container .signin a {
     border: 1px solid #e2d7d7;border-radius: 120px;padding: 4px 8px;font-size: 14px;

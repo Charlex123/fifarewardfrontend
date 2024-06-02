@@ -419,21 +419,15 @@ const handleOpenBetForm = async (e:any) => {
                 const provider = new ethers.providers.Web3Provider(walletProvider as any);
                 const signer = provider.getSigner();
     
-                console.log('signer address',signer,signer.getAddress(),signer._address,address)
                 /* next, create the item */
                 let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
                 
-                // const tamount = ethers.BigNumber.from("5000000000000000000000000");
-                // let fundwalletaddress = FRDcontract.transfer("0x6df7E51F284963b33CF7dAe442E5719da69c312d",tamount);
-                // console.log("fundwalletaddress result",fundwalletaddress);
-                // return;
                 let transaction = await FRDcontract.balanceOf(address);
                 
                 let frdBal = ethers.utils.formatEther(transaction);
                 let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
                 let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
-                console.log("bet amount ooooooo",betAmount)
-                inputAlertDiv.innerHTML = `You below ${betAmount} FRD`;
+                
                 
                 if((betAmount < usdequivfrdamount) || betAmount == 0) {
                     inputAlertDiv.innerHTML = `You can't bet below ${usdequivfrdamount.toLocaleString()} FRD`;
@@ -1184,7 +1178,7 @@ const closeBgModal = () => {
                 {/* {isbetDataLoaded ? */}
                 <div>
                   <h3>Open Bets</h3>
-                  {<LoadOpenBetsData onMount={setLoadOpenBetsDataStatus}/>}
+                  <LoadOpenBetsData onMount={setLoadOpenBetsDataStatus}/>
                 </div> 
                 {/* <div><Loading /></div>
                 } */}
