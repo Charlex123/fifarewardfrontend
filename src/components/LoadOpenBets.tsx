@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import betstyle from '../styles/loadsampleopenbets.module.css'
-import axios from 'axios';
 import { Bets } from './BetsMetadata';
 import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import BettingfeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
-import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 
 type Props = {
     onMount: () => void
@@ -15,12 +13,11 @@ type Props = {
 
 const LoadSampleOpenBetsData:React.FC<Props> = ({onMount}) => {
       const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_FEATURES_CA;
-      const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
       const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
       const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
-      const { open, close } = useWeb3Modal();
+      const { open } = useWeb3Modal();
+      const { isConnected } = useWeb3ModalAccount();
       const { walletProvider } = useWeb3ModalProvider();
-      const { address, chainId, isConnected } = useWeb3ModalAccount();
 
       const [betData,setBetData] = useState<Bets[]>([]);
 

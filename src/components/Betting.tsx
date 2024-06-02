@@ -9,11 +9,10 @@ import footballb from '../assets/images/footaballb.jpg';
 import moment from 'moment';
 import Calendar from 'react-calendar';
 import Loading from './Loading';
-import { Bets } from './BetsMetadata';
+import LoadOpenBetsData from './LoadOpenBets';
 import ActionSuccessModal from './ActionSuccess';
 import LeagueFixtures from './LeagueFixtures';
 import BgOverlay from './BgOverlay';
-import LoadSampleOpenBetsData from './LoadOpenBets';
 import LoadFixturesSearchResults from './LoadFixturesSearchResults';
 import FixturesByDate from './FixturesByDate';
 import FixturesByCalenderDate from './FixturesByCalenderDate';
@@ -638,8 +637,8 @@ const closeBgModal = () => {
               {/* {isbetDataLoaded ? */}
                 <div>
                   <h3>Open Bets</h3>
-                  {<LoadSampleOpenBetsData onMount={setLoadOpenBetsDataStatus}/>}
-                </div> 
+                  {<LoadOpenBetsData onMount={setLoadOpenBetsDataStatus}/>}
+                </div>  
                 {/* <div><Loading /></div> */}
                 {/* } */}
                 <div className={bettingstyle.opb_full_list}><a href='../../betting/openbetslists'>See All Open Bets ...</a></div>

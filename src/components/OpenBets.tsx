@@ -60,10 +60,8 @@ const [betprediction,setBetPrediction] = useState<string>('');
 const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
 const [usdprice, setUsdPrice] = useState<any>();
 const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
-const [bnbdollarPrice, setBnbDollarPrice] = useState<number>();
 const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
 const [betconditions,setBetConditions] = useState<BetConditions[]>([]);
-const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
 const [showbetconditions, setShowBetConditions] = useState<boolean>(false);
 const [filterbetAmount, setfilterbetamount] = useState<number>(0);
 const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
@@ -250,6 +248,7 @@ useEffect(() => {
             }
           }
         } catch (error: any) {
+          console.log("err der",error)
           setShowAlertDanger(true);
           seterrorMessage(error.code || error.message);
           setShowLoading(false);
@@ -411,23 +410,6 @@ const closeAlertModal = () => {
   setError(false)
 }
 
-const getKeyWordSearchN = async (keyword:any) => {
-  // search database and return documents with similar keywords
-  setSearchKeyWord(keyword)
-  const config = {
-      headers: {
-          "Content-type": "application/json"
-      }
-  }  
-  const {data} = await axios.post("https://fifareward.onrender.com/api/bets/searchbetkeywords", {
-      searchkeyword
-  }, config);
-  if(data) {
-    setShowSearchOptions(true);
-    setKeywordSearchResults(data.keywordResult);
-  }
-  
-}
 
 const loadSearchResults = async () => {
   setShowBgOverlay(true);

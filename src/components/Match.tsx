@@ -9,7 +9,6 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
-import BettingfeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import footballg from '../assets/images/footballg.jpg';
 import footballb from '../assets/images/footaballb.jpg';
 import SportsWidget from './SportsWidget';
@@ -21,7 +20,6 @@ import AlertDanger from './AlertDanger';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import LoadOpenBetsData from './LoadOpenBets';
-import LoginModal from './LoginModal';
 import HelmetExport from 'react-helmet';
 import { Fixture } from './FixtureMetadata';
 import { Team } from './FixtureStatisticMetadata';
@@ -82,7 +80,6 @@ const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
 const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 const [username, setUsername] = useState<string>("");
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
-const [showloginComp,setShowLoginComp] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
 const [dollarequiv, setDollarEquiv] = useState<number>();
 const [usdprice, setUsdPrice] = useState<any>();
@@ -477,9 +474,7 @@ const handleOpenBetForm = async (e:any) => {
             }
         }else {
             setShowBgOverlay(true);
-            setShowLoginComp(true);
             e.parentElement.parentElement.parentElement.style.display = 'none';
-            console.log('showlogincomp',showloginComp)
         }
 
         
@@ -488,21 +483,6 @@ const handleOpenBetForm = async (e:any) => {
     }
 }
   
-const showloginCompNow = () => {
-    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    // hiw_bgoverlay.style.display = 'block';
-    setShowBgOverlay(true);
-    setShowLoginComp(true);
-}
-
-const closeLoginModal = () => {
-    // let hiw_bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-    // hiw_bgoverlay.style.display = 'none';
-    setShowLoading(false);
-    setShowBgOverlay(false);
-    setShowLoginComp(false);
-}
-
 const closeAlertModal = () => {
   setShowAlertDanger(false);
   setShowBgOverlay(false);
@@ -837,11 +817,6 @@ const closeBgModal = () => {
           <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam?.replace(/-/g, ' ')} {'>'} {leagueparam?.replace(/-/g, ' ')} {'>'} {matchparam?.replace(/-/g, ' ')}</a>
         </div> }
 
-        {showloginComp && 
-            <div>
-                <LoginModal prop={'Open Bet'} onChange={closeLoginModal}/>
-            </div>
-        }
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
         {betopensuccess && 
             <ActionSuccessModal prop='Bet' onChange={closeActionModalComp}/>
@@ -1204,20 +1179,7 @@ const closeBgModal = () => {
           </div>
           <div className={matchstyle.openbets_list}>
             <div className={matchstyle.opb_h}>
-                {!isLoggedIn &&
-                    <div className={matchstyle.opb_login} id="opb_login">
-                        <h3>Login To Open Bet</h3>
-                        <div className={matchstyle.opblogin_btns}>
-                            <div>
-                                <button type='button' title='button' onClick={showloginCompNow}>Login </button>
-                            </div>
-                            <div>
-                                <a href='/register' title='link'>Register </a>
-                            </div>
-                        </div>
-                    </div>
-                }
-              
+                
               <div className={matchstyle.opb}>
                 {/* {isbetDataLoaded ? */}
                 <div>
