@@ -71,8 +71,7 @@ const { open } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
 const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
-const { address, chainId, isConnected } = useWeb3ModalAccount();
-
+const { address, isConnected } = useWeb3ModalAccount();
 const minfilterbyamount = usdequivfrdamount;
 const maxfilterbyamount = 500000;
 
@@ -80,7 +79,6 @@ useEffect(() => {
   if(!isConnected) {
     open()
   }
-
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
   if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
@@ -289,7 +287,7 @@ useEffect(() => {
 
           const arrayofparticpants = participants.split(',');
           
-          if(arrayofparticpants.indexOf(username) !== -1) {
+          if(arrayofparticpants.indexOf(address!) !== -1) {
             erAlertDv.innerHTML = "You can't join this bet again!";
             return;
           }else {

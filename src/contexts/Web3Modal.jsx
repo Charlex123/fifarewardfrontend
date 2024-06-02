@@ -39,6 +39,9 @@ createWeb3Modal({
   ethersConfig,
   chains: [mainnet],
   projectId,
+  themeVariables: {
+    '--w3m-accent' : '#E28304 !important'
+  },
   enableEmail: true,
   enableAnalytics: true, // Optional - defaults to your Cloud configuration
   enableOnramp: true // Optional - false as default
