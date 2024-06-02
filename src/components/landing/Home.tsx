@@ -4,6 +4,7 @@ import { useContext, useState, useEffect } from 'react';
 // import { OutreachButton } from './styles/ButtonVariants.styled'
 // import {HashRouter as Router,} from "react-router-dom";
 // import Container from 'react-bootstrap/Container';
+import Head from 'next/head';
 import Image from 'next/image';
 import Helmet from 'react-helmet';
 import styles from '../../styles/landing.module.css'
@@ -157,10 +158,31 @@ useEffect(() => {
 
   return (
     <>
-    <Helmet>
+    <Head>
+        <meta charSet="utf-8" />
+        <link rel="icon" href="https://www.fifareward.io/favicon.ico" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <meta name="theme-color" content="#000000" />
+        <meta name="description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+
+        <meta property="og:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta property="og:url" content="https://www.fifareward.io" />
+        <meta property="og:type" content="article" />
+        <meta property="og:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta property="og:image" content="https://www.fifareward.io/fifarewardlogo.png" />
+
+        <meta name="twitter:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta name="twitter:url" content="https://www.fifareward.io" />
+        <meta name="twitter:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta name="twitter:image" content="https://www.fifareward.io/fifarewardlogo.png" />
+        <meta name="twitter:card" content="summary_large_image" />
+
+        <link rel="apple-touch-icon" href="https://www.fifareward.io/favicon.ico" />
+        <link rel="manifest" href="https://www.fifareward.io/manifest.json" />
+
         <title>FifaReward | Bet, Stake, Mine and craeate NFTs of football legends</title>
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
-    </Helmet>
+    </Head>
     <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
       <div className={styles.overlay_d}></div>
       <div className={styles.blk}>
