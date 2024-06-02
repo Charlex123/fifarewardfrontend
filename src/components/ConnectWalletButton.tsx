@@ -1,3 +1,3 @@
 export default function ConnectWallet() {
-    return <w3m-button size="sm" balance="hide" label="Login"/>
+    return <div style={{marginRight: '5px'}}><w3m-button size="sm" balance="hide" label="Login"/></div>
   }

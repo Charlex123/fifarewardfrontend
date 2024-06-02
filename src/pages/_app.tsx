@@ -6,7 +6,7 @@ import '../styles/globals.css';
 import BgOverlay from "../components/BgOverlay";
 import Loading from "../components/Loading";
 import '@fortawesome/fontawesome-svg-core/styles.css';
-import { Web3ModalProvider } from "../contexts/Web3Modal";
+import { Web3Modal } from "../contexts/Web3Modal";
 // import '//widgets.api-sports.io/2.0.3/widgets.js';
 {/* <script type="module" src="https://widgets.api-sports.io/2.0.3/widgets.js"></script> */}
 
@@ -67,9 +67,9 @@ const App = ({ Component, pageProps } : AppProps) => {
       {loading && <Loading />}
       {showbgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <ThemeContextProvider>
-        <Web3ModalProvider>
+        <Web3Modal>
           <Component {...pageProps} />
-        </Web3ModalProvider>
+        </Web3Modal>
       </ThemeContextProvider>
     </>
   );
