@@ -534,7 +534,7 @@ const MyNFTs: React.FC<{}> = () =>  {
   
       // Multiply the number by the multiplier to shift the decimal point
       const result = number * multiplier;
-  
+      console.log("popppp here",result)
       setNftItemPrice(result);
       return result;
   }
