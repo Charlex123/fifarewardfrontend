@@ -17,5 +17,6 @@ export interface NFTFullMetadata {
     price?: BigNumber,
     itemId?: BigNumber,
     biddingduration: BigNumber,
+    bidduration: BigNumber,
     minbidamount: BigNumber
 }

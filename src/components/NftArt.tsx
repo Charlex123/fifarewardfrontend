@@ -32,14 +32,12 @@ const NFTArt: React.FC<{}> = () =>  {
     const { walletProvider } = useWeb3ModalProvider();
     const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
     const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
-    const { address, chainId, isConnected } = useWeb3ModalAccount();
-    const { disconnect } = useDisconnect();
+    const { isConnected } = useWeb3ModalAccount();
     const [username, setUsername] = useState<string>("");
     const [bnbPrice, setBnbPrice] = useState<number>();
     const [bnbdollarPrice, setBnbDollarPrice] = useState<number>();
     const [nftLoaded,setNFTLoaded] = useState<boolean>(false);
     const [nftbidsLoaded,setNFTBidsLoaded] = useState<boolean>(false);
-    const [userId, setUserId] = useState<number>();
     const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
     const [errorMessage,seterrorMessage] = useState<string>("");
     const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
@@ -136,6 +134,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                 chainId: nftitem.chainId,
                                 seller: nftitem.seller,
                                 creator: nftitem.creator,
+                                bidduration: nftitem.bidduration,
                                 owner: nftitem.owner,
                                 decimalplaces: nftitem.decimalplaces,
                                 tokenId: nftitem.tokenId,
@@ -158,7 +157,6 @@ const NFTArt: React.FC<{}> = () =>  {
                                 }
                             });
                             const gettimeremaining = await featurescontract.getAuctionItemRemainingTime(item.itemId?.toNumber());
-                            console.log(" get rem time",gettimeremaining.toNumber());
                             if(gettimeremaining) {
                                 setAuctionTimeRemaining(gettimeremaining.toNumber());
                                 setIsAuctionRemainingTimeSet(true);
@@ -207,7 +205,7 @@ const NFTArt: React.FC<{}> = () =>  {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
 
         
-    },[])
+    },[nft])
 
     const bidNFTs = async () => {
         
@@ -234,17 +232,29 @@ const NFTArt: React.FC<{}> = () =>  {
                 try {
                     
                     let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
-                    const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
                     
-                    bidnftC.wait().then(async (receipt:any) => {
-                        // console.log(receipt);
-                        if (receipt && receipt.status == 1) {
-                            // transaction success.
+                    try {
+                        const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
+                
+                        try {
+                        const receipt = await bidnftC.wait();
+                        if (receipt && receipt.status === 1) {
                             setShowLoading(false);
                             setShowBgOverlay(false);
                             setActionSuccess(true);
                         }
-                        })
+                        } catch (receiptError: any) {
+                        console.log('Transaction receipt error', receiptError);
+                        setShowAlertDanger(true);
+                        seterrorMessage(receiptError.code || receiptError.message);
+                        setShowLoading(false);
+                        }
+                    } catch (transactionError: any) {
+                        console.log('Transaction error', transactionError);
+                        setShowAlertDanger(true);
+                        seterrorMessage(transactionError.code || transactionError.message);
+                        setShowLoading(false);
+                    }
                     
                 } catch (error: any) {
                     setShowLoading(false);
@@ -273,17 +283,29 @@ const NFTArt: React.FC<{}> = () =>  {
                 const signer = provider.getSigner();
 
                 let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
-                const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});
                 
-                buynftC.wait().then(async (receipt:any) => {
-                    // console.log(receipt);
-                    if (receipt && receipt.status == 1) {
-                        // transaction success.
+                try {
+                    const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});
+            
+                    try {
+                    const receipt = await buynftC.wait();
+                    if (receipt && receipt.status === 1) {
                         setShowLoading(false);
                         setShowBgOverlay(false);
                         setActionSuccess(true);
                     }
-                    })
+                    } catch (receiptError: any) {
+                    console.log('Transaction receipt error', receiptError);
+                    setShowAlertDanger(true);
+                    seterrorMessage(receiptError.code || receiptError.message);
+                    setShowLoading(false);
+                    }
+                } catch (transactionError: any) {
+                    console.log('Transaction error', transactionError);
+                    setShowAlertDanger(true);
+                    seterrorMessage(transactionError.code || transactionError.message);
+                    setShowLoading(false);
+                }
                 
             } catch (error: any) {
                 console.log("error c",error);
@@ -390,21 +412,21 @@ const NFTArt: React.FC<{}> = () =>  {
             <div className={styles.bidnftitem}>
                 <div className={styles.bidnftitem_c}>
                 <div className={styles.bidnftitem_h}>
-                    <div>
+                    <div className={styles.hhd}>
                         <h1> Bid on {itemname}</h1>
                     </div>
                     <div>
-                        <button type='button' onClick={closeBidItemModalDiv}>{<FaXmark/>}</button>
+                        <button type='button' onClick={closeBidItemModalDiv} style={{color: 'white'}}>{<FaXmark/>}</button>
                     </div>
                 </div>
                 <div className={styles.bidnftitem_c_in}>
                     <div>
                         <ul>
                             <li>
-                                Minimum bid amount is {minbidamount}BNB
+                                Minimum bid amount is <span style={{color: '#e28304'}}>{minbidamount}BNB</span>
                             </li>
                             <li>
-                                Floor price is {itemprice}BNB
+                                Floor price is <span style={{color: '#e28304'}}>{itemprice}BNB</span>
                             </li>
                         </ul>
                     </div>
@@ -429,11 +451,11 @@ const NFTArt: React.FC<{}> = () =>  {
                         <div className={styles.nft_art_top}>
                             <div className={styles.nft_op}>
                                 <div className={styles.nft_op_}>
-                                    <Image src={bnblogo} alt='bnb logo' style={{width: '25px'}}/>
+                                    <Image src={bnblogo} alt='bnb logo' style={{width: '25px',height: '25px'}}/>
                                 </div>
                                 <div className={styles.nft_op_}>
                                     <button>{<FaHeart/>}</button>
-                                </div>
+                                </div>y
                             </div>  
                         </div>
                         <div className={styles.nft_art_in}>
@@ -444,7 +466,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                 </div>
                                 <div className={styles.descp_m}>
                                     <div className={styles.descp_m_in}>
-                                        <span className={styles.by}>By</span> <span className={styles.fr}>{username.toUpperCase()} {<FaCircleCheck style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
+                                        <span className={styles.by}>By</span> <span className={styles.fr}>{username == '' ? nftauctItem?.seller.substring(0, 12) + '...' : username.toUpperCase() } {<FaCircleCheck style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
                                     </div>
                                     <p>
                                         {nftauctItem?.description}
@@ -463,7 +485,7 @@ const NFTArt: React.FC<{}> = () =>  {
                             </div>
                             <div className={styles.intro_p}>
                             <p>
-                                Created By <span className={styles.createdby}>{username.toUpperCase()}</span>
+                                Created By <span className={styles.createdby}>{username == '' ? nftauctItem?.seller.substring(0, 12) + '...' : username.toUpperCase() }</span>
                             </p>
                             </div>
                         </div>
@@ -573,7 +595,7 @@ const NFTArt: React.FC<{}> = () =>  {
                             <div className={styles.offer_list}>
                                 <div className={styles.lp}>
                                     {nftbidsLoaded && itemBids.length > 0 ?
-                                    (<div>
+                                    (<div className={styles.tablec}>
                                         <table id="resultTable" className="table01 margin-table">
                                             <thead>
                                                 <tr>
@@ -611,7 +633,7 @@ const NFTArt: React.FC<{}> = () =>  {
                             </div>
                             <div className={styles.descp_m}>
                                 <div className={styles.descp_m_in}>
-                                    <span className={styles.by}>By</span> <span className={styles.fr}> {username.toUpperCase()} {<FaCircleCheck style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
+                                    <span className={styles.by}>By</span> <span className={styles.fr}> {username == '' ? nftauctItem?.seller.substring(0, 12) + '...' : username.toUpperCase() } {<FaCircleCheck style={{fontSize: '16px',marginBottom: '2px',color: '#e28305'}}/>}</span>
                                 </div>
                                 <p>
                                     {nftauctItem?.description}

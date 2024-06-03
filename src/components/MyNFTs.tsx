@@ -199,6 +199,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                         await listednfts.forEach(async (element:any) => {
                           if(element[1] && element[1] !== "") {
                             let ipfsurl = element[4];
+
                             let ipfsurlarray = ipfsurl.split('//');
                             
                             let ipfsmetarray = ipfsurlarray[1].split('/');
@@ -222,6 +223,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                               seller: element.seller,
                               itemId: element.itemId,
                               biddingduration: element.biddingduration,
+                              bidduration: element.bidduration,
                               minbidamount: element.minbidamount
                             }
                             mylistedNFTs.push(item);
@@ -315,21 +317,30 @@ const MyNFTs: React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any);
           const signer = provider.getSigner();
           const contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
-          const buynftC = await contract.acceptHighestBid(itemId, { gasLimit: 1000000 });
+          
+          try {
+            const aceeptoffer = await contract.acceptHighestBid(itemId, { gasLimit: 1000000 });
+    
+            try {
+            const receipt = await aceeptoffer.wait();
+            if (receipt && receipt.status === 1) {
+                setShowLoading(false);
+                setShowBgOverlay(false);
+                setActionSuccess(true);
+            }
+            } catch (receiptError: any) {
+            console.log('Transaction receipt error', receiptError);
+            setShowAlertDanger(true);
+            seterrorMessage(receiptError.code || receiptError.message);
+            setShowLoading(false);
+            }
+        } catch (transactionError: any) {
+            console.log('Transaction error', transactionError);
+            setShowAlertDanger(true);
+            seterrorMessage(transactionError.code || transactionError.message);
+            setShowLoading(false);
+        }
 
-          // Ensure to use `await` with `.wait()` to catch any errors from the transaction
-          const receipt = await buynftC.wait();
-
-          // Check the transaction status after it's been awaited
-          if (receipt && receipt.status === 1) {
-              // Transaction success
-              setShowLoading(false);
-              setShowBgOverlay(false);
-              setActionSuccess(true);
-              setPropMessage('Offer accepted successfully');
-          } else {
-              throw new Error('Transaction failed with status ' + receipt.status);
-          }
       } catch (error: any) {
           console.error("Transaction error:", error);
           setShowLoading(false);
@@ -857,7 +868,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                                   </div>
                                   <div className={styles.nft_list_p}>
                                     <div>
-                                      <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor(mylistedNFT.biddingduration?.toNumber()/86400000)} Days</span>
+                                      <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor(mylistedNFT.bidduration?.toNumber())} Days</span>
                                     </div>
                                   </div>
                                 <div className={styles.nft_list_b}>

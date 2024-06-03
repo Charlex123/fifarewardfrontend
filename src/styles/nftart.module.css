@@ -30,11 +30,14 @@
 .main .bidnftitem {
     position: absolute;margin: 0 auto; width: 40%;
     border-radius: 16px;z-index: 99;text-align: center;left: 0;right: 0;
-    padding: 10px 10px 10px 10px;background-color: #151414fd;border: 1px solid #383737fd;
+    padding: 10px 10px 10px 10px;background-color: #000003e2;border: 1px solid #3f3f3f7f;
 }
 .main .bidnftitem .bidnftitem_h {
     display: flex;flex-direction: row;justify-content: space-between;margin: 0 auto 35px auto;
     border-bottom: 1px solid #8d8f9161;text-align: center;
+}
+.main .bidnftitem .bidnftitem_h .hhd {
+    width: 90%;
 }
 .main .bidnftitem .bidnftitem_h h1 {
     font-weight: 600;font-size: 16px;text-align: center;margin: auto;
@@ -52,16 +55,16 @@
     text-align: left;width: 100%;font-size: 14px;font-weight: 600;
 }
 .main .bidnftitem .bidnftitem_c_ina input {
-    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
-    font-size: 14px;
+    width: 100%;background-color: #000003e2;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 14px;border: 1px solid #3f3f3f7f;color: #ffffff;
 }
 .main .bidnftitem .bidnftitem_c_ina select {
-    width: 100%;background-color: #8d8f9161;height: 35px;border-radius: 4px;padding-left: 5px;
-    font-size: 14px;
+    width: 100%;background-color: #000003e2;height: 35px;border-radius: 4px;padding-left: 5px;
+    font-size: 14px;border: 1px solid #3f3f3f7f;
 }
 .main .bidnftitem .bidnftitem_c_in button.createlistitem_ {
         background-color: #e3a204;width: 100%;padding: 4px 6px;border-radius: 8px;margin: 35px auto;
-        text-align: center;color: #454545;font-weight: 800;
+        text-align: center;color: #ffffff;font-weight: 800;height: 35px;
 }
 .main .nft_art {
     width: 38%;z-index: 0;height: inherit;border-radius: 8px;height: 448px;
@@ -255,6 +258,9 @@
 }
 .main .nft_desc .descp_m p {
     font-size: 14px;line-height: 22px;
+}
+.main .tablec {
+    width: 100%;overflow: auto;position: relative;
 }
 .main table {
     width: 100%;margin: auto;margin-left: 0;text-align: left;border-radius: 8px;

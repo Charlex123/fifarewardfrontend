@@ -8,7 +8,7 @@
     color: #f1f1f1 !important;background-color: none;z-index: 99999999999999 !important;
 }
 .closebtn button {
-  position: fixed;right: 1%;top: 13%;cursor: pointer;
+  position: fixed;right: 1%;top: 13%;cursor: pointer;font-size: 18px;
     color: #f1f1f1 !important;background-color: none;z-index: 99999999999999 !important;
 }
 .alert {

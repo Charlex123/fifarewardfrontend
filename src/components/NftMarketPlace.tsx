@@ -98,6 +98,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
                             seller: element.seller,
                             creator: element.creator,
                             owner: element.owner,
+                            bidduration: element.bidduration,
                             decimalplaces: element.decimalplaces,
                             // following properties only exist if the NFT has been minted
                             tokenId: element.tokenId,
@@ -248,7 +249,7 @@ const closeBgModal = () => {
                                  </div>
                                  <div className={styles.nft_list_p}>
                                    <div>
-                                     <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor((listedNFT.biddingduration?.toNumber())/86400000)} Days</span>
+                                     <span className={styles.listedp}>Bidding Duration</span> <span className={styles.listedp}>{Math.floor((listedNFT.bidduration?.toNumber()))} Days</span>
                                    </div>
                                  </div>
                              </div>

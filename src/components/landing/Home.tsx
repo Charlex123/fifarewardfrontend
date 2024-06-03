@@ -169,12 +169,12 @@ useEffect(() => {
         <meta property="og:url" content="https://www.fifareward.io" />
         <meta property="og:type" content="article" />
         <meta property="og:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
-        <meta property="og:image" content="https://www.fifareward.io/fifarewardlogo.png" />
+        <meta property="og:image" content="https://www.fifareward.io/ogimage.png" />
 
         <meta name="twitter:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
         <meta name="twitter:url" content="https://www.fifareward.io" />
         <meta name="twitter:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
-        <meta name="twitter:image" content="https://www.fifareward.io/fifarewardlogo.png" />
+        <meta name="twitter:image" content="https://www.fifareward.io/ogimage.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
         <link rel="apple-touch-icon" href="https://www.fifareward.io/favicon.ico" />
