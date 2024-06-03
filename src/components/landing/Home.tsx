@@ -165,22 +165,22 @@ useEffect(() => {
         <meta name="theme-color" content="#000000" />
         <meta name="description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, Fifaeward a layer roll up" />
 
-        <meta property="og:title" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
+        <meta property="og:title" content="Fifareward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
         <meta property="og:url" content="https://www.fifareward.io" />
         <meta property="og:type" content="article" />
-        <meta property="og:description" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
+        <meta property="og:description" content="Fifareward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
         <meta property="og:image" content="https://www.fifareward.io/whatsappogimage.png" />
 
-        <meta name="twitter:title" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
+        <meta name="twitter:title" content="Fifareward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
         <meta name="twitter:url" content="https://www.fifareward.io" />
-        <meta name="twitter:description" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
+        <meta name="twitter:description" content="Fifareward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
         <meta name="twitter:image" content="https://www.fifareward.io/whatsappogimage.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
         <meta property="og:image:width" content="300"/>
         <meta property="og:image:height" content="300"/>
         <meta property="og:site_name" content="Fifareward"/>
-        <meta property="og:title" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
+        <meta property="og:title" content="Fifareward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
         <meta property="og:description" content="Programa de fiestas" />
         <meta property="og:image" content="https://www.fifareward.io/whatsappogimage.png" />
         <meta property="og:type" content="website" />
@@ -189,12 +189,12 @@ useEffect(() => {
         <link rel="apple-touch-icon" href="https://www.fifareward.io/favicon.ico" />
         <link rel="manifest" href="https://www.fifareward.io/manifest.json" />
 
-        <title>FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols</title>
-        <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
+        <title>Fifareward | Betting, Staking, Farming, NFTs and Gaming Protocols</title>
+        <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends'/>
     </Head>
 
-    <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
-      <div className={styles.overlay_d}></div>
+    <div className={`${styles.homemain}`}>
+      {/* <div className={styles.overlay_d}></div> */}
       <div className={styles.blk}>
           <div className={styles.blk_inner}>
             <div className={styles.blkc}>
@@ -278,11 +278,11 @@ useEffect(() => {
                     Football is a sensational sport that connects the world. 
                   </p>
                   <p>
-                    FifaReward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities.
+                    Fifareward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities.
                   </p>
               </div>
               <div>
-                <p><span>FifaReward</span> as a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
+                <p><span>Fifareward</span> as a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
              </div>
               <div>
                 <h2>Guess The Football Hero</h2>
@@ -336,7 +336,7 @@ useEffect(() => {
                   </div>
                   <div>
                     <p>
-                      FifaReward is introducing the <span>Wager Betting System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
+                      Fifareward is introducing the <span>Wager Betting System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
                     </p>
                     <p>
                       The user whose prediction is correct wins the bet and get the sum of bet amounts.
@@ -358,7 +358,7 @@ useEffect(() => {
           {isMobile === true ? <h1>STAKING <div>AND</div> FARMING</h1> : <h1>STAKING AND FARMING</h1>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
-                FifaReward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
+                Fifareward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
                 <h4>WHY STAKE FRD?</h4> 
                 <ul>
                   {/* <li>

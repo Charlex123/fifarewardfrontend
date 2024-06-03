@@ -14,15 +14,31 @@
 
 
 @font-face {
-  font-family: 'Cinzel Black';
-  src: url('/fonts/Cinzel-Black.ttf') format('truetype'),
-       url('/fonts/Cinzel-Black.ttf') format('truetype');
+  font-family: 'BungeeSpice Regular';
+  src: url('/fonts/BungeeSpice-Regular.ttf') format('truetype'),
+       url('/fonts/BungeeSpice-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'RussoOne Regular';
+  src: url('/fonts/RussoOne-Regular.ttf') format('truetype'),
+       url('/fonts/RussoOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Marque';
+  src: url('/fonts/Marque.ttf') format('truetype'),
+       url('/fonts/Marque.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
 }
 
 :root {
-  --primaryFont: "Poppins", sans-serif;
+  --primaryFont: "RussoOne Regular","Marque";
   --background-color-dark: rgb(5, 9, 11);
   --background-color-light: #f1f1f1;
   --text-color-dark: #e2d7d7;
@@ -46,8 +62,12 @@ body {
   box-sizing: border-box;
   width: 100%;
   margin: 0;padding: 0;
-  font-family: 'Cinzel Black', sans-serif;
+  font-family: "RussoOne Regular", 'Marque';
   overflow-x: hidden;
+  letter-spacing: 1px;
+  line-height: 28px;
+  font-size: 16px;
+  background-image: url("../assets/images/guessfootballherobg.webp");background-size: cover;
   /* background-color: #161313ef; */
 }
 .darktheme {

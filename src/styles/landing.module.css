@@ -21,9 +21,10 @@
 .chronotitleicon2 {
   color: orange;
 }
+/* #18221b */
  .homemain {
     margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-x: hidden;z-index: 0;position: relative;
-    background-color: #18221b url("../assets/images/guessfootballherobg.webp");background-size: cover;
+    background-image: url("../assets/images/guessfootballherobg.webp");background-size: cover;
 }
 .lighttheme {
   background-color: var(--background-color-light);
@@ -45,12 +46,12 @@
 }
 .blk .blk_inner .blkc1 h1 {
   font-size: 50px;font-weight: bolder;margin: 0 auto 65px auto;text-align: center;
-  font-family: "Paytone One",Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Paytone One";
   line-height: 68px;letter-spacing: 6px;color: #e28305;
 }
 .blk .blk_inner .blkc2 h1 {
   font-size: 35px;font-weight: bolder;margin: 25px auto;text-align: center;
-  font-family: "Bungee Spice",Verdana, Geneva, Tahoma, sans-serif;
+  font-family: "Bungee Spice";
   line-height: 38px;letter-spacing: 6px;
 }
 .blk .blk_inner .blk_image {
@@ -73,8 +74,8 @@
   bottom: 0;
   z-index: -1;
 }
-.c_content .c_overlay_d {
-  position: absolute;background-color: #000000c6;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
+.c_overlay_d {
+  position: absolute;background-color: #00000065;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
 }
 .c_content .hero_image {
   width: 60%;position: relative;z-index: 2;
