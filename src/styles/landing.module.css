@@ -23,7 +23,7 @@
 }
 /* #18221b */
  .homemain {
-    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-x: hidden;
+    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-x: hidden;position: relative;
 }
 .lighttheme {
   background-color: var(--background-color-light);
@@ -35,7 +35,7 @@
   color: var(--text-color-dark);
 }
 .blk {
-  width: 100%;margin: 0 auto 0 auto;background-color: transparent;padding-top: 80px;position: relative;
+  width: 100%;margin: 0 auto 0 auto;background-color: transparent;padding-top: 80px;position: relative;z-index: 0;
   background-image: url("../assets/images/guessfootballherobg.webp");background-size: cover;padding-bottom: 120px;
 }
 .blk .overlay_d {
@@ -54,7 +54,7 @@
 }
 .blk .blk_inner .blkc2 h1 {
   font-size: 35px;font-weight: bolder;margin: 25px auto;text-align: center;
-  font-family: "Bungee Spice";
+  font-family: "BungeeSpice Regular";
   line-height: 38px;letter-spacing: 6px;
 }
 .blk .blk_inner .blk_image {
@@ -62,7 +62,7 @@
 }
 .c_content {    
     margin: auto;padding: 75px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;
-    overflow: hidden;min-height: 90vh;height: 90vh;width: 100%;
+    overflow: hidden;min-height: 90vh;height: 90vh;width: 100%;z-index: 0;
 }
 .c_content:focus {
   transform: scale(1.2);
@@ -108,17 +108,17 @@
 }
 .c_content .hero_h1 {
     margin: 1rem auto;text-align: center;align-items: center;width: 100%;position: relative;z-index: 2;
-    font-weight: 900;font-family: "Bungee Spice";padding: 5px auto 5px auto;
+    font-weight: 900;font-family: "BungeeSpice Regular";padding: 5px auto 5px auto;
 }
 .c_content .hero_h1 h1 {
-    font-size: 45px;font-weight: 900;color: #f1f1f1;font-family: "Bungee Spice",sans-serif;
+    font-size: 45px;font-weight: 900;color: #f1f1f1;font-family: "BungeeSpice Regular",sans-serif;
     margin: 5px auto;margin-bottom: 20px;line-height: 60px;
 }
 .c_content .hero_h1 div {
     margin-top: 55px;
 }
 .c_content .hero_h4 {
-  font-size: 28px;color: #b4b2b2;font-family: "RussoOne Regular",sans-serif;font-weight: 600;width: 80%;
+  font-size: 28px;color: #e28304;font-family: "RussoOne Regular",sans-serif;font-weight: 600;width: 80%;
   text-align: center;margin: 2rem auto 0 auto;text-transform: capitalize;line-height: 35px;
 }
 .c_content .hero_h1 div h2 {
@@ -218,7 +218,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .frdstaking h1 {
   font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;width: max-content;
-  font-family: "Bungee Spice","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;
+  font-family: "BungeeSpice Regular","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;
 }
 .frdstaking .stakebanner {
   width: 60%;text-align: center;margin: auto;

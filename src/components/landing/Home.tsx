@@ -216,7 +216,7 @@ useEffect(() => {
               </div> */}
             </div>
             <div className={styles.blk_image}>
-              <Image src={chainhead} style={{width: '100%', height: '100%'}} alt='connecting the world through football' />
+              <Image src={chainhead} style={{width: '100%', height: '100%',zIndex: 0,position: 'relative'}} alt='connecting the world through football' />
             </div>
           </div>
       </div>
