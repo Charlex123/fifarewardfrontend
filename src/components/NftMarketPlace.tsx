@@ -11,13 +11,12 @@ import axios from 'axios';
 import nftbg from '../assets/images/nftbg.jpg'
 import NFTMarketPlaceFeaturesContractAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ethers } from 'ethers';
-import { faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { NFTFullMetadata } from './NFTFullMetadata';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 
 import styles from "../styles/nftmarketplace.module.css";
 import dotenv from 'dotenv';
@@ -184,10 +183,10 @@ const closeBgModal = () => {
 
   return (
     <>
-    <HelmetExport>
+    <Head>
         <title> NFT MarketPlace | FifaReward</title>
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-    </HelmetExport>
+    </Head>
     {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}

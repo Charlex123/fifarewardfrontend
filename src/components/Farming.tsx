@@ -23,10 +23,9 @@ import FooterNavBar from './FooterNav';
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import AlertDanger from './AlertDanger';
-import AlertMessage from './AlertMessage';
 import RewardsBadge from './RewardsBadge';
 import ActionSuccessModal from './ActionSuccess';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import axios from 'axios';
 import { FaAlignJustify, FaChevronDown, FaXmark } from 'react-icons/fa6';
 
@@ -363,10 +362,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title>Farm FRD | FifaReward</title>
             <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <DappNav/>
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>

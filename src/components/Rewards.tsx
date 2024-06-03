@@ -22,7 +22,7 @@ import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import FRDNFTFeaturesAbi from '../../artifacts/contracts/FRDNFTMarketPlaceFeatures.sol/FRDNFTMarketPlaceFeatures.json';
 import { ThemeContext } from '../contexts/theme-context';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import DappNav from './Dappnav';
 import DappFooter from './DappFooter';
 import FooterNavBar from './FooterNav';
@@ -226,10 +226,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title>Rewards | FifaReward</title>
             <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <DappNav/>
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>

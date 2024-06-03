@@ -12,14 +12,13 @@ import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import { NFTBidMetadata } from './NFTBidMetadata';
 import { NFTFullMetadata } from './NFTFullMetadata';
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import AlertDanger from './AlertDanger';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import styles from "../styles/nftart.module.css";
 import dotenv from 'dotenv';
 import { FaAlignJustify, FaCartShopping, FaChevronLeft, FaCircleCheck, FaCircleDollarToSlot, FaHeart, FaTag, FaWandMagicSparkles, FaXmark } from 'react-icons/fa6';
@@ -390,10 +389,10 @@ const NFTArt: React.FC<{}> = () =>  {
   
   return (
     <>
-    <HelmetExport>
+    <Head>
         <title>NFT Art | {urltitleparams}</title>
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
-    </HelmetExport>
+    </Head>
     
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         <div className={styles.goback}>

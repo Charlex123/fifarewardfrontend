@@ -10,8 +10,7 @@ import AlertMessage from "./AlertMessage";
 import regstyles from "../styles/register.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 // component
-import HelmetExport from 'react-helmet';
-// import Web3 from "web3";
+import Head from 'next/head';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { FaPeopleGroup } from 'react-icons/fa6';
 
@@ -106,10 +105,10 @@ const goBack = () => {
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title>Referrals | Fifareward</title>
             <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <div className={`${regstyles.main} ${theme === 'dark' ? regstyles['darktheme'] : regstyles['lighttheme']}`}>
             <div className={regstyles.cbtn}>
               <div>

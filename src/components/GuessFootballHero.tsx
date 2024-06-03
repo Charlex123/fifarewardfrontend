@@ -16,7 +16,7 @@ import Confetti from 'react-confetti-boom';
 import Confetti2 from 'react-confetti-explosion';
 import ActionSuccessModal from './ActionSuccess';
 import { FaAngleRight, FaCheck, FaXmark } from "react-icons/fa6";
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import { ThemeContext } from '../contexts/theme-context';
 import axios from 'axios';
 
@@ -536,10 +536,10 @@ const GuessFootballHero: React.FC = () => {
 
   return (
     <>
-      <HelmetExport>
+      <Head>
           <title> Guess Football hero | Fifareward</title>
           <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-      </HelmetExport>
+      </Head>
       {actionsuccess && 
           <ActionSuccessModal prop={actionsuccessmessage} onChange={closeActionModalComp}/>
       }

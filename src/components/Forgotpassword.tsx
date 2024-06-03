@@ -6,7 +6,6 @@ import loginstyles from '../styles/login.module.css'
 // component
 import Loading from '../components/Loading';
 import AlertMessage from './AlertMessage';
-import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { FaChevronLeft, FaEye, FaEyeSlash, FaLockOpen } from 'react-icons/fa6';
 
  const LoginForm: React.FC<{}> = () => {

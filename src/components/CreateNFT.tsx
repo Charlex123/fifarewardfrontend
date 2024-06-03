@@ -15,7 +15,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { ThemeContext } from '../contexts/theme-context';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import styles from '../styles/createnft.module.css'
 import { FaXmark } from 'react-icons/fa6';
 const dotenv = require("dotenv");
@@ -227,10 +227,10 @@ export default function CreateItem() {
 
   return (
     <>
-      <HelmetExport>
+      <Head>
         <title>Mint NFT | FifaReward</title>
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-      </HelmetExport>
+      </Head>
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
         {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}

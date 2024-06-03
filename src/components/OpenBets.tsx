@@ -20,7 +20,7 @@ import footballg from '../assets/images/footballg.jpg';
 import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
 import BgOverlay from './BgOverlay';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import { FaCircle, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 
 dotenv.config();
@@ -748,10 +748,10 @@ const closeBgModal = () => {
 
   return (
     <>
-    <HelmetExport>
+    <Head>
         <title>Open Bets List | FifaReward</title>
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-    </HelmetExport>
+    </Head>
     {showloading && <Loading/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {/* <div className={openbetsstyle.hiw_overlay} id="hiw_overlay"></div> */}

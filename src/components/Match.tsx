@@ -20,7 +20,7 @@ import AlertDanger from './AlertDanger';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import LoadOpenBetsData from './LoadOpenBets';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import { Fixture } from './FixtureMetadata';
 import { Team } from './FixtureStatisticMetadata';
 import { Events } from './FixtureEventsMetadata';
@@ -780,10 +780,10 @@ const closeBgModal = () => {
 
   return (
     <>
-      <HelmetExport>
+      <Head>
           <title>Bet - {countryparam} - {leagueparam} - {matchparam} | FifaReward</title>
           <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-      </HelmetExport>
+      </Head>
 
       <div className={matchstyle.main}>
       {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}

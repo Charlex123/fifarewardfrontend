@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import styles from '../styles/gamelandingpage.module.css';
 import Confetti from 'react-confetti-boom';
 import AlertDanger from './AlertDanger';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import BgOverlay from './BgOverlay';
 
 const GameLandingPage: React.FC<{}> = () => {
@@ -40,10 +40,10 @@ const GameLandingPage: React.FC<{}> = () => {
 
   return (
     <>
-    <HelmetExport>
+    <Head>
           <title> Fifareward Games | Fifareward</title>
           <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-    </HelmetExport>
+    </Head>
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showalertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
       <div className={styles.main}>

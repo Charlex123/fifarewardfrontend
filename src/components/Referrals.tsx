@@ -7,11 +7,9 @@ import DappSideBar from './Dappsidebar';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
-import dappconalertstyles from "../styles/dappconnalert.module.css";
 // component
 // import SelectWalletModal from "./web3-Modal";
 // import { providers } from "ethers";
-import axios from 'axios';
 import { ThemeContext } from '../contexts/theme-context';
 import DappNav from './Dappnav';
 import { ethers } from 'ethers';
@@ -22,7 +20,7 @@ import { useDisconnect } from '@web3modal/ethers5/react';
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import DappFooter from './DappFooter';
 import ReferralLink from './ReferralLink';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import { FaAlignJustify } from 'react-icons/fa6';
 
 const Referrals = () =>  {
@@ -120,10 +118,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title>Referrals | FifaReward</title>
             <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <DappNav/>
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>

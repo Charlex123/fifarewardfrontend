@@ -15,7 +15,7 @@ import { useDisconnect } from '@web3modal/ethers5/react';
 import { Bets } from './BetsMetadata';
 import axios from 'axios';
 import { BetConditions } from './BetConditionsMetadata';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 // material
 import styles from "../styles/mybets.module.css";
 import dotenv from 'dotenv';
@@ -237,10 +237,10 @@ const MyBets: React.FC<{}> = () =>  {
 
   return (
     <>
-    <HelmetExport>
+    <Head>
         <title> My Bets | Fifareward</title>
         <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-    </HelmetExport>
+    </Head>
     {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}

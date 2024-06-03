@@ -14,11 +14,10 @@ import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import { NFTMetadata } from './NFTMetadata';
 import { NFTBidMetadata } from './NFTBidMetadata';
 import { NFTFullMetadata } from './NFTFullMetadata';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 // material
 import styles from "../styles/mynfts.module.css";
 import dotenv from 'dotenv';
@@ -605,10 +604,10 @@ const MyNFTs: React.FC<{}> = () =>  {
 
   return (
     <>
-    <HelmetExport>
+    <Head>
         <title>My NFTs | FifaReward</title>
         <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-    </HelmetExport>
+    </Head>
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
     {nftactionsuccess && 

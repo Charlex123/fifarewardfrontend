@@ -22,7 +22,7 @@ import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToke
 import StakeAbi from '../../artifacts/contracts/FRDStaking.sol/FRDStaking.json';
 import { ThemeContext } from '../contexts/theme-context';
 import DappNav from './Dappnav';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import axios from 'axios';
 import FooterNavBar from './FooterNav';
 import RewardsBadge from './RewardsBadge';
@@ -596,10 +596,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title> Stake | FifaReward</title>
             <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <DappNav/>
         
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>

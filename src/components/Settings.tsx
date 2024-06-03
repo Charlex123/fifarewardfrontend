@@ -25,7 +25,7 @@ import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json
 import DragDropImageUpload from './DragDropImageUpload';
 import RewardsBadge from './RewardsBadge';
 import ActionSuccessModal from './ActionSuccess';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import axios from 'axios';
 import { FaAlignJustify, FaXmark } from 'react-icons/fa6';
 
@@ -228,10 +228,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title>Settings | Fifareward</title>
             <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <DappNav/>
         {dappConnector && (<>
             <div className={dappconalertstyles.overlay_dap}></div>

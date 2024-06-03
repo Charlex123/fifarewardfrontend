@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useWeb3ModalAccount, useWeb3Modal } from '@web3modal/ethers5/react';
 import MessageList from '../components/MessageList';
 import UserList from '../components/UserList';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import styles from "../styles/chatforum.module.css";
 import dotenv from 'dotenv';
 import { FaThumbsDown, FaThumbsUp, FaXmark } from 'react-icons/fa6';
@@ -247,10 +247,10 @@ const ChatForum: React.FC<{}> = () =>  {
 
   return (
     <>
-    <HelmetExport>
+    <Head>
         <title>Group Chat Forum | FifaReward</title>
         <meta name='description' content='Share your opinion in Fifareward chat forum. FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-    </HelmetExport>
+    </Head>
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         <div className={styles.main_bg_overlay}></div>
           <div>

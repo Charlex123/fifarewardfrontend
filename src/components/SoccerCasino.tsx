@@ -4,9 +4,7 @@ import SoccerCasinoRoulette from './SoccerCasinoRoulette';
 import SoccerCasinoTable from './SoccerCasinoTable';
 import Leaderboard from './SoccerRouletteLeaderboard';
 import { GiDiamonds } from 'react-icons/gi';
-import UserList from './UserList';
-import axios from 'axios';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import { ThemeContext } from '../contexts/theme-context';
 import firstRow from '../components/RouletteTableRows/FirstRow.json';
 import firstBorder from '../components/RouletteTableRows/FirstBorder.json';
@@ -191,10 +189,10 @@ const SoccerCasino: React.FC = () => {
 
   return (
     <>
-      <HelmetExport>
+      <Head>
           <title> FootBall Casino Roulette | FifaReward</title>
           <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-      </HelmetExport>
+      </Head>
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
         <div className={styles.overlay}></div>
         <div className={styles.top}>

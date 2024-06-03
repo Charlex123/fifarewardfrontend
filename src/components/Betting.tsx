@@ -19,7 +19,7 @@ import FixturesByCalenderDate from './FixturesByCalenderDate';
 import TodaysFixtures from './TodaysFixtures';
 import LiveFixtures from './LiveFixtures';
 import { Fixture } from './FixtureMetadata';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import { FaCaretDown, FaCircle, FaFilter, FaMagnifyingGlass, FaRegCalendar, FaXmark } from 'react-icons/fa6';
 dotenv.config();
 // material
@@ -446,10 +446,10 @@ const closeBgModal = () => {
     <>
     {/* {showloading && <Loading/>} */}
     {/* <div className={bettingstyle.hiw_overlay} id="hiw_overlay"></div> */}
-    <HelmetExport>
+    <Head>
         <title>Bet - Bet on your best teams, competitions  and fixture | FifaReward</title>
         <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifareward a layer2 roll up'/>
-    </HelmetExport>
+    </Head>
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={bettingstyle.main}>
         <div className={bettingstyle.search} >

@@ -14,7 +14,7 @@ import ConnectWallet from './ConnectWalletButton';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 import RewardsBadge from './RewardsBadge';
 import ReferralLink from './ReferralLink';
 import { ThemeContext } from '../contexts/theme-context';
@@ -196,10 +196,10 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title>Dapp - Bet, Mint NFTs, Stake, and Mine FRD to earn more FRD  | FifaReward</title>
             <meta name='description' content=' FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <DappNav/>
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>

@@ -1,6 +1,6 @@
 import React from 'react';
 import actionsuccessmodalstyles from '../styles/actionsuccessmodal.module.css'
-import Helmet from 'react-helmet'
+import Head from 'next/head'
 import { FaXmark } from 'react-icons/fa6';
 
 type Props = {
@@ -32,10 +32,10 @@ const ActionSuccessModal:React.FC<Props> = ({prop,onChange}) => {
 
     return(
         <>
-                <Helmet>
+                <Head>
                     <title>Action Success | FifaReward </title>
                     <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
-                </Helmet>
+                </Head>
             <div className={actionsuccessmodalstyles.showactioncomp}>
                 <div className={actionsuccessmodalstyles.showactioncompin}>
                     <div className={actionsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FaXmark onClick={(e) => closeActionModal()} />}</button></div>

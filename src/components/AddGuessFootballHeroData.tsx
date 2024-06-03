@@ -6,8 +6,7 @@ import AlertMessage from "./AlertMessage";
 import regstyles from "../styles/register.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 // component
-import HelmetExport from 'react-helmet';
-import Web3 from "web3";
+import Head from 'next/head';
 // import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 // ----------------------------------------------------------------------
@@ -159,10 +158,10 @@ const goBack = () => {
 
   return (
     <>
-        <HelmetExport>
+        <Head>
             <title>Add Player Data | Fifareward</title>
             <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-        </HelmetExport>
+        </Head>
         <div className={`${regstyles.main} ${theme === 'dark' ? regstyles['darktheme'] : regstyles['lighttheme']}`}>
             <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
             <form className={regstyles.formTag} onSubmit={submitHandler}>

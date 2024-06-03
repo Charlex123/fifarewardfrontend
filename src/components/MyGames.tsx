@@ -15,7 +15,7 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import { GuessFootBallHeroMetadata } from './GuessFootballHeroMetadata';
 import axios from 'axios';
-import HelmetExport from 'react-helmet';
+import Head from 'next/head';
 // material
 import styles from "../styles/mygames.module.css";
 import dotenv from 'dotenv';
@@ -179,10 +179,10 @@ const MyGames: React.FC<{}> = () =>  {
 
   return (
     <>
-    <HelmetExport>
+    <Head>
         <title> My Games | Fifareward</title>
         <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
-    </HelmetExport>
+    </Head>
     {showloading && <Loading/>}
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
     {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
