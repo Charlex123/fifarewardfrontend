@@ -1,0 +1,91 @@
+/* components/Timeline.module.css */
+.timelineContainer {
+    position: relative;
+    padding: 20px;
+    outline: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    transition: transform 0.3s, height 0.3s;
+    height: 80vh;
+  }
+  
+  .timelineContainer:focus {
+    transform: scale(1.2);
+  }
+  
+  .timeline {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding: 20px 0;
+    width: 10000px;
+  }
+  
+  .centerLine {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background-color: black;
+    transform: translateY(-50%);
+    z-index: -1;
+  }
+  
+  .eventContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 0 0 auto;
+    position: relative;
+    margin: 0 40px;
+    cursor: pointer;
+  }
+
+  .verticalLine {
+    width: 2px;
+    background-color: black;
+  }
+  
+  .upLine {
+    height: 100px; /* Extend the line to meet the up event */
+    top: -100px; /* Position the up vertical line */
+    position: absolute;
+  }
+  
+  .downLine {
+    height: 100px; /* Extend the line to meet the down event */
+    bottom: 0; /* Position the down vertical line */
+    position: absolute;
+  }
+  
+  .event {
+    transition: transform 0.3s;
+  }
+  
+  .event:hover,
+  .event.focused {
+    transform: scale(1.2);
+  }
+  
+  .upEvent {
+    position: absolute;
+    top: -160px; /* Position the up event */
+  }
+  
+  .downEvent {
+    margin-top: 150px; /* Position the down event */
+  }
+  
+  .date {
+    font-weight: bold;
+  }
+  
+  .title {
+    margin-top: 5px;
+  }
+  
+  .content {
+    text-align: center;
+  }
+  
