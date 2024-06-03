@@ -169,18 +169,20 @@ useEffect(() => {
         <meta property="og:url" content="https://www.fifareward.io" />
         <meta property="og:type" content="article" />
         <meta property="og:description" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
-        <meta property="og:image" content="https://www.fifareward.io/ogimage.png" />
+        <meta property="og:image" content="https://www.fifareward.io/whatsappogimage.png" />
 
         <meta name="twitter:title" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
         <meta name="twitter:url" content="https://www.fifareward.io" />
         <meta name="twitter:description" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
-        <meta name="twitter:image" content="https://www.fifareward.io/ogimage.png" />
+        <meta name="twitter:image" content="https://www.fifareward.io/whatsappogimage.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
+        <meta property="og:image:width" content="300"/>
+        <meta property="og:image:height" content="300"/>
         <meta property="og:site_name" content="Fifareward"/>
         <meta property="og:title" content="FifaReward | Betting, Staking, Farming, NFTs and Gaming Protocols" />
         <meta property="og:description" content="Programa de fiestas" />
-        <meta property="og:image:secure_url" itemProp="image" content="https://www.fifareward.io/whatsappogimage.png" />
+        <meta property="og:image" content="https://www.fifareward.io/whatsappogimage.png" />
         <meta property="og:type" content="website" />
         <meta property="og:updated_time" content="1440432930" />
 
