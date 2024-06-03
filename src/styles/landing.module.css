@@ -28,7 +28,7 @@
 }
 .blk {
   width: 100%;margin: 0 auto 0 auto;background-color: transparent;padding-top: 80px;position: relative;z-index: 0;
-  background-image: url("../assets/images/aibg.png");background-size: cover;padding-bottom: 120px;
+  background-image: url("../assets/images//guessfootballherobg.png");background-size: cover;padding-bottom: 120px;
 }
 .blk .overlay_d {
   position: absolute;background-color: #00000065;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
