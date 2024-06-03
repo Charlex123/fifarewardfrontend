@@ -9,20 +9,23 @@ interface TimelineEvent {
 }
 
 const events: TimelineEvent[] = [
-  { id: 1, title: 'New Year' },
-  { id: 2, title: 'Valentine\'s Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  { id: 3, title: 'Independence Day' },
-  // Add more events as needed
+  { id: 1, title: 'Website' },
+  { id: 2, title: 'NFT Minting & Market Place' },
+  { id: 3, title: 'Betting Protocol' },
+  { id: 4, title: 'Gaming Protocol' },
+  { id: 5, title: 'Staking & Farming' },
+  { id: 6, title: 'Interactive Chat' },
+  { id: 7, title: 'Pancakesawp Listing' },
+  { id: 8, title: 'Branding & Merchandize' },
+  { id: 9, title: 'Continual Soccer Events Sponsorships' },
+  { id: 10, title: 'Airdrop Campaign Stage 1' },
+  { id: 11, title: 'Airdrop Campaign Stage 2' },
+  { id: 12, title: 'Listing On tier2 Exchanges' },
+  { id: 13, title: 'Listing On Tier 1 Exchanges' },
+  { id: 14, title: 'Mobile App'}, 
+  { id: 15, title: 'Layer 2 Roll Up Testnet Completion' },
+  { id: 16, title: 'Layer 2 Roll Up Mainnet Completion' },
+  { id: 17, title: 'Dex Exchange' }
 ];
 
 const RoadMap: React.FC = () => {
@@ -50,7 +53,7 @@ const RoadMap: React.FC = () => {
     if (timelineRef.current) {
       const focusedEvent = timelineRef.current.children[focusIndex];
       if (focusedEvent instanceof HTMLElement) {
-        focusedEvent.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+        focusedEvent.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
     }
   }, [focusIndex]);
@@ -76,7 +79,7 @@ const RoadMap: React.FC = () => {
                     <div className={`${styles.event} ${index % 2 === 0 ? styles.upEvent : styles.downEvent}`}>
                     <div className={styles.title}>
                       {event.title}
-                      {index < 6 && <FaCircleCheck className={styles.checkIcon} />} {/* Add checkmark icon for first three events */}
+                      {index < 9 && <FaCircleCheck className={styles.checkIcon} />} {/* Add checkmark icon for first three events */}
                     </div>
                     </div>
                 </div>

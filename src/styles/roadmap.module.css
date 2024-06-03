@@ -1,12 +1,13 @@
 /* components/Timeline.module.css */
 .main h3 {
-    margin: 25px auto;text-align: center;font-size: 32px;font-weight: 900;
+    margin: 5px auto 50px auto;text-align: center;font-size: 32px;font-weight: 900;
 }
 .timelineContainer {
     position: relative;
     padding: 20px;
     outline: none;
     overflow-x: auto;
+    margin-left: 80px;
     overflow-y: hidden;
     transition: transform 0.3s, height 0.3s;
     height: 350px;
@@ -20,9 +21,10 @@
     display: flex;
     align-items: center;
     position: relative;
+    margin-left: 20px;
     height: 350px;
     padding: 20px 0;
-    width: 1920px;
+    width: 2920px;
     overflow-x: hidden;
   }
   
@@ -80,11 +82,13 @@
   .upEvent {
     position: absolute;
     top: -140px; /* Position the up event */
+    line-height: 12px;font-size: 13px;
   }
   
   .downEvent {
-    position: absolute;
+    position: absolute;width: fit-content;
     bottom: -140px;
+    line-height: 13px;font-size: 13px;
   }
   
   .date {
@@ -92,9 +96,11 @@
   }
   
   .title {
-    margin-top: 5px;
+    margin-top: 0;white-space: nowrap;
   }
-  
+  .checkIcon {
+    font-size: 16px !important;color: #e28304;margin-top: -5px;
+  }
   .content {
     text-align: center;
   }
