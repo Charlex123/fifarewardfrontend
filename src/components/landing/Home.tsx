@@ -6,7 +6,6 @@ import { useContext, useState, useEffect } from 'react';
 // import Container from 'react-bootstrap/Container';
 import Head from 'next/head';
 import Image from 'next/image';
-import Helmet from 'react-helmet';
 import styles from '../../styles/landing.module.css'
 import Typed from 'react-typed';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
