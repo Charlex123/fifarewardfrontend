@@ -177,6 +177,13 @@ useEffect(() => {
         <meta name="twitter:image" content="https://www.fifareward.io/ogimage.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
+        <meta property="og:site_name" content="Fifareward">
+        <meta property="og:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, Fifareward a layer roll up" />
+        <meta property="og:description" content="Programa de fiestas" />
+        <meta property="og:image:secure_url" itemProp="image" content="https://www.fifareward.io/whatsappogimage.png">
+        <meta property="og:type" content="website" />
+        <meta property="og:updated_time" content="1440432930" />
+
         <link rel="apple-touch-icon" href="https://www.fifareward.io/favicon.ico" />
         <link rel="manifest" href="https://www.fifareward.io/manifest.json" />
 
