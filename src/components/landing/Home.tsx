@@ -163,17 +163,17 @@ useEffect(() => {
         <link rel="icon" href="https://www.fifareward.io/favicon.ico" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <meta name="theme-color" content="#000000" />
-        <meta name="description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta name="description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, Fifaeward a layer roll up" />
 
-        <meta property="og:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta property="og:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, Fifareward a layer roll up" />
         <meta property="og:url" content="https://www.fifareward.io" />
         <meta property="og:type" content="article" />
-        <meta property="og:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta property="og:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, Fifareward a layer roll up" />
         <meta property="og:image" content="https://www.fifareward.io/ogimage.png" />
 
-        <meta name="twitter:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta name="twitter:title" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, Fifareward a layer roll up" />
         <meta name="twitter:url" content="https://www.fifareward.io" />
-        <meta name="twitter:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, FIFA reward a layer roll up" />
+        <meta name="twitter:description" content="Fifareward | Bet, Stake, Mine and create NFTs of football legends, Fifareward a layer roll up" />
         <meta name="twitter:image" content="https://www.fifareward.io/ogimage.png" />
         <meta name="twitter:card" content="summary_large_image" />
 
