@@ -1,4 +1,7 @@
 /* components/Timeline.module.css */
+.main h3 {
+    margin: 25px auto;text-align: center;font-size: 32px;font-weight: 900;
+}
 .timelineContainer {
     position: relative;
     padding: 20px;
@@ -6,7 +9,7 @@
     overflow-x: auto;
     overflow-y: hidden;
     transition: transform 0.3s, height 0.3s;
-    height: 80vh;
+    height: 350px;
   }
   
   .timelineContainer:focus {
@@ -17,8 +20,10 @@
     display: flex;
     align-items: center;
     position: relative;
+    height: 350px;
     padding: 20px 0;
-    width: 10000px;
+    width: 1920px;
+    overflow-x: hidden;
   }
   
   .centerLine {
@@ -38,8 +43,10 @@
     align-items: center;
     flex: 0 0 auto;
     position: relative;
-    margin: 0 40px;
+    background-color: aqua;
+    margin: 0 80px;
     cursor: pointer;
+    font-size: 14px;
   }
 
   .verticalLine {
@@ -51,12 +58,14 @@
     height: 100px; /* Extend the line to meet the up event */
     top: -100px; /* Position the up vertical line */
     position: absolute;
+    margin-right: 0;
   }
   
   .downLine {
     height: 100px; /* Extend the line to meet the down event */
-    bottom: 0; /* Position the down vertical line */
+    bottom: -100px; /* Position the down vertical line */
     position: absolute;
+    margin-left: 0;
   }
   
   .event {
@@ -70,11 +79,12 @@
   
   .upEvent {
     position: absolute;
-    top: -160px; /* Position the up event */
+    top: -140px; /* Position the up event */
   }
   
   .downEvent {
-    margin-top: 150px; /* Position the down event */
+    position: absolute;
+    bottom: -140px;
   }
   
   .date {

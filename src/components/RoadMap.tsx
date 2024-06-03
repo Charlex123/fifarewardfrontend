@@ -1,27 +1,27 @@
 // components/Timeline.tsx
 import React, { useState, useRef, useEffect } from 'react';
 import styles from '../styles/roadmap.module.css';
+import { FaCircleCheck } from 'react-icons/fa6';
 
 interface TimelineEvent {
   id: number;
-  date: string;
   title: string;
 }
 
 const events: TimelineEvent[] = [
-  { id: 1, date: '2024-01-01', title: 'New Year' },
-  { id: 2, date: '2024-02-14', title: 'Valentine\'s Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
-  { id: 3, date: '2024-07-04', title: 'Independence Day' },
+  { id: 1, title: 'New Year' },
+  { id: 2, title: 'Valentine\'s Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
+  { id: 3, title: 'Independence Day' },
   // Add more events as needed
 ];
 
@@ -56,29 +56,34 @@ const RoadMap: React.FC = () => {
   }, [focusIndex]);
 
   return (
-    <div
-      className={styles.timelineContainer}
-      tabIndex={0}
-      ref={containerRef}
-      onKeyDown={(e) => e.stopPropagation()}
-    >
-      <div className={styles.timeline} ref={timelineRef}>
-        <div className={styles.centerLine}></div>
-        {events.map((event, index) => (
-          <div
-            key={event.id}
-            className={`${styles.eventContainer} ${index % 2 === 0 ? styles.topContainer : styles.bottomContainer}`}
-            onClick={() => setFocusIndex(index)}
-          >
-            <div className={`${styles.verticalLine} ${index % 2 === 0 ? styles.upLine : styles.downLine}`}></div>
-            <div className={`${styles.event} ${index % 2 === 0 ? styles.upEvent : styles.downEvent}`}>
-              <div className={styles.date}>{event.date}</div>
-              <div className={styles.title}>{event.title}</div>
+   <div className={styles.main}>
+    <h3>Road Map</h3>
+         <div
+            className={styles.timelineContainer}
+            tabIndex={0}
+            ref={containerRef}
+            onKeyDown={(e) => e.stopPropagation()}
+            >
+            <div className={styles.timeline} ref={timelineRef}>
+                <div className={styles.centerLine}></div>
+                {events.map((event, index) => (
+                <div
+                    key={event.id}
+                    className={`${styles.eventContainer} ${index % 2 === 0 ? styles.topContainer : styles.bottomContainer}`}
+                    onClick={() => setFocusIndex(index)}
+                >
+                    <div className={`${styles.verticalLine} ${index % 2 === 0 ? styles.upLine : styles.downLine}`}></div>
+                    <div className={`${styles.event} ${index % 2 === 0 ? styles.upEvent : styles.downEvent}`}>
+                    <div className={styles.title}>
+                      {event.title}
+                      {index < 6 && <FaCircleCheck className={styles.checkIcon} />} {/* Add checkmark icon for first three events */}
+                    </div>
+                    </div>
+                </div>
+                ))}
             </div>
-          </div>
-        ))}
-      </div>
-    </div>
+        </div>
+   </div>
   );
 
       };

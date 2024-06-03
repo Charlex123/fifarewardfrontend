@@ -348,9 +348,9 @@ useEffect(() => {
               </div>
               <div className={styles.betdc}>
                 <div>
-                  <Image src={betmob} style={{position: 'absolute',width: '120px',left: '5%',top: '-60px'}} alt='bet'/>
+                  <Image src={betmob} style={{position: 'absolute',width: '120px',height: '250px',left: '5%',top: '-60px'}} alt='bet'/>
                   <div className={styles.setimg}>
-                    <Image src={betbg} style={{width: '100%',height:'100%',borderRadius: '8px',marginTop: '0',border: '2px solid #78787873'}} alt='betting image'/>
+                    <Image src={betbg} style={{width: '100%',height:'400px',borderRadius: '8px',marginTop: '0',border: '2px solid #78787873'}} alt='betting image'/>
                   </div>
                 </div>
               </div>
@@ -395,7 +395,7 @@ useEffect(() => {
           </div>
       </div>
       
-      <div>
+      <div id='roadmap'>
         <RoadMap />
       </div>
 
