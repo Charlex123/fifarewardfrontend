@@ -22,6 +22,22 @@
 }
 
 @font-face {
+  font-family: 'BungeeSpice Regular';
+  src: url('/fonts/BungeeSpice-Regular.ttf') format('truetype'),
+       url('/fonts/BungeeSpice-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'PaytoneOne Regular';
+  src: url('/fonts/PaytoneOne-Regular.ttf') format('truetype'),
+       url('/fonts/PaytoneOne-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
   font-family: 'RussoOne Regular';
   src: url('/fonts/RussoOne-Regular.ttf') format('truetype'),
        url('/fonts/RussoOne-Regular.ttf') format('truetype');
