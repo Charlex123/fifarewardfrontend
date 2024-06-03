@@ -194,8 +194,9 @@ useEffect(() => {
     </Head>
 
     <div className={`${styles.homemain}`}>
-      {/* <div className={styles.overlay_d}></div> */}
+      <div className={styles.overlay_d}></div>
       <div className={styles.blk}>
+          <div className={styles.overlay_d}></div>
           <div className={styles.blk_inner}>
             <div className={styles.blkc}>
               <div className={styles.blkc1}>
@@ -230,7 +231,8 @@ useEffect(() => {
                 FIFAREWARD  
               </h1>
             </div>
-            <Typed
+            <div style={{marginBottom: '20px'}}>
+              <Typed
                     strings={[
                         'Relaunched',
                         'Reliable',
@@ -248,7 +250,8 @@ useEffect(() => {
                     style={{ color: '#e3a204', fontSize: '40px',fontWeight: 600,fontFamily: 'PayTone One' }}
                     loop
                 />
-                <h1>AI Powered Farming, Staking, Gaming And Betting Dapp</h1>
+            </div>
+            <h1>AI Powered Farming, Staking, Gaming And Betting Dapp</h1>
             <div>
               <h4 className={styles.hero_h4}>The Leading Sport GameFi Protocol</h4>
             </div>

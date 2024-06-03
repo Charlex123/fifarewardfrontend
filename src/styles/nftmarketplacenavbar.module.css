@@ -27,7 +27,7 @@
 }
 .nav .nav_container {
     display: flex;vertical-align: auto;justify-content: space-between;width: 100%;
-    font-family: "Poppins",sans-serif;color: rgb(230, 224, 224);height: inherit;
+    font-family: "RussoOne Regular",sans-serif;color: rgb(230, 224, 224);height: inherit;
     margin: auto;z-index: 0;top: 0;right: 0;left: 0;box-shadow: 1px 1px 2px 2px #8b86862d;
 }
 .nav .nav_container.scrolled {
@@ -91,7 +91,7 @@ color: #e0f7e8;
 background-color: #f0eded49;border: 1px dashed #e28305;
 }
 .nav .nav_container .nav_container_p ul.upa li a {
-    color: #f1f1f1;font-family: "Poppins",sans-serif;text-decoration: none;font-size: 14px;
+    color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;text-decoration: none;font-size: 14px;
 }
 .nav .nav_container .nav_container_p ul.upa li ul {
   position: absolute;z-index: 9;top: 45px;width: 220px;max-width: 250px;right: 0;
@@ -174,7 +174,7 @@ background-color: #f0eded49;border: 1px dashed #e28305;
       list-style: none;vertical-align: auto;margin: 13px 10px -8px 0;
   }
   .nav .nav_container .nav_container_p ul li a {
-      color: #ffffff;font-family: "Poppins",sans-serif;text-decoration: none;font-weight: 600;font-size: 14px;
+      color: #ffffff;font-family: "RussoOne Regular",sans-serif;text-decoration: none;font-weight: 600;font-size: 14px;
   }
   .nav .nav_container .nav_container_p ul li.signin {
       background-color: #ffffff;color: #0a0a0a !important;padding: 4px 8px 4px 8px;border-radius: 20px;

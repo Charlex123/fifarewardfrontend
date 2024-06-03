@@ -83,8 +83,8 @@ body {
   letter-spacing: 1px;
   line-height: 28px;
   font-size: 16px;
-  background-image: url("../assets/images/guessfootballherobg.webp");background-size: cover;
-  /* background-color: #161313ef; */
+  /* background-image: url("../assets/images/guessfootballherobg.webp");background-size: cover; */
+  /* background-color: #161313ef; */ 
 }
 .darktheme {
   background-color: var(--background-color-dark);

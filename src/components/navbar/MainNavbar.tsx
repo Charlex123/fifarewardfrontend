@@ -1,5 +1,4 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { ThemeContext } from '../../contexts/theme-context';
 import styles from '../../styles/navbar.module.css';
 import logo from '../../assets/images/logo.png';
 import ConnectWallet from '../ConnectWalletButton';
@@ -9,30 +8,15 @@ import { IoIosFootball } from 'react-icons/io';
 import { GiGamepad } from 'react-icons/gi';
 
 function Navbar() {
-    const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
     const [isNavOpen, setNavOpen] = useState(false);
     const [scrolling, setScrolling] = useState(false);
     const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
     const [dropdwnIcon3] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
     const [username, setUsername] = useState<string>("");
-    const [userId, setUserId] = useState<string>("");  
-    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
     const [isMobile,setIsMobile] = useState<boolean>(false);
 
     useEffect(() => {
 
-        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-        if(udetails && udetails !== null && udetails !== "") {
-        const username_ = udetails.username;  
-        if(username_) {
-            setUsername(username_);
-            setUserId(udetails.userId);
-            setIsloggedIn(true);
-            
-        }
-        }else {
-            setIsloggedIn(false);
-        }
         // Function to handle window resize
         const handleResize = () => {
             // Check the device width and update isNavOpen accordingly
@@ -89,16 +73,6 @@ function Navbar() {
     }
 
 
-    const shortname = (name:any) => {
-        if (name.length > 12) {
-            return name.split(' ')[0];
-        } else {
-            return name;
-        }
-    };
-
-    console.log('username',username)
-    console.log('username',isLoggedIn)
     const navClass = scrolling ? styles.scrolled : '';
 
     return (
@@ -121,33 +95,31 @@ function Navbar() {
                         </ul>
                     </li> */}
                     <li><a href='/whitepaper' rel='noopener noreferrer'>Whitepaper</a></li>
-                    {isLoggedIn &&
-                        <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
-                    }
-                    <li><a href='/chatforum' rel='noopener noreferrer'>Chat Forum</a></li>
+                    <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
+                    <li><a href='/chatforum' rel='noopener noreferrer'>Forum</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
                     <li><a href='/farming' rel='noopener noreferrer'>Farm</a></li>
-                    <li><a href='/nft' rel='noopener noreferrer'>NFT Market Place</a></li>
+                    <li><a href='/nft' rel='noopener noreferrer'>NFT</a></li>
                     {/* <li><a href='/aichat' rel='noopener noreferrer'>Prediction AI</a></li> */}
                     <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li>
                     
-                    <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} onMouseOut={toggleIconDown2}>
+                    <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} style={{fontSize: '14px', fontWeight: '600'}} onMouseOut={toggleIconDown2}>
                         Features {dropdwnIcon2}
                         <ul>
                             <li><a href='/#aboutfrd' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>About FifaReward</span></a></li>
                             <li><a href='/#roadmap' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>RoadMap</span></a></li>
                             <li><a href='/whitepaper' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
-                            <li><a href='/#frdstaking' rel='noopener noreferrer' ><FaCircleDollarToSlot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Staking Rewards</span></a></li>
-                            <li><a href='/#betting' rel='noopener noreferrer' ><FaRobot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Chat Forum</span></a></li>
+                            <li><a href='/#frdstaking' rel='noopener noreferrer' ><FaCircleDollarToSlot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Staking </span></a></li>
+                            <li><a href='/#betting' rel='noopener noreferrer' ><FaRobot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Forum</span></a></li>
                             <li><a href='/#chatforum' rel='noopener noreferrer' ><IoIosFootball className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Betting </span></a></li>
-                            <li><a href='/#nft' rel='noopener noreferrer' ><FaArtstation className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>NFT Market Place</span></a></li>
+                            <li><a href='/#nft' rel='noopener noreferrer' ><FaArtstation className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>NFT</span></a></li>
                             <li><a href='/#freeclaim' rel='noopener noreferrer' ><GiGamepad className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Gaming </span></a></li>
                             <li><a href='/#referrals' rel='noopener noreferrer' ><FaUserGroup className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Referral</span></a></li>
                         </ul>
                     </li>
                     {isMobile && 
-                        <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} onMouseOut={toggleIconDown3}>
+                        <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp3} style={{fontSize: '14px', fontWeight: '600'}} onMouseOut={toggleIconDown3}>
                             Community {dropdwnIcon3}
                             <ul>
                                 <li><a href='https://twitter.com/@FRD_Labs' rel='noopener noreferrer' ><FaTwitter className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Twitter</span></a></li>

@@ -1,48 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
-import { ThemeContext } from '../../contexts/theme-context';
+import React, { useState, useEffect } from 'react';
 import styles from '../../styles/nftmarketplacenavbar.module.css';
 
 import logo from '../../assets/images/logo.png';
 import Image from 'next/image';
-
-import { ethers } from 'ethers';
 import ConnectWallet from '../ConnectWalletButton';
-import { useWeb3Modal } from '@web3modal/ethers5/react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
-import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
-import { FaAlignJustify, FaChevronDown, FaChevronUp } from 'react-icons/fa6';
+import { FaAlignJustify } from 'react-icons/fa6';
 
 function Navbar() {
-    const { theme, setHandleDrawer, changeTheme, isDark } = useContext(ThemeContext);
     const [isNavOpen, setNavOpen] = useState(false);
     const [scrolling, setScrolling] = useState(false);
-    const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
-    const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
-    const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
-    const [username, setUsername] = useState<string>("");
-    const [userId, setUserId] = useState<string>("");  
-    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
-    const { open } = useWeb3Modal();
-    const { walletProvider } = useWeb3ModalProvider();
-    const { address, chainId, isConnected } = useWeb3ModalAccount();
-    const { disconnect } = useDisconnect();
+    // const [dropdwnIcon1, setDropdownIcon1] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
+    // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
+    // const [dropdwnIcon3, setDropdownIcon3] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
 
-    console.log('chain id',chainId)
     useEffect(() => {
-
-        const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-        if(udetails && udetails !== null && udetails !== "") {
-        const username_ = udetails.username;  
-        if(username_) {
-            setUsername(username_);
-            setUserId(udetails.userId);
-            setIsloggedIn(true);
-            
-        }
-        }else {
-            setIsloggedIn(false);
-        }
+        
         // Function to handle window resize
         const handleResize = () => {
             // Check the device width and update isNavOpen accordingly
@@ -82,26 +54,26 @@ function Navbar() {
     setNavOpen(!isNavOpen);
     };
 
-    const toggleIconUp1 = () => {
-        setDropdownIcon1(<FaChevronUp className={styles.navlisttoggle}/>)
-    }
-    const toggleIconUp2 = () => {
-        setDropdownIcon2(<FaChevronUp className={styles.navlisttoggle}/>)
-    }
-    const toggleIconUp3 = () => {
-        setDropdownIcon3(<FaChevronUp className={styles.navlisttoggle}/>)
-    }
+    // const toggleIconUp1 = () => {
+    //     setDropdownIcon1(<FaChevronUp className={styles.navlisttoggle}/>)
+    // }
+    // const toggleIconUp2 = () => {
+    //     setDropdownIcon2(<FaChevronUp className={styles.navlisttoggle}/>)
+    // }
+    // const toggleIconUp3 = () => {
+    //     setDropdownIcon3(<FaChevronUp className={styles.navlisttoggle}/>)
+    // }
 
-    const toggleIconDown1 = () => {
-        setDropdownIcon1(<FaChevronDown className={styles.navlisttoggle}/>)
-    }
-    const toggleIconDown2 = () => {
-        setDropdownIcon2(<FaChevronDown className={styles.navlisttoggle}/>)
-    }
+    // const toggleIconDown1 = () => {
+    //     setDropdownIcon1(<FaChevronDown className={styles.navlisttoggle}/>)
+    // }
+    // const toggleIconDown2 = () => {
+    //     setDropdownIcon2(<FaChevronDown className={styles.navlisttoggle}/>)
+    // }
 
-    const toggleIconDown3 = () => {
-        setDropdownIcon3(<FaChevronDown className={styles.navlisttoggle}/>)
-    }
+    // const toggleIconDown3 = () => {
+    //     setDropdownIcon3(<FaChevronDown className={styles.navlisttoggle}/>)
+    // }
 
 
     const shortname = (name:any) => {
@@ -112,8 +84,6 @@ function Navbar() {
         }
     };
 
-    console.log('username',username)
-    console.log('username',isLoggedIn)
     const navClass = scrolling ? styles.scrolled : '';
 
     return (

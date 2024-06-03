@@ -1,4 +1,4 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins");
+@import url("https://fonts.googleapis.com/css?family=RussoOne Regular");
 @import url("https://fonts.googleapis.com/css?family=Big+Shoulders+Text");
 @import url('https://fonts.googleapis.com/css?family=Roboto rel="stylesheet');
 @import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC");
@@ -9,7 +9,7 @@
 /* background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);  */
 
 .chronoh1 {
-  font-size: 16px !important;font-family: "Poppins";text-transform: capitalize;font-weight: 900;padding: 0;
+  font-size: 16px !important;font-family: "RussoOne Regular";text-transform: capitalize;font-weight: 900;padding: 0;
 }
 .chronop {
   font-size: 13px !important;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;text-transform: capitalize;color: #18221b;font-weight: 700;
@@ -23,8 +23,7 @@
 }
 /* #18221b */
  .homemain {
-    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-x: hidden;z-index: 0;position: relative;
-    background-image: url("../assets/images/guessfootballherobg.webp");background-size: cover;
+    margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-x: hidden;
 }
 .lighttheme {
   background-color: var(--background-color-light);
@@ -36,17 +35,21 @@
   color: var(--text-color-dark);
 }
 .blk {
-  width: 100%;margin: 120px auto 120px auto;
+  width: 100%;margin: 0 auto 0 auto;background-color: transparent;padding-top: 80px;position: relative;
+  background-image: url("../assets/images/guessfootballherobg.webp");background-size: cover;padding-bottom: 120px;
+}
+.blk .overlay_d {
+  position: absolute;background-color: #00000065;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
 }
 .blk .blk_inner {
-  display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;
+  display: flex;flex-direction: row;flex-wrap: wrap;justify-content: space-between;position: relative;z-index: 2;
 }
 .blk .blk_inner .blkc {
   width: 45%;padding: 25px;
 }
 .blk .blk_inner .blkc1 h1 {
   font-size: 50px;font-weight: bolder;margin: 0 auto 65px auto;text-align: center;
-  font-family: "PaytoneOne Regular";
+  font-family: "RussoOne Regular";
   line-height: 68px;letter-spacing: 6px;color: #e28305;
 }
 .blk .blk_inner .blkc2 h1 {
@@ -59,13 +62,16 @@
 }
 .c_content {    
     margin: auto;padding: 75px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;
-    overflow: hidden;min-height: 100%;height: 100%;width: 100%;
+    overflow: hidden;min-height: 90vh;height: 90vh;width: 100%;
+}
+.c_content:focus {
+  transform: scale(1.2);
 }
 /* video background */
 .bg_video {
   width: 100%;
-  min-height: 100vh;
-  height: 100vh;
+  min-height: 100% !important;
+  height: 100% !important;
   object-fit: cover;
   position: absolute;
   left: 0;
@@ -102,23 +108,24 @@
 }
 .c_content .hero_h1 {
     margin: 1rem auto;text-align: center;align-items: center;width: 100%;position: relative;z-index: 2;
-    font-weight: 900;font-family: "Bungee Spice","Poppins",sans-serif
+    font-weight: 900;font-family: "Bungee Spice";padding: 5px auto 5px auto;
 }
 .c_content .hero_h1 h1 {
     font-size: 45px;font-weight: 900;color: #f1f1f1;font-family: "Bungee Spice",sans-serif;
+    margin: 5px auto;margin-bottom: 20px;line-height: 60px;
 }
 .c_content .hero_h1 div {
     margin-top: 55px;
 }
 .c_content .hero_h4 {
-  font-size: 20px;color: #b4b2b2;font-family: "Poppins",sans-serif;font-weight: 600;width: 80%;
-  text-align: center;margin: 1rem auto;text-transform: capitalize;
+  font-size: 28px;color: #b4b2b2;font-family: "RussoOne Regular",sans-serif;font-weight: 600;width: 80%;
+  text-align: center;margin: 2rem auto 0 auto;text-transform: capitalize;line-height: 35px;
 }
 .c_content .hero_h1 div h2 {
-    font-size: 32px;font-family: "Poppins", sans-serif;font-weight: 900;text-transform: capitalize;
+    font-size: 32px;font-family: "RussoOne Regular", sans-serif;font-weight: 900;text-transform: capitalize;
 }
 .c_content .hero_h1 div p {
-    font-size: 16px;font-family: "Poppins", sans-serif;font-weight: 900;text-transform: capitalize;text-align: left;
+    font-size: 16px;font-family: "RussoOne Regular", sans-serif;font-weight: 900;text-transform: capitalize;text-align: left;
     line-height: 20px;letter-spacing: 1px;padding: 5px 0;margin-left: 50px;
 }
 .c_content .hero_h1 div.get_sd_btns {
@@ -126,12 +133,12 @@
 }
 .c_content .hero_h1 div a.getstarted {
     background-color: #e28305;width: fit-content;padding: 2px 32px;border-radius: 60px;height: fit-content;
-    font-family: "Poppins",sans-serif;font-size: 20px;font-weight: 600;box-shadow: 1px 1px 2px 2px #e28305;
+    font-family: "RussoOne Regular",sans-serif;font-size: 20px;font-weight: 600;box-shadow: 1px 1px 2px 2px #e28305;
     /* background: rgb(13,20,24);
 background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(36,168,19,0.9192051820728291) 0%, rgba(37,203,6,1) 100%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .c_content .hero_h1 div a.learnmore {
-    color: #e2e2e2;border: none;font-family: "Poppins";font-size: 20px;border: 2px solid #e28305;border-radius: 120px;
+    color: #e2e2e2;border: none;font-family: "RussoOne Regular";font-size: 20px;border: 2px solid #e28305;border-radius: 120px;
     font-weight: 600;padding: 2px 28px 2px 28px;border-radius: 60px;margin-top: 0;
 }
 .connectworld {
@@ -139,7 +146,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .connectworld h1 {
   font-size: 40px;text-transform: uppercase;font-weight: 900;margin: 50px auto 30px auto;
-  font-family: "PaytoneOne Regular",sans-serif;letter-spacing: 6px;padding: 10px;text-align: center;
+  font-family: "RussoOne Regular",sans-serif;letter-spacing: 6px;padding: 10px;text-align: center;
 }
 .connectworld .conn_inner {
   width: 100%;display: flex;flex-direction: row;justify-content: space-between;
@@ -149,7 +156,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .connectworld .conn_inner .connectw h2 {
   font-size: 28px;text-transform: uppercase;font-weight: 600;margin: 20px auto;
-  font-family: "Poppins",sans-serif;letter-spacing: 6px;
+  font-family: "RussoOne Regular",sans-serif;letter-spacing: 6px;
 }
 .connectworld .conn_inner .connectw p {
   text-align: left;
@@ -171,7 +178,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .exchmain h1 {
   font-size: 36px;text-align: center;margin: 3rem auto 1rem auto;
-  font-weight: 800;padding-top: 3rem;font-family: "PaytoneOne Regular","Poppins",sans-serif;
+  font-weight: 800;padding-top: 3rem;font-family: "RussoOne Regular","RussoOne Regular",sans-serif;
   letter-spacing: 6px;
 }
 .exchmain h4 {
@@ -197,7 +204,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 48%;position: relative;
 }
 .frdbetting .betd .betdc h1 {
-  margin: 0 auto 0 auto;text-align: center;font-size: 38px;font-family: "Poppins",sans-serif;
+  margin: 0 auto 0 auto;text-align: center;font-size: 38px;font-family: "RussoOne Regular",sans-serif;
   letter-spacing: 6px;font-weight: 900;
 }
 .frdbetting .betd .betdc h3 {
@@ -207,11 +214,11 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 100%;margin: 4rem 0;text-align: center;padding: 0;
 }
 .frdstaking h3 {
-  font-size: 13px;color: #e28305;font-family: "Poppins", sans-serif;
+  font-size: 13px;color: #e28305;font-family: "RussoOne Regular", sans-serif;
 }
 .frdstaking h1 {
   font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;width: max-content;
-  font-family: "Bungee Spice","Poppins",sans-serif;font-weight: 600;letter-spacing: 6px;
+  font-family: "Bungee Spice","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;
 }
 .frdstaking .stakebanner {
   width: 60%;text-align: center;margin: auto;
@@ -238,7 +245,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   margin: 5px auto;text-align: center;width: 60px;
 }
 .frdstaking .gov .gov_in .gov_c h2 {
-  font-family: "Poppins", sans-serif;color: #ffffff;font-size: 24px;margin: .5rem auto 1rem auto;padding-top: 1rem;
+  font-family: "RussoOne Regular", sans-serif;color: #ffffff;font-size: 24px;margin: .5rem auto 1rem auto;padding-top: 1rem;
 }
 .frdstaking .gov .gov_in .gov_c p {
   font-family: "Montserrat", sans-serif;color: #f1f1f1;font-size: 14px;
@@ -265,7 +272,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   text-align: right;width: auto;
 }
 .frdstaking h1 {
-  text-align: center;margin: 0 auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;margin: 0 auto;font-size: 42px;font-family: "RussoOne Regular", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
 }
 .frdstaking .stakingmain p {
@@ -294,7 +301,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   text-align: right;width: auto;
 }
 .frdreferrals h1 {
-  text-align: center;margin: 2rem auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;margin: 2rem auto;font-size: 42px;font-family: "RussoOne Regular", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;color: #e28305;
 }
 .frdreferrals .referralsmain p {
@@ -304,7 +311,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 .freeclaim {
   width: 100%;padding: 2rem 1rem 3rem 1rem;margin: 3rem auto 3rem auto;}
 .freeclaim h1 {
-  text-align: center;margin: 2rem auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;margin: 2rem auto;font-size: 42px;font-family: "RussoOne Regular", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
 }
 .freeclaim .freeclaimmain {
@@ -322,7 +329,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 100%;padding: 1rem 1rem 1rem 1rem;
 }
 .aboutfrd h1 {
-  text-align: center;margin: 2rem auto;font-size: 42px;font-family: "Poppins", Verdana, Geneva, Tahoma, sans-serif;
+  text-align: center;margin: 2rem auto;font-size: 42px;font-family: "RussoOne Regular", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
 }
 .aboutfrd p {
@@ -350,11 +357,11 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   margin: 2rem auto;text-align: center;
 }
 .tkl .tkl_in .tkl_head h4 {
-  font-size: 12px;font-family: "Poppins",Verdana, Geneva, Tahoma, sans-serif;color: #e28305;margin: 20px auto 0 auto;
+  font-size: 12px;font-family: "RussoOne Regular",Verdana, Geneva, Tahoma, sans-serif;color: #e28305;margin: 20px auto 0 auto;
   padding-top: 40px;font-weight: 600;
 }
 .tkl .tkl_in .tkl_head h1 {
-  font-size: 42px;font-family: "Poppins",Verdana, Geneva, Tahoma, sans-serif;color: #f1f1f1;margin: 0 auto 0 auto;
+  font-size: 42px;font-family: "RussoOne Regular",Verdana, Geneva, Tahoma, sans-serif;color: #f1f1f1;margin: 0 auto 0 auto;
   padding-top: 5px;font-weight: 600;
 }
 .tkl .tkl_in .tkl_head p {
@@ -384,30 +391,30 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   transform: skew(15deg, 0);
 }
 .tkl .tkl_in .tkl_body h3 {
-  font-size: 18px;font-family: "Poppins",sans-serif;text-align: center;margin: 10px auto 2px auto;color: #f1f1f1;
+  font-size: 18px;font-family: "RussoOne Regular",sans-serif;text-align: center;margin: 10px auto 2px auto;color: #f1f1f1;
   font-weight: 800;
 }
 .tkl .tkl_in .tkl_body h2 {
-  font-size: 38px;font-family: "Poppins",sans-serif;text-align: center;margin: 15px auto;color: #e28305;
+  font-size: 38px;font-family: "RussoOne Regular",sans-serif;text-align: center;margin: 15px auto;color: #e28305;
   font-weight: 600;
 }
 .tkl .tkl_in .tkl_body p {
   font-family: "Montserrat", sans-serif;color: #f1f1f1;text-align: left;padding: 0 15px;
 }
 .tkl .tkl_in .tkl_body .button {
-  font-family: "Poppins", sans-serif;font-size: 16px;font-weight: 900;margin: 35px auto;text-align: center;
+  font-family: "RussoOne Regular", sans-serif;font-size: 16px;font-weight: 900;margin: 35px auto;text-align: center;
   border-radius: 120px;border: 2px solid #e28305;width: fit-content;padding: 6px 32px;color: #e28305;
 }
 .tkl .tkl_in .tkl_body .btn {
   background-color: #e28305;
-  font-family: "Poppins", sans-serif;font-size: 16px;font-weight: 900;margin: 35px auto;text-align: center;
+  font-family: "RussoOne Regular", sans-serif;font-size: 16px;font-weight: 900;margin: 35px auto;text-align: center;
   border-radius: 120px;border: 2px solid #e28305;width: fit-content;padding: 6px 32px;color: #18221b;
 }
 .roadmap {
   width: 100%;margin: 5rem 0 1rem 0;z-index: 0;padding: 0;
 }
 .roadmap .rdm h1 {
-  font-size: 38px;font-family: "Poppins", sans-serif;margin: 5px auto 0 auto;text-align: center;color: #f1f1f1;
+  font-size: 38px;font-family: "RussoOne Regular", sans-serif;margin: 5px auto 0 auto;text-align: center;color: #f1f1f1;
   font-weight: 800;
 }
 .roadmap .rdm h4 {
@@ -420,7 +427,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 
 @media (max-width: 1200px) and (min-width: 991px) {
     .blk {
-      margin: 60px auto 60px auto;
+      margin: 0 auto 0 auto;padding-top: 60px;padding-bottom: 60px;
     }
     .blk .blk_inner .blkc1 h1 {
         font-size: 38px;margin: 20px auto 20px auto;
@@ -432,10 +439,10 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
       padding: 10px 20px 10px 20px;margin-top: 15px;
     }
     .c_content .hero_h1 .h1 {
-        font-size: 45px;
+        font-size: 45px;line-height: 40px;
     }
     .c_content .hero_h1 h1 {
-        font-size: 35px;
+        font-size: 35px;line-height: 35px;
     }
     .c_content .hero_h1 div {
         margin-top: 55px;
@@ -457,7 +464,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 @media (max-width: 990px) {
     .blk {
-      width: 100%;margin: 20px auto 20px auto;
+      width: 100%;margin: 0 auto 0 auto;padding-top: 140px;padding-bottom: 20px;
     }
     .blk .blk_inner {
       display: block;flex-direction: none;justify-content: unset;
@@ -474,6 +481,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     .blk .blk_inner .blk_image {
       width: 100%;height: 100%;padding: 10px 50px 60px 50px;
     }
+    .c_content {
+      min-height: 70vh;height: 70vh;
+    }
     .bg_video {
       width: 100%;
       min-height: 70vh;
@@ -486,11 +496,14 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
       bottom: 0;
       z-index: -1;
     }
+    .c_content .hero_h4 {
+      width: 100%;
+    }
     .c_content .hero_h1 .h1 {
-        font-size: 35px;
+        font-size: 35px;line-height: 35px;
     }
     .c_content .hero_h1 h1 {
-        font-size: 25px;
+        font-size: 25px;line-height: 30px;
     }
     .c_content .hero_h1 div {
         margin-top: 5px;
@@ -554,6 +567,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     }
 }
 @media (max-width: 767px) {
+  .blk {
+    padding-top: 60px;
+  }
   .connectworld h1 {
     font-size: 28px;margin-bottom: 20px !important;
   }
