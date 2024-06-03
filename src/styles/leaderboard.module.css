@@ -11,7 +11,7 @@
     margin-bottom: 20px;
     color: #f1f1f1;
     font-weight: 600;
-    font-family: 'Poppins', sans-serif;
+    font-family: 'RussoOne Regular', sans-serif;
   }
   
   .playerList {
@@ -25,7 +25,7 @@
     padding: 5px;
     border-radius: 5px;
     transition: background-color 0.3s ease;
-    font-family: 'Montserrat', sans-serif;flex-wrap: nowrap;
+    font-family: 'RussoOne Regular', sans-serif;flex-wrap: nowrap;
     display: flex;justify-content: space-between;flex-direction: row;
   }
   

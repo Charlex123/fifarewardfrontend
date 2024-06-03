@@ -1,9 +1,3 @@
-@import url('https://fonts.googleapis.com/css?family=Nunito:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Rubik+Wet+Paint:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Creepster:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Poppins:400,700&display=swap');
-@import url('https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap');
-
 .lighttheme {
     background-color: var(--background-color-light);
     color: var(--text-color-light);
@@ -18,7 +12,7 @@
     width: 100%;
 }
 .loginmodalmain {
-    padding: 5px 10px;font-size: 14px;font-family: "Poppins", sans-serif;
+    padding: 5px 10px;font-size: 14px;font-family: "RussoOne Regular", sans-serif;
     position: relative;margin-top: 0;
 }
 .loginmodalmain .loginmodalmainin {
@@ -40,17 +34,17 @@
     margin: 0 auto;
 }
 .loginmodalmain .loginmodalmainin .formTag .fhead h3 {
-    font-family: "Poppins", sans-serif;margin: 0 auto;font-weight: 600;
+    font-family: "RussoOne Regular", sans-serif;margin: 0 auto;font-weight: 600;
     text-align: center;font-size: 14px;color: #e2d7d7;
 }
 .loginmodalmain .loginmodalmainin .formpTag {
-    font-size: 12px;font-family: "Montserrat";font-style: italic;
+    font-size: 12px;font-family: "RussoOne Regular";font-style: italic;
 }
 .loginmodalmain .loginmodalmainin .form_group {
     margin: 35px 0;width: 100%;display: block;text-align: left;
 }
 .loginmodalmain .loginmodalmainin .form_group .formlabel {
-    color: #e3a204;margin-top: 1rem;padding: .6rem 0;font-family: "Montserrat";font-size: 14px;
+    color: #e3a204;margin-top: 1rem;padding: .6rem 0;font-family: "RussoOne Regular";font-size: 14px;
     text-align: left;margin-left: 0 !important;
 }
 .loginmodalmain .loginmodalmainin .form_group .forminput {
@@ -70,15 +64,15 @@
     width: 100%;margin-right: 0;text-align: right;margin-top: 1rem;
 }
 .loginmodalmain .loginmodalmainin .fpass a {
-    color: #e2d7d7;font-family: "Poppins",sans-serif;font-weight: 500;margin-top: 10px;text-align: right;
+    color: #e2d7d7;font-family: "RussoOne Regular",sans-serif;font-weight: 500;margin-top: 10px;text-align: right;
     text-decoration: underline;
 }
 .loginmodalmain .loginmodalmainin .btns a {
-    font-family: "Montserrat", sans-serif;font-size: 14px;color: #e3a204;font-weight: 600;
+    font-family: "RussoOne Regular", sans-serif;font-size: 14px;color: #e3a204;font-weight: 600;
 }
 .loginmodalmain .loginmodalmainin .btns .registerButton {
     border-radius: 120px;background-color: #e3a204;font-size: 16px;font-weight: 600;
-    padding: .2rem 30px;border: none;color: #1c1f2b;font-family: "Poppins",sans-serif;
+    padding: .2rem 30px;border: none;color: #1c1f2b;font-family: "RussoOne Regular",sans-serif;
 }
 .loginmodalmain .loginmodalmainin .passhideshowButton {
     text-align: right;float: right;margin-top: .6rem;margin-right: .5rem;

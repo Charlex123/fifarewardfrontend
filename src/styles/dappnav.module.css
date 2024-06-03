@@ -1,11 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins");
-@import url("https://fonts.googleapis.com/css?family=Big+Shoulders+Text");
-@import url('https://fonts.googleapis.com/css?family=Roboto rel="stylesheet');
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC");
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-@import url("https://fonts.googleapis.com/css?family=Raleway");
-@import url("https://fonts.googleapis.com/css?family=Caveat");
-
 .nav {
     height: 80px;align-items: center;vertical-align: auto;position: fixed;top: 0;right: 0;left: 0;z-index: 999999999999999999999999999999999999999999999;
   /* Permalink - use to edit and share this gradient: https://colorzilla.com/gradient-editor/#000000+0,000000+100&0.65+99,0.65+99,0+100 */
@@ -30,7 +22,7 @@ background: linear-gradient(to bottom,  rgb(0, 0, 0) 0%,rgba(0,0,0,0.65) 99%,rgb
 }
 .nav .nav_container {
     display: flex;vertical-align: auto;justify-content: space-between;width: 100%;
-    font-family: "Poppins",sans-serif;color: rgb(230, 224, 224);height: inherit;
+    font-family: "RussoOne Regular",sans-serif;color: rgb(230, 224, 224);height: inherit;
     margin: auto;z-index: 0;top: 0;right: 0;left: 0;
 }
 /* .nav .nav_container.scrolled { */
@@ -104,7 +96,7 @@ background: linear-gradient(to bottom,  rgb(0, 0, 0) 0%,rgba(0,0,0,0.65) 99%,rgb
   background-color: #f0eded49;border: 1px dashed #e3a204 ;
 }
 .nav .nav_container .nav_container_p ul.upa li a {
-    color: #f1f1f1;font-family: "Poppins",sans-serif;text-decoration: none;font-size: 14px;
+    color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;text-decoration: none;font-size: 14px;
 }
 .nav .nav_container .nav_container_p ul.upa li ul {
   position: absolute;z-index: 9;top: 45px;width: 220px;max-width: 250px;
@@ -178,7 +170,7 @@ background: linear-gradient(to bottom,  rgb(0, 0, 0) 0%,rgba(0,0,0,0.65) 99%,rgb
       list-style: none;vertical-align: auto;margin: 13px 10px -8px 0;
   }
   .nav .nav_container .nav_container_p ul li a {
-      color: #ffffff;font-family: "Poppins",sans-serif;text-decoration: none;font-weight: 600;font-size: 14px;
+      color: #ffffff;font-family: "RussoOne Regular",sans-serif;text-decoration: none;font-weight: 600;font-size: 14px;
   }
   .nav .nav_container .nav_container_p ul li.signin {
       background-color: #ffffff;color: #0a0a0a !important;padding: 4px 8px 4px 8px;border-radius: 20px;

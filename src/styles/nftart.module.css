@@ -97,14 +97,14 @@
     width: 60%;position: relative;border-radius: 8px;
 }
 .main .nft_auctn h1 {
-    font-family: "Poppins",sans-serif;font-size: 35px;text-align: left;text-transform: capitalize;
+    font-family: "RussoOne Regular",sans-serif;font-size: 35px;text-align: left;text-transform: capitalize;
     font-weight: 800;color: #e28305;position: relative;z-index: 0;margin: 0 auto 0 2rem;
 }
 .main .nft_auctn .intro_p {
     z-index: 0;position: relative;width: 70%;margin: .5rem auto .4rem 2rem;text-align: left;
 }
 .main .nft_auctn .intro_p p {
-    font-family: "Poppins", sans-serif;font-size: 18px;
+    font-family: "RussoOne Regular", sans-serif;font-size: 18px;
 }
 .main .nft_auctn .intro_p p span {
     font-family: "PT Sans", sans-serif;font-size: 18px;color: #e28305;
@@ -125,13 +125,13 @@
     margin-top: 5px;
 }
 .main .nft_auctn .nft_p .cp .cp_in {
-    font-family: "Montserrat";font-size: 12px;padding: 10px 20px;
+    font-family: "RussoOne Regular";font-size: 12px;padding: 10px 20px;
 }
 .main .nft_auctn .nft_p .ap {
-    font-family: "Poppins",sans-serif;font-size: 28px;padding: 10px 1px 10px 20px;
+    font-family: "RussoOne Regular",sans-serif;font-size: 28px;padding: 10px 1px 10px 20px;
 }
 .main .nft_auctn .nft_p .ap .ap_inp {
-    font-family: "Montserrat";font-size: 14px;padding: 5px 3px;
+    font-family: "RussoOne Regular";font-size: 14px;padding: 5px 3px;
 }
 .main .nft_auctn .nft_p .b_btns {
     padding: 0;border-radius: 4px;display: flex;flex-direction: row;justify-content: space-around;
@@ -274,7 +274,7 @@
     border-radius: 8px;padding: 3px;border-right: 1px solid #5a585883;
 }
 .err-alat {
-    padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "Poppins";border-radius: 8px;background: rgba(120, 224, 143, 1);
+    padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "RussoOne Regular";border-radius: 8px;background: rgba(120, 224, 143, 1);
 }
 .div_overlay {
     position:fixed; z-index: 50; background-color: rgba(55, 55, 55, 0.94);overflow-y: auto; 
@@ -290,7 +290,7 @@
     background-color: green !important;color: rgba(255, 255, 255, 1) !important;
 }
 .terms {
-    font-size: 13px;font-family: "Poppins";color: white;margin: -.4rem 0 0 .4rem;
+    font-size: 13px;font-family: "RussoOne Regular";color: white;margin: -.4rem 0 0 .4rem;
 }
 .terms a {
     color: rgba(220, 156, 7);
@@ -299,7 +299,7 @@
     color: rgba(200, 200, 200, 1);
 }
 .instructions {
-    font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
+    font-size: 12px;font-family: "RussoOne Regular";color: white;margin: .2rem .4rem;
 }
 
 @media (max-width: 991px) {

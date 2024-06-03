@@ -1,11 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=Poppins");
-@import url("https://fonts.googleapis.com/css?family=Big+Shoulders+Text");
-@import url('https://fonts.googleapis.com/css?family=Roboto rel="stylesheet');
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC");
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-@import url("https://fonts.googleapis.com/css?family=Raleway");
-@import url("https://fonts.googleapis.com/css?family=Caveat");
-
 .main_w {
     width: 100%;height: 100%;padding-top: 4.8rem;padding-bottom: 5rem;
     /* background: rgb(13,20,24);
@@ -41,7 +33,7 @@
     color: white;   
 }
 .main .notfound {
-    text-align: center;font-family: "Montserrat",sans-serif;margin: 20px auto;
+    text-align: center;font-family: "RussoOne Regular",sans-serif;margin: 20px auto;
 }
 .main_c {
     width: 100%;display: flex;flex-direction: row;justify-content: space-between;
@@ -207,7 +199,7 @@
     color: #e3a204 ;
 }
 .main .uname {
-    font-size: 16px;font-family: "Poppins";text-transform: capitalize;
+    font-size: 16px;font-family: "RussoOne Regular";text-transform: capitalize;
 }
 .main .head {
     margin: 2rem 1rem 2rem 1rem;text-align: center;border-radius: 20px;padding: 2rem 1rem 2rem 1rem;
@@ -215,13 +207,13 @@
     background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .main .head h1 {
-    font-family: "Poppins", sans-serif;font-size: 30px;font-weight: 700;
+    font-family: "RussoOne Regular", sans-serif;font-size: 30px;font-weight: 700;
 }
 .main .head h3 {
-    font-family: "Poppins", sans-serif;font-size: 20px;font-weight: 600;margin: 1rem auto;
+    font-family: "RussoOne Regular", sans-serif;font-size: 20px;font-weight: 600;margin: 1rem auto;
 }
 .main .head p {
-    margin: 5px 5px 5px 5px;padding: 10px;font-size: 14px;font-family: "Montserrat", sans-serif;
+    margin: 5px 5px 5px 5px;padding: 10px;font-size: 14px;font-family: "RussoOne Regular", sans-serif;
     text-align: left;
 }
 .main .head .get_sd_btns {
@@ -229,13 +221,13 @@
 }
 .main .head div a.getstarted {
     background-color: #e3a204;width: fit-content;padding: 2px 8px;border-radius: 60px;height: fit-content;
-    font-family: "Poppins",sans-serif;font-size: 14px;font-weight: 600;box-shadow: 1px 1px 2px 2px #e3a204;
+    font-family: "RussoOne Regular",sans-serif;font-size: 14px;font-weight: 600;box-shadow: 1px 1px 2px 2px #e3a204;
     color: #2c2b2b;
     /* background: rgb(13,20,24);
 background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(36,168,19,0.9192051820728291) 0%, rgba(37,203,6,1) 100%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
 }
 .main .head div a.learnmore {
-    color: #e2d7d7;border: none;font-family: "Poppins";font-size: 14px;border: 2px solid #e3a204;border-radius: 120px;
+    color: #e2d7d7;border: none;font-family: "RussoOne Regular";font-size: 14px;border: 2px solid #e3a204;border-radius: 120px;
     font-weight: 600;padding: 2px 18px 2px 18px;border-radius: 60px;margin-top: 0;
 }
 .main .airdrop_{
@@ -245,11 +237,11 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     margin: 20px auto;text-align: center;font-size: 28px;
 }
 .main .airdrop_ .airdh {
-    font-size: 16px;font-family: "Poppins",sans-serif;text-align: center;font-weight: 600;
+    font-size: 16px;font-family: "RussoOne Regular",sans-serif;text-align: center;font-weight: 600;
     margin: 15px auto;
 }
 .main .airdrop_ .airdh2 {
-    font-size: 16px;font-family: "Poppins",sans-serif;text-align: center;font-weight: 600;
+    font-size: 16px;font-family: "RussoOne Regular",sans-serif;text-align: center;font-weight: 600;
     margin: 15px auto;
 }
 .main .airdrop_ .airdc {
@@ -328,7 +320,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     border: 1px solid #96939386;background-color: #6e6b6b64;border-radius: 16px;
 }
 .main .stk_h1 {
-    width: 100%;margin: 20px auto;text-align: center;font-family: "Poppins", sans-serif;
+    width: 100%;margin: 20px auto;text-align: center;font-family: "RussoOne Regular", sans-serif;
     font-size: 22px;font-weight: 600;
 }
 .main .stake .stake_mod {
@@ -338,12 +330,12 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     padding: 10px 10px;border-top-left-radius: 16px;border-top-right-radius: 16px;
 }
 .main .stake .stake_mod .top h1 {
-    font-family: "Poppins", sans-serif;font-weight: 600;text-align: center;font-size: 14px;
+    font-family: "RussoOne Regular", sans-serif;font-weight: 600;text-align: center;font-size: 14px;
     margin-top: 20px;width: fit-content;border-radius: 4px;
     padding: 2px 8px;margin: 20px auto 5px auto;
 }
 .main .stake .stake_mod .s_m h3 {
-    font-family: "Poppins", sans-serif;font-weight: 600;text-align: center;font-size: 14px;
+    font-family: "RussoOne Regular", sans-serif;font-weight: 600;text-align: center;font-size: 14px;
     margin: .5rem 2rem;
 }
 .main .stake .stake_mod .s_m_in {
@@ -372,14 +364,14 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .s_m_in_c .s_a {
     width: 100%;text-align: left;font-size: 12px;font-weight: 600;
-    font-family: "Montserrat",sans-serif;margin: 0;
+    font-family: "RussoOne Regular",sans-serif;margin: 0;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .s_m_in_c .s_a  select {
     width: 100%;height: 30px;font-size: 14px;
     font-weight: 400;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .s_m_in_c .s_b {
-    width: 50%;text-align: right;font-size: 12px;font-weight: 600;font-family: "Montserrat",sans-serif;
+    width: 50%;text-align: right;font-size: 12px;font-weight: 600;font-family: "RussoOne Regular",sans-serif;
 }
 .main .stake .stake_mod .s_m_in .s_m_inna .amountprog {
     width: 100%;
@@ -390,7 +382,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     border-radius: 8px;
 }
 .main .stake .stake_mod .s_m_in .apy {
-    margin: 1rem auto;font-family: "Poppins", sans-serif;font-weight: 800;font-size: 20px;text-align: center;
+    margin: 1rem auto;font-family: "RussoOne Regular", sans-serif;font-weight: 800;font-size: 20px;text-align: center;
 }
 .main .stake .stake_mod .s_m_in .interest_returns {
     width: 100%;
@@ -402,10 +394,10 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     width: 100%;list-style: none;border-bottom: 1px solid #e2d7d7;margin-bottom: 1rem;
 }
 .main .stake .stake_mod .s_m_in .interest_returns ul li:first-child {
-    border-bottom: none;font-weight: 600;font-family: "Poppins", sans-serif;
+    border-bottom: none;font-weight: 600;font-family: "RussoOne Regular", sans-serif;
 }
 .main .stake .stake_mod .s_m_in .interest_returns ul li .ir_c {
-    display: flex;justify-content: space-between;font-family: "Montserrat", sans-serif;font-weight: 500;
+    display: flex;justify-content: space-between;font-family: "RussoOne Regular", sans-serif;font-weight: 500;
     font-size: 14px;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div {
@@ -431,10 +423,10 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     color: white;   
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .estprof {
-    font-size: 12px;font-family: "Montserrat", sans-serif;display: none;
+    font-size: 12px;font-family: "RussoOne Regular", sans-serif;display: none;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .crwd {
-    font-size: 12px;font-family: "Montserrat", sans-serif;display: none;
+    font-size: 12px;font-family: "RussoOne Regular", sans-serif;display: none;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .crwd span {
     font-weight: 600;

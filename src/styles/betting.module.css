@@ -11,7 +11,7 @@
 }
 .main .search form input {
     width: 100%;border: 1px solid #e2d7d7;border-radius: 4px;height: 32px;position: relative;padding-left: 4px;
-    font-family: "Montserrat";font-size: 14px;
+    font-family: "RussoOne Regular";font-size: 14px;
 }
 .main .search form .searchicon {
     position: absolute;right: 4px;top: 6px;cursor: pointer;color: #0000005d;
@@ -25,7 +25,7 @@
     border-bottom: 1px solid #e2d7d7;margin: 4px 0 2px 0;border-radius: 4px;margin: 5px 0;
 }
 .main .search form .searchop div button {
-    font-size: 14px;font-family: "Montserrat";padding: 2px 8px 2px 2px;background-color: #a19d9d87;
+    font-size: 14px;font-family: "RussoOne Regular";padding: 2px 8px 2px 2px;background-color: #a19d9d87;
 }
 .main .breadcrum {
     width: 100%;margin: 15px 0;text-align: left;padding-left: 2rem;
@@ -57,7 +57,7 @@
     color: #ffffff;font-family: "PT Sans",sans-serif;font-size: 14px;
 }
 .main .hiwmain .hiw_c ul li a {
-    color: #e28305;font-weight: 900;font-family: "Poppins",sans-serif;
+    color: #e28305;font-weight: 900;font-family: "RussoOne Regular",sans-serif;
 }
 .main .betbydate {
     width: 100%;margin: auto;padding: 0 20% 0 18%;background-color: #f1f1f1;
@@ -81,7 +81,7 @@
     color: #ffffff;
 }
 .main .betbydate .betbydate_top .betbydate_top_in .dbdate {
-    margin-bottom: -5px;font-size: 12px;font-weight: 600;font-family: "Poppins",sans-serif;
+    margin-bottom: -5px;font-size: 12px;font-weight: 600;font-family: "RussoOne Regular",sans-serif;
 }
 .main .betbydate .betbydate_top .betbydate_top_in .d {
     font-size: 12px;
@@ -138,11 +138,11 @@
     font-size: 11px;color: #e28305;
 }
 .main .main_in .leagues .gf h3 {
-    width: 100%;font-size: 16px;font-weight: 600;font-family: "Poppins",sans-serif;
+    width: 100%;font-size: 16px;font-weight: 600;font-family: "RussoOne Regular",sans-serif;
     border-bottom: 1px solid #ffffff;margin: 5px auto 15px auto;padding-bottom: 5px;
 }
 .main .main_in .leagues .fb h3 {
-    width: fit-content;font-size: 12px;font-weight: 600;font-family: "Poppins",sans-serif;
+    width: fit-content;font-size: 12px;font-weight: 600;font-family: "RussoOne Regular",sans-serif;
     background-color: #ffffff;margin: 15px auto 8px auto;text-align: center;padding: 2px 4px;
     border-radius: 4px;
 }
@@ -270,7 +270,7 @@
     display: flex;justify-content: space-between;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o .dd {
-    display: flex;justify-content: space-between;font-family: "Poppins",sans-serif;font-size: 14px;
+    display: flex;justify-content: space-between;font-family: "RussoOne Regular",sans-serif;font-size: 14px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o .dd .fid { 
     font-size: 12px;margin: 2px auto auto 5px;color: #4f4848bd;
@@ -326,17 +326,17 @@
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li {
     margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
-    font-family: "Montserrat";
+    font-family: "RussoOne Regular";
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li div {
     display: flex;flex-direction: row;justify-content: space-between;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g label {
-    width: 100%;font-size: 14px;color: #ffffff;font-family: "Montserrat",sans-serif;
+    width: 100%;font-size: 14px;color: #ffffff;font-family: "RussoOne Regular",sans-serif;
     text-align: left;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g input {
-    width: 100%;font-size: 14px;color: #ffffff;font-family: "Montserrat",sans-serif;height: 30px;
+    width: 100%;font-size: 14px;color: #ffffff;font-family: "RussoOne Regular",sans-serif;height: 30px;
     border-radius: 4px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g select {
@@ -371,7 +371,7 @@
     color: #151414;font-family: "PT Sans";border: 2px solid #ffffff;
 }
 .main .main_in .openbets_list .opb_h h3 {
-    font-family: "Poppins",sans-serif;font-size: 14px;font-weight: 800;background-color: #686867;color: #ffffff;
+    font-family: "RussoOne Regular",sans-serif;font-size: 14px;font-weight: 800;background-color: #686867;color: #ffffff;
     padding: 4px 0 4px 0;margin: 0 auto;
 }
 .main .main_in .openbets_list .opb_h ul {
@@ -399,7 +399,7 @@
     margin: 10px 5px 10px 10px;text-align: left;width: 100%;
 }
 .main .main_in .openbets_list .opb_h .opb_full_list a {
-    font-size: 12px;font-family: "Montserrat",sans-serif;color: #ffffff;
+    font-size: 12px;font-family: "RussoOne Regular",sans-serif;color: #ffffff;
     background-color: #e28305;padding: 2px 6px 2px 6px;border-radius: 4px;
 }
 .main .main_in .openbets_list .opb_h {

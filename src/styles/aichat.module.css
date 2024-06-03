@@ -14,14 +14,14 @@
     color: var(--text-color-dark);
 }
 .main h1 {
-    font-family: "Poppins",sans-serif;font-size: 25px;text-align: center;padding: 0 20px;
+    font-family: "RussoOne Regular",sans-serif;font-size: 25px;text-align: center;padding: 0 20px;
     font-weight: 800;color: #e3a204;position: relative;z-index: 9;margin: 1rem auto;
 }
 .main .intro_p {
     z-index: 9;position: relative;width: 70%;margin: 1rem auto 2rem auto;text-align: center;
 }
 .main .intro_p p {
-    font-family: "Poppins", sans-serif;font-size: 18px;
+    font-family: "RussoOne Regular", sans-serif;font-size: 18px;
 }
 .main_c {
     width: 100%;display: flex;flex-direction: row;justify-content: space-between;margin-top: 50px;margin-bottom: 150px;
@@ -46,7 +46,7 @@
     width: 140px;height: 150px;margin: 5px 0 5px 0;border-radius: 8px;
 }
 .main .settings .bg_option .bg_options_ .bg_opt_text {
-    margin: 5px auto 20px auto;text-align: center;font-size: 12px;font-family: "Poppins";font-weight: 900;
+    margin: 5px auto 20px auto;text-align: center;font-size: 12px;font-family: "RussoOne Regular";font-weight: 900;
 }
 .chat{
     margin: 0 auto;padding: 6px 12px 6px 12px;
@@ -62,7 +62,7 @@
     margin: 1rem;z-index: 11;position: relative;
 }
 .red_back a {
-    color: white !important;font-family: "Poppins";z-index: 11 !important;font-size: 14px;
+    color: white !important;font-family: "RussoOne Regular";z-index: 11 !important;font-size: 14px;
 }
 .chat_wrapper {
     width: 100%;z-index: 10;margin-bottom: 9rem;height: 100%;
@@ -217,7 +217,7 @@ background-color: #c23616 !important;
 .user_info{
 margin-top: -.2rem;
 margin-bottom: auto;
-margin-left: 1rem;font-family: "Poppins";
+margin-left: 1rem;font-family: "RussoOne Regular";
 }
 .user_info span{
 font-size: 14px;
@@ -226,7 +226,7 @@ color: white;
 .user_info_t{
 margin-top: auto;
 margin-bottom: 1rem;border-radius: 8px;
-margin-left: 15px;font-family: "Poppins";
+margin-left: 15px;font-family: "RussoOne Regular";
 background-color: rgba(226, 248, 230, 0.23);padding: .4rem 1rem;
 }
 .user_info_t span{
@@ -257,10 +257,10 @@ padding: 10px;
 position: relative;
 }
 .u_name {
-font-family: "Poppins";font-size: 16px;color: white;margin-right: .5rem;text-align: right;
+font-family: "RussoOne Regular";font-size: 16px;color: white;margin-right: .5rem;text-align: right;
 }
 .doc_name {
-font-family: "Poppins";font-size: 16px;color: white !important;margin-left: .5rem;text-align: left;
+font-family: "RussoOne Regular";font-size: 16px;color: white !important;margin-left: .5rem;text-align: left;
 }
 .doc_msg_cotainer_send {
 margin-top: 4px;
@@ -272,7 +272,7 @@ white-space: initial;
 position: relative;
 }
 .doc_msg_cotainer_send .message {
-font-family: "Montserrat";
+font-family: "RussoOne Regular";
 font-size: 14.5px;
 border-radius: 8px;
 background-color: #ffffff;
@@ -292,7 +292,7 @@ position: relative;
 text-align: left !important;
 }
 .msg_cotainer_send .message {
-font-family: "Montserrat";
+font-family: "RussoOne Regular";
 font-size: 14.5px;
 border-radius: 8px;
 background-color: rgb(220, 156, 7);
@@ -348,7 +348,7 @@ position: relative;
     color: #e2d7d7;padding: 15px;
 }
 .msg_head ul li {
-    font-size: 13px;font-family: "Poppins", sans-serif;color: #a6a6a9;
+    font-size: 13px;font-family: "RussoOne Regular", sans-serif;color: #a6a6a9;
 }
 #action_menu_btn{
 position: absolute;
@@ -394,10 +394,10 @@ width: 100%;margin: 1rem auto 4rem auto;display: flex;flex-wrap: wrap;justify-co
 margin: 2rem 0;color: white;cursor: pointer;
 }
 .p-outline .plo a{
-color: white;font-family: "Poppins";border-radius: 20px;width: max-content;padding: .6rem 1rem;background-color: rgba(34, 216, 34, 0.13);margin: 1rem 0;font-size: 14px;
+color: white;font-family: "RussoOne Regular";border-radius: 20px;width: max-content;padding: .6rem 1rem;background-color: rgba(34, 216, 34, 0.13);margin: 1rem 0;font-size: 14px;
 }
 .err-alat {
-padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "Poppins";border-radius: 8px;background: rgba(120, 224, 143, 1);
+padding: 1rem 2rem;position: fixed;top: 10%;right: 1%;color: white;font-size: 14px;font-family: "RussoOne Regular";border-radius: 8px;background: rgba(120, 224, 143, 1);
 }
 .div_overlay {
     position:fixed; z-index: 50; background-color: rgba(55, 55, 55, 0.94);overflow-y: auto; 
@@ -413,7 +413,7 @@ background-color: white !important;color: rgba(55, 55, 55, 1) !important;
 background-color: green !important;color: rgba(255, 255, 255, 1) !important;
 }
 .terms {
-font-size: 13px;font-family: "Poppins";color: white;margin: -.4rem 0 0 .4rem;
+font-size: 13px;font-family: "RussoOne Regular";color: white;margin: -.4rem 0 0 .4rem;
 }
 .terms a {
 color: rgba(220, 156, 7);
@@ -422,7 +422,7 @@ color: rgba(220, 156, 7);
 color: rgba(200, 200, 200, 1);
 }
 .instructions {
-font-size: 12px;font-family: "Poppins";color: white;margin: .2rem .4rem;
+font-size: 12px;font-family: "RussoOne Regular";color: white;margin: .2rem .4rem;
 }
 .fa-microphone {
 font-size: 2rem;

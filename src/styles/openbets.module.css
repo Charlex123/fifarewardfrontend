@@ -19,7 +19,7 @@
 }
 .main .search form input {
     width: 100%;border: 1px solid #e2d7d7;border-radius: 4px;height: 32px;position: relative;padding-left: 4px;
-    font-family: "Montserrat";font-size: 14px;
+    font-family: "RussoOne Regular";font-size: 14px;
 }
 .main .search form .searchicon {
     position: absolute;right: 4px;top: 6px;cursor: pointer;color: #0000005d;
@@ -81,7 +81,7 @@
     position: absolute;right: 4px;top: 4px;color: #fffcfc;cursor: pointer;background-color: none;
 }
 .main .betcondtns .betcondtns_m h3 {
-    margin: 15px auto;font-weight: 600;font-family: "Poppins";color: #e28305;font-size: 14px;
+    margin: 15px auto;font-weight: 600;font-family: "RussoOne Regular";color: #e28305;font-size: 14px;
 }
 .main .betcondtns .betcondtns_m .betprd {
     display: flex;flex-direction: row;text-align: left;
@@ -110,7 +110,7 @@
     color: #ffffff;font-family: "PT Sans",sans-serif;font-size: 14px;
 }
 .main .hiwmain .hiw_c ul li a {
-    color: #e28305;font-weight: 900;font-family: "Poppins",sans-serif;
+    color: #e28305;font-weight: 900;font-family: "RussoOne Regular",sans-serif;
 }
 .main .main_in {
     display: flex;flex-direction: row;justify-content: space-between;
@@ -232,13 +232,13 @@
 }
 .main .openbetmain .pbet .form_g ul li {
     margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
-    font-family: "Montserrat";
+    font-family: "RussoOne Regular";
 }
 .main .openbetmain .pbet .form_g ul li div {
     display: flex;flex-direction: row;justify-content: space-between;margin: 5px 0;
 }
 .main .openbetmain .pbet .form_g input {
-    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;margin-top: 5px;
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;height: 30px;margin-top: 5px;
     border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;border: 1px solid #4f48484d;
 }
 .main .openbetmain .pbet .form_g p {
@@ -248,10 +248,10 @@
     font-size: 13px;margin-bottom: 5px;
 }
 .main .openbetmain .pbet .form_g small {
-    color: rgb(250, 68, 68);font-size: 12px;font-family: "Montserrat";font-weight: 600;
+    color: rgb(250, 68, 68);font-size: 12px;font-family: "RussoOne Regular";font-weight: 600;
 }
 .main .openbetmain .pbet .form_g select {
-    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "Montserrat",sans-serif;height: 30px;
+    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;height: 30px;
     border-radius: 4px;font-weight: 500;background-color: #3332328c;border: 1px solid #4f48484d;
     margin-top: 5px;
 }

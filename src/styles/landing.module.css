@@ -1,11 +1,3 @@
-@import url("https://fonts.googleapis.com/css?family=RussoOne Regular");
-@import url("https://fonts.googleapis.com/css?family=Big+Shoulders+Text");
-@import url('https://fonts.googleapis.com/css?family=Roboto rel="stylesheet');
-@import url("https://fonts.googleapis.com/css?family=Noto+Sans+TC");
-@import url("https://fonts.googleapis.com/css?family=Montserrat");
-@import url("https://fonts.googleapis.com/css?family=Raleway");
-@import url("https://fonts.googleapis.com/css?family=Caveat");
-
 /* background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);  */
 
 .chronoh1 {
@@ -248,7 +240,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-family: "RussoOne Regular", sans-serif;color: #ffffff;font-size: 24px;margin: .5rem auto 1rem auto;padding-top: 1rem;
 }
 .frdstaking .gov .gov_in .gov_c p {
-  font-family: "Montserrat", sans-serif;color: #f1f1f1;font-size: 14px;
+  font-family: "RussoOne Regular", sans-serif;color: #f1f1f1;font-size: 14px;
 }
 .frdstaking {
   padding: 1rem 1rem 1rem 1rem;width: 100%;overflow: hidden;
@@ -276,7 +268,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;
 }
 .frdstaking .stakingmain p {
-  text-align: left;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .frdreferrals {
@@ -305,7 +297,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;color: #e28305;
 }
 .frdreferrals .referralsmain p {
-  text-align: left;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .freeclaim {
@@ -318,7 +310,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 100%;margin: auto;text-align: center;
 }
 .freeclaim p {
-  text-align: left;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .freeclaim button {
@@ -333,7 +325,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;
 }
 .aboutfrd p {
-  text-align: left;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .aboutfrd ul {
@@ -343,7 +335,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-size: 22px;font-weight: 800;
 }
 .aboutfrd ul li {
-  margin: 20px 0 10px 0;font-size: 16px;font-family: "Montserrat", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin: 20px 0 10px 0;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .tkl {
   width: 100%;margin: auto 0;padding: 0;
@@ -365,7 +357,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   padding-top: 5px;font-weight: 600;
 }
 .tkl .tkl_in .tkl_head p {
-  font-size: 14px;font-family: "Montserrat", sans-serif;color: #f1f1f1;margin: 0 auto 0 auto;
+  font-size: 14px;font-family: "RussoOne Regular", sans-serif;color: #f1f1f1;margin: 0 auto 0 auto;
   padding-top: 0;font-weight: 500;
 }
 .tkl .tkl_in .tkl_head .dexlinks {
@@ -399,7 +391,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 600;
 }
 .tkl .tkl_in .tkl_body p {
-  font-family: "Montserrat", sans-serif;color: #f1f1f1;text-align: left;padding: 0 15px;
+  font-family: "RussoOne Regular", sans-serif;color: #f1f1f1;text-align: left;padding: 0 15px;
 }
 .tkl .tkl_in .tkl_body .button {
   font-family: "RussoOne Regular", sans-serif;font-size: 16px;font-weight: 900;margin: 35px auto;text-align: center;
@@ -418,7 +410,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 800;
 }
 .roadmap .rdm h4 {
-  font-size: 14px;font-family: "Montserrat", sans-serif;margin: 1px auto 60px auto;text-align: center;color: #e28305;
+  font-size: 14px;font-family: "RussoOne Regular", sans-serif;margin: 1px auto 60px auto;text-align: center;color: #e28305;
   font-weight: 600;
 }
 .roadmap .rdm .tmlc {
