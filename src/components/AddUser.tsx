@@ -65,7 +65,7 @@ const AddUser = () =>  {
         }  
         console.log("address", address,sponsoraddress)
         setLoading(true);
-        const {data} = await axios.post("http://localhost:9000/api/users/addupdateuser", {
+        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser", {
           username,
           address,
           sponsoraddress,

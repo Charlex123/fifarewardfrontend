@@ -3,14 +3,14 @@ import Home from '../components/landing/Home';
 import Navbar from '../components/navbar/MainNavbar';
 import Footer from '../components/Footer'
 import BackToTop from '../components/back-to-top/back-to-top';
-import ChangeTheme from '../components/change-theme/change-theme';
+// import ChangeTheme from '../components/change-theme/change-theme';
 
 function HomePage() {
 
   return (
     <>
       <BackToTop />
-      <ChangeTheme />
+      {/* <ChangeTheme /> */}
       <Navbar />
       <Home />
       <Footer />

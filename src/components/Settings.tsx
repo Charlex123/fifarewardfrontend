@@ -143,7 +143,7 @@ const Settings = () =>  {
         console.log(pair[0] + ', ' + pair[1]);
       }
     try {
-      const res = await axios.post('http://localhost:9000/uploadprofileimage', formData, {
+      const res = await axios.post('https://fifarewardbackend.onrender.com/uploadprofileimage', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
@@ -158,7 +158,7 @@ const Settings = () =>  {
             }
         }  
         const filePath_ = fullUrl;
-        const {data} = await axios.post('http://localhost:9000/api/users/uploadprofilepicture', {
+        const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/users/uploadprofilepicture', {
             address,
             filePath_
         }, config);
@@ -183,7 +183,7 @@ async function UpdateUsername(e: any) {
               "Content-type": "application/json"
           }
       }  
-      const {data} = await axios.post('http://localhost:9000/api/users/updateusername', {
+      const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/users/updateusername', {
           address,
           username
       }, config);

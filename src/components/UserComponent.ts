@@ -21,7 +21,7 @@ const UserComponent = () => {
                             "Content-type": "application/json"
                         }
                     };
-                    const response = await axios.post("http://localhost:9000/api/users/getuser/", { address }, config);
+                    const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/getuser/", { address }, config);
                     const data = response.data;
 
                     if(data.user != null) {
@@ -30,7 +30,7 @@ const UserComponent = () => {
                         setIsSponsorInfluencer(data.user.issponsorinfluencer);
                         localStorage.setItem("userInfo",JSON.stringify(data.user));
                     } else {
-                        const response = await axios.post("http://localhost:9000/api/users/addupdateuser/", {
+                        const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser/", {
                             address,
                             sponsoraddress,
                             issponsorinfluencer,

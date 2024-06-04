@@ -1,15 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../styles/leaderboard.module.css';
-import UserList from './UserList';
 import axios from 'axios';
 import { BigNumber, ethers } from 'ethers';
 import { useWeb3ModalProvider, useWeb3ModalAccount, useWeb3Modal } from '@web3modal/ethers5/react';
 import GuessfhAbi from "../../artifacts/contracts/FRDGuessFootBallHero.sol/GuessFootBallHero.json";
-
-interface User {
-    username: string,
-    pic: string
-}
 
 interface Leaderboard {
     walletaddress: string,
@@ -18,7 +12,6 @@ interface Leaderboard {
 }
 
 const GuessFootballHeroLeaderboard: React.FC = () => {
-    const [users, setUsers] = useState<User[]>([]);
     const GuessfhCA = process.env.NEXT_PUBLIC_GUESSFOOTBALLHERO_CA;
     const { walletProvider } = useWeb3ModalProvider();
     const { isConnected } = useWeb3ModalAccount();
@@ -50,17 +43,6 @@ const GuessFootballHeroLeaderboard: React.FC = () => {
       }
       getUSDEQUIVFRDAMOUNT();
 
-        const fetchUsers = async () => {
-            try {
-                const { data } = await axios.get('http://localhost:9000/api/users/getusers');
-                console.log("data", data.data);
-                setUsers(data.data);
-            } catch (error) {
-                console.error('Error fetching users:', error);
-            }
-        };
-    
-        fetchUsers();
 
         const loadLeaderboard = async() => {
           if (walletProvider) {
@@ -88,7 +70,6 @@ const GuessFootballHeroLeaderboard: React.FC = () => {
 
   return (
     <div className={styles.leaderboard}>
-      <UserList users={users} />
       <h2 className={styles.title}>Leaderboard</h2>
       <ul className={styles.playerList}>
         {leaderboard.map((gamer, index) => (

@@ -21,7 +21,7 @@ const SoccerRouletteLeaderboard: React.FC = () => {
 
   useEffect(() => {
     const fetchUsers = async () => {
-        const {data} = await axios.get('http://localhost:9000/api/users/getusers');
+        const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
         setUsers(data.data);
     };
     fetchUsers();

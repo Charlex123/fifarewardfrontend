@@ -136,6 +136,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .connectworld {
   width: 100%;background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
+  color: #f1f1f1;
 }
 .connectworld h1 {
   font-size: 40px;text-transform: uppercase;font-weight: 900;margin: 50px auto 30px auto;
@@ -162,9 +163,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .readmorebtn {
   border-radius: 120px;padding: 5px 16px;font-size: 13px;
-  font-weight: 600;
+  font-weight: 600;color: #f1f1f1;
 }
-.exchmain {
+.exchmain {color: #f1f1f1;
   width: 100%;padding: 80px 0 120px 0;
   width: 100%;background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
   /* background: rgb(13,20,24);
@@ -189,7 +190,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 130px;margin: 20px 0;
 }
 .frdbetting {
-  width: 100%;padding: 40px 20px 120px 20px;
+  width: 100%;padding: 40px 20px 120px 20px;color: #f1f1f1;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .frdbetting .betd {
@@ -206,14 +207,14 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   margin: 0 auto 30px auto;text-align: center;font-size: 20px;font-weight: 900;
 }
 .frdstaking {
-  width: 100%;text-align: center;padding-bottom: 120px;
+  width: 100%;text-align: center;padding-bottom: 120px;color: #f1f1f1;padding-left: 20px;padding-right: 20px;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .frdstaking h3 {
   font-size: 13px;color: #e28305;font-family: "RussoOne Regular", sans-serif;
 }
 .frdstaking h1 {
-  font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;width: max-content;
+  font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;width: max-content;padding-bottom: 60px;
   font-family: "BungeeSpice Regular","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;
 }
 .frdstaking .stakebanner {
@@ -277,10 +278,10 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .roadmap {
   width: 100%;background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
-  padding: 120px auto 120px auto;overflow-x: hidden;
+  padding: 120px auto 120px auto;overflow-x: hidden;color: #f1f1f1;
 }
 .frdreferrals {
-  padding: 120px auto 120px auto;width: 100%;overflow: hidden;
+  padding: 120px 20px 120px 20px;width: 100%;overflow: hidden;color: #f1f1f1;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .frdreferrals .referralsmain {
@@ -310,7 +311,8 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   margin: 30px auto 30px auto;
 }
 .freeclaim {
-  width: 100%;padding: 2rem 1rem 3rem 1rem;margin: 3rem auto 3rem auto;}
+  width: 100%;padding: 2rem 1rem 3rem 1rem;margin: 3rem auto 3rem auto;color: #f1f1f1;
+}
 .freeclaim h1 {
   text-align: center;margin: 2rem auto;font-size: 42px;font-family: "RussoOne Regular", Verdana, Geneva, Tahoma, sans-serif;
   font-weight: 900;
@@ -327,7 +329,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;margin: 1rem auto;text-align: center;font-size: 18px;
 }
 .aboutfrd {
-  width: 100%;padding: 1rem 1rem 1rem 1rem;
+  width: 100%;padding: 1rem 1rem 1rem 1rem;color: #f1f1f1;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .aboutfrd h1 {
@@ -554,7 +556,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
       text-align: right;width: auto;
     }
     .frdreferrals {
-      margin-top: -60px;
+      padding: 0 20px 40px 20px;margin-top: -100px;
     }
     .frdreferrals .referralsmain {
       display: block;flex-direction: none;justify-content: unset;margin: 1rem auto 1rem auto;
@@ -574,7 +576,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     font-size: 28px;margin-bottom: 20px !important;
   }
   .exchmain {
-    margin-top: -80px;
+    margin-top: -140px;margin-bottom: -20px;
   }
   .exchmain h1 {
     font-size: 28px;margin-bottom: 20px !important;

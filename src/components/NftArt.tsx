@@ -2,7 +2,6 @@ import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import bnblogo from '../assets/images/bnb-bnb-logo.png'
-import messi from '../assets/images/messi.png';
 import { ThemeContext } from '../contexts/theme-context';
 import NFTCountdownTimer from './NftCountDownTimer';
 import NFTMarketPlaceabi from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';

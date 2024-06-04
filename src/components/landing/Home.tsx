@@ -266,7 +266,7 @@ useEffect(() => {
                   </p>
               </div>
               <div>
-                <p><span>Fifareward</span> as a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
+                <p><span>As</span> a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
              </div>
               <div>
                 <h2>Guess The Football Hero</h2>

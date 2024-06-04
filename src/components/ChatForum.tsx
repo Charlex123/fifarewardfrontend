@@ -12,7 +12,6 @@ import UserList from '../components/UserList';
 import Head from 'next/head';
 import styles from "../styles/chatforum.module.css";
 import dotenv from 'dotenv';
-import { FaThumbsDown, FaThumbsUp, FaXmark } from 'react-icons/fa6';
 dotenv.config();
 
 let socket: Socket;
@@ -66,7 +65,7 @@ const ChatForum: React.FC<{}> = () =>  {
 
 
     const fetchUsers = async () => {
-        const {data} = await axios.get('http://localhost:9000/api/users/getusers');
+        const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
         setUsers(data.data);
         console.log("users data",data)
     };
@@ -83,7 +82,7 @@ const ChatForum: React.FC<{}> = () =>  {
         setCurrentUser(udetails._id);
         fetchUsers();
         const SERVER = 'http://127.0.0.1:9000';  // Ensure this URL is correct
-        const socket = io('http://localhost:9000')
+        const socket = io('https://fifarewardbackend.onrender.com')
         socket.on('connect', () => {
             console.log('Connected to Socket.IO server');
             fetchMessages();
@@ -126,7 +125,7 @@ const ChatForum: React.FC<{}> = () =>  {
       formData.append('file', file);
 
       try {
-        const response = await axios.post('http://localhost:9000/uploadforumfile', formData, {
+        const response = await axios.post('https://fifarewardbackend.onrender.com/uploadforumfile', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -139,7 +138,7 @@ const ChatForum: React.FC<{}> = () =>  {
         }  
         const content = response.data.fullUrl;
         console.log("res pom",response.data.fullUrl)
-        // const {data} = await axios.post('http://localhost:9000/api/chatforum/sendmessage', {
+        // const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
         //     userId,
         //     currentUser,
         //     content
@@ -161,7 +160,7 @@ const ChatForum: React.FC<{}> = () =>  {
                 }
             }  
             const content = text;
-            const {data} = await axios.post('http://localhost:9000/api/chatforum/sendmessage', {
+            const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
                 userId,
                 currentUser,
                 content

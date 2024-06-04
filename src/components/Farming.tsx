@@ -143,7 +143,7 @@ const Farming = () =>  {
                 "Content-type": "application/json"
             }
         }  
-        const {data} = await axios.post("http://localhost:9000/api/mining/getminingdetails", {
+        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/getminingdetails", {
             address
         }, config);
         if(data) {
@@ -179,7 +179,7 @@ const Farming = () =>  {
                 "Content-type": "application/json"
             }
         }  
-        const {data} = await axios.post("http://localhost:9000/api/mining/updateminedamount", {
+        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/updateminedamount", {
             address, 
             newamountmined,
             miningstatus
@@ -230,7 +230,7 @@ const Farming = () =>  {
               "Content-type": "application/json"
           }
       }  
-      const {data} = await axios.post("http://localhost:9000/api/mining/startmining", {
+      const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/startmining", {
           address, 
           amountmined,
           miningrate,
@@ -263,7 +263,7 @@ const stopminingCount = async (e: any) => {
                 "Content-type": "application/json"
             }
         }  
-        const {data} = await axios.post("http://localhost:9000/api/mining/stopmining", {
+        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/stopmining", {
             address
         }, config);
         if(data) {

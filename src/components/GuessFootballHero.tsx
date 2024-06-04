@@ -97,7 +97,7 @@ const GuessFootballHero: React.FC = () => {
               "Content-type": "application/json"
           }
         } 
-        const {data} = await axios.post('http://localhost:9000/api/guessfootballhero/getusergames',{
+        const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessfootballhero/getusergames',{
           address
         },config);
         if (data.games != null && data.games.length > 0) {
@@ -118,7 +118,7 @@ const GuessFootballHero: React.FC = () => {
       try {
         setShowBgOverlay(true);
         setLoading(true);
-        const {data} = await axios.get('http://localhost:9000/api/players/getgamedata');
+        const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/players/getgamedata');
         if (Array.isArray(data.gamedata)) {
           const shuffledItems = shuffleArray(data.gamedata);
           setGameData(shuffleArray(data.gamedata));
@@ -240,7 +240,7 @@ const GuessFootballHero: React.FC = () => {
             }
           }  
 
-          const {data} = await axios.post('http://localhost:9000/api/guessherohint/addupdatehint', {
+          const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessherohint/addupdatehint', {
             address,
             name,
             image,
@@ -287,7 +287,7 @@ const GuessFootballHero: React.FC = () => {
             }
           }  
 
-          const {data} = await axios.post('http://localhost:9000/api/guessfootballhero/startgame', {
+          const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessfootballhero/startgame', {
             selectedName,
             selectedHint,
             amount,
@@ -329,7 +329,7 @@ const GuessFootballHero: React.FC = () => {
                   "Content-type": "application/json"
               }
             }  
-            const {data} = await axios.post('http://localhost:9000/api/guessfootballhero/updategame', {
+            const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessfootballhero/updategame', {
               gameId,
               selectedName,
               selectedHint,
@@ -374,7 +374,7 @@ const GuessFootballHero: React.FC = () => {
             }
           }  
 
-          const {data} = await axios.post('http://localhost:9000/api/guessfootballhero/updatewinslevel', {
+          const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessfootballhero/updatewinslevel', {
             gameId
         }, config);
         if(data.getupgame != null) {
@@ -475,7 +475,7 @@ const GuessFootballHero: React.FC = () => {
         }
       }  
 
-      const {data} = await axios.post('http://localhost:9000/api/guessherohint/gethint', {
+      const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessherohint/gethint', {
         address
     }, config);
     if(data.hint != null) {

@@ -17,10 +17,10 @@ const GameLandingPage: React.FC<{}> = () => {
   
 
   const images = [
-    { src: "http://localhost:3000/gamelogos/guessfootballherologo.png", link: '../gaming/guessfootballherogame', name: "Guess Football Hero", status: "Launched" },
-    { src: "http://localhost:3000/gamelogos/soccercasinologo.png", link: '../gaming/#', name: "Soccer Casino Roulette", status: "Coming Soon" },
-    { src: "http://localhost:3000/gamelogos/soccercrushlogo.webp", link: '../gaming/#', name: "Soccer Crush", status: "Coming Soon" },
-    { src: "http://localhost:3000/gamelogos/soccerarcadelogo.webp", link: '../gaming/#', name: "Football Arcade", status: "Coming Soon" },
+    { src: "https://www.fifafreward.io/gamelogos/guessfootballherologo.png", link: '../gaming/guessfootballherogame', name: "Guess Football Hero", status: "Launched" },
+    { src: "https://www.fifafreward.io/gamelogos/soccercasinologo.png", link: '../gaming/#', name: "Soccer Casino Roulette", status: "Coming Soon" },
+    { src: "https://www.fifafreward.io/gamelogos/soccercrushlogo.webp", link: '../gaming/#', name: "Soccer Crush", status: "Coming Soon" },
+    { src: "https://www.fifafreward.io/gamelogos/soccerarcadelogo.webp", link: '../gaming/#', name: "Football Arcade", status: "Coming Soon" },
   ];
 
   const ComingSoon = () => {

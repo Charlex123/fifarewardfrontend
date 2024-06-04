@@ -7,7 +7,6 @@ import loginstyles from '../styles/login.module.css'
 import Loading from './Loading';
 import AlertMessage from './AlertMessage';
 import { ThemeContext } from '../contexts/theme-context';
-import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 import { FaChevronLeft, FaEye, FaEyeSlash, FaLockOpen } from 'react-icons/fa6';
 
 export default function LoginForm() {
@@ -31,7 +30,7 @@ export default function LoginForm() {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://fifareward.onrender.com/api/users/checkloginemail", {
+    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/checkloginemail", {
           email,
     }, config);
     if(data) {
@@ -62,7 +61,7 @@ export default function LoginForm() {
         }
       }  
       setLoading(true)
-      const {data} = await axios.post("https://fifareward.onrender.com/api/users/signin", {
+      const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/signin", {
         email,
         password
       }, config);

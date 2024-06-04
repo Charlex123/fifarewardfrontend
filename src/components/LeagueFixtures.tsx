@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { faCaretDown, faXmark, faSoccerBall  } from "@fortawesome/free-solid-svg-icons";
 import leaguefixturestyle from '../styles/leaguefixtures.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
@@ -44,7 +43,7 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
               "Content-type": "application/json"
           }
         }  
-        const {data} = await axios.post("https://fifareward.onrender.com/api/fixtures/loadleaguefixtures/", {
+        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/fixtures/loadleaguefixtures/", {
           leagueid,
           currentPage,
           limit

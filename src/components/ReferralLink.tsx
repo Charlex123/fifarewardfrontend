@@ -103,7 +103,7 @@ const ReferralLink:React.FC<{}> = () =>  {
                             "Content-type": "application/json"
                         }
                     };
-                    const response = await axios.post("http://localhost:9000/api/users/updatereflinkid/", {
+                    const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/updatereflinkid/", {
                         address,
                         encrypted
                     }, config);

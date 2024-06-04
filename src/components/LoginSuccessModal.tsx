@@ -1,7 +1,7 @@
 import React from 'react';
 import { useRouter } from 'next/router';
 import loginsuccessmodalstyles from '../styles/loginsuccessmodal.module.css'
-import { FaRightFromBracket, FaXmark } from 'react-icons/fa6';
+import { FaXmark } from 'react-icons/fa6';
 
 interface Props {
     prop: string

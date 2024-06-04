@@ -1,11 +1,8 @@
-import React, { useEffect, useState, useContext } from 'react';
-import { useRouter } from 'next/router';
+import React, { useContext } from 'react';
 import Image from 'next/image';
 import chatbotlogo from '../assets/images/aichatbot.png';
 import successimage from '../assets/images/success1.png';
 import { ThemeContext } from '../contexts/theme-context';
-import { faEye, faEyeSlash, faThumbsDown, faThumbsUp } from "@fortawesome/free-regular-svg-icons";
-import { faLocationArrow, faMicrophone, faXmark  } from "@fortawesome/free-solid-svg-icons";
 // material
 import styles from "../styles/aichat.module.css";
 import dotenv from 'dotenv';
@@ -13,12 +10,8 @@ import { FaLocationArrow, FaMicrophone, FaThumbsDown, FaThumbsUp, FaXmark } from
 dotenv.config();
 const LoadOpenAI: React.FC<{}> = () =>  {
 
-  const [showloading, setShowLoading] = useState<boolean>(false);
   const { theme } = useContext(ThemeContext);
  
-  useEffect(() => {
-    
-  })
   
   return (
     <>
