@@ -17,7 +17,7 @@ overflow: scroll;padding-bottom: 2rem;z-index: 0;
 }
 .sidebar .sidebar_toggle_btn_ {
   margin-left: 15px;margin-top: 15px;background-color: transparent !important;border: none;
-  z-index: 0;position: absolute;top: 0;right: 0;display: none;font-size: 22px;
+  z-index: 0;position: absolute;top: 0;right: 0;display: none;font-size: 28px;
 }
 .sidebar .sidebar_toggle_btn_ .toggle_icon {
   font-size: 28px;z-index: 99;

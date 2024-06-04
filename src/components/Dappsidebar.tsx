@@ -116,7 +116,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
             <div className={dappsidebarstyles.overlay_dapp}></div>
           )}
           <button title='togglebtn' className={dappsidebarstyles.sidebar_toggle_btn_} type='button' onClick={toggleSideBar}>
-            <FaCircleXmark className={dappsidebarstyles.navlisttoggle_}/> 
+            <FaCircleXmark size={28} color='#f1f1f1' className={dappsidebarstyles.navlisttoggle_}/> 
           </button>
             <div className={dappsidebarstyles.sidebar_container}>
               <div className={dappsidebarstyles.sidebar_container_p}>
@@ -128,7 +128,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
                     <a href='/dapp' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaGaugeHigh/> Dapp</a>
                   </li>
                   <li>
-                    <a href='https://pancakeswap.finance/swap?outputCurrency=0x5ae155F89308CA9050f8Ce1C96741BaDd342C26B' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
+                    <a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
                   </li>
                   {/* <li>
                     <a href='/aichat' rel='noopener noreferrer' className={dappsidebarstyles.si}><FaRobot/> Prediction AI</a>

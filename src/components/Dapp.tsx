@@ -217,7 +217,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size={28} color='#f1f1f1' className={dappstyles.navlisttoggle}/> 
               </button>
               
               <div className={dappstyles.head}>
