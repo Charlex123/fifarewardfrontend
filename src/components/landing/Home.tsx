@@ -38,22 +38,14 @@ dotenv.config();
 const Home = () => {
 // Create a state variable to manage the visibility of the navigation menu
 const [isNavOpen, setNavOpen] = useState(false);
-const [stakeReadMore, setStakeReadMore] = useState(false);
-const [refReadMore, setRefReadMore] = useState(false);
 const [aboutReadMore, setAboutReadMore] = useState(false);
 // Array of text values to toggle between
 const textValues = ["Read More ...", "Read Less ..."];
 // State to track the current index in the array
 const [currentAboutRMTextIndex, setCurrentAboutRMTextIndex] = useState(0);
 const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
-const { theme } = useContext(ThemeContext);
 const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
-const [buttonText, setButtonText] = useState("Copy");
-const [username, setUsername] = useState<string>("");
-const [userId, setUserId] = useState<string>("");  
 const [isMobile,setIsMobile] = useState<boolean>(false);
-const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
-
 const images = [
   cgk,
   cmc,
@@ -116,18 +108,7 @@ const showAboutReadMore =  () => {
 //  };
 
 useEffect(() => {
-  const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-  if(udetails && udetails !== null && udetails !== "") {
-  const username_ = udetails.username;  
-  if(username_) {
-      setUsername(username_);
-      setUserId(udetails.userId);
-      setIsloggedIn(true);
-      
-  }
-  }else {
-      setIsloggedIn(false);
-  }
+  
   // Auto-play functionality
   const intervalId = setInterval(goToNextImage, 3000); // Change image every 3 seconds
 
@@ -193,7 +174,7 @@ useEffect(() => {
         <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends'/>
     </Head>
 
-    <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+    <div className={`${styles.homemain}`}>
       <div className={styles.overlay_d}></div>
       <div className={styles.blk}>
           <div className={styles.overlay_d}></div>
@@ -330,7 +311,7 @@ useEffect(() => {
         </div>
       </div>
 
-      <div className={`${styles.frdbetting} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+      <div className={`${styles.frdbetting}`}>
           <div className={styles.betd}>
               <div className={styles.betdc}>
                   <div>
@@ -357,7 +338,7 @@ useEffect(() => {
           </div>
       </div>
 
-      <div className={`${styles.frdstaking} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="frdstaking">
+      <div className={`${styles.frdstaking}`} id="frdstaking">
           {isMobile === true ? <h1>STAKING <div>AND</div> FARMING</h1> : <h1>STAKING AND FARMING</h1>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
@@ -399,7 +380,7 @@ useEffect(() => {
         <RoadMap />
       </div>
 
-      <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
+      <div className={`${styles.frdreferrals}`} id="referrals">
           <h1>REFER AND EARN</h1>
           <div className={styles.referralsmain}>
               <div className={styles.referralstext}>
@@ -427,7 +408,7 @@ useEffect(() => {
           </div>
       </div>
 
-      <div className={`${styles.aboutfrd} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="aboutfrd">
+      <div className={`${styles.aboutfrd}`} id="aboutfrd">
           <h1>ABOUT FIFAREWARD</h1>
           
           <p>
