@@ -55,10 +55,12 @@
 
 :root {
   --primaryFont: "RussoOne Regular","Marque";
-  --background-color-dark: rgb(5, 9, 11);
-  --background-color-light: #f1f1f1;
+  --background-color-dark: rgba(5, 9, 11);
+  --background-color-light: rgba(5, 9, 11);
+  /* --background-color-light: #f1f1f1; */
   --text-color-dark: #e2d7d7;
-  --text-color-light: #353535;
+  --text-color-light: #e2d7d7;
+  /* --text-color-light: #353535; */
   --orange-color-dark: #e28305;
   --orange-color-light: #925504;
   --border-dark: 1px solid #f1f1f1;

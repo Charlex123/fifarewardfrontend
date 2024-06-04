@@ -20,7 +20,7 @@
   .timeline {
     display: flex;
     align-items: center;
-    position: relative;
+    position: absolute;
     margin-left: 20px;
     height: 350px;
     padding: 20px 0;
@@ -34,7 +34,8 @@
     left: 0;
     right: 0;
     height: 2px;
-    background-color: black;
+    color: #f1f1f1;
+    background-color: #f1f1f1 !important;
     transform: translateY(-50%);
     z-index: -1;
   }
@@ -45,7 +46,6 @@
     align-items: center;
     flex: 0 0 auto;
     position: relative;
-    background-color: aqua;
     margin: 0 80px;
     cursor: pointer;
     font-size: 14px;
@@ -53,7 +53,7 @@
 
   .verticalLine {
     width: 2px;
-    background-color: black;
+    background-color: #f1f1f1;
   }
   
   .upLine {
@@ -81,13 +81,13 @@
   
   .upEvent {
     position: absolute;
-    top: -140px; /* Position the up event */
+    top: -120px; /* Position the up event */
     line-height: 12px;font-size: 13px;
   }
   
   .downEvent {
     position: absolute;width: fit-content;
-    bottom: -140px;
+    bottom: -120px;
     line-height: 13px;font-size: 13px;
   }
   

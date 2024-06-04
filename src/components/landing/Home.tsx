@@ -8,7 +8,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../../styles/landing.module.css'
 import Typed from 'react-typed';
-// import RoadMap from '../RoadMap';
+import RoadMap from '../RoadMap';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
@@ -193,7 +193,7 @@ useEffect(() => {
         <meta name='description' content='Fifareward | Bet, Stake, Mine and craeate NFTs of football legends'/>
     </Head>
 
-    <div className={`${styles.homemain}`}>
+    <div className={`${styles.homemain} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
       <div className={styles.overlay_d}></div>
       <div className={styles.blk}>
           <div className={styles.overlay_d}></div>
@@ -395,9 +395,9 @@ useEffect(() => {
           </div>
       </div>
       
-      {/* <div id='roadmap'>
+      <div className={styles.roadmap} id='roadmap'>
         <RoadMap />
-      </div> */}
+      </div>
 
       <div className={`${styles.frdreferrals} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`} id="referrals">
           <h1>REFER AND EARN</h1>

@@ -68,7 +68,7 @@ const RoadMap: React.FC = () => {
             onKeyDown={(e) => e.stopPropagation()}
             >
             <div className={styles.timeline} ref={timelineRef}>
-                <div className={styles.centerLine}></div>
+                <div className={styles.centerLine} style={{color: 'white',backgroundColor: 'white'}}></div>
                 {events.map((event, index) => (
                 <div
                     key={event.id}
