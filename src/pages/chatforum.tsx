@@ -8,11 +8,11 @@ function Chatforum() {
 
   return (
     <>
-        {/* <Navbar/> */}
+        <Navbar/>
         <BackToTop />
         <ChangeTheme />
         <ChatForum />
-        {/* <Footer/> */}
+        <Footer/>
     </>
   )
 }
