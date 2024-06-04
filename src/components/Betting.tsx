@@ -550,9 +550,7 @@ const closeBgModal = () => {
                     <FaFilter style={{color: '#e28305'}}/><span>Filter</span>
                   </button>
                 </div>
-                <div>
-                  <a href='/openbetslist'>View Open Bets</a>
-                </div>
+                <div className={bettingstyle.opb_full_list}><a href='../../../openbetslists'>See All Open Bets ...</a></div>
             </div>
         </div>
         
