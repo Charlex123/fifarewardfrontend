@@ -636,7 +636,7 @@ const closeBgModal = () => {
                 </div>  
                 {/* <div><Loading /></div> */}
                 {/* } */}
-                <div className={bettingstyle.opb_full_list}><a href='../../betting/openbetslists'>See All Open Bets ...</a></div>
+                <div className={bettingstyle.opb_full_list}><a href='../../../openbetslists'>See All Open Bets ...</a></div>
                 <div className={bettingstyle.opb_banner}>
                   <Image src={footballg} alt='banner' style={{width: '100%',height: '320px'}}/>
                 </div>
