@@ -868,7 +868,7 @@ const closeBgModal = () => {
                 </div>
                 <div className={openbetsstyle.amountprog}>
                   <div>Bet Amount </div>
-                  <div style={{color: 'white'}}>${filterbetAmount * usdprice}</div>
+                  <div style={{color: '#151414'}}>${(Math.ceil(filterbetAmount * usdprice)).toLocaleString()+'.00'}</div>
                   <div className={openbetsstyle.fba}>{`${filterbetAmount.toLocaleString()}`} <span>FRD</span></div>
                   <div>
                     <input title='bet amount'

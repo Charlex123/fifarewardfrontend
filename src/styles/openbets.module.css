@@ -325,4 +325,13 @@
     .main {
         width: 100%;padding: 2rem 10px 5rem 10px;margin: 2rem auto;
     }
+    .main .main_in {
+        display: block;justify-content: unset;
+    }
+    .main .main_in .opb_h {
+        width: 100%;
+    }
+    .main .openbetmain {
+        width: 100%;
+    }
 }
