@@ -23,10 +23,7 @@ const LoadSampleOpenBetsData:React.FC<Props> = ({onMount}) => {
 
         useEffect(() => {
           const loadOpenBets = async () => {
-            if(!isConnected) {
-              open();
-              // router.reload();
-            }else {
+            
               console.log(" helo p")
               let provider, signer;
               if(walletProvider) {
@@ -69,7 +66,6 @@ const LoadSampleOpenBetsData:React.FC<Props> = ({onMount}) => {
                   // seterrorMessage('');
                 }
               }
-            }
           };
 
           loadOpenBets();

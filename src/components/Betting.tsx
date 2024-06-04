@@ -72,8 +72,8 @@ const LoadBetData:React.FC<{}> = () => {
 
   const inputRef = useRef<HTMLInputElement>(null);
   const divRef = useRef<HTMLDivElement>(null);
-  const [calendarIcon] = useState<any>(<FaRegCalendar/>);
-  const [drpdwnIcon] = useState<any>(<FaCaretDown/>);
+  const [calendarIcon] = useState<any>(<FaRegCalendar color='#151414'/>);
+  const [drpdwnIcon] = useState<any>(<FaCaretDown color='#151414'/>);
   const [today_d,setToday_d] = useState<any>();
   const [today_dm,setToday_dm] = useState<any>();
   const [todaym,setTodaym] = useState<any>();
@@ -490,10 +490,7 @@ const closeBgModal = () => {
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FaCircle className={bettingstyle.hiwlistcircle} /> Sign up with Fifa Rewards using this link <a href='./register'>Join Fifa Reward</a>
-              </li>
-              <li>
-                <FaCircle className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD or USDT
+                <FaCircle className={bettingstyle.hiwlistcircle} />  Fund your wallet with FRD 
               </li>
               <li>
                 <FaCircle className={bettingstyle.hiwlistcircle} />  Visit the betting page
@@ -530,7 +527,7 @@ const closeBgModal = () => {
                 <div className={bettingstyle.nxttom}><button type='button' title='button' onClick={() => loadfixturesbyDate(nexttomorrowm)}><div className={bettingstyle.dbdate}>{nexttomorrow_d}</div><div className={bettingstyle.d}> {nexttomorrow_dm}</div></button></div>
                 <div className={bettingstyle.threed}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextthree_daysm)}><div className={bettingstyle.dbdate}>{nextthree_d}</div><div className={bettingstyle.d}>{nextthree_dm}</div></button></div>
                 <div className={bettingstyle.fourd}><button type='button' title='button' onClick={() => loadfixturesbyDate(nextfour_daysm)}><div className={bettingstyle.dbdate}>{nextfour_d}</div><div className={bettingstyle.d}>{nextfour_dm}</div></button></div>
-                <div className={bettingstyle.cal}><button type='button' title='button' onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
+                <div className={bettingstyle.cal}><button type='button' title='button' style={{color: '#151414'}} onClick={() =>toggleShowCalendar()}>{calendarIcon} {drpdwnIcon}</button></div>
               </div>
               {
                 showcalender && (
@@ -556,7 +553,7 @@ const closeBgModal = () => {
         
         <div className={bettingstyle.main_in}>
           <div className={bettingstyle.leagues} id="betsbyleagues">
-            <div className={bettingstyle.filterclose}><button className={bettingstyle.filterclosebtn} onClick={closeBetFilter}><FaXmark size='20'/></button></div>
+            <div className={bettingstyle.filterclose}><button className={bettingstyle.filterclosebtn} onClick={closeBetFilter}><FaXmark size='20' style={{color: '#151414'}}/></button></div>
             <div className={bettingstyle.gf}><h3>Fixtures</h3></div>
             {/* {countryfixturesdata && 
               <div className={bettingstyle.filter}>
