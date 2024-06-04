@@ -190,7 +190,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 130px;margin: 20px 0;
 }
 .frdbetting {
-  width: 100%;padding: 40px 20px 120px 20px;color: #f1f1f1;
+  width: 100%;padding: 40px 20px 80px 20px;color: #f1f1f1;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .frdbetting .betd {
@@ -214,8 +214,8 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-size: 13px;color: #e28305;font-family: "RussoOne Regular", sans-serif;
 }
 .frdstaking h1 {
-  font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;width: max-content;padding-bottom: 60px;
-  font-family: "PaytoneOne Regular","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;
+  font-size: 40px;color: #f1f1f1;text-align: center;margin: 20px auto 5rem auto;width: max-content;padding-bottom: 60px;
+  font-family: "PaytoneOne Regular","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;padding-top: 20px;
 }
 .frdstaking .stakebanner {
   width: 60%;text-align: center;margin: auto;
@@ -591,7 +591,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     font-size: 28px;margin-bottom: 20px !important;
   }
   .frdstaking h1 {
-    font-size: 28px;margin-bottom: -80px !important;
+    font-size: 28px;margin-bottom: -100px !important;margin-top: -20px;
   }
   .frdreferrals h1 {
     font-size: 28px;margin-bottom: 20px !important;
