@@ -47,7 +47,7 @@
 }
 .blk .blk_inner .blkc2 h1 {
   font-size: 35px;font-weight: bolder;margin: 25px auto;text-align: center;
-  font-family: "BungeeSpice Regular";color: #e28305;
+  font-family: "PaytoneOne Regular";color: #e28305;
   line-height: 38px;letter-spacing: 6px;
 }
 .blk .blk_inner .blk_image {
@@ -101,10 +101,10 @@
 }
 .c_content .hero_h1 {
     margin: 1rem auto;text-align: center;align-items: center;width: 100%;position: relative;z-index: 2;
-    font-weight: 900;font-family: "BungeeSpice Regular";padding: 5px auto 5px auto;
+    font-weight: 900;font-family: "PaytoneOne Regular";padding: 5px auto 5px auto;
 }
 .c_content .hero_h1 h1 {
-    font-size: 45px;font-weight: 900;color: #f1f1f1;font-family: "BungeeSpice Regular",sans-serif;
+    font-size: 45px;font-weight: 900;color: #f1f1f1;font-family: "PaytoneOne Regular",sans-serif;
     margin: 5px auto;margin-bottom: 20px;line-height: 60px;
 }
 .c_content .hero_h1 div {
@@ -215,7 +215,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .frdstaking h1 {
   font-size: 40px;color: #f1f1f1;text-align: center;margin: 0 auto 5rem auto;width: max-content;padding-bottom: 60px;
-  font-family: "BungeeSpice Regular","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;
+  font-family: "PaytoneOne Regular","RussoOne Regular",sans-serif;font-weight: 600;letter-spacing: 6px;
 }
 .frdstaking .stakebanner {
   width: 60%;text-align: center;margin: auto;
