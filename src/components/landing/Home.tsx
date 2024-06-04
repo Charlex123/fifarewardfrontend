@@ -1,5 +1,5 @@
 import React from 'react'
-import { useContext, useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 // import { Container } from '../App'
 // import { OutreachButton } from './styles/ButtonVariants.styled'
 // import {HashRouter as Router,} from "react-router-dom";
@@ -8,7 +8,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../../styles/landing.module.css'
 import Typed from 'react-typed';
-import RoadMap from '../RoadMap';
+// import RoadMap from '../RoadMap';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
@@ -138,7 +138,7 @@ useEffect(() => {
 }, [goToNextImage]);
 
   return (
-    <>
+    <div style={{overflowX: 'hidden'}}>
     <Head>
         <meta charSet="utf-8" />
         <link rel="icon" href="https://www.fifareward.io/favicon.ico" />
@@ -331,7 +331,7 @@ useEffect(() => {
                 <div>
                   <Image src={betmob} style={{position: 'absolute',width: '120px',height: '250px',left: '5%',top: '-60px'}} alt='bet'/>
                   <div className={styles.setimg}>
-                    <Image src={betbg} style={{width: '100%',height:'400px',borderRadius: '8px',marginTop: '0',border: '2px solid #78787873'}} alt='betting image'/>
+                    <Image src={betbg} style={{width: '100%',height:'100%',borderRadius: '8px',marginTop: '0',border: '2px solid #78787873'}} alt='betting image'/>
                   </div>
                 </div>
               </div>
@@ -376,9 +376,9 @@ useEffect(() => {
           </div>
       </div>
       
-      <div className={styles.roadmap} id='roadmap'>
+      {/* <div className={styles.roadmap} id='roadmap'>
         <RoadMap />
-      </div>
+      </div> */}
 
       <div className={`${styles.frdreferrals}`} id="referrals">
           <h1>REFER AND EARN</h1>
@@ -462,7 +462,7 @@ useEffect(() => {
 
     
 
-    </>
+    </div>
   )
 }
 

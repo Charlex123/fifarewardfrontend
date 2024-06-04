@@ -15,6 +15,7 @@
 }
  .homemain {
     margin: 0 auto 0 auto;padding: 30px 0 10px 0;overflow-x: hidden;position: relative;
+    background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .lighttheme {
   background-color: var(--background-color-light);
@@ -46,7 +47,7 @@
 }
 .blk .blk_inner .blkc2 h1 {
   font-size: 35px;font-weight: bolder;margin: 25px auto;text-align: center;
-  font-family: "BungeeSpice Regular";
+  font-family: "BungeeSpice Regular";color: #e28305;
   line-height: 38px;letter-spacing: 6px;
 }
 .blk .blk_inner .blk_image {
@@ -172,7 +173,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 .exchmain h1 {
   font-size: 36px;text-align: center;margin: 3rem auto 1rem auto;
   font-weight: 800;padding-top: 3rem;font-family: "RussoOne Regular","RussoOne Regular",sans-serif;
-  letter-spacing: 6px;
+  letter-spacing: 6px;color: #f1f1f1;
 }
 .exchmain h4 {
   font-size: 22px;text-align: center;margin: 1rem auto 1rem auto;color: #e28305;
@@ -327,6 +328,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .aboutfrd {
   width: 100%;padding: 1rem 1rem 1rem 1rem;
+  background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .aboutfrd h1 {
   text-align: center;margin: 2rem auto;font-size: 42px;font-family: "RussoOne Regular", Verdana, Geneva, Tahoma, sans-serif;

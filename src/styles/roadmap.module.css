@@ -24,7 +24,7 @@
     margin-left: 20px;
     height: 350px;
     padding: 20px 0;
-    width: 2920px;
+    width: fit-content;
     overflow-x: hidden;
   }
   
