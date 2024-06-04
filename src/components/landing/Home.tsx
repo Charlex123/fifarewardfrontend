@@ -228,7 +228,7 @@ useEffect(() => {
                     typeSpeed={40}
                     backSpeed={50}
                     className={styles.typedHeader}
-                    style={{ color: '#e3a204', fontSize: '40px',fontWeight: 600,fontFamily: 'PayTone One' }}
+                    style={{ color: '#e3a204', fontSize: '40px',fontWeight: 600,fontFamily: 'RussoOne Regular' }}
                     loop
                 />
             </div>
