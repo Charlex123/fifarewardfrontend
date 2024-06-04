@@ -531,8 +531,14 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     .connectworld .conn_inner .conn_image .cimg {
       width: 100%;height: 100%;
     }
+    .exchmain {
+      margin-top: -120px;margin-bottom: 60px;padding: 0 0 80px 0;
+    }
     .frdstaking .stakingmain {
       display: block;flex-direction: none;justify-content: none;margin: 4rem auto 1rem auto;
+    }
+    .frdstaking h1 {
+      line-height: 46px;margin: 0 auto -80px auto;
     }
     .frdbetting {
       margin-top: -80px;
@@ -585,7 +591,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     font-size: 28px;margin-bottom: 20px !important;
   }
   .frdstaking h1 {
-    font-size: 28px;margin-bottom: -20px !important;
+    font-size: 28px;margin-bottom: -80px !important;
   }
   .frdreferrals h1 {
     font-size: 28px;margin-bottom: 20px !important;
