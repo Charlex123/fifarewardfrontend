@@ -83,11 +83,12 @@
     position: absolute;
     top: -120px; /* Position the up event */
     line-height: 12px;font-size: 13px;
+    color: #f1f1f1;
   }
   
   .downEvent {
     position: absolute;width: fit-content;
-    bottom: -120px;
+    bottom: -120px;color: #f1f1f1;
     line-height: 13px;font-size: 13px;
   }
   
