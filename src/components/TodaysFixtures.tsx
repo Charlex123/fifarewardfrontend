@@ -301,7 +301,7 @@ return (
                         
                     </div> : 
                     <div className={leaguefixturestyle.notfound_p}>
-                      <div className={leaguefixturestyle.notfound}>No fixtures found at the moment, please check back later </div>
+                      <div className={leaguefixturestyle.notfound}>No today's fixtures found at the moment, please check back later or search by date</div>
                     </div>
                   }
                     

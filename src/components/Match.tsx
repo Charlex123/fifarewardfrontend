@@ -808,7 +808,7 @@ const closeBgModal = () => {
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         {isparamsLoaded && <div className={matchstyle.breadcrum}>
-          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam?.replace(/-/g, ' ')} {'>'} {leagueparam?.replace(/-/g, ' ')} {'>'} {matchparam?.replace(/-/g, ' ')}</a>
+          <button type='button' title='button' onClick={goBack} style={{color: '#151414'}}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a> {'>'} <a href={`../../../${countryparam}/${leagueparam}/${matchparam}/${matchidparam}`}>{countryparam?.replace(/-/g, ' ')} {'>'} {leagueparam?.replace(/-/g, ' ')} {'>'} {matchparam?.replace(/-/g, ' ')}</a>
         </div> }
 
         {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}

@@ -58,7 +58,7 @@
     display: flex;justify-content: space-between;padding: 3px;font-size: 13px;font-weight: 600;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o span {
-    font-size: 12px;margin: auto 5px;background-color: #4f4848bd;
+    font-size: 11px;margin: auto 5px;background-color: #4f4848bd;
     padding: 1px 3px;border-radius: 2px;color: #e2d7d7;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o .fixt_o {
@@ -68,7 +68,7 @@
     display: flex;justify-content: space-between;font-family: "RussoOne Regular",sans-serif;font-size: 14px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o .dd .fid { 
-    font-size: 12px;margin: 2px auto auto 5px;color: #4f4848bd;
+    font-size: 11px;margin: 2px auto auto 5px;color: #4f4848bd;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm {
     margin: auto;background-color: #eceaeab1;padding: 2px 0;
@@ -83,7 +83,7 @@
     margin: 0 20px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams div.vs {
-    font-size: 14px;font-weight: 900;background-color: #e2d7d7;border-radius: 8px;padding: 2px 8px;
+    font-size: 12px;font-weight: 900;background-color: #e2d7d7;border-radius: 8px;padding: 2px 8px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet {
     margin: 6px auto;position: relative;text-align: center;
@@ -192,4 +192,22 @@
 	border-radius: 4px;
 	background-color: rgba(0, 0, 0, .5);
 	box-shadow: 0 0 1px rgba(255, 255, 255, .5);
+}
+
+@media (max-width: 767px) {
+    .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm {
+        margin: auto;background-color: #eceaeab1;padding: 2px 0;
+    }
+    .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams {
+        display: flex;justify-content: center;padding: 0 6px;
+    }
+    .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams .lg {
+        height: 30px !important;
+    }
+    .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams div {
+        margin: 0 20px;font-size: 12px;line-height: 12px;
+    }
+    .main .betwrap .betwrapin .league_wrap .fixt .fixt_tm .teams div.vs {
+        font-size: 12px;font-weight: 900;background-color: #e2d7d7;border-radius: 8px;padding: 2px 8px;
+    }
 }

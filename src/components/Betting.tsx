@@ -478,7 +478,7 @@ const closeBgModal = () => {
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
         <div className={bettingstyle.breadcrum}>
-          <button type='button' title='button' onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a>
+          <button type='button' title='button' style={{color: '151414'}} onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a>
         </div>
         {betopensuccess && 
             <ActionSuccessModal prop='Bet' onChange={closeActionModalComp}/>
@@ -547,7 +547,7 @@ const closeBgModal = () => {
             <div className={bettingstyle.filter_c}>
                 <div>
                   <button type="button" title='filter bet' onClick={toggleBetFilter}>
-                    <FaFilter style={{color: '#e28305'}}/><span>Filter</span>
+                    <FaFilter style={{color: '#e28305'}}/><span style={{color: '#151414'}}>Filter</span>
                   </button>
                 </div>
                 <div className={bettingstyle.opb_full_list}><a href='../../../openbetslists'>See All Open Bets ...</a></div>
@@ -556,7 +556,7 @@ const closeBgModal = () => {
         
         <div className={bettingstyle.main_in}>
           <div className={bettingstyle.leagues} id="betsbyleagues">
-            <div className={bettingstyle.filterclose}><button className={bettingstyle.filterclosebtn} onClick={closeBetFilter}><FaXmark size='xl'/></button></div>
+            <div className={bettingstyle.filterclose}><button className={bettingstyle.filterclosebtn} onClick={closeBetFilter}><FaXmark size='20'/></button></div>
             <div className={bettingstyle.gf}><h3>Fixtures</h3></div>
             {/* {countryfixturesdata && 
               <div className={bettingstyle.filter}>
