@@ -49,6 +49,7 @@ const ChatForum: React.FC<{}> = () =>  {
   const [currentUser, setCurrentUser] = useState<string | null>(null);
 
   const router = useRouter();
+
   useEffect(() => {
 
     const fetchMessages = async () => {
@@ -70,6 +71,7 @@ const ChatForum: React.FC<{}> = () =>  {
         console.log("users data",data)
     };
 
+    console.log("here it ran ---..........")
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
@@ -81,8 +83,10 @@ const ChatForum: React.FC<{}> = () =>  {
         setProfileImage(udetails.pic);
         setCurrentUser(udetails._id);
         fetchUsers();
-        const SERVER = 'http://127.0.0.1:9000';  // Ensure this URL is correct
-        const socket = io('https://fifarewardbackend.onrender.com')
+        const SERVER = 'https://fifarewardbackend.onrender.com';  // Ensure this URL is correct
+        const socket = io(SERVER,{
+          transports: ['websocket']
+       })
         socket.on('connect', () => {
             console.log('Connected to Socket.IO server');
             fetchMessages();
