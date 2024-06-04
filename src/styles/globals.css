@@ -111,7 +111,7 @@ body a {
   backdrop-filter: blur(20px) !important;
 } 
 /* scrollBar */
-/* 
+
 ::-webkit-scrollbar {
   width: 0;
 }
@@ -300,4 +300,4 @@ button:active,button:focus,select:active,select:focus,input:active,input:focus {
   body {
     overflow-x: hidden;
   }
-} */
+}
