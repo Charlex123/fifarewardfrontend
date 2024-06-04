@@ -8,7 +8,7 @@ import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../../styles/landing.module.css'
 import Typed from 'react-typed';
-import RoadMap from '../RoadMap';
+// import RoadMap from '../RoadMap';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
@@ -376,9 +376,9 @@ useEffect(() => {
           </div>
       </div>
       
-      <div className={styles.roadmap} id='roadmap'>
+      {/* <div className={styles.roadmap} id='roadmap'>
         <RoadMap />
-      </div>
+      </div> */}
 
       <div className={`${styles.frdreferrals}`} id="referrals">
           <h1>REFER AND EARN</h1>
