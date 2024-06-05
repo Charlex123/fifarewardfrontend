@@ -23,7 +23,7 @@
 .main .w_alert {
     position: absolute;background-color: rgba(60, 59, 59, 0.677);font-size: 12px;border-radius: 8px;width: 90%;
     padding: 1px 2px;color: #f1f1f1;margin: 2rem auto;text-align: center;padding: 20px;
-    border: 1px solid #454343;left: 10px;right: 10px;top: 150px;
+    border: 1px solid #454343;left: 10px;right: 10px;bottom: 20%;
 }
 .main .w_alert .walertclosediv {
     margin-right: 15px;margin-top: 5px;text-align: right;color: #ffffff;position: absolute;
@@ -193,7 +193,7 @@
 }
 
 .navlisttoggle {
-    font-size: 28px !important;margin: 2px 0 2px 0;padding-left: 15px;color: #f1f1f1;
+    font-size: 38px !important;margin: 2px 0 2px 0;padding-left: 15px;color: #f1f1f1;
 }
 .main .reflink small {
     color: #e3a204 ;
@@ -410,7 +410,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 .main .stake .stake_mod .s_m_in .cw_btn_div .st_btns div {
     margin: 0 10px;
 }
-.main .stake .stake_mod .s_m_in .cw_btn_div .w_alert {
+/* .main .stake .stake_mod .s_m_in .cw_btn_div .w_alert {
     position: absolute;background-color: rgba(60, 59, 59, 0.677);top: -60px;font-size: 12px;border-radius: 8px;width: 90%;
     padding: 1px 2px;color: #f1f1f1;display: none;text-align: left;left: 0;right: 0;margin: auto;
     border: 1px solid #454343;
@@ -421,7 +421,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .w_alert .walertclosediv .walertclosedivbtn {
     color: white;font-size: 28px;
-}
+} */
 .main .stake .stake_mod .s_m_in .cw_btn_div .estprof {
     font-size: 12px;font-family: "RussoOne Regular", sans-serif;display: none;
 }

@@ -290,7 +290,7 @@ const Staking = () =>  {
           setShowBgOverlay(false);
         }
       }else {
-        open()
+        // open()
       }
     }catch(error: any) {
       setShowAlertDanger(true);
@@ -313,7 +313,7 @@ const Staking = () =>  {
           setWithdrawAmount(reslt/10**18)
         }
       }else {
-        open()
+        // open()
       }
     }catch(error: any) {
       // setShowAlertDanger(true);
@@ -336,7 +336,7 @@ const Staking = () =>  {
           setWithdrawAmount(reslt.toString()/10**18);
         }
       }else {
-        open()
+        // open()
       }
     }catch(error: any) {
       // setShowAlertDanger(true);
@@ -373,7 +373,7 @@ const Staking = () =>  {
           })
         }
       }else {
-        open();
+        // open();
       }
     } catch (error: any) {
       console.log("err",error);
