@@ -12,6 +12,7 @@ import UserList from '../components/UserList';
 import Head from 'next/head';
 import styles from "../styles/chatforum.module.css";
 import dotenv from 'dotenv';
+import { FaLocationArrow, FaMicrophone, FaMicrophoneSlash, FaPaperclip } from 'react-icons/fa6';
 dotenv.config();
 
 let socket: Socket;
@@ -353,11 +354,11 @@ const ChatForum: React.FC<{}> = () =>  {
                                 accept="image/*,video/*"
                                 ref={fileInputRef}
                             />
-                            {/* <span>{<FontAwesomeIcon icon={faPaperclip} onClick={triggerFileInput} className={styles.fileIcon}/>} </span> */}
+                            <span>{<FaPaperclip onClick={triggerFileInput} className={styles.fileIcon}/>} </span>
                             <textarea name="" id="message" className={`${styles.form_control} ${styles.type_msg}`} value={text} onChange={(e) => setText(e.target.value)} placeholder="Type your message..."></textarea>
                             <div className={styles.text_mic_icons}>
-                              {/* <div><span className={styles.send_btn}><button type='submit'>{<FontAwesomeIcon icon={faLocationArrow} size='lg' style={{color:'#e3a204'}}/>}</button></span></div> */}
-                              {/* <div className={styles.voice_btn}><button className={styles.voice_btn_} onClick={isListening ? stopListening : startListening} type="button">{<FontAwesomeIcon icon={isListening ? faMicrophoneSlash : faMicrophone} size='lg' />}</button></div> */}
+                              <div><span className={styles.send_btn}><button type='submit'>{<FaLocationArrow size={28} style={{color:'#e3a204'}}/>}</button></span></div>
+                              <div className={styles.voice_btn}><button className={styles.voice_btn_} onClick={isListening ? stopListening : startListening} type="button">{isListening ? <FaMicrophoneSlash size={28}/> : <FaMicrophone size={28}/> }</button></div>
                             </div>
                           </div>
                           

@@ -94,7 +94,7 @@ function Navbar() {
                             <li><a href='/whitepaper' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
                         </ul>
                     </li> */}
-                    <li><a href='/whitepaper' rel='noopener noreferrer'>Whitepaper</a></li>
+                    <li><a href='/whitepaper.pdf' rel='noopener noreferrer'>Whitepaper</a></li>
                     <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
                     <li><a href='/chatforum' rel='noopener noreferrer'>Forum</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
@@ -109,7 +109,7 @@ function Navbar() {
                         <ul>
                             <li><a href='/#aboutfrd' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>About FifaReward</span></a></li>
                             <li><a href='/#roadmap' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>RoadMap</span></a></li>
-                            <li><a href='/whitepaper' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
+                            <li><a href='/whitepaper.pdf' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
                             <li><a href='/#frdstaking' rel='noopener noreferrer' ><FaCircleDollarToSlot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Staking </span></a></li>
                             <li><a href='/#betting' rel='noopener noreferrer' ><FaRobot className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Forum</span></a></li>
                             <li><a href='/#chatforum' rel='noopener noreferrer' ><IoIosFootball className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Betting </span></a></li>
