@@ -182,14 +182,14 @@ const Staking = () =>  {
             let transaction = await FRDContract.balanceOf(address);
                 
             let frdBal = ethers.utils.formatEther(transaction);
-            if(parseInt(frdBal) > usdequivfrdamount) {
+            if(stakeAmount < usdequivfrdamount) {
               setShowAlertDanger(true);
-              seterrorMessage(`You need a minimum of ${usdequivfrdamount} FRD ($10)`);
+              seterrorMessage(`Minimum stake amount is ${usdequivfrdamount} FRD ($10)`);
               setShowLoading(false);
               return;
-            }else if(stakeAmount < usdequivfrdamount) {
+            }else if(parseInt(frdBal) > usdequivfrdamount) {
               setShowAlertDanger(true);
-              seterrorMessage(`Minimum stake amount is ${usdequivfrdamount} FRD`);
+              seterrorMessage(`You need a minimum of ${usdequivfrdamount} FRD ($10)`);
               setShowLoading(false);
               return;
             }else {
