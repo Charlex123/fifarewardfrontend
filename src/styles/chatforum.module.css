@@ -20,6 +20,9 @@
 .main .intro_p {
     z-index: 9;position: relative;width: 70%;margin: 1rem auto 2rem auto;text-align: center;
 }
+.main .fileIcon {
+    margin-top: 20px;padding-right: 5px;font-size: 22px;
+}
 .main .intro_p p {
     font-family: "RussoOne Regular", sans-serif;font-size: 18px;
 }
@@ -267,12 +270,13 @@ font-family: "RussoOne Regular";font-size: 16px;color: white !important;margin-l
 .user_msg_cotainer_send {
 margin-top: 4px;
 margin-bottom: 4px;
-margin-left: 0;
-display: inline-flex;
+margin-right: 0;
+display: block;
 width: fit-content;
 padding: 2px;
 white-space: initial;
 position: relative;
+align-items: flex-end !important;
 }
 .user_msg_cotainer_send .message {
     position: relative;
@@ -316,7 +320,7 @@ position: relative;
     margin-top: 4px;
     margin-bottom: 4px;
     margin-right: 0;
-    display: inline-flex;
+    display: block;
     width: fit-content;
     padding: 2px;
     white-space: initial;

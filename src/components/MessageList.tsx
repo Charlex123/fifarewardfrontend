@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from '../styles/chatforum.module.css';
+import Image from 'next/image';
 
 interface Message {
   user: string;
-  text: string;
+  pic: string;
+  content: string;
   timestamp: Date;
-  file?: any;
 }
 
 interface MessageListProps {
@@ -14,30 +15,51 @@ interface MessageListProps {
 }
 
 const MessageList: React.FC<MessageListProps> = ({ messages, currentUser }) => {
+  
+  useEffect(() => {
+    console.log(" messages === ooop",messages,currentUser)
+  },[])
+
   return (
-    <div className={styles.messageList}>
-      {messages.map((message, index) => (
-        <div
-          key={index}
-          className={`${styles.message} ${message.user === currentUser ? styles.currentUser : styles.otherUser}`}
-        >
-          <strong>{message.user}</strong>: {message.text}
-          {message.file && (
-            <>
-              {message.file.contentType.startsWith('image/') && (
-                <img src={`http://localhost:3001/api/files/${message.file.filename}`} alt="uploaded file" />
-              )}
-              {message.file.contentType.startsWith('video/') && (
-                <video controls>
-                  <source src={`http://localhost:3001/api/files/${message.file.filename}`} type={message.file.contentType} />
-                  Your browser does not support the video tag.
-                </video>
-              )}
-            </>
-          )}
-        </div>
-      ))}
-    </div>
+      <>
+        
+                  {messages.map((message, index) => (
+                      <div key={index} className={styles.chat_convo} >
+                          {message.user === currentUser ? 
+                          <div>
+                            {message.content && message.content !== '' && message.content !== null ? 
+                              <div className={styles.user_msg_cotainer_send}>
+                                <div className={`${styles.text_left} ${styles.message}`}>
+                                {
+                                  message.content.split("/").length > 2 ? 
+                                  <><Image src={message.content} alt='image' width={100} height={100} style={{width: '100px', height: '100px'}}/></> :
+                                  <>{message.content}</>
+                                }
+                                </div>
+                              </div> : 
+                              <></>
+                            }
+                          </div> :
+                          <div>
+                            {message.content && message.content !== '' && message.content !== null ? 
+                              <div className={styles.grpmembers_msg_cotainer_send}>
+                                <div className={`${styles.text_left} ${styles.message}`}>
+                                {
+                                  message.content.split("/").length > 2 ? 
+                                  <><Image src={message.content} alt='image' width={100} height={100} style={{width: '100px', height: '100px'}}/></> :
+                                  <>{message.content}</>
+                                }
+                                </div>
+                              </div> : 
+                              <></>
+                            }
+                          </div>  
+                        }
+                      </div>
+                  ))}
+
+      </>
+    
   );
 };
 

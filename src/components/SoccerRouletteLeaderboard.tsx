@@ -1,11 +1,9 @@
 import React,{useState, useEffect} from 'react';
 import styles from '../styles/leaderboard.module.css';
 import { useSearchParams } from 'next/navigation';
-import UserList from './UserList';
 import axios from 'axios';
 
 interface User {
-  username: string;
   pic: string;
 }
 
@@ -29,7 +27,6 @@ const SoccerRouletteLeaderboard: React.FC = () => {
 
   return (
     <div className={styles.leaderboard}>
-      <UserList users={users} />
       <h2 className={styles.title}>Leaderboard</h2>
       <ul className={styles.playerList}>
         {players.map((player, index) => (

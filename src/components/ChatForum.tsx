@@ -4,7 +4,8 @@ import Image from 'next/image';
 import chatbotlogo from '../assets/images/aichatbot.png';
 import successimage from '../assets/images/success1.png';
 import { ThemeContext } from '../contexts/theme-context';
-import { io, Socket } from 'socket.io-client';
+import socket from './Socket';
+import AlertDanger from './AlertDanger';
 import axios from 'axios';
 import { useWeb3ModalAccount, useWeb3Modal } from '@web3modal/ethers5/react';
 import MessageList from '../components/MessageList';
@@ -15,17 +16,16 @@ import dotenv from 'dotenv';
 import { FaLocationArrow, FaMicrophone, FaMicrophoneSlash, FaPaperclip } from 'react-icons/fa6';
 dotenv.config();
 
-let socket: Socket;
 
 interface Message {
     user: string;
-    text: string;
+    content: string;
+    pic: string;
     timestamp: Date;
-    file?: any;
   }
   
   interface User {
-    username: string;
+    walletaddress: string;
     pic: string;
   }
 
@@ -34,12 +34,12 @@ const ChatForum: React.FC<{}> = () =>  {
   const fileInputRef = useRef<HTMLInputElement | null>(null);   
   const [showloading, setShowLoading] = useState<boolean>(false);
   const [text, setText] = useState('');
+  const [pic, setPic] = useState('');
   const [file, setFile] = useState<File | null>(null);
   const { theme } = useContext(ThemeContext);
   const [fileName, setFileName] = useState('');
-  const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<number>(); 
-  const [profileimage,setProfileImage] = useState<string>('');
+  const [showAlertDanger, setShowAlertDanger] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const { open } = useWeb3Modal();
@@ -47,89 +47,81 @@ const ChatForum: React.FC<{}> = () =>  {
   const interimTranscriptRef = useRef<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<string | null>(null);
+  const [currentUser, setCurrentUser] = useState<any>("");
 
   const router = useRouter();
   
+  const fetchMessages = async () => {
+    if (socket && socket.connected) {
+      socket.emit('getMessages');
+    } else {
+      console.log('Socket is not connected or undefined');
+      socket.once('connect', () => {
+        socket.emit('getMessages');
+      });
+    }
+  };
+
+  
   useEffect(() => {
 
-    const fetchMessages = async () => {
-      if (socket && socket.connected) {
-        socket.emit('getMessages');
-      } else {
-        console.log('Socket is not connected or undefined');
-        socket.on('connect', () => {
-          socket.emit('getMessages');
-        });
-      }
-    };
-    
+    fetchMessages();
+
+    socket.on('message', handleNewMessage);
+    socket.on('messages', handleMessages);
+
     const fetchUsers = async () => {
-      if (socket && socket.connected) {
-        socket.emit('getUsers');
-      } else {
-        console.log('Socket is not connected or undefined');
-        socket.on('connect', () => {
-          socket.emit('getUsers');
-        });
-      }
+        const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
+        setUsers(data.data);
     };
-
-    const handleNewMessage = (message: Message) => {
-        setMessages((prevMessages) => [...prevMessages, message]);
-    };
-
-    const handleMessages = (messages: Message[]) => {
-        setMessages(messages);
-    };
-
-
-    // const fetchUsers = async () => {
-    //     const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
-    //     setUsers(data.data);
-    //     console.log("users data",data)
-    // };
-
+    fetchUsers();
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
-    if(isConnected) {
-      const username_ = udetails.username;  
-      if(username_) {
-        setUsername(username_);
-        setUserId(udetails.userId);
-        setProfileImage(udetails.pic);
-        setCurrentUser(udetails._id);
-        fetchUsers();
-        const SERVER = 'http://127.0.0.1:9000';  // Ensure this URL is correct
-        const socket = io(SERVER,{transports: ['websocket']})
-        socket.on('connect', () => {
-            console.log('Connected to Socket.IO server');
-            fetchMessages();
-            fetchUsers();
-        });
-        socket.on('message', handleNewMessage);
-        socket.on('messages', handleMessages);
-        socket.on('connect_error', (error) => {
-            console.error('Connection error:', error);
-        });
+    if(isConnected) {  
+      if(udetails) {
+        setPic(udetails.pic);
+        
       }
+      setCurrentUser(address);
     }else {
       open()
     }
     
+    
+    // Cleanup
     return () => {
-    if (socket) socket.disconnect();
+      socket.off('message', handleNewMessage);
+      socket.off('messages', handleMessages);
     };
 
-  },[socket, username])
+
+  },[])
   
-  const sendMessage = async (text: string, file?: any) => {
+  const handleNewMessage = (message: Message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+  };
+
+  const handleMessages = async (messages: Message[]) => {
+    console.log('Messages received --:', messages);
+    await messages.forEach(async (message:any) => {
+      let msg: Message = {
+        user: message.address,
+        pic: message.pic,
+        content: message.message,
+        timestamp: message.timestamp
+      }
+      messages.push(msg);
+      setMessages(messages);
+    })
+  };
+
+  const sendMessage = async (content: string) => {
     if (currentUser) {
       const message: Message = {
-        text,
+        content,
+        pic,
         user: currentUser,
-        file,
         timestamp: new Date(),
       };
       socket.emit('sendMessage', message);  // Send the message to the server
@@ -139,8 +131,9 @@ const ChatForum: React.FC<{}> = () =>  {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    if (file && file != null) {
-      sendMessage(text);
+    console.log("huo clicked",text);
+
+    if (file && file !== null) {
       const formData = new FormData();
       formData.append('file', file);
 
@@ -151,11 +144,7 @@ const ChatForum: React.FC<{}> = () =>  {
           },
         });
 
-        const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-        }  
+       
         const content = response.data.fullUrl;
         console.log("res pom",response.data.fullUrl)
         // const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
@@ -172,28 +161,32 @@ const ChatForum: React.FC<{}> = () =>  {
       } catch (error) {
         console.error('Error uploading file', error);
       }
-    } else {
+    } else if(text && text !== ''){
         try {
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            }  
-            const content = text;
-            const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
-                userId,
-                currentUser,
-                content
-            }, config);
-            if(data) {
-                // socket.emit('sendMessage', message);
-                // setActionSuccess(true);
-                // setActionSuccessMessage("Profile upload ")
-            }
+            // const config = {
+            //     headers: {
+            //         "Content-type": "application/json"
+            //     }
+            // }  
+            // const content = text;
+            // const {data} = await axios.post('http://localhost:9000/api/chatforum/sendmessage', {
+            //     address,
+            //     pic,
+            //     currentUser,
+            //     content
+            // }, config);
+            // if(data) {
+            //     // socket.emit('sendMessage', message);
+            //     // setActionSuccess(true);
+            //     // setActionSuccessMessage("Profile upload ")
+            // }
             sendMessage(text);
         } catch (error) {
             console.log("err mes",error)
         }
+    }else {
+      setShowAlertDanger(true);
+      setErrorMessage("Enter message or upload a file");
     }
 
     setText('');
@@ -264,6 +257,11 @@ const ChatForum: React.FC<{}> = () =>  {
     }
   };
 
+  const closeAlertModal = () => {
+    setShowAlertDanger(false);
+    setShowLoading(false);
+  }
+
   return (
     <>
     <Head>
@@ -271,6 +269,7 @@ const ChatForum: React.FC<{}> = () =>  {
         <meta name='description' content='Share your opinion in Fifareward chat forum. FifaReward | Bet, Stake, Mine and craeate NFTs of football legends, fifa reward a layer2/layer 3 roll up'/>
     </Head>
       <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+      {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
         <div className={styles.main_bg_overlay}></div>
           <div>
             <div>
@@ -321,33 +320,8 @@ const ChatForum: React.FC<{}> = () =>  {
                         </div>
                         <UserList users={users} />
 
-                        <div className={styles.chat_convo} id="chat-convo">
-                          <div className={styles.justify_content_start}>
-                                <div>
-                                    <div className={styles.profile_message}>
-                                        <div className={styles.grpmembers_msg_cotainer_send}>
-                                            <div><Image src={chatbotlogo} alt={'Image'} width={35} height={40} className={`${styles.rounded_circle} ${styles.user_img}`}/></div>
-                                            <div className={`${styles.text_left} ${styles.message}`}>Hello Messge Hello MessgeHello MessgeHello MessgeHello MessgeHello MessgeHello MessgeHello MessgeHello MessgeHello Messge</div>
-                                        </div>
-                                    </div>
-                                </div>
-                          </div>
-
-                          <div className={styles.justify_content_start}>
-                                <div>
-                                    <div className={styles.profile_message}>
-                                        <div className={styles.user_msg_cotainer_send}>
-                                            <div className={`${styles.text_left} ${styles.message}`}>I repliedHello I repliedHello I repliedHello I repliedHello I repliedHello I repliedHello I replied</div>
-                                            <div><Image src={chatbotlogo} alt={'Image'} width={35} height={40} className={`${styles.rounded_circle} ${styles.user_img}`}/></div>
-                                        </div>
-                                        {/* <div className={styles.user_reactn}><span className={styles.like}>{<FaThumbsUp />}</span> <span className={styles.dislike}>{<FaThumbsDown />}</span></div> */}
-                                    </div>
-                                </div>
-                          </div>
-                        </div>
-
                         <MessageList messages={messages} currentUser={currentUser} />
-                        
+
                         <div id="success-pop" aria-hidden="true" className={styles.div_overlay}>
                             <div className={styles.div_overlay_inna}>
                                 {/* <span className={styles.pull_right}>{<FaXmark/>}</span> */}
@@ -375,8 +349,8 @@ const ChatForum: React.FC<{}> = () =>  {
                             <span>{<FaPaperclip onClick={triggerFileInput} className={styles.fileIcon}/>} </span>
                             <textarea name="" id="message" className={`${styles.form_control} ${styles.type_msg}`} value={text} onChange={(e) => setText(e.target.value)} placeholder="Type your message..."></textarea>
                             <div className={styles.text_mic_icons}>
-                              <div><span className={styles.send_btn}><button type='submit'>{<FaLocationArrow size={28} style={{color:'#e3a204'}}/>}</button></span></div>
-                              <div className={styles.voice_btn}><button className={styles.voice_btn_} onClick={isListening ? stopListening : startListening} type="button">{isListening ? <FaMicrophoneSlash size={28}/> : <FaMicrophone size={28}/> }</button></div>
+                              <div><span className={styles.send_btn}><button type='submit'>{<FaLocationArrow size={22} style={{color:'#e3a204'}}/>}</button></span></div>
+                              <div className={styles.voice_btn}><button className={styles.voice_btn_} onClick={isListening ? stopListening : startListening} type="button">{isListening ? <FaMicrophoneSlash size={22} color='#f1f1f1'/> : <FaMicrophone size={22} color='#f1f1f1'/> }</button></div>
                             </div>
                           </div>
                           
