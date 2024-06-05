@@ -179,7 +179,15 @@ const Staking = () =>  {
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
             const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
-            if(stakeAmount < usdequivfrdamount) {
+            let transaction = await FRDContract.balanceOf(address);
+                
+            let frdBal = ethers.utils.formatEther(transaction);
+            if(parseInt(frdBal) > usdequivfrdamount) {
+              setShowAlertDanger(true);
+              seterrorMessage(`You need a minimum of ${usdequivfrdamount} FRD ($10)`);
+              setShowLoading(false);
+              return;
+            }else if(stakeAmount < usdequivfrdamount) {
               setShowAlertDanger(true);
               seterrorMessage(`Minimum stake amount is ${usdequivfrdamount} FRD`);
               setShowLoading(false);
@@ -196,7 +204,7 @@ const Staking = () =>  {
             
         }
       }else {
-        open();
+        // open();
       }
     } catch (error:any) {
       console.log("approve error", error)
@@ -229,7 +237,7 @@ const Staking = () =>  {
           setReward(reslt/10**18);
         }
       }else {
-        open();
+        // open();
       }
     }catch(error: any) {
       console.log("reward error",error)
@@ -612,7 +620,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                   <ConnectWallet />
               </div>
               <button title='togglebtn' className={dappstyles.sidebar_toggle_btn} type='button' onClick={toggleSideBar}>
-                <FaAlignJustify size='22px' className={dappstyles.navlisttoggle}/> 
+                <FaAlignJustify size={28} color='#f1f1f1' className={dappstyles.navlisttoggle}/> 
               </button>
               <div>
                 <RewardsBadge />

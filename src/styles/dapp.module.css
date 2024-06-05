@@ -193,7 +193,7 @@
 }
 
 .navlisttoggle {
-    font-size: 28px;margin: 2px 0 2px 0;padding-left: 15px;
+    font-size: 28px !important;margin: 2px 0 2px 0;padding-left: 15px;color: #f1f1f1;
 }
 .main .reflink small {
     color: #e3a204 ;
@@ -411,8 +411,8 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     margin: 0 10px;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .w_alert {
-    position: absolute;background-color: rgba(60, 59, 59, 0.677);top: -60px;font-size: 12px;border-radius: 8px;width: 100%;
-    padding: 1px 2px;color: #f1f1f1;display: none;text-align: left;
+    position: absolute;background-color: rgba(60, 59, 59, 0.677);top: -60px;font-size: 12px;border-radius: 8px;width: 90%;
+    padding: 1px 2px;color: #f1f1f1;display: none;text-align: left;left: 0;right: 0;margin: auto;
     border: 1px solid #454343;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .w_alert .walertclosediv {
