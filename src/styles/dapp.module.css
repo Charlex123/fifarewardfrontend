@@ -21,7 +21,7 @@
     width: 100%;margin: auto;text-align: center;
 }
 .main .w_alert {
-    position: absolute;background-color: rgba(60, 59, 59, 0.677);font-size: 12px;border-radius: 8px;width: fit-content;
+    position: absolute;background-color: rgba(60, 59, 59, 0.677);font-size: 12px;border-radius: 8px;width: 90%;
     padding: 1px 2px;color: #f1f1f1;margin: 2rem auto;text-align: center;padding: 20px;
     border: 1px solid #454343;left: 10px;right: 10px;top: 150px;
 }
@@ -30,7 +30,7 @@
     top: 0;right: -5px;
 }
 .main .w_alert .walertclosediv .walertclosedivbtn {
-    color: white;   
+    color: white;   font-size: 28px;
 }
 .main .notfound {
     text-align: center;font-family: "RussoOne Regular",sans-serif;margin: 20px auto;
@@ -420,7 +420,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     top: -10px;right: -35px;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .w_alert .walertclosediv .walertclosedivbtn {
-    color: white;   
+    color: white;font-size: 28px;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .estprof {
     font-size: 12px;font-family: "RussoOne Regular", sans-serif;display: none;
