@@ -802,7 +802,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                     </div>
                   )) : 
                   <div className={styles.notfound_p}>
-                    <div className={styles.notfound}>No items were found</div>
+                    <div className={styles.notfound}>No items were found <a href='/nft/createnft' className={styles.notfoundlink}>Mint NFTs</a></div>
                   </div>}
                 </div>
               </div>

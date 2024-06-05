@@ -118,6 +118,9 @@
 .main .settings .notfound {
     text-align: center;font-family: "RussoOne Regular",sans-serif;margin: 20px auto;
 }
+.main .settings .notfound .notfoundlink {
+    text-decoration: underline;color: #e28305;font-size: 14px;font-weight: 600;
+}
 .main .settings .img_sel h2 {
     background-color: #000000d3;width: fit-content;padding: 4px 50px;margin: 15px 0 50px 0;text-align: left;
     font-size: 40px;
