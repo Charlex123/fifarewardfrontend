@@ -11,6 +11,7 @@ import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json
 import dappstyles from "../styles/dapp.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import UserComponent from './UserComponent';
 
 const ReferralLink:React.FC<{}> = () =>  {
 
@@ -144,6 +145,7 @@ const toggleWA = (e: any) => {
   return (
     <>
         <div className={`${dappstyles.reflink} ${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']}`} >
+            <UserComponent />
             <div className={dappstyles.reflinkdex}>
               <div className={dappstyles.reftxt}>Ref Link:</div> 
               <div className={dappstyles.refinput}><input title="input" value={referralLink} readOnly /></div>
