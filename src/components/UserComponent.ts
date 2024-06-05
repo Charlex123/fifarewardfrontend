@@ -23,7 +23,7 @@ const UserComponent = () => {
                     };
                     const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/getuser/", { address }, config);
                     const data = response.data;
-
+                    console.log("user add det daata",data)
                     if(data.user != null) {
                         setBadge(data.user.badge);
                         setSponsorWalletAddress(data.user.sponsoraddress);
@@ -38,6 +38,8 @@ const UserComponent = () => {
                             pic
                         }, config);
                         const data = response.data;
+
+                        console.log("user upd det daata",data)
                         if(data.message == "action success") {
                             localStorage.setItem("userInfo",JSON.stringify(data.user));
                         }else {

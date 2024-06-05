@@ -54,7 +54,25 @@ const ChatForum: React.FC<{}> = () =>  {
   useEffect(() => {
 
     const fetchMessages = async () => {
+      if (socket && socket.connected) {
         socket.emit('getMessages');
+      } else {
+        console.log('Socket is not connected or undefined');
+        socket.on('connect', () => {
+          socket.emit('getMessages');
+        });
+      }
+    };
+    
+    const fetchUsers = async () => {
+      if (socket && socket.connected) {
+        socket.emit('getUsers');
+      } else {
+        console.log('Socket is not connected or undefined');
+        socket.on('connect', () => {
+          socket.emit('getUsers');
+        });
+      }
     };
 
     const handleNewMessage = (message: Message) => {
@@ -66,11 +84,11 @@ const ChatForum: React.FC<{}> = () =>  {
     };
 
 
-    const fetchUsers = async () => {
-        const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
-        setUsers(data.data);
-        console.log("users data",data)
-    };
+    // const fetchUsers = async () => {
+    //     const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
+    //     setUsers(data.data);
+    //     console.log("users data",data)
+    // };
 
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);

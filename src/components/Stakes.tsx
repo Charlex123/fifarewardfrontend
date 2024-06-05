@@ -51,7 +51,7 @@ const Staking = () =>  {
   const [userId, setUserId] = useState("");  
   const [_stakeId, setStakeId] = useState<number>(); 
   const [withdrawamount, setWithdrawAmount] = useState<any>();  
-  const [estimatedprofit,setEstimatedProfit] = useState<any>();
+  const [estimatedprofit,setEstimatedProfit] = useState<string>();
   const [reward,setReward] = useState<any>();
   const [withdrawreward,setWithdrawReward] = useState<any>();
   const [staketimeremaining,setStakeTimeRemaining] = useState<number>();
@@ -119,7 +119,6 @@ const Staking = () =>  {
    }, 1500);
  };
 
-  
   // async function onSignMessage() {
   //   const provider = new ethers.providers.Web3Provider(walletProvider)
   //   const signer = provider.getSigner()
@@ -182,14 +181,15 @@ const Staking = () =>  {
             let transaction = await FRDContract.balanceOf(address);
                 
             let frdBal = ethers.utils.formatEther(transaction);
+            
             if(stakeAmount < usdequivfrdamount) {
               setShowAlertDanger(true);
-              seterrorMessage(`Minimum stake amount is ${usdequivfrdamount} FRD ($10)`);
+              seterrorMessage(`Minimum stake amount is ${(usdequivfrdamount).toLocaleString()} FRD ($10)`);
               setShowLoading(false);
               return;
-            }else if(parseInt(frdBal) > usdequivfrdamount) {
+            }else if(parseInt(frdBal) < usdequivfrdamount) {
               setShowAlertDanger(true);
-              seterrorMessage(`You need a minimum of ${usdequivfrdamount} FRD ($10)`);
+              seterrorMessage(`You need a minimum of ${(usdequivfrdamount).toLocaleString()} FRD ($10) to stake`);
               setShowLoading(false);
               return;
             }else {
@@ -282,7 +282,8 @@ const Staking = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any);
           const signer = provider.getSigner();
           const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profitpercent);
+          const profpercent = profitpercent * 1000;
+          const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profpercent);
           console.log('calc reward error',reslt);
           estdiv.style.display = "block";
           setEstimatedProfit(reslt);
@@ -293,6 +294,7 @@ const Staking = () =>  {
         // open()
       }
     }catch(error: any) {
+      console.log("eeroce",error)
       setShowAlertDanger(true);
       seterrorMessage(error.code);
     }
@@ -343,6 +345,8 @@ const Staking = () =>  {
       // seterrorMessage(error.code);
     }
   }
+
+  
 
   const Withdraw = async (stakeId: number,e: any) => {
     try {
@@ -761,7 +765,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                   </div> */}
 
                                   <div className={dappstyles.cw_btn_div}>
-                                      <div className={dappstyles.estprof}>Estimated profit: <span>{estimatedprofit?.toString()}</span> FRD</div>
+                                      <div className={dappstyles.estprof}>Estimated profit: <span>{estimatedprofit?.toLocaleString()}</span> FRD</div>
                                       <div className={dappstyles.st_btns}>
                                           <div>
                                               <button type='button' className={dappstyles.stakebtn} onClick={(e) => Approve(e.target)}>Stake</button>

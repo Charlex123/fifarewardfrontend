@@ -42,7 +42,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
   }
   useEffect(() => {
     
-    const shrtwa = address?.substring(0,18)+' ...';
+    const shrtwa = address?.substring(0,12)+' ...';
           setShortWalletAddress(shrtwa);
   
     // Function to handle window resize
