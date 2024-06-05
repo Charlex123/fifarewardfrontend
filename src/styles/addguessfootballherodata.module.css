@@ -1,0 +1,106 @@
+.qrcode {
+    width: 10rem;height: 20rem;margin: 1rem auto; text-align: center;
+}
+.lighttheme {
+    background-color: var(--background-color-light);
+    color: var(--text-color-light);
+    /* border: var(--border-dark); */
+}
+.darktheme {
+    background-color: var(--background-color-dark);
+    color: var(--text-color-dark);
+    /* border: var(--border-dark) */
+}
+.main {
+    width: 100%;height: 100%;position: relative;
+}
+.form_group {
+    margin: 1rem 0;
+}
+.main button {
+    background-color: transparent;background: none;border: none;
+}
+.main .cbtn {
+    display: flex;flex-direction: row;justify-content: space-between;padding-top: 10px;
+}
+.forminput {
+    border-radius: 12px;width: 100% !important;height: 40px;padding: .2rem .8rem;
+    border: none;color: #000000;margin-top: 5px;
+}
+.formlabel {
+    margin-top: 1rem;padding: .6rem 0 1rem 0;font-family: "RussoOne Regular";font-size: 14px;margin-bottom: 5px;
+}
+.formTag {
+    border-radius: 8px;padding: 1rem;margin: auto;height: 100%;width: 60vw;padding-top: 5rem;
+}
+.textarea {
+    width: 100%;border-radius: 8px;height: 140px;min-height: 140px;margin-top: 5px;
+}
+.formTag .fhead {
+    margin: 1rem auto;
+}
+.formTag .fhead h3 {
+    font-family: "RussoOne Regular", sans-serif;margin: 1rem auto;font-weight: 600;
+    text-align: center;font-size: 18px;
+}
+.formpTag {
+    font-size: 12px;font-family: "RussoOne Regular";font-style: italic;
+}
+.labelDiv {
+    width: 100%;
+}
+.btns {
+    display: flex;justify-content: space-evenly;flex-direction: row;flex-wrap: nowrap;margin: 3rem auto 2rem auto;
+}
+.btns .alink {
+    padding-top: .4rem;font-size: 14px;
+}
+.btns a {
+    font-family: "RussoOne Regular", sans-serif;font-size: 14px;font-weight: 600;
+}
+.btns .registerButton {
+    border-radius: 120px;background-color: #e3a204;font-size: 16px;font-weight: 600;cursor: pointer;
+    padding: .4rem 60px;border: none;color: #1c1f2b;font-family: "RussoOne Regular",sans-serif;
+}
+.passhideshowButton {
+    text-align: right;float: right;margin-top: .6rem;margin-right: .5rem;
+    border: none;color: #e2d7d7;
+}
+.regsuccess {
+    height: 100vh;margin: 5rem auto;text-align: center;
+}
+.regsuccess .regs_in {
+    width: fit-content;height: auto;padding: 20px;background-color: #e2d7d7;margin: 1rem auto;border-radius: 16px;
+}
+.regsuccess .regs_in button {
+    background-color: #ac7c02;color: #151414;
+}
+.regsuccess h3 {
+    color: #1c1f2b;font-size: 32px;font-family: "RussoOne Regular", sans-serif;
+}
+.regsuccess p {
+    color: #1c1f2b;font-size: 14px;font-family: "RussoOne Regular";margin: .5rem auto;text-align: left;
+}
+.regsuccess span {
+    text-transform: capitalize;color: #c58f06;font-weight: 600;
+}
+.regsuccess a, .regsuccess button {
+    color: #1c1f2b;background-color: #c58f06;width: fit-content;margin: 5px auto;text-align: center;
+    font-family: "RussoOne Regular",sans-serif;font-size: 16px;font-weight: 600;border-radius: 120px;
+    padding: 4px 20px;
+}
+button.back {
+    padding: 5px 10px;font-size: 14px;font-family: "RussoOne Regular", sans-serif;color: #e2d7d7;
+}
+@media (max-width: 991px) {
+    .formTag {
+        height: 100%;padding-top: 1rem;
+        width: 95vw;
+    }   
+    .btns .registerButton {
+        padding: .4rem 20px;
+    }
+    .regsuccess {
+        width: 96%;
+    }
+}

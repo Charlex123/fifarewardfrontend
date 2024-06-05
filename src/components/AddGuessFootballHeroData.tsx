@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 import Loading from "./Loading";
 import AlertMessage from "./AlertMessage";
-import regstyles from "../styles/register.module.css";
+import regstyles from "../styles/addguessfootballherodata.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 // component
 import Head from 'next/head';
@@ -164,80 +164,85 @@ const goBack = () => {
         </Head>
         <div className={`${regstyles.main} ${theme === 'dark' ? regstyles['darktheme'] : regstyles['lighttheme']}`}>
             <button type='button' title='button' className={regstyles.back} onClick={goBack}> {'<<'} Back</button>
-            <form className={regstyles.formTag} onSubmit={submitHandler}>
             
-            {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
-            {loading && <Loading />}
-            
-            <div className={regstyles.fhead}>
-                <h3>Add Player Data </h3>
-            </div>
-            
-            <div className={regstyles.form_group}>
-                <label className={regstyles.formlabel} htmlFor="grid-last-name">Player Full Name</label>
-                <input className={regstyles.forminput} id="grid_user_name" type="varchar" placeholder="Enter player full name" required
-                  value={name}
-                  onBlur={checkName}
-                  onChange={(e) => setName(e.target.value)}
-                  />
-            </div>
-            <div className={regstyles.form_group}>
-                <label className={regstyles.formlabel}>Enter player hint</label>
-                <textarea onChange={(e) => setHint(e.target.value)} className={regstyles.textarea}></textarea>
-            </div>
-            <div className={regstyles.form_group}>
-                <label>Upload Player Picture</label>
-                <input
-                        type="file"
-                        onChange={handleFileChange}
-                        accept="image/*,video/*"
-                        ref={fileInputRef}
-                    />
-            </div>
-            <div className={regstyles.btns}>
-              <button className={regstyles.registerButton} type="submit">
-                Add Player
-              </button>
-            </div>
-          </form>
+            <div>
+                <form className={regstyles.formTag} onSubmit={submitHandler}>
+                
+                {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
+                {loading && <Loading />}
+                
+                <div className={regstyles.fhead}>
+                    <h3>Add Player Data </h3>
+                </div>
+                
+                <div className={regstyles.form_group}>
+                    <label className={regstyles.formlabel} htmlFor="grid-last-name">Player Full Name</label>
+                    <input className={regstyles.forminput} id="grid_user_name" type="varchar" placeholder="Enter player full name" required
+                      value={name}
+                      onBlur={checkName}
+                      onChange={(e) => setName(e.target.value)}
+                      />
+                </div>
+                <div className={regstyles.form_group}>
+                    <label className={regstyles.formlabel}>Enter player hint</label>
+                    <textarea onChange={(e) => setHint(e.target.value)} className={regstyles.textarea}></textarea>
+                </div>
+                <div className={regstyles.form_group}>
+                    <label>Upload Player Picture</label>
+                    <input
+                            type="file"
+                            onChange={handleFileChange}
+                            accept="image/*,video/*"
+                            ref={fileInputRef}
+                        />
+                </div>
+                <div className={regstyles.btns}>
+                  <button className={regstyles.registerButton} type="submit">
+                    Add Player
+                  </button>
+                </div>
+              </form>
+          </div>
 
-
-          <form className={regstyles.formTag} onSubmit={updateHandler}>
-            
-            {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
-            {loading && <Loading />}
-            
-            <div className={regstyles.fhead}>
-                <h3>Update Player Data </h3>
-            </div>
-            
-            <div className={regstyles.form_group}>
-                <label className={regstyles.formlabel} htmlFor="grid-last-name">Player Full Name</label>
-                <input className={regstyles.forminput} id="grid_user_name" type="varchar" placeholder="Enter player full name" required
-                  value={name}
-                  onBlur={checkName}
-                  onChange={(e) => setName(e.target.value)}
-                  />
-            </div>
-            <div className={regstyles.form_group}>
-                <label className={regstyles.formlabel}>Enter player hint</label>
-                <textarea onChange={(e) => setHint(e.target.value)} className={regstyles.textarea}></textarea>
-            </div>
-            <div className={regstyles.form_group}>
-                <label>Upload Player Picture</label>
-                <input
-                        type="file"
-                        onChange={handleFileChange}
-                        accept="image/*,video/*"
-                        ref={fileInputRef}
-                    />
-            </div>
-            <div className={regstyles.btns}>
-              <button className={regstyles.registerButton} type="submit">
-                Update Player
-              </button>
-            </div>
-          </form>
+          <div>
+              <form className={regstyles.formTag} onSubmit={updateHandler}>
+                
+                {error && <AlertMessage errorMessage={errorMessage} onChange={closeAlertModal} />}
+                {loading && <Loading />}
+                
+                <div className={regstyles.fhead}>
+                    <h3>Update Player Data </h3>
+                </div>
+                
+                <div className={regstyles.form_group}>
+                    <label className={regstyles.formlabel} htmlFor="grid-last-name">Player Full Name</label>
+                    <input className={regstyles.forminput} id="grid_user_name" type="varchar" placeholder="Enter player full name" required
+                      value={name}
+                      onBlur={checkName}
+                      onChange={(e) => setName(e.target.value)}
+                      />
+                </div>
+                <div className={regstyles.form_group}>
+                    <label className={regstyles.formlabel}>Enter player hint</label>
+                    <textarea onChange={(e) => setHint(e.target.value)} className={regstyles.textarea}></textarea>
+                </div>
+                <div className={regstyles.form_group}>
+                    <label>Upload Player Picture</label>
+                    <input
+                            type="file"
+                            onChange={handleFileChange}
+                            accept="image/*,video/*"
+                            ref={fileInputRef}
+                        />
+                </div>
+                <div className={regstyles.btns}>
+                  <button className={regstyles.registerButton} type="submit">
+                    Update Player
+                  </button>
+                </div>
+              </form>
+          </div>
+          
         </div>
     </>
   );
