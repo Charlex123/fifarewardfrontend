@@ -118,9 +118,23 @@ const InfluencerReg = () =>  {
 //     }
 //   }
 
+function compareHexStrings(address1: any, address2: any) {
+  // Convert both strings to lowercase
+  const normalizedHex1 = address1.toLowerCase();
+  const normalizedHex2 = address2.toLowerCase();
+
+  // Return the comparison result
+  return normalizedHex1 === normalizedHex2;
+}
+
   const submitHandler = async (e:any) => {
     e.preventDefault();
     if(isConnected) {
+      if((compareHexStrings(address, sponsoraddress))) {
+        setError(true)
+        setErrorMessage("You can't refer yourself");
+        return;
+      }
       setError(false);
       try {
         const config = {

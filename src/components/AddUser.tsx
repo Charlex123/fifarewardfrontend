@@ -46,24 +46,35 @@ const AddUser = () =>  {
         const decrypted = decode(id[0]);
         setSponsoraddress(decrypted);
       }else {
-        setSponsoraddress(id[0]);
         setIssponsorinfluencer(false)
       }
       
     },[id])
 
+    function compareHexStrings(address1: any, address2: any) {
+      // Convert both strings to lowercase
+      const normalizedHex1 = address1.toLowerCase();
+      const normalizedHex2 = address2.toLowerCase();
     
+      // Return the comparison result
+      return normalizedHex1 === normalizedHex2;
+    }
+
   const submitHandler = async (e:any) => {
     e.preventDefault();
     if(isConnected) {
       setError(false);
+      if((compareHexStrings(address, sponsoraddress))) {
+        setError(true)
+        setErrorMessage("You can't refer yourself");
+        return;
+      }
       try {
         const config = {
           headers: {
             "Content-type": "application/json"
           }
         }  
-        console.log("address", address,sponsoraddress)
         setLoading(true);
         const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser", {
           username,
@@ -79,7 +90,7 @@ const AddUser = () =>  {
           setError(true);
           setErrorMessage(data.message)
         }else {
-          router.push(`/dapp`)
+          // router.push(`/dapp`)
         }
         console.log('Reg response data',data)
         
@@ -130,7 +141,7 @@ const goBack = () => {
                 
             <div className={regstyles.form_group}>
               <label className={regstyles.formlabel} htmlFor="grid-email"> My Address</label>
-                    <input className={regstyles.forminput} id="email" placeholder="My address" required
+                    <input className={regstyles.forminput} id="address" placeholder="My address" required
                     value={address}
                     readOnly
                     />
