@@ -16,6 +16,8 @@ const nextConfig = {
     'api-sports.io',
     'localhost:3000',
     'localhost',
+    'fifarewardbackend.onrender.com',
+    'onrender.com',
     'ipfs.nftstorage.link'],
   },
   webpack: (config) => {
