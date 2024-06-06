@@ -89,7 +89,7 @@ const AddUser = () =>  {
         console.log(error.response.data)
       }
     }else {
-      open()
+      // open()
     }
       
   

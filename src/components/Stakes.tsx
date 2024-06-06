@@ -51,7 +51,7 @@ const Staking = () =>  {
   const [userId, setUserId] = useState("");  
   const [_stakeId, setStakeId] = useState<number>(); 
   const [withdrawamount, setWithdrawAmount] = useState<any>();  
-  const [estimatedprofit,setEstimatedProfit] = useState<string>();
+  const [estimatedprofit,setEstimatedProfit] = useState<number>();
   const [reward,setReward] = useState<any>();
   const [withdrawreward,setWithdrawReward] = useState<any>();
   const [staketimeremaining,setStakeTimeRemaining] = useState<number>();
@@ -765,7 +765,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                   </div> */}
 
                                   <div className={dappstyles.cw_btn_div}>
-                                      <div className={dappstyles.estprof}>Estimated profit: <span>{estimatedprofit?.toLocaleString()}</span> FRD</div>
+                                      <div className={dappstyles.estprof}>Estimated profit: <span>{estimatedprofit?.toLocaleString()}</span> FRD ${`${(Math.ceil(Number(estimatedprofit?.toString()) * Number(dollarprice))).toLocaleString()}`} </div>
                                       <div className={dappstyles.st_btns}>
                                           <div>
                                               <button type='button' className={dappstyles.stakebtn} onClick={(e) => Approve(e.target)}>Stake</button>
@@ -798,7 +798,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                         }
                                     <div className={dappstyles.s_m_in }>
                                         <div className={dappstyles.cw_btn_div}>
-                                            <div className={dappstyles.crwd}>Reward: <span>{Math.ceil(reward?.toString())}</span> FRD</div>
+                                            <div className={dappstyles.crwd}>Reward: <span>{Math.ceil(reward?.toString())}</span> FRD ${`${(Math.ceil(Number(reward?.toString()) * Number(dollarprice))).toLocaleString()}`} </div>
                                             <div className={dappstyles.st_btns}>
                                                 <div>
                                                     <button type='button' className={dappstyles.calcrwd} onClick={(e) => calculateReward(stake.stakeId.toNumber(),e.target)}>Calc Reward</button>
