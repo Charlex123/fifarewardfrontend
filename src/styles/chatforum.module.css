@@ -113,12 +113,12 @@
     padding: 3px 4px 3px 4px;
     min-height: 60px;
     height: inherit;
-    width: 95%;
+    width: 90%;
     overflow-y: auto;font-size: 14px !important;
 }
     .type_msg:focus{
      box-shadow:none !important;
-   outline:0px !important;
+    outline:0px !important;
 }
 .attach_btn{
 border-radius: 15px 0 0 15px !important;
