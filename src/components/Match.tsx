@@ -81,7 +81,7 @@ const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
 const [username, setUsername] = useState<string>("");
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
-const [dollarequiv, setDollarEquiv] = useState<number>();
+const [dollarequiv, setDollarEquiv] = useState<number>(0);
 const [usdprice, setUsdPrice] = useState<any>();
 const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
 const [isparamsLoaded,setIsParamsLoaded] = useState<boolean>(false);
@@ -409,8 +409,7 @@ const Approve = async (e:any) => {
 
 const handleOpenBetForm = async (e:any) => {
     try {
-        setShowLoading(true);
-        if(username && username !== null && username !== undefined && username !== '') {
+        // setShowLoading(true);
             if(!isConnected) {
               open()
             }else {
@@ -466,10 +465,6 @@ const handleOpenBetForm = async (e:any) => {
                 setShowLoading(false)
               }
             }
-        }else {
-            setShowBgOverlay(true);
-            e.parentElement.parentElement.parentElement.style.display = 'none';
-        }
 
         
     } catch (error) {

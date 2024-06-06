@@ -392,10 +392,10 @@
     color: #ffffff;margin: 15px auto 15px auto;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g {
-    margin: 25px 0 25px 0;width: 100%;text-align: left;
+    margin: 10px 0 10px 0;width: 100%;text-align: left;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li {
-    margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 14px;
+    margin: 5px 0;width: 100%;text-align: left;color: #ffffff;font-size: 12px;
     font-family: "RussoOne Regular";
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g ul li div {
@@ -416,26 +416,26 @@
     color: #e2d7d7;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g label {
-    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;
+    width: 100%;font-size: 12px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;
     text-align: left;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g input {
-    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;height: 30px;margin-top: 5px;
+    width: 100%;font-size: 12px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;height: 30px;margin-top: 5px;
     border-radius: 4px;padding-left: 4px;font-weight: 600;background-color: #3332328c;border: 1px solid #4f48484d;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g small {
     color: rgb(250, 68, 68);font-size: 12px;font-family: "RussoOne Regular";font-weight: 600;margin-top: 5px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g select {
-    width: 100%;font-size: 14px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;height: 30px;
+    width: 100%;font-size: 12px;color: #f1f1f1;font-family: "RussoOne Regular",sans-serif;height: 30px;
     border-radius: 4px;font-weight: 500;background-color: #3332328c;border: 1px solid #4f48484d;margin-top: 5px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet form .form_g button {
-    background-color: #e28305;margin: 13px auto 3px auto;text-align: center;width: 100%;
+    background-color: #e28305;margin: 13px auto 3px auto;text-align: center;width: 100%;height: 35px;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet button {
-    background-color: #e28305;color: #ffffff;padding: 4px 18px 4px 18px;border-radius: 4px;border: none;
-    cursor: pointer;width: fit-content;font-size: 12px;font-weight: 600;
+    background-color: #e28305;color: #ffffff;padding: 6px 18px 6px 18px;border-radius: 4px;border: none;
+    cursor: pointer;width: fit-content;font-size: 12px;font-weight: 600;height: 35px;
 }
 .main .main_in .openbets_list {
     background-color: #f1f1f1 ;;width: 22%;margin: 0 0 0 2%;
