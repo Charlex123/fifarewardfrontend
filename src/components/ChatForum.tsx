@@ -34,7 +34,7 @@ const ChatForum: React.FC<{}> = () =>  {
   const fileInputRef = useRef<HTMLInputElement | null>(null);   
   const [showloading, setShowLoading] = useState<boolean>(false);
   const [text, setText] = useState('');
-  const [pic, setPic] = useState('');
+  const [pic, setPic] = useState('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg');
   const [file, setFile] = useState<File | null>(null);
   const { theme } = useContext(ThemeContext);
   const [fileName, setFileName] = useState('');
