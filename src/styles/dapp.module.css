@@ -509,7 +509,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
         width: 80%;
     }
     .main_c .sidebar {
-        width: 50%;z-index: 0;
+        width: 50%;z-index: 999;
     }
     .main_c .sidebar_toggle_btn {
         display: block;margin-top: -55px;margin-bottom: 30px;

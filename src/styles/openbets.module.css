@@ -115,11 +115,21 @@
 .main .hiwmain .hiw_c ul li a {
     color: #e28305;font-weight: 900;font-family: "RussoOne Regular",sans-serif;
 }
+.main .filter_c {
+    width: 100%;display: flex;flex-direction: row;flex-wrap: nowrap;visibility: hidden;
+    justify-content: space-between;padding: 5px 10px 5px 10px;
+}
+.main .filter_c button {
+    font-size: 14px;
+}
 .main .main_in {
     display: flex;flex-direction: row;justify-content: space-between;
 }
 .main .main_in .opb_h {
     width: 20%;background-color: #f1f1f1;
+}
+.main .main_in .opb_h .filterclose {
+    position: absolute;right: 5px;top: 5px;
 }
 .main .main_in .opb_h .opb_login h3 {
     background-color: #929292;color: #151414;padding: 10px;font-weight: 600;font-size: 13px;
@@ -325,11 +335,18 @@
     .main {
         width: 100%;padding: 2rem 10px 5rem 10px;margin: 2rem auto;
     }
+    .main .filter_c {
+        visibility: visible;
+        justify-content: space-between;padding: 5px 10px 5px 10px;
+    }
+    .main .filter_c button {
+        font-size: 14px;
+    }
     .main .main_in {
         display: block;justify-content: unset;
     }
     .main .main_in .opb_h {
-        width: 100%;
+        width: 100%;position: fixed;left: 0;right: 0;display: none;top: 0;bottom: 0;z-index: 99;height: 100%;
     }
     .main .openbetmain {
         width: 100%;

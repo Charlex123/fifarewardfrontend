@@ -117,6 +117,7 @@ const ChatForum: React.FC<{}> = () =>  {
   };
 
   const sendMessage = async (content: string) => {
+    console.log("content string and data",content,pic,currentUser)
     if (currentUser) {
       const message: Message = {
         content,

@@ -20,7 +20,7 @@ import Loading from './Loading';
 import ActionSuccessModal from './ActionSuccess';
 import BgOverlay from './BgOverlay';
 import Head from 'next/head';
-import { FaCircle, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
+import { FaCircle, FaFilter, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 
 dotenv.config();
 // material
@@ -745,6 +745,16 @@ const closeBgModal = () => {
   setShowBgOverlay(false);
 }
 
+const toggleBetFilter = () => {
+  let filterbyDiv = document.getElementById("opb_hi") as HTMLDivElement;
+  filterbyDiv.style.display = filterbyDiv.style.display === "block" ? "none" : "block";
+}
+
+const closeBetFilter = () => {
+  let filterbyDiv = document.getElementById("opb_hi") as HTMLDivElement;
+  filterbyDiv.style.display = "none";
+}
+
   return (
     <>
     <Head>
@@ -854,10 +864,22 @@ const closeBgModal = () => {
         {/* how it works div starts */}
 
         <div className={openbetsstyle.main_in}>
-          <div className={openbetsstyle.opb_h}>
+  
+        <div className={openbetsstyle.filter}>
+            <div className={openbetsstyle.filter_c}>
+                <div>
+                  <button type="button" title='filter bet' onClick={toggleBetFilter}>
+                    <FaFilter style={{color: '#e28305'}}/><span style={{color: '#151414'}}>Filter</span>
+                  </button>
+                </div>
+            </div>
+        </div>
+  
+          <div className={openbetsstyle.opb_h} id="opb_hi">
           
           {betData.length > 0 && 
             <div className={openbetsstyle.filter}>
+              <div className={openbetsstyle.filterclose}><button className={openbetsstyle.filterclosebtn} onClick={closeBetFilter}><FaXmark size='20' style={{color: '#151414'}}/></button></div>
               <h3>Filter By</h3>
               <div>
                 <div>
