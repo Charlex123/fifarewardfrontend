@@ -124,6 +124,7 @@ const ChatForum: React.FC<{}> = () =>  {
         user: currentUser,
         timestamp: new Date(),
       };
+      console.log("message sent to the server")
       socket.emit('sendMessage', message);  // Send the message to the server
     }
   };
