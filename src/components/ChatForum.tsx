@@ -181,6 +181,7 @@ const ChatForum: React.FC<{}> = () =>  {
             //     // setActionSuccess(true);
             //     // setActionSuccessMessage("Profile upload ")
             // }
+            console.log("here text nmessagse",text);
             sendMessage(text);
         } catch (error) {
             console.log("err mes",error)
