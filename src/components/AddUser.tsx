@@ -41,9 +41,9 @@ const AddUser = () =>  {
     useEffect(() => {
       if(!id || id == undefined) {
         return;
-      }else if(id[1] && id[1] != null && id[1] != undefined){
+      }else if(id[0] && id[0] != null && id[0] != undefined){
         setIssponsorinfluencer(true);
-        const decrypted = decode(id[1]);
+        const decrypted = decode(id[0]);
         setSponsoraddress(decrypted);
       }else {
         setSponsoraddress(id[0]);

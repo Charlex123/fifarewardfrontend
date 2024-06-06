@@ -21,9 +21,9 @@
     width: 100%;margin: auto;text-align: center;
 }
 .main .w_alert {
-    position: absolute;background-color: rgba(60, 59, 59, 0.677);font-size: 12px;border-radius: 8px;width: 90%;
+    position: fixed;background-color: rgba(60, 59, 59, 0.677);font-size: 12px;border-radius: 8px;width: 90%;
     padding: 1px 2px;color: #f1f1f1;margin: 2rem auto;text-align: center;padding: 20px;
-    border: 1px solid #454343;left: 10px;right: 10px;bottom: 20%;
+    border: 1px solid #454343;left: 10px;right: 10px;bottom: 10%;
 }
 .main .w_alert .walertclosediv {
     margin-right: 15px;margin-top: 5px;text-align: right;color: #ffffff;position: absolute;

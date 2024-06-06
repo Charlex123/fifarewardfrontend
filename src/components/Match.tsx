@@ -823,9 +823,6 @@ const closeBgModal = () => {
             <h3>How It Works</h3>
             <ul>
               <li>
-                <FaCircle className={matchstyle.hiwlistcircle} /> Sign up with Fifa Reward using this link <a href='../../../../register'>Join FifaReward</a>
-              </li>
-              <li>
                 <FaCircle className={matchstyle.hiwlistcircle} />  Fund your wallet with FRD from <a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc'>pancakeswap</a> or any other exchange of your choice
               </li>
               <li>
