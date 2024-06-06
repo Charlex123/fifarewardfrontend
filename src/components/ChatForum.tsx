@@ -77,7 +77,6 @@ const ChatForum: React.FC<{}> = () =>  {
     fetchUsers();
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    console.log("u details",udetails)
     if(isConnected) {  
       if(udetails) {
         setPic(udetails.pic);
@@ -125,23 +124,18 @@ const ChatForum: React.FC<{}> = () =>  {
         user: currentUser,
         timestamp: new Date(),
       };
-      socket.emit('sendMessage', message);  // Send the message to the server
+
       // Emit the message and handle the acknowledgment
-      socket.emit('sendMessage', message, (response: any) => {
-        if (response.status === 'success') {
-          console.log('Message sent successfully');
-          fetchMessages();  // Call FetchMessage() upon successful emit
-        } else {
-          console.error('Failed to send message');
-        }
-      });
+      socket.emit('sendMessage', message);
+
+      setTimeout(fetchMessages, 5000);
+
     }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    console.log("huo clicked",text);
 
     if (file && file !== null) {
       const formData = new FormData();
@@ -156,7 +150,6 @@ const ChatForum: React.FC<{}> = () =>  {
 
        
         const content = response.data.fullUrl;
-        console.log("res pom",response.data.fullUrl)
         // const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
         //     userId,
         //     currentUser,
@@ -190,7 +183,6 @@ const ChatForum: React.FC<{}> = () =>  {
             //     // setActionSuccess(true);
             //     // setActionSuccessMessage("Profile upload ")
             // }
-            console.log("here text nmessagse",text);
             sendMessage(text);
         } catch (error) {
             console.log("err mes",error)
