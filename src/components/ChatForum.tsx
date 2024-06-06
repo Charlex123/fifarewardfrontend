@@ -77,7 +77,7 @@ const ChatForum: React.FC<{}> = () =>  {
     fetchUsers();
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    
+    console.log("u details",udetails)
     if(isConnected) {  
       if(udetails) {
         setPic(udetails.pic);
@@ -125,8 +125,16 @@ const ChatForum: React.FC<{}> = () =>  {
         user: currentUser,
         timestamp: new Date(),
       };
-      console.log("message sent to the server")
       socket.emit('sendMessage', message);  // Send the message to the server
+      // Emit the message and handle the acknowledgment
+      socket.emit('sendMessage', message, (response: any) => {
+        if (response.status === 'success') {
+          console.log('Message sent successfully');
+          fetchMessages();  // Call FetchMessage() upon successful emit
+        } else {
+          console.error('Failed to send message');
+        }
+      });
     }
   };
 
