@@ -128,7 +128,7 @@ const ChatForum: React.FC<{}> = () =>  {
       // Emit the message and handle the acknowledgment
       socket.emit('sendMessage', message);
 
-      setTimeout(fetchMessages, 5000);
+      setTimeout(fetchMessages, 3000);
 
     }
   };
@@ -341,7 +341,7 @@ const ChatForum: React.FC<{}> = () =>  {
                     <div className={styles.card_footer}>
                         <form method="POST" onSubmit={handleSubmit}>
                             <div className={styles.instructions} id="instructions">Click the microphone button to speak</div>
-                            <div style={{fontSize: '12px'}}>{fileName && <span className={styles.fileName}>{fileName} selected</span>}</div>
+                            <div style={{fontSize: '12px',color: '#e28304',marginLeft: '15px'}}>{fileName && <span className={styles.fileName}>{fileName} selected</span>}</div>
                           <div className={styles.input_group}>
                             <input
                                 hidden
