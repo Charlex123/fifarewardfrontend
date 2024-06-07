@@ -273,7 +273,7 @@ font-family: "RussoOne Regular";font-size: 16px;color: white !important;margin-l
     margin-top: 4px;
     margin-bottom: 4px;
     margin-right: 0;
-    display: block;
+    display: flex;
     max-width: 70%;
     padding: 2px;
     line-height: 18px;
@@ -323,7 +323,7 @@ font-family: "RussoOne Regular";font-size: 16px;color: white !important;margin-l
     margin-top: 4px;
     margin-bottom: 4px;
     margin-right: 0;
-    display: block;
+    display: flex;
     max-width: 70%;
     word-wrap: break-word;
     padding: 2px;
