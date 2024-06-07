@@ -1,22 +1,37 @@
-// socket.ts
 import { io } from "socket.io-client";
 
-const API_URL = process.env.NODE_ENV === "production"
-  ? process.env.NEXT_PUBLIC_PRODUCTION_API_URL
-  : process.env.NEXT_PUBLIC_API_URL;
+const getApiUrl = (): string => {
+  const url =
+    process.env.NODE_ENV === "production"
+      ? process.env.NEXT_PUBLIC_PRODUCTION_API_URL
+      : process.env.NEXT_PUBLIC_API_URL;
 
-const socket = io(API_URL!, { transports: ['websocket'], withCredentials: true });
+  if (!url) {
+    throw new Error("API URL is not defined in environment variables.");
+  }
+
+  return url.replace(/^http/, 'ws');
+};
+
+const socket = io(getApiUrl(), {
+  transports: ['websocket'],
+  withCredentials: true,
+});
 
 socket.on('connect', () => {
-  console.log('Connected to Socket.IO server');
+  console.log('Connected to WebSocket server');
 });
 
 socket.on('disconnect', () => {
-  console.log('Socket disconnected');
+  console.log('Disconnected from WebSocket server');
 });
 
-socket.on('reconnect', (attemptNumber) => {
-  console.log(`Socket reconnected after ${attemptNumber} attempts`);
+socket.on('connect_error', (err) => {
+  console.error(`Connection error: ${err.message}`);
+});
+
+socket.on('reconnect_attempt', () => {
+  console.log('Trying to reconnect...');
 });
 
 export default socket;
