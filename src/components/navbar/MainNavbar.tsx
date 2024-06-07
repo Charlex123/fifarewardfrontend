@@ -96,12 +96,12 @@ function Navbar() {
                     </li> */}
                     <li><a href='/whitepaper.pdf' rel='noopener noreferrer'>Whitepaper</a></li>
                     <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
+                    <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                     <li><a href='/chatforum' rel='noopener noreferrer'>Forum</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
                     <li><a href='/farming' rel='noopener noreferrer'>Farm</a></li>
                     <li><a href='/nft' rel='noopener noreferrer'>NFT</a></li>
                     {/* <li><a href='/aichat' rel='noopener noreferrer'>Prediction AI</a></li> */}
-                    <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li>
                     
                     <li className={styles.drpdwnlist} onMouseEnter={toggleIconUp2} style={{fontSize: '14px', fontWeight: '600'}} onMouseOut={toggleIconDown2}>

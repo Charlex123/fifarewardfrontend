@@ -98,10 +98,10 @@ function Navbar() {
                 <div className={styles.nav_container_p}>
                 <ul className={styles.upa}>
                     <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
+                    <li><a href='/betting' rel='noopener noreferrer'>Betting</a></li>
+                    <li><a href='/chatforum' rel='noopener noreferrer'> Forum</a></li>
                     <li><a href='/farming' rel='noopener noreferrer'>Farm</a></li>
                     <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
-                    <li><a href='/betting' rel='noopener noreferrer'>Betting</a></li>
-                    <li><a href='/chatforum' rel='noopener noreferrer'>Chat Forum</a></li>
                     <li><a href='/nft' rel='noopener noreferrer'>NFT MarketPlace</a></li>
                     <li><a href='/gaming/' rel='noopener noreferrer'>Gaming</a></li>
                     <li><a href='/gaming/mygames' rel='noopener noreferrer'>My Games</a></li>
