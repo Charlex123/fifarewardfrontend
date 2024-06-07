@@ -1,19 +1,14 @@
 import { io } from "socket.io-client";
 
-const getApiUrl = (): string => {
-  const url =
-    process.env.NODE_ENV === "production"
-      ? process.env.NEXT_PUBLIC_PRODUCTION_API_URL
-      : process.env.NEXT_PUBLIC_API_URL;
-
+const getSocketUrl = (): string => {
+  const url = process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://fifarewardbackend.onrender.com';
   if (!url) {
-    throw new Error("API URL is not defined in environment variables.");
+    throw new Error("Socket URL is not defined in environment variables.");
   }
-
-  return url.replace(/^http/, 'ws');
+  return url;
 };
 
-const socket = io(getApiUrl(), {
+const socket = io(getSocketUrl(), {
   transports: ['websocket'],
   withCredentials: true,
 });
