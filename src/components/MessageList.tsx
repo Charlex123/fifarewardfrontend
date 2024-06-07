@@ -30,7 +30,7 @@ const MessageList: React.FC<MessageListProps> = ({ messages, currentUser }) => {
                     <div className={`${styles.text_left} ${styles.message}`}>
                     {
                       message.content.split("/").length > 2 ? 
-                      <><Image src={message.content} alt='image' width={100} height={100} style={{width: '100px', height: '100px'}}/></> :
+                      <><Image src={message.content} alt='image' width={400} height={400} style={{width: '100%', height: '100%'}}/></> :
                       <>{message.content}</>
                     }
                     </div>

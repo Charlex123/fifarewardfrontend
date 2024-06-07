@@ -53,9 +53,9 @@ const DragDropImageUpload: React.FC<DragDropImageUploadProps> = ({ onFileUpload 
             </div>
             
             <div>
-              <div>Max. media size: (50M)</div> 
+              <div>Max. media size: (5M)</div> 
               
-              <div className={styles.files_}>JPG, PNG, JPEG, SVG, MP4</div>
+              <div className={styles.files_}>JPG, PNG, JPEG, SVG, GIF</div>
             </div>
           </div>
       }
