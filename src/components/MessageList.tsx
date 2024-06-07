@@ -24,9 +24,9 @@ const MessageList: React.FC<MessageListProps> = ({ messages, currentUser }) => {
       <>
         <div className={styles.chat_convo} >
             {messages.map((message, index) => (
-            <div key={index} className={`${message.user === currentUser ? styles.user_msg_cotainer_send : styles.grpmembers_msg_cotainer_send}`}>
-                {message.content && message.content !== '' && message.content !== null ? 
-                  <div >
+            <>
+              {message.content && message.content !== '' && message.content !== null ? 
+                  <div key={index} className={`${message.user === currentUser ? styles.user_msg_cotainer_send : styles.grpmembers_msg_cotainer_send}`}>
                     <div className={`${styles.text_left} ${styles.message}`}>
                     {
                       message.content.split("/").length > 2 ? 
@@ -36,8 +36,8 @@ const MessageList: React.FC<MessageListProps> = ({ messages, currentUser }) => {
                     </div>
                   </div> : 
                   <></>
-                }
-              </div> 
+                }  
+            </> 
                     
             ))}
           </div>
