@@ -142,14 +142,15 @@ const ChatForum: React.FC<{}> = () =>  {
       formData.append('file', file);
 
       try {
-        const response = await axios.post('https://fifarewardbackend.onrender.com/uploadforumfile', formData, {
+        const response = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
         });
 
        
-        const content = response.data.fullUrl;
+        const content = response.data.url;
+        console.log("content uploaded url",content)
         // const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
         //     userId,
         //     currentUser,
@@ -172,7 +173,7 @@ const ChatForum: React.FC<{}> = () =>  {
             //     }
             // }  
             // const content = text;
-            // const {data} = await axios.post('http://localhost:9000/api/chatforum/sendmessage', {
+            // const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
             //     address,
             //     pic,
             //     currentUser,
@@ -340,7 +341,7 @@ const ChatForum: React.FC<{}> = () =>  {
                     <div className={styles.card_footer}>
                         <form method="POST" onSubmit={handleSubmit}>
                             <div className={styles.instructions} id="instructions">Click the microphone button to speak</div>
-                            <div>{fileName && <span className={styles.fileName}>{fileName} selected</span>}</div>
+                            <div style={{fontSize: '12px'}}>{fileName && <span className={styles.fileName}>{fileName} selected</span>}</div>
                           <div className={styles.input_group}>
                             <input
                                 hidden

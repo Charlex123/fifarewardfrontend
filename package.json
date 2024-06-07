@@ -59,6 +59,7 @@
     "lottie-react": "^2.4.0",
     "moment": "^2.30.1",
     "next": "^13.0.3",
+    "next-cloudinary": "^6.6.2",
     "nft.storage": "^7.1.1",
     "openai": "^4.24.0",
     "pdfjs-dist": "^3.11.174",

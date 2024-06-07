@@ -63,7 +63,7 @@ const AddGuessFootballHeroData = () =>  {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('https://fifarewardbackend.onrender.com/uploadplayerimage', formData, {
+            const response = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -74,7 +74,7 @@ const AddGuessFootballHeroData = () =>  {
                     "Content-type": "application/json"
                 }
             }  
-            const image = response.data.fullUrl;
+            const image = response.data.url;
             const dresponse = await axios.post('https://fifarewardbackend.onrender.com/api/players/addplayer', {
                 name,
                 image,

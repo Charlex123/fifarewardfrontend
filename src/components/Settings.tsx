@@ -143,13 +143,13 @@ const Settings = () =>  {
         console.log(pair[0] + ', ' + pair[1]);
       }
     try {
-      const res = await axios.post('https://fifarewardbackend.onrender.com/uploadprofileimage', formData, {
+      const res = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
         headers: {
           'Content-Type': 'multipart/form-data'
         }
       });
 
-      const { fullUrl } = res.data;
+      const { fullUrl } = res.data.url;
       console.log('File uploaded successfully', fullUrl, userId);
 
         const config = {

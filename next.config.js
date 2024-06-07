@@ -18,6 +18,7 @@ const nextConfig = {
     'localhost',
     'fifarewardbackend.onrender.com',
     'onrender.com',
+    'res.cloudinary.com',
     'ipfs.nftstorage.link'],
   },
   webpack: (config) => {
