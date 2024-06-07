@@ -1,108 +1,142 @@
-/* components/Timeline.module.css */
+/* styles/roadmap.module.css */
 .main h3 {
-    margin: 5px auto 50px auto;text-align: center;font-size: 32px;font-weight: 900;
+  margin: 5px auto 50px auto;
+  text-align: center;
+  font-size: 32px;
+  font-weight: 900;
 }
 .timelineContainer {
-    position: relative;
-    padding: 20px;
-    outline: none;
-    overflow-x: auto;
-    margin-left: 80px;
-    overflow-y: hidden;
-    transition: transform 0.3s, height 0.3s;
-    height: 350px;
-  }
-  
-  .timelineContainer:focus {
-    transform: scale(1.2);
-  }
-  
-  .timeline {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    margin-left: 20px;
-    height: 350px;
-    padding: 20px 0;
-    width: fit-content;
-    overflow-x: hidden;
-  }
-  
-  .centerLine {
-    position: absolute;
-    top: 50%;
-    left: 0;
-    right: 0;
-    height: 2px;
-    color: #f1f1f1;
-    background-color: #f1f1f1 !important;
-    transform: translateY(-50%);
-    z-index: -1;
-  }
-  
-  .eventContainer {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 0 0 auto;
-    position: relative;
-    margin: 0 80px;
-    cursor: pointer;
-    font-size: 14px;
+  position: relative;
+  padding: 20px;
+  outline: none;
+  overflow-x: auto;
+  margin-left: 80px;
+  overflow-y: hidden;
+  transition: transform 0.3s, height 0.3s;
+  height: 350px;
+}
+
+.timelineContainer:focus {
+  transform: scale(1.2);
+}
+
+.timeline {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  margin-left: 20px;
+  height: 350px;
+  padding: 20px 0;
+  width: fit-content;
+  overflow-x: hidden;
+}
+
+.centerLine {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  color: #f1f1f1;
+  background-color: #f1f1f1 !important;
+  transform: translateY(-50%);
+  z-index: -1;
+}
+
+.eventContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 0 0 auto;
+  position: relative;
+  margin: 0 80px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.verticalLine {
+  width: 2px;
+  background-color: #f1f1f1;
+}
+
+.upLine {
+  height: 100px; /* Extend the line to meet the up event */
+  top: -100px; /* Position the up vertical line */
+  position: absolute;
+  margin-right: 0;
+}
+
+.downLine {
+  height: 100px; /* Extend the line to meet the down event */
+  bottom: -100px; /* Position the down vertical line */
+  position: absolute;
+  margin-left: 0;
+}
+
+.event {
+  transition: transform 0.3s;
+}
+
+.event:hover,
+.event.focused {
+  transform: scale(1.2);
+}
+
+.upEvent {
+  position: absolute;
+  top: -120px; /* Position the up event */
+  line-height: 12px;
+  font-size: 13px;
+  color: #f1f1f1;
+}
+
+.downEvent {
+  position: absolute;
+  width: fit-content;
+  bottom: -120px;
+  color: #f1f1f1;
+  line-height: 13px;
+  font-size: 13px;
+}
+
+.date {
+  font-weight: bold;
+}
+
+.title {
+  margin-top: 0;
+  white-space: nowrap;
+}
+
+.checkIcon {
+  font-size: 16px !important;
+  color: #e28304;
+  margin-top: -5px;
+}
+
+.content {
+  text-align: center;
+}
+
+/* Add responsive design rules */
+@media (max-width: 600px) {
+  .timelineContainer {
+      margin-left: 10px;
+      padding: 10px;
+      height: 300px;
   }
 
-  .verticalLine {
-    width: 2px;
-    background-color: #f1f1f1;
+  .eventContainer {
+      margin: 0 40px;
   }
-  
-  .upLine {
-    height: 100px; /* Extend the line to meet the up event */
-    top: -100px; /* Position the up vertical line */
-    position: absolute;
-    margin-right: 0;
-  }
-  
+
+  .upLine,
   .downLine {
-    height: 100px; /* Extend the line to meet the down event */
-    bottom: -100px; /* Position the down vertical line */
-    position: absolute;
-    margin-left: 0;
+      height: 60px;
   }
-  
-  .event {
-    transition: transform 0.3s;
-  }
-  
-  .event:hover,
-  .event.focused {
-    transform: scale(1.2);
-  }
-  
-  .upEvent {
-    position: absolute;
-    top: -120px; /* Position the up event */
-    line-height: 12px;font-size: 13px;
-    color: #f1f1f1;
-  }
-  
+
+  .upEvent,
   .downEvent {
-    position: absolute;width: fit-content;
-    bottom: -120px;color: #f1f1f1;
-    line-height: 13px;font-size: 13px;
+      font-size: 12px;
   }
-  
-  .date {
-    font-weight: bold;
-  }
-  
-  .title {
-    margin-top: 0;white-space: nowrap;
-  }
-  .checkIcon {
-    font-size: 16px !important;color: #e28304;margin-top: -5px;
-  }
-  .content {
-    text-align: center;
-  }
-  
+}
