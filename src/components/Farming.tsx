@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import DappSideBar from './Dappsidebar';
 // material
-
+import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
@@ -45,9 +45,9 @@ const Farming = () =>  {
   const [dappConnector,setDappConnector] = useState(false);
   const [wAlert,setWAlert] = useState(false);
   let [amountmined, setAmountMined] = useState<number>(0.00005);
-  // const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
-  // const [dollarequiv, setDollarEquiv] = useState<number>(0);
-  // const [dollarprice, setDollarPrice] = useState<number>(0);
+  const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
+  const [dollarequiv, setDollarEquiv] = useState<number>(0);
+  const [usdprice, setUsdPrice] = useState<number>(0);
   const [errorMessage, seterrorMessage] = useState("");
   const [miningstatus, setMiningStatus] = useState<string>("Inactive");
   const [walletaddress, setWalletAddress] = useState("NA"); 
@@ -58,6 +58,7 @@ const Farming = () =>  {
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
   const [actionsuccess, setActionSuccess] = useState(false);
   const [actionsuccessmessage, setActionSuccessMessage] = useState<string>('');
+  const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
   // const [deltaX, setDeltaX] = useState(0);
   // const [draggedRangeIndex, setDraggedRangeIndex] = useState<number | null>(null);
 
@@ -79,14 +80,21 @@ const Farming = () =>  {
 
   useEffect(() => {
 
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(!udetails) {
-      open()
-    }else {
-      setUsername(udetails.username)
+    const getUSDEQUIVFRDAMOUNT =  async () => {
+      try {
+        const config = {
+          headers: {
+              "Content-type": "application/json"
+          }
+        }  
+        const {data} = await axios.get("../../../../api/gettokenprice", config);
+        setUsdEquivFrdAmount(data.usdequivalentfrdamount);
+        setUsdPrice(data.usdprice);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
     }
-
-   
+    getUSDEQUIVFRDAMOUNT();
     
   // Function to handle window resize
   const handleResize = () => {
@@ -127,38 +135,51 @@ const Farming = () =>  {
   };
   
   
- }, [router,username,address,chainId,isConnected,walletaddress,wAlert,showTimer,walletProvider,isDragging,initialValues])
+ }, [showTimer,walletProvider,isDragging,initialValues])
 
- const getminingdetails = async () => {
-  // search database and return documents with similar keywords
-  const config = {
-      headers: {
-          "Content-type": "application/json"
-      }
-  }  
-  const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/getminingdetails", {
-      address
-  }, config);
-  if(data) {
-    if(data.message == "no mining details found") {
-      setAmountMined(0.00005);
-      setMiningStatus("Inactive");
-    }else {
-      setAmountMined(data.amountmined);
-      setMiningStatus(data.miningstatus);
-      
-      if(data.miningstatus == "Active") (
-        incrementMiningAmount(data.amountmined,data.miningstatus)
-      )
-    }
-    
-    console.log('mining details',data);
-  }
-  
-}
+ 
 
  useEffect(() => {
-      getminingdetails();
+
+  const getminingdetails = async (address: string) => {
+    // search database and return documents with similar keywords
+    const config = {
+        headers: {
+            "Content-type": "application/json"
+        }
+    }  
+    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/getminingdetails", {
+        address
+    }, config);
+    if(data) {
+      if(data.message == "no mining details found") {
+        setAmountMined(0.00005);
+        setMiningStatus("Inactive");
+      }else {
+        setAmountMined(data.amountmined);
+        setMiningStatus(data.miningstatus);
+        
+        if(data.miningstatus == "Active") (
+          incrementMiningAmount(data.amountmined,data.miningstatus)
+        )
+      }
+      
+      console.log('mining details',data);
+    }
+    
+  }
+
+  const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+    if(!udetails) {
+      getminingdetails(address!);
+      open()
+    }else {
+      setUsername(udetails.username)
+      getminingdetails(udetails.address);
+    }
+
+      
+      
  },[])
 
  const updateminedAmount = async (amountmined: number,miningstatus: string ) => {
@@ -219,6 +240,25 @@ const Farming = () =>  {
     setShowBgOverlay(true)
     setShowLoading(true)
       // search database and return documents with similar keywords
+      try {
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+            const signer = provider.getSigner();
+
+            /* next, create the item */
+            let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+            
+            let transaction = await FRDcontract.balanceOf(address);
+            
+            let frdBal = ethers.utils.formatEther(transaction);
+
+            if(parseInt(frdBal) < usdequivfrdamount) {
+              setShowAlertDanger(true);
+              seterrorMessage(`You need a minimum of ${usdequivfrdamount.toLocaleString()}FRD to proceed!`)
+              setShowLoading(false);
+            }
+      }catch(error: any) {
+
+      }
       const config = {
           headers: {
               "Content-type": "application/json"
