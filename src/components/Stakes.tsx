@@ -518,6 +518,9 @@ const Staking = () =>  {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = parseInt(event.target.value);
     // setstakeAmount(newValue);
+    setShowAlertDanger(true);
+    seterrorMessage(`Stake amount is set from the duration, drag the duration input and amount will be aautomatically set`)
+    console.log("stake mount range uipnput daragged")
   };
 
   const handleStakeDuration = (event: React.ChangeEvent<HTMLInputElement>) => {
