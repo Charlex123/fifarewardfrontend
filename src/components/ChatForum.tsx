@@ -114,13 +114,15 @@ const ChatForum: React.FC<{}> = () =>  {
     fetchUsers();
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+    if(udetails) {
+      setPic(udetails.pic);
+      console.log("u details",udetails)
+      
+    }
+    setCurrentUser(udetails.address);
     if(isConnected) {  
       setCurrentUser(address);
-      if(udetails) {
-        setPic(udetails.pic);
-        
-      }
-      setCurrentUser(address);
+      
     }else {
       open()
     }

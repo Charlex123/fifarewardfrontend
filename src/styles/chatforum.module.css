@@ -1,6 +1,6 @@
 .main {
     width: 100%;margin-top: 0;margin-bottom: 0;
-    padding: 120px 0 120px 0;position: relative;
+    padding: 120px 0 0 0;position: relative;
 }
 /* .main_bg_overlay {
     position: absolute;top: 0;right: 0;bottom:0;left:0;background-color: #000000;z-index: 6;border-radius: 0;opacity: .85;
