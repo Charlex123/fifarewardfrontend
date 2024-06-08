@@ -49,7 +49,7 @@ const ChatForum: React.FC<{}> = () =>  {
   const interimTranscriptRef = useRef<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
-  const [currentUser, setCurrentUser] = useState<any>("");
+  const [currentUser, setCurrentUser] = useState<any>("0x22648922C44CD560CC66Fc0025a1286A6660C410");
 
   const router = useRouter();
   
