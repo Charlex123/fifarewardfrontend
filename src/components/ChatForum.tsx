@@ -117,6 +117,7 @@ const ChatForum: React.FC<{}> = () =>  {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(!udetails) {
       open()
+      setCurrentUser(address)
     }else {
       setPic(udetails.pic);
       setCurrentUser(udetails.address)
