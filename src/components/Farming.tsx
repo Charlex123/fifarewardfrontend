@@ -171,9 +171,9 @@ const Farming = () =>  {
 
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(!udetails) {
+      open()
       getminingdetails(address!);
       setWalletAddress(address!)
-      open()
     }else {
       setUsername(udetails.username)
       getminingdetails(udetails.address);
@@ -257,28 +257,32 @@ const Farming = () =>  {
               setShowAlertDanger(true);
               seterrorMessage(`You need a minimum of ${usdequivfrdamount.toLocaleString()}FRD to proceed!`)
               setShowLoading(false);
+              return;
+            }else {
+              const config = {
+                  headers: {
+                      "Content-type": "application/json"
+                  }
+              }  
+              const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/startmining", {
+                  address: walletaddress, 
+                  amountmined,
+                  miningrate,
+                  miningstatus
+              }, config);
+              if(data) {
+                setAmountMined(data.amountmined);
+                setMiningStatus(data.miningstatus)
+                incrementMiningAmount(data.amountmined,data.miningstatus);
+                setShowBgOverlay(false)
+                setShowLoading(false)
+              }
             }
+
       }catch(error: any) {
 
       }
-      const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-      }  
-      const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/startmining", {
-          address: walletaddress, 
-          amountmined,
-          miningrate,
-          miningstatus
-      }, config);
-      if(data) {
-        setAmountMined(data.amountmined);
-        setMiningStatus(data.miningstatus)
-        incrementMiningAmount(data.amountmined,data.miningstatus);
-        setShowBgOverlay(false)
-        setShowLoading(false)
-      }
+      
   } catch (error) {
     console.error('Error incrementing count:', error);
   }
