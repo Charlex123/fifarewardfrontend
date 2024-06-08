@@ -184,8 +184,8 @@ const Farming = () =>  {
 
  const updateminedAmount = async (amountmined: number,miningstatus: string ) => {
     try {
-      setShowBgOverlay(true)
-      setShowLoading(true)
+      // setShowBgOverlay(true)
+      // setShowLoading(true)
       if(miningstatus != "Stopped" && miningstatus != "Inactive") {
         const newamountmined = amountmined.toFixed(6)
         // search database and return documents with similar keywords
@@ -202,8 +202,8 @@ const Farming = () =>  {
         if(data) {
           setAmountMined(data.amountmined);
           setMiningStatus(data.miningstatus);
-          setShowLoading(false)
-          setShowBgOverlay(false)
+          // setShowLoading(false)
+          // setShowBgOverlay(false)
           console.log('update mine was successful',data);
           console.log(`Total mined: ${newamountmined}`);
         }
