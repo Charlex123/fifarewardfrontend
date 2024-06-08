@@ -66,9 +66,12 @@ const NFTArt: React.FC<{}> = () =>  {
     
   useEffect(() => {
 
-    if(!isConnected) {
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+      if(!udetails) {
         open()
-    }
+      }else {
+        
+      }
 
     async function getBnbPrice() {
         try {
@@ -200,93 +203,37 @@ const NFTArt: React.FC<{}> = () =>  {
         getnftItem();
     }
 
-    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
 
         
     },[nft])
 
     const bidNFTs = async () => {
-        
-        if(!isConnected) {
-            open();
-        }else {
-            if(minbidamount > bidPrice) {
-                setShowAlertDanger(true);
-                seterrorMessage(`Minimum bid amount is ${minbidamount}`);
-                return;
-            }
-            if(bidPrice == "") {
-                setShowAlertDanger(true);
-                seterrorMessage(`Enter bidding price`);
-                return;
-            }
-            if(bidPrice >= minbidamount && bidPrice != ""){
-                setShowAlertDanger(false);
-                setShowLoading(true);
-                setShowBidModal(false);
-                const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                const signer = provider.getSigner();
-                
-                try {
-                    
-                    let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
-                    
-                    try {
-                        const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
-                
-                        try {
-                        const receipt = await bidnftC.wait();
-                        if (receipt && receipt.status === 1) {
-                            setShowLoading(false);
-                            setShowBgOverlay(false);
-                            setActionSuccess(true);
-                        }
-                        } catch (receiptError: any) {
-                        console.log('Transaction receipt error', receiptError);
-                        setShowAlertDanger(true);
-                        seterrorMessage(receiptError.code || receiptError.message);
-                        setShowLoading(false);
-                        }
-                    } catch (transactionError: any) {
-                        console.log('Transaction error', transactionError);
-                        setShowAlertDanger(true);
-                        seterrorMessage(transactionError.code || transactionError.message);
-                        setShowLoading(false);
-                    }
-                    
-                } catch (error: any) {
-                    setShowLoading(false);
-                    setShowBgOverlay(true);
-                    setShowAlertDanger(true);
-                    seterrorMessage(error.code);
-                }
-            }
-            
+        if(minbidamount > bidPrice) {
+            setShowAlertDanger(true);
+            seterrorMessage(`Minimum bid amount is ${minbidamount}`);
+            return;
         }
-        
-    }
-
-    const BuyNFT = async (itemId: any, price: any) => {
-        
-        if(!isConnected) {
-            open();
-        }else {
+        if(bidPrice == "") {
+            setShowAlertDanger(true);
+            seterrorMessage(`Enter bidding price`);
+            return;
+        }
+        if(bidPrice >= minbidamount && bidPrice != ""){
             setShowAlertDanger(false);
             setShowLoading(true);
             setShowBidModal(false);
-            setShowBgOverlay(true);
+            const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+            const signer = provider.getSigner();
             
             try {
-                const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-                const signer = provider.getSigner();
-
+                
                 let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
                 
                 try {
-                    const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});
+                    const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
             
                     try {
-                    const receipt = await buynftC.wait();
+                    const receipt = await bidnftC.wait();
                     if (receipt && receipt.status === 1) {
                         setShowLoading(false);
                         setShowBgOverlay(false);
@@ -306,13 +253,58 @@ const NFTArt: React.FC<{}> = () =>  {
                 }
                 
             } catch (error: any) {
-                console.log("error c",error);
                 setShowLoading(false);
                 setShowBgOverlay(true);
                 setShowAlertDanger(true);
                 seterrorMessage(error.code);
             }
+        }
+        
+        
+    }
+
+    const BuyNFT = async (itemId: any, price: any) => {
+        
+        setShowAlertDanger(false);
+        setShowLoading(true);
+        setShowBidModal(false);
+        setShowBgOverlay(true);
+        
+        try {
+            const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+            const signer = provider.getSigner();
+
+            let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
             
+            try {
+                const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});
+        
+                try {
+                const receipt = await buynftC.wait();
+                if (receipt && receipt.status === 1) {
+                    setShowLoading(false);
+                    setShowBgOverlay(false);
+                    setActionSuccess(true);
+                }
+                } catch (receiptError: any) {
+                console.log('Transaction receipt error', receiptError);
+                setShowAlertDanger(true);
+                seterrorMessage(receiptError.code || receiptError.message);
+                setShowLoading(false);
+                }
+            } catch (transactionError: any) {
+                console.log('Transaction error', transactionError);
+                setShowAlertDanger(true);
+                seterrorMessage(transactionError.code || transactionError.message);
+                setShowLoading(false);
+            }
+            
+        } catch (error: any) {
+            console.log("error c",error);
+            setShowLoading(false);
+            setShowBgOverlay(true);
+            setShowAlertDanger(true);
+            seterrorMessage(error.code);
         }
         
     }

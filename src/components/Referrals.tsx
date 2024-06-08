@@ -45,6 +45,13 @@ const Referrals = () =>  {
   
   useEffect(() => {
     
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+    if(!udetails) {
+      open()
+    }else {
+      
+    }
+    
     async function GetReferrals() {
       try {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
@@ -58,12 +65,6 @@ const Referrals = () =>  {
       } catch (error: any) {
         
       }
-    }
-
-    if(isConnected) {
-      GetReferrals();
-    }else{
-      open()
     }
 
     // Function to handle window resize

@@ -69,15 +69,15 @@ const minfilterbyamount = usdequivfrdamount;
 const maxfilterbyamount = 500000;
 
 useEffect(() => {
-  if(!isConnected) {
-    open()
-  }
+ 
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
   if(udetails && udetails !== null && udetails !== "") {
       const username_ = udetails.username;  
       if(username_) {
           setUsername(username_);
       }
+  }else {
+    open()
   }
   
   
@@ -203,7 +203,6 @@ useEffect(() => {
   const submitPredictions = async (betId: number, betAmount: number) => {
     let provider, signer;
   
-    if (isConnected) {
       if (walletProvider) {
         try {
           provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
@@ -245,9 +244,7 @@ useEffect(() => {
           setShowLoading(false);
         }
       }
-    } else {
-      open();
-    }
+    
   };
 
   const JoinBetNow = async (e:any,betId:number,betAmount:any,openedby:string,participants:string,remainingparticipantscount:number) => {
@@ -320,23 +317,20 @@ useEffect(() => {
 
 const Approve = async (betId: number,betAmount: number) => {
   try {
-    if(isConnected) {
-        if(walletProvider) {
-          setShowLoading(true);
-          const provider = new ethers.providers.Web3Provider(walletProvider as any);
-          const signer = provider.getSigner();
-          const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
-          const amt = betAmount + "000000000000000000";
-          const tamount = ethers.BigNumber.from(amt);
-          const reslt = await FRDContract.approve(BettingCA,tamount);
-          
-          if(reslt) {
-            submitPredictions(betId, betAmount);
-          }
-      }
-    }else {
-      open()
+      if(walletProvider) {
+        setShowLoading(true);
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+        const amt = betAmount + "000000000000000000";
+        const tamount = ethers.BigNumber.from(amt);
+        const reslt = await FRDContract.approve(BettingCA,tamount);
+        
+        if(reslt) {
+          submitPredictions(betId, betAmount);
+        }
     }
+  
   } catch (error:any) {
     setShowAlertDanger(true);
     seterrorMessage(error.code);

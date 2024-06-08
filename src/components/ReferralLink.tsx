@@ -58,81 +58,78 @@ const ReferralLink:React.FC<{}> = () =>  {
   
   useEffect(() => {
 
-    if(isConnected) {
-      setWalletAddress(address!);
-      const shrtwa = address?.substring(0,18)+' ...';
-          setShortWalletAddress(shrtwa);
+    setWalletAddress(address!);
+    const shrtwa = address?.substring(0,18)+' ...';
+        setShortWalletAddress(shrtwa);
 
-      async function Addreferrer(sponsoraddress: string, username: string) {
-        try {
-          let uname: string;
-          if(username && username != '' && username != null) {
-            uname = username;
-          }else {
-            uname = 'frduser';
-          }
-          // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
-          const provider = new ethers.providers.Web3Provider(walletProvider as any)
-          const signer = provider.getSigner();
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const tnx = await StakeContract.addReferrer(sponsoraddress,address);
-          console.log("Account Balance: ", tnx);
-          const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-          const reslt = await betContract.addReferrer(sponsoraddress,address,uname);
-          console.log("Account Balance: ", reslt);
-        } catch (error: any) {
-          console.log("add ref error",error.code || error.message)
-        }
-      }
-
-      const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-      if(udetails && udetails != null && udetails != undefined) {
-        if(udetails.encryptedreflinkid && udetails.encryptedreflinkid != null && udetails.encryptedreflinkid != undefined) {
-          if(udetails.isinfluencer === true) {
-            setreferralLink(`https://www.fifareward.io/referrals/${udetails.username}/${udetails.encryptedreflinkid}`)
-          }else {
-            setreferralLink(`https://www.fifareward.io/referrals/${udetails.encryptedreflinkid}`)
-          }
+    async function Addreferrer(sponsoraddress: string, username: string) {
+      try {
+        let uname: string;
+        if(username && username != '' && username != null) {
+          uname = username;
         }else {
-          const encrypted = encode(udetails.address);
-          setCipherText(encrypted);
-              const updateUser = async () => {
-                try {
-                    const config = {
-                        headers: {
-                            "Content-type": "application/json"
-                        }
-                    };
-                    const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/updatereflinkid/", {
-                        address,
-                        encrypted
-                    }, config);
-                    const data = response.data;
-                    if(data.encryptedreflinkid != undefined) {
-                      if(udetails.isinfluencer === true) {
-                        setreferralLink(`https://www.fifareward.io/referrals/${udetails.username}/${data.encryptedreflinkid}`)
-                      }else {
-                        setreferralLink(`https://www.fifareward.io/referrals/${data.encryptedreflinkid}`)
-                      }
-                    }
-                    
-                } catch (error) {
-                    console.log(error);
-                }
-            };
-            updateUser();
+          uname = 'frduser';
         }
-        
+        // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
+        const provider = new ethers.providers.Web3Provider(walletProvider as any)
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const tnx = await StakeContract.addReferrer(sponsoraddress,address);
+        console.log("Account Balance: ", tnx);
+        const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const reslt = await betContract.addReferrer(sponsoraddress,address,uname);
+        console.log("Account Balance: ", reslt);
+      } catch (error: any) {
+        console.log("add ref error",error.code || error.message)
+      }
+    }
 
-        if(udetails.sponsoraddress && udetails.sponsoraddress != '') {
-          Addreferrer(udetails.sponsoraddress, udetails.username)
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+    if(udetails && udetails != null && udetails != undefined) {
+      if(udetails.encryptedreflinkid && udetails.encryptedreflinkid != null && udetails.encryptedreflinkid != undefined) {
+        if(udetails.isinfluencer === true) {
+          setreferralLink(`https://www.fifareward.io/referrals/${udetails.username}/${udetails.encryptedreflinkid}`)
+        }else {
+          setreferralLink(`https://www.fifareward.io/referrals/${udetails.encryptedreflinkid}`)
         }
+      }else {
+        const encrypted = encode(udetails.address);
+        setCipherText(encrypted);
+            const updateUser = async () => {
+              try {
+                  const config = {
+                      headers: {
+                          "Content-type": "application/json"
+                      }
+                  };
+                  const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/updatereflinkid/", {
+                      address,
+                      encrypted
+                  }, config);
+                  const data = response.data;
+                  if(data.encryptedreflinkid != undefined) {
+                    if(udetails.isinfluencer === true) {
+                      setreferralLink(`https://www.fifareward.io/referrals/${udetails.username}/${data.encryptedreflinkid}`)
+                    }else {
+                      setreferralLink(`https://www.fifareward.io/referrals/${data.encryptedreflinkid}`)
+                    }
+                  }
+                  
+              } catch (error) {
+                  console.log(error);
+              }
+          };
+          updateUser();
       }
       
 
+      if(udetails.sponsoraddress && udetails.sponsoraddress != '') {
+        Addreferrer(udetails.sponsoraddress, udetails.username)
+      }
     }else {
       open()
     }
+    
 
  }, [address,router,shortwalletaddress])
 

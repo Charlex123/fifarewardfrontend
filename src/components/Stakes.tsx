@@ -170,40 +170,36 @@ const Staking = () =>  {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
-      if(isConnected) {
-          if(walletProvider) {
-            
+      if(walletProvider) {
+        
 
-            const provider = new ethers.providers.Web3Provider(walletProvider as any)
-            const signer = provider.getSigner();
-            const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
-            let transaction = await FRDContract.balanceOf(address);
-                
-            let frdBal = ethers.utils.formatEther(transaction);
+        const provider = new ethers.providers.Web3Provider(walletProvider as any)
+        const signer = provider.getSigner();
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+        let transaction = await FRDContract.balanceOf(address);
             
-            if(stakeAmount < usdequivfrdamount) {
-              setShowAlertDanger(true);
-              seterrorMessage(`Minimum stake amount is ${(usdequivfrdamount).toLocaleString()} FRD ($10)`);
-              setShowLoading(false);
-              return;
-            }else if(parseInt(frdBal) < usdequivfrdamount) {
-              setShowAlertDanger(true);
-              seterrorMessage(`You need a minimum of ${(usdequivfrdamount).toLocaleString()} FRD ($10) to stake`);
-              setShowLoading(false);
-              return;
-            }else {
-              const amt = stakeAmount + "000000000000000000";
-              const stkamount = ethers.BigNumber.from(amt);
-              const reslt = await FRDContract.approve(StakeCA,stkamount);
-              if(reslt) {
-                console.log("approve function",reslt)
-                StakeFRD(e);
-              }
-            }
-            
+        let frdBal = ethers.utils.formatEther(transaction);
+        
+        if(stakeAmount < usdequivfrdamount) {
+          setShowAlertDanger(true);
+          seterrorMessage(`Minimum stake amount is ${(usdequivfrdamount).toLocaleString()} FRD ($10)`);
+          setShowLoading(false);
+          return;
+        }else if(parseInt(frdBal) < usdequivfrdamount) {
+          setShowAlertDanger(true);
+          seterrorMessage(`You need a minimum of ${(usdequivfrdamount).toLocaleString()} FRD ($10) to stake`);
+          setShowLoading(false);
+          return;
+        }else {
+          const amt = stakeAmount + "000000000000000000";
+          const stkamount = ethers.BigNumber.from(amt);
+          const reslt = await FRDContract.approve(StakeCA,stkamount);
+          if(reslt) {
+            console.log("approve function",reslt)
+            StakeFRD(e);
+          }
         }
-      }else {
-        // open();
+        
       }
     } catch (error:any) {
       console.log("approve error", error)
@@ -221,22 +217,18 @@ const Staking = () =>  {
 
       setShowLoading(true);
       setShowBgOverlay(true);
-      if(isConnected) {
-        if(walletProvider) {
-          
+      if(walletProvider) {
+        
 
-          const provider = new ethers.providers.Web3Provider(walletProvider as any);
-          const signer = provider.getSigner();
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const reslt = await StakeContract.calcReward(stakeId);
-          console.log('calc reward error',reslt);
-          setShowLoading(false);
-          setShowBgOverlay(false);
-          rwddiv.style.display = "block";
-          setReward(reslt/10**18);
-        }
-      }else {
-        // open();
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const reslt = await StakeContract.calcReward(stakeId);
+        console.log('calc reward error',reslt);
+        setShowLoading(false);
+        setShowBgOverlay(false);
+        rwddiv.style.display = "block";
+        setReward(reslt/10**18);
       }
     }catch(error: any) {
       console.log("reward error",error)
@@ -273,24 +265,21 @@ const Staking = () =>  {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
-      if(isConnected) {
-        if(walletProvider) {
-          
+      
+      if(walletProvider) {
+        
 
-          let estdiv = e.parentElement.parentElement.previousElementSibling;
-          const provider = new ethers.providers.Web3Provider(walletProvider as any);
-          const signer = provider.getSigner();
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const profpercent = profitpercent * 1000;
-          const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profpercent);
-          console.log('calc reward error',reslt);
-          estdiv.style.display = "block";
-          setEstimatedProfit(reslt);
-          setShowLoading(false);
-          setShowBgOverlay(false);
-        }
-      }else {
-        // open()
+        let estdiv = e.parentElement.parentElement.previousElementSibling;
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const profpercent = profitpercent * 1000;
+        const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profpercent);
+        console.log('calc reward error',reslt);
+        estdiv.style.display = "block";
+        setEstimatedProfit(reslt);
+        setShowLoading(false);
+        setShowBgOverlay(false);
       }
     }catch(error: any) {
       console.log("eeroce",error)
@@ -302,20 +291,17 @@ const Staking = () =>  {
 
   const getMaxWIthdrawAmount = async () => {
     try {
-      if(isConnected) {
-        if(walletProvider) {
-          
-          const provider = new ethers.providers.Web3Provider(walletProvider as any);
-          const signer = provider.getSigner();
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const reslt = await StakeContract.getMaxWithdrawAmount(stakeAmount, stakeduration,profitpercent);
-          console.log('calc reward error',reslt);
-          setWithdrawReward(reslt/10**18);
-          setWithdrawAmount(reslt/10**18)
-        }
-      }else {
-        // open()
+      if(walletProvider) {
+        
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const reslt = await StakeContract.getMaxWithdrawAmount(stakeAmount, stakeduration,profitpercent);
+        console.log('calc reward error',reslt);
+        setWithdrawReward(reslt/10**18);
+        setWithdrawAmount(reslt/10**18)
       }
+      
     }catch(error: any) {
       // setShowAlertDanger(true);
       // seterrorMessage(error.code);
@@ -324,21 +310,18 @@ const Staking = () =>  {
 
   const getMinWithdrawAmount_ = async (stakeId: number) => {
     try {
-      if(isConnected) {
-        if(walletProvider) {
+      if(walletProvider) {
 
-          const provider = new ethers.providers.Web3Provider(walletProvider as any);
-          const signer = provider.getSigner();
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const reslt = await StakeContract.getMinWithdrawAmount(stakeId);
-          console.log('min withd amt',reslt);
-          console.log('min withd amt to no',reslt.toString()/(10**18));
-          setWithdrawReward(reslt.toString()/10**18);
-          setWithdrawAmount(reslt.toString()/10**18);
-        }
-      }else {
-        // open()
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const reslt = await StakeContract.getMinWithdrawAmount(stakeId);
+        console.log('min withd amt',reslt);
+        console.log('min withd amt to no',reslt.toString()/(10**18));
+        setWithdrawReward(reslt.toString()/10**18);
+        setWithdrawAmount(reslt.toString()/10**18);
       }
+      
     }catch(error: any) {
       // setShowAlertDanger(true);
       // seterrorMessage(error.code);
@@ -351,32 +334,28 @@ const Staking = () =>  {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
-      if(isConnected) {
-        if(walletProvider) {
-          
-          
-          const provider = new ethers.providers.Web3Provider(walletProvider as any);
-          const signer = provider.getSigner();
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          console.log(" wi amt",withdrawamount);
-          const withdamt = withdrawamount+ "000000000000000000";
-          const wamount = ethers.BigNumber.from(withdamt);
-          console.log(" wi amt sec",withdamt);
-          const reslt = await StakeContract.withdrawStake(stakeId, wamount, {gasLimit: 1000000});
-          
-          reslt.wait().then(async (receipt:any) => {
-            // console.log(receipt);
-            if (receipt && receipt.status == 1) {
-                // transaction success.
-                setShowLoading(false);
-                setShowBgOverlay(false);
-                setActionSuccess(true);
-                setActionSuccessMessage('Stake withdrawal ');
-            }
-          })
-        }
-      }else {
-        // open();
+      if(walletProvider) {
+        
+        
+        const provider = new ethers.providers.Web3Provider(walletProvider as any);
+        const signer = provider.getSigner();
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        console.log(" wi amt",withdrawamount);
+        const withdamt = withdrawamount+ "000000000000000000";
+        const wamount = ethers.BigNumber.from(withdamt);
+        console.log(" wi amt sec",withdamt);
+        const reslt = await StakeContract.withdrawStake(stakeId, wamount, {gasLimit: 1000000});
+        
+        reslt.wait().then(async (receipt:any) => {
+          // console.log(receipt);
+          if (receipt && receipt.status == 1) {
+              // transaction success.
+              setShowLoading(false);
+              setShowBgOverlay(false);
+              setActionSuccess(true);
+              setActionSuccessMessage('Stake withdrawal ');
+          }
+        })
       }
     } catch (error: any) {
       console.log("err",error);
@@ -395,6 +374,8 @@ const Staking = () =>  {
       if(username_) {
         setUsername(username_);
       }
+    }else {
+      open()
     }
 
     // Calculate the profit percentage based on the new values of input1 and input2

@@ -128,8 +128,9 @@ const { address, chainId, isConnected } = useWeb3ModalAccount();
             const username_ = udetails.username;  
             if(username_) {
                 setUsername(username_);
-                setIsloggedIn(true);
             }
+        }else {
+          open()
         }
 
         
@@ -410,63 +411,60 @@ const Approve = async (e:any) => {
 const handleOpenBetForm = async (e:any) => {
     try {
         // setShowLoading(true);
-            if(!isConnected) {
-              open()
-            }else {
-              try {
-                
-                const provider = new ethers.providers.Web3Provider(walletProvider as any);
-                const signer = provider.getSigner();
-    
-                /* next, create the item */
-                let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
-                
-                let transaction = await FRDcontract.balanceOf(address);
-                
-                let frdBal = ethers.utils.formatEther(transaction);
-                let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
-                let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
-                
-                
-                if((betAmount < usdequivfrdamount) || betAmount == 0) {
-                    inputAlertDiv.innerHTML = `You can't bet below ${usdequivfrdamount.toLocaleString()} FRD`;
-                    setShowLoading(false);
-                    return;
-                }else {
-                  inputAlertDiv.innerHTML = ``;
-                }
-                
-                if(betprediction && betprediction !== '' && betprediction !== null && betprediction !== undefined) {
-                  selectAlertDiv.innerHTML = "";    
-                }else {
-                    selectAlertDiv.innerHTML = "Select prediction first";
-                    setShowLoading(false);
-                    return;
-                }
+           
+        try {
+          
+          const provider = new ethers.providers.Web3Provider(walletProvider as any);
+          const signer = provider.getSigner();
 
-                if(bettingteam && bettingteam !== '' && bettingteam !== null && bettingteam !== undefined) {
-                  selectAlertDiv.innerHTML = "";
-                }else {
-                  selectAlertDiv.innerHTML = "Select team first";
-                  setShowLoading(false);
-                    return;
-                }
-                if(parseInt(frdBal) < usdequivfrdamount) {
-                  setShowAlertDanger(true);
-                  seterrorMessage(`You need a minimum of ${usdequivfrdamount.toLocaleString()}FRD to proceed!`)
-                  setShowLoading(false);
-                }else {
-                  Approve(e);
-                }
-                
-              } catch (error) {
-                setShowAlertDanger(true);
-                seterrorMessage(`transaction cancelled /${error}`);
-                setShowLoading(false)
-              }
-            }
+          /* next, create the item */
+          let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+          
+          let transaction = await FRDcontract.balanceOf(address);
+          
+          let frdBal = ethers.utils.formatEther(transaction);
+          let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;
+          let selectAlertDiv = document.getElementById("partpntsalert") as HTMLElement;
+          
+          
+          if((betAmount < usdequivfrdamount) || betAmount == 0) {
+              inputAlertDiv.innerHTML = `You can't bet below ${usdequivfrdamount.toLocaleString()} FRD`;
+              setShowLoading(false);
+              return;
+          }else {
+            inputAlertDiv.innerHTML = ``;
+          }
+          
+          if(betprediction && betprediction !== '' && betprediction !== null && betprediction !== undefined) {
+            selectAlertDiv.innerHTML = "";    
+          }else {
+              selectAlertDiv.innerHTML = "Select prediction first";
+              setShowLoading(false);
+              return;
+          }
 
-        
+          if(bettingteam && bettingteam !== '' && bettingteam !== null && bettingteam !== undefined) {
+            selectAlertDiv.innerHTML = "";
+          }else {
+            selectAlertDiv.innerHTML = "Select team first";
+            setShowLoading(false);
+              return;
+          }
+          if(parseInt(frdBal) < usdequivfrdamount) {
+            setShowAlertDanger(true);
+            seterrorMessage(`You need a minimum of ${usdequivfrdamount.toLocaleString()}FRD to proceed!`)
+            setShowLoading(false);
+          }else {
+            Approve(e);
+          }
+          
+        } catch (error) {
+          setShowAlertDanger(true);
+          seterrorMessage(`transaction cancelled /${error}`);
+          setShowLoading(false)
+        }
+
+  
     } catch (error) {
       console.log(error)
     }

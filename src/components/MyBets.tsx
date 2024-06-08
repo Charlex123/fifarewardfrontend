@@ -50,9 +50,12 @@ const MyBets: React.FC<{}> = () =>  {
     const router = useRouter();
 
     useEffect(() => {
-        if(!isConnected) {
-          open();
-        }
+      const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+      if(!udetails) {
+        open()
+      }else {
+        
+      }
     },[])
   
     useEffect(() => {

@@ -78,8 +78,11 @@ const Settings = () =>  {
 
   useEffect(() => {
 
-    if(!isConnected) {
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+    if(!udetails) {
       open()
+    }else {
+      
     }
 
   // Function to handle window resize

@@ -97,9 +97,9 @@ const MyNFTs: React.FC<{}> = () =>  {
         if(username_) {
             setUsername(username_);
             }
-            if(!isConnected) {
-              open();
-            }
+            
+        }else {
+          open()
         }
 
         const getContractAddress = async () => {
