@@ -122,7 +122,7 @@ const ChatForum: React.FC<{}> = () =>  {
       }
       setCurrentUser(address);
     }else {
-      // open()
+      open()
     }
     
     
