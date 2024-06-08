@@ -7,6 +7,7 @@ import regstyles from "../styles/addguessfootballherodata.module.css";
 import { ThemeContext } from '../contexts/theme-context';
 // component
 import Head from 'next/head';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
 // import { faLock } from '@fortawesome/free-solid-svg-icons';
 
 // ----------------------------------------------------------------------
@@ -18,6 +19,7 @@ const AddGuessFootballHeroData = () =>  {
   const fileInputRef = useRef<HTMLInputElement | null>(null);  
   const [file, setFile] = useState<File | null>(null);
   const [fileName, setFileName] = useState('');
+  const { open } = useWeb3Modal();
   const [name, setName] = useState("");
   const [error, setError] = useState<boolean>(false);
   const [errorMessage, setErrorMessage] = useState<string>("");

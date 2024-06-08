@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import styles from '../styles/gamelandingpage.module.css';
 import Confetti from 'react-confetti-boom';
-import AlertDanger from './AlertDanger';
+import AlertDanger from './AlertDanger'; 
 import Head from 'next/head';
 import BgOverlay from './BgOverlay';
+import { useWeb3Modal } from '@web3modal/scaffold-react';
 
 const GameLandingPage: React.FC<{}> = () => {
+  const { open } = useWeb3Modal();
   const [isExploding, setIsExploding] = useState(false);
   const [showBgOverlay, setShowBgOverlay] = useState(false);
   const [showalertDanger, setShowAlertDanger] = useState(false);

@@ -21,6 +21,7 @@ import LiveFixtures from './LiveFixtures';
 import { Fixture } from './FixtureMetadata';
 import Head from 'next/head';
 import { FaCaretDown, FaCircle, FaFilter, FaMagnifyingGlass, FaRegCalendar, FaXmark } from 'react-icons/fa6';
+import { useWeb3Modal } from '@web3modal/scaffold-react';
 dotenv.config();
 // material
 // component
@@ -97,6 +98,7 @@ const LoadBetData:React.FC<{}> = () => {
   const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
   const [loadcount, setLoadCount] = useState<number>(0);
 
+  const { open } = useWeb3Modal();
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
   const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
