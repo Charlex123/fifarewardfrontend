@@ -172,10 +172,12 @@ const Farming = () =>  {
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(!udetails) {
       getminingdetails(address!);
+      setWalletAddress(address!)
       open()
     }else {
       setUsername(udetails.username)
       getminingdetails(udetails.address);
+      setWalletAddress(udetails.address);
     }
 
       
@@ -195,7 +197,7 @@ const Farming = () =>  {
             }
         }  
         const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/updateminedamount", {
-            address, 
+            address: walletaddress, 
             newamountmined,
             miningstatus
         }, config);
@@ -265,7 +267,7 @@ const Farming = () =>  {
           }
       }  
       const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/startmining", {
-          address, 
+          address: walletaddress, 
           amountmined,
           miningrate,
           miningstatus
