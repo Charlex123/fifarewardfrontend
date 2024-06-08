@@ -201,7 +201,7 @@ const ChatForum: React.FC<{}> = () =>  {
         const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
             content,
             pic,
-            user: currentUser,
+            address,
         }, config);
         console.log("data leee",data)
         if(data.message) {
@@ -227,7 +227,7 @@ const ChatForum: React.FC<{}> = () =>  {
             const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
                 content,
                 pic,
-                user:currentUser,
+                address,
             }, config);
             console.log("data oponer",data)
             if(data.message) {
