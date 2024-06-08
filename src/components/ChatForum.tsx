@@ -115,6 +115,7 @@ const ChatForum: React.FC<{}> = () =>  {
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(isConnected) {  
+      setCurrentUser(address);
       if(udetails) {
         setPic(udetails.pic);
         
@@ -201,7 +202,7 @@ const ChatForum: React.FC<{}> = () =>  {
         const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
             content,
             pic,
-            address,
+            user: currentUser,
         }, config);
         console.log("data leee",data)
         if(data.message) {
@@ -227,7 +228,7 @@ const ChatForum: React.FC<{}> = () =>  {
             const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
                 content,
                 pic,
-                address,
+                user: currentUser,
             }, config);
             console.log("data oponer",data)
             if(data.message) {
