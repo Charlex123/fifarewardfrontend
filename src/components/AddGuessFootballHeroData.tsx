@@ -29,7 +29,12 @@ const AddGuessFootballHeroData = () =>  {
 //   const isConnected = Boolean(accounts[0]);
 
     useEffect(() => {
-      
+      const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+      if(!udetails) {
+        open()
+      }else {
+        
+      }
     },[])
 
     

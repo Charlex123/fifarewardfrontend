@@ -39,6 +39,12 @@ const AddUser = () =>  {
     const {id} = router.query;
 
     useEffect(() => {
+      const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+      if(!udetails) {
+        open()
+      }else {
+        
+      } 
       if(!id || id == undefined) {
         return;
       }else if(id[0] && id[0] != null && id[0] != undefined){

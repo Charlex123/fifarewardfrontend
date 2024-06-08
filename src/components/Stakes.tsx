@@ -72,7 +72,6 @@ const Staking = () =>  {
   const [stakeduration, setstakeduration] = useState<any>(180);
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<number[]>([]);
-  const [showconnectwalletinmobile, setShowconnectwalletinmobile] = useState<boolean>(false);
   // const [deltaX, setDeltaX] = useState(0);
   // const [draggedRangeIndex, setDraggedRangeIndex] = useState<number | null>(null);
   const [profitpercent, setProfitPercent] = useState<any>(0.005);
@@ -130,7 +129,7 @@ const Staking = () =>  {
   const StakeFRD = async (e: any) => {
     try {
       if(walletProvider) {
-        checkMobile();
+        
 
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
@@ -173,7 +172,7 @@ const Staking = () =>  {
       setShowBgOverlay(true);
       if(isConnected) {
           if(walletProvider) {
-            checkMobile();
+            
 
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
@@ -224,7 +223,7 @@ const Staking = () =>  {
       setShowBgOverlay(true);
       if(isConnected) {
         if(walletProvider) {
-          checkMobile();
+          
 
           const provider = new ethers.providers.Web3Provider(walletProvider as any);
           const signer = provider.getSigner();
@@ -251,7 +250,7 @@ const Staking = () =>  {
   //   try {
   //     if(isConnected) {
   //       if(walletProvider) {
-  //         checkMobile();
+  //         
 
   //         const provider = new ethers.providers.Web3Provider(walletProvider as any);
   //         const signer = provider.getSigner();
@@ -276,7 +275,7 @@ const Staking = () =>  {
       setShowBgOverlay(true);
       if(isConnected) {
         if(walletProvider) {
-          checkMobile();
+          
 
           let estdiv = e.parentElement.parentElement.previousElementSibling;
           const provider = new ethers.providers.Web3Provider(walletProvider as any);
@@ -354,7 +353,7 @@ const Staking = () =>  {
       setShowBgOverlay(true);
       if(isConnected) {
         if(walletProvider) {
-          checkMobile();
+          
           
           const provider = new ethers.providers.Web3Provider(walletProvider as any);
           const signer = provider.getSigner();
@@ -529,15 +528,6 @@ const Staking = () =>  {
   getStakes();
  },[])
 
- const checkMobile = () => {
-  if (window.innerWidth < 991) {
-      setShowBgOverlay(true);
-      setShowconnectwalletinmobile(true);
-    } else {
-      setShowconnectwalletinmobile(false);
-      setShowBgOverlay(false);
-    }
- }
  // Function to toggle the navigation menu
  const toggleSideBar = () => {
     setSideBarToggle(!dappsidebartoggle);
@@ -561,7 +551,6 @@ const Staking = () =>  {
   };
 
   const closeWAlert = () => {
-    setShowconnectwalletinmobile(false);
     setShowLoading(false);
     setShowBgOverlay(false);
   }
@@ -577,6 +566,7 @@ const Staking = () =>  {
     // hiw_bgoverlay.style.display = 'none';
     setShowBgOverlay(false);
     setActionSuccess(false);
+    router.reload()
   }
 
   const openwithdrawModalDiv = (stakeid: any, event: React.MouseEvent) => {
@@ -638,12 +628,6 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
               {showLoading && <Loading />}
               {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
               {showAlertDanger && <AlertDanger errorMessage={errorMessage} onChange={closeAlertModal} />}
-              {showconnectwalletinmobile && 
-                <div className={dappstyles.w_alert}>
-                  <div className={dappstyles.m_w}>Go to your connected wallet e.g trust wallet, etc. and complete transaction</div>
-                  <div className={dappstyles.walertclosediv}><button title='button' type='button' className={dappstyles.walertclosedivbtn} onClick={closeWAlert}>X</button></div>
-                </div>
-              }
               {showwithdrawmodal && 
                 <div className={dappstyles.width_stake} ref={divRef} tabIndex={-1}>
                   <div className={dappstyles.width_stake_c}>

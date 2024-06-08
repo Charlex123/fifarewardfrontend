@@ -3,7 +3,6 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import DappSideBar from './Dappsidebar';
 // material
-import UserComponent from './UserComponent';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
@@ -65,6 +64,12 @@ const Dapp:React.FC<{}> = () =>  {
 
   useEffect(() => {
   
+  const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+    if(!udetails) {
+      open()
+    }else {
+      
+    }
 // Create an EtherscanProvider with your API key
 // const provider = new ethers.providers.EtherscanProvider('bsc', apiKey);
 
@@ -203,7 +208,6 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
         <DappNav/>
         <div className={`${dappstyles.main_w} ${theme === 'dark' ? dappstyles['darktheme'] : dappstyles['lighttheme']}`}>
             <div className={dappstyles.main_c}>
-              <UserComponent />
               <div className={`${dappstyles.sidebar} ${sideBarToggleCheck}`}>
                 <DappSideBar onChange={toggleSideBar} />
               </div>

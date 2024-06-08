@@ -79,19 +79,14 @@ const Farming = () =>  {
 
   useEffect(() => {
 
-    if(!isConnected) {
-      open();
-    }
-
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    
-    if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-        setUsername(username_);
-      }
+    if(!udetails) {
+      open()
+    }else {
+      setUsername(udetails.username)
     }
 
+   
     
   // Function to handle window resize
   const handleResize = () => {

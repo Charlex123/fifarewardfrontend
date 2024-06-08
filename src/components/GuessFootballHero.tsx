@@ -76,10 +76,6 @@ const GuessFootballHero: React.FC = () => {
   
   useEffect(() => {
 
-    if(!isConnected) {
-      open();
-    }
-
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     
     if(udetails && udetails !== null && udetails !== "") {
@@ -87,6 +83,8 @@ const GuessFootballHero: React.FC = () => {
       if(username_) {
         setUsername(username_);
       }
+    }else {
+      open()
     }
 
     const getUserGames = async () => {

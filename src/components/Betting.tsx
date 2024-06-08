@@ -100,9 +100,6 @@ const LoadBetData:React.FC<{}> = () => {
   const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
   const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
   const [isbetDataLoaded,setIsBetDataLoaded] = useState<boolean>(false);
-  const [username, setUsername] = useState<string>("");
-  const [userId, setUserId] = useState<string>("");  
-  const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
   const [showsearchoptions, setShowSearchOptions] = useState<boolean>(false);
   const[searchkeyword,setSearchKeyWord] = useState<string>('');
   const [keywordsearchresults,setKeywordSearchResults] = useState<KeyWordSearch[]>([]);
@@ -115,16 +112,10 @@ const LoadBetData:React.FC<{}> = () => {
     try {
 
       const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-      if(udetails && udetails !== null && udetails !== "") {
-      const username_ = udetails.username;  
-      if(username_) {
-          setUsername(username_);
-          setUserId(udetails.userId);
-          setIsloggedIn(true);
-          
-      }
+      if(!udetails) {
+        open()
       }else {
-          setIsloggedIn(false);
+        
       }
       
       const getDates:any = () => {

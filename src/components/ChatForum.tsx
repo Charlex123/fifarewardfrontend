@@ -11,6 +11,7 @@ import { useWeb3ModalAccount, useWeb3Modal } from '@web3modal/ethers5/react';
 import MessageList from '../components/MessageList';
 import UserList from '../components/UserList';
 import Head from 'next/head';
+import FooterNavBar from './FooterNav';
 import styles from "../styles/chatforum.module.css";
 import dotenv from 'dotenv';
 import { FaLocationArrow, FaMicrophone, FaMicrophoneSlash, FaPaperclip } from 'react-icons/fa6';
@@ -114,18 +115,13 @@ const ChatForum: React.FC<{}> = () =>  {
     fetchUsers();
 
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(udetails) {
-      setPic(udetails.pic);
-      console.log("u details",udetails)
-      
-    }
-    setCurrentUser(udetails.address);
-    if(isConnected) {  
-      setCurrentUser(address);
-      
-    }else {
+    if(!udetails) {
       open()
+    }else {
+      setPic(udetails.pic);
+      setCurrentUser(udetails.address)
     }
+    
     
     
     // Cleanup
@@ -421,6 +417,7 @@ const ChatForum: React.FC<{}> = () =>  {
             </div>
           </div>
       </div>
+      <FooterNavBar />
     </>
   );
 }

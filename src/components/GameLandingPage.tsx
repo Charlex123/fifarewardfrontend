@@ -12,6 +12,12 @@ const GameLandingPage: React.FC<{}> = () => {
   const [showalertDanger, setShowAlertDanger] = useState(false);
   const [errorMessage, seterrorMessage] = useState('');
   useEffect(() => {
+    const udetails = JSON.parse(localStorage.getItem("userInfo")!);
+      if(!udetails) {
+        open()
+      }else {
+        
+      }
     setIsExploding(true);
   },[isExploding])
   
