@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import styles from '../styles/chatforum.module.css';
-import Image from 'next/image';
 
 interface Message {
+  chatid: number;
   user: string;
   pic: string;
   content: string;
@@ -16,9 +16,6 @@ interface MessageListProps {
 
 const MessageList: React.FC<MessageListProps> = ({ messages, currentUser }) => {
   
-  useEffect(() => {
-    console.log(" messages === ooop",messages,currentUser)
-  },[])
 
   return (
       <>

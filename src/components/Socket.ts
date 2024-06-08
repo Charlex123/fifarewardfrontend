@@ -1,32 +1,19 @@
+// socket.ts
 import { io } from "socket.io-client";
 
-const getSocketUrl = (): string => {
-  const url = process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://216.24.57.252';
-  if (!url) {
-    throw new Error("Socket URL is not defined in environment variables.");
-  }
-  return url;
-};
-
-const socket = io(getSocketUrl(), {
-  transports: ['websocket'],
-  withCredentials: true,
-});
+const SERVER = 'wss://127.0.0.0:9000';
+const socket = io(SERVER, { transports: ['websocket'] });
 
 socket.on('connect', () => {
-  console.log('Connected to WebSocket server');
+  console.log('Connected to Socket.IO server');
 });
 
 socket.on('disconnect', () => {
-  console.log('Disconnected from WebSocket server');
+  console.log('Socket disconnected');
 });
 
-socket.on('connect_error', (err) => {
-  console.error(`Connection error: ${err.message}`);
-});
-
-socket.on('reconnect_attempt', () => {
-  console.log('Trying to reconnect...');
+socket.on('reconnect', (attemptNumber) => {
+  console.log(`Socket reconnected after ${attemptNumber} attempts`);
 });
 
 export default socket;

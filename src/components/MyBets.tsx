@@ -1,10 +1,9 @@
-import React, { useContext,useState,useEffect, useRef } from 'react';
+import React, { useState,useEffect, useRef } from 'react';
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import AlertDanger from './AlertDanger';
 import { useRouter } from 'next/router';
-import { ThemeContext } from '../contexts/theme-context';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
 import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import { ethers } from 'ethers';
@@ -23,9 +22,8 @@ dotenv.config();
 // component
 const MyBets: React.FC<{}> = () =>  {
 
-    const divRef = useRef<HTMLDivElement>(null);
+    // const divRef = useRef<HTMLDivElement>(null);
     const [showloading, setShowLoading] = useState<boolean>(false);
-    const [showchangepriceModal, setShowChangePriceModal] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
     const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
@@ -39,14 +37,10 @@ const MyBets: React.FC<{}> = () =>  {
     const [totalPages, setTotalPages] = useState(0);
     const [betconditions,setBetConditions] = useState<BetConditions[]>([]);
     const [betData,setBetData] = useState<Bets[]>([]);
-    const [username, setUsername] = useState<string>("");
-    const [userId, setUserId] = useState<number>();
-    const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
     const [showAlertDanger,setShowAlertDanger] = useState<boolean>(false);
     const [errorMessage,seterrorMessage] = useState<string>("");
     const [showbetconditions, setShowBetConditions] = useState<boolean>(false);
     const [showBgOverlay,setShowBgOverlay] = useState<boolean>(false);
-    const { theme } = useContext(ThemeContext);
     const [nftactionsuccess,setActionSuccess] = useState<boolean>(false);
 
     
@@ -248,7 +242,7 @@ const MyBets: React.FC<{}> = () =>  {
         <ActionSuccessModal prop='Bets ' onChange={closeActionModalComp}/>
     }
      
-      <div className={`${styles.main} ${theme === 'dark' ? styles['darktheme'] : styles['lighttheme']}`}>
+      <div className={`${styles.main}`}>
         <div className={styles.goback}>
           <button type='button' title='button' onClick={goBack} style={{color: 'white'}}> {'< '} back</button> 
         </div>
