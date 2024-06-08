@@ -129,37 +129,36 @@ const Farming = () =>  {
   
  }, [router,username,address,chainId,isConnected,walletaddress,wAlert,showTimer,walletProvider,isDragging,initialValues])
 
- useEffect(() => {
-  
-    const getminingdetails = async () => {
-        // search database and return documents with similar keywords
-        const config = {
-            headers: {
-                "Content-type": "application/json"
-            }
-        }  
-        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/getminingdetails", {
-            address
-        }, config);
-        if(data) {
-          if(data.message == "no mining details found") {
-            setAmountMined(0.00005);
-            setMiningStatus("Inactive");
-          }else {
-            setAmountMined(data.amountmined);
-            setMiningStatus(data.miningstatus);
-            
-            if(data.miningstatus == "Active") (
-              incrementMiningAmount(data.amountmined,data.miningstatus)
-            )
-          }
-          
-          console.log('mining details',data);
-        }
-        
+ const getminingdetails = async () => {
+  // search database and return documents with similar keywords
+  const config = {
+      headers: {
+          "Content-type": "application/json"
       }
-      getminingdetails()
+  }  
+  const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/getminingdetails", {
+      address
+  }, config);
+  if(data) {
+    if(data.message == "no mining details found") {
+      setAmountMined(0.00005);
+      setMiningStatus("Inactive");
+    }else {
+      setAmountMined(data.amountmined);
+      setMiningStatus(data.miningstatus);
+      
+      if(data.miningstatus == "Active") (
+        incrementMiningAmount(data.amountmined,data.miningstatus)
+      )
+    }
+    
+    console.log('mining details',data);
+  }
+  
+}
 
+ useEffect(() => {
+      getminingdetails();
  },[])
 
  const updateminedAmount = async (amountmined: number,miningstatus: string ) => {

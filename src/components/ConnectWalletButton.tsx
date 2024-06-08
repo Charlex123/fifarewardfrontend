@@ -111,5 +111,5 @@ export default function ConnectWallet() {
       updateUser();
     } 
   }, [address, isConnected]);
-  return (<div style={{marginRight: '5px'}}><w3m-button size="sm" balance="hide" label="Login" /></div>)
+  return (<div style={{marginRight: '5px'}}><w3m-button size="sm" balance="hide" label="Connect & Login" /></div>)
 }
