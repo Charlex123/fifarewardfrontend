@@ -18,7 +18,6 @@ dotenv.config();
 
 
 interface Message {
-    chatid: number;
     user: string;
     content: string;
     pic: string;
@@ -80,7 +79,6 @@ const ChatForum: React.FC<{}> = () =>  {
       await messages.forEach(async (msg:any) => {
       
         let message: Message = {
-          chatid: msg.chatid,
           user: msg.address,
           content: msg.message,
           pic: msg.pic,
@@ -204,7 +202,6 @@ const ChatForum: React.FC<{}> = () =>  {
             content,
             pic,
             user: currentUser,
-            timeStamp: new Date()
         }, config);
         console.log("data leee",data)
         if(data.message) {
@@ -231,8 +228,8 @@ const ChatForum: React.FC<{}> = () =>  {
                 content,
                 pic,
                 user:currentUser,
-                timeStamp: new Date()
             }, config);
+            console.log("data oponer",data)
             if(data.message) {
                 setShowSpinner(false);
                 fetchMessages();

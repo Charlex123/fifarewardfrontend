@@ -2,7 +2,6 @@ import React from 'react';
 import styles from '../styles/chatforum.module.css';
 
 interface Message {
-  chatid: number;
   user: string;
   pic: string;
   content: string;
