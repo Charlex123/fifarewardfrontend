@@ -1,7 +1,7 @@
 import { io } from "socket.io-client";
 
 const getSocketUrl = (): string => {
-  const url = process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://fifarewardbackend.onrender.com';
+  const url = process.env.NEXT_PUBLIC_SOCKET_URL || 'wss://216.24.57.252';
   if (!url) {
     throw new Error("Socket URL is not defined in environment variables.");
   }
