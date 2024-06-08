@@ -74,7 +74,7 @@ const ChatForum: React.FC<{}> = () =>  {
 
 
   const fetchMessages = async () => {
-    const {data} = await axios.get('https://fifarewardbackend.com/api/chatforum/getmessages');
+    const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/chatforum/getmessages');
     const messages = data.messages;
     if(data.messages.length > 0) {
       await messages.forEach(async (msg:any) => {
@@ -110,7 +110,7 @@ const ChatForum: React.FC<{}> = () =>  {
     fetchMessages();
 
     const fetchUsers = async () => {
-        const {data} = await axios.get('https://fifarewardbackend.com/api/users/getusers');
+        const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
         setUsers(data.data);
     };
     fetchUsers();
@@ -186,7 +186,7 @@ const ChatForum: React.FC<{}> = () =>  {
 
       try {
         setShowSpinner(true);
-        const response = await axios.post('https://fifarewardbackend.com/api/upload', formData, {
+        const response = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
           },
@@ -200,7 +200,7 @@ const ChatForum: React.FC<{}> = () =>  {
 
         const content = response.data.url;
         console.log("content uploaded url",content)
-        const {data} = await axios.post('https://fifarewardbackend.com/api/chatforum/sendmessage', {
+        const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
             content,
             pic,
             user: currentUser,
@@ -227,7 +227,7 @@ const ChatForum: React.FC<{}> = () =>  {
                 }
             }  
             const content = text;
-            const {data} = await axios.post('https://fifarewardbackend.com/api/chatforum/sendmessage', {
+            const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
                 content,
                 pic,
                 user:currentUser,
