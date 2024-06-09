@@ -455,7 +455,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                               <div className={dappstyles.mine_m}>Status: <span className={dappstyles.mfrd}>{miningstatus}</span></div>
                               <div className={dappstyles.s_m_in }>
                                   <div className={dappstyles.cw_btn_div}>
-                                      <div className={dappstyles.st_btns}>
+                                      <div className={dappstyles.farm_btns}>
                                           <div>
                                           {
                                             (() => {
