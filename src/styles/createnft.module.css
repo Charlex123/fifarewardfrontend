@@ -57,6 +57,9 @@
     font-size: 35px;font-family: "RussoOne Regular",sans-serif;margin: 25px auto;text-align: center;
     font-weight: 700;
 }
+.main .main_c .create_nft {
+    font-weight: 900;font-size: 14px;
+}
 .main .main_cc .dragdrop {
     width: 40%;border-radius: 16px;margin-top: 0;height: 100%;
     border: 1px solid #3f3f3f;
