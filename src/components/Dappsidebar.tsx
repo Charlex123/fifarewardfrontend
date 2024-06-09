@@ -131,7 +131,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
                     <a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc' rel='noopener noreferrer' className={dappsidebarstyles.buytafa}>BUY FRD</a>
                   </li>
                   <li>
-                    <a href='/chatforum' rel='noopener noreferrer' className={dappsidebarstyles.si}><FaRobot/> Forum </a>
+                    <a href='/fanforum' rel='noopener noreferrer' className={dappsidebarstyles.si}><FaRobot/> Forum </a>
                   </li>
                   <li><a href='/rewards' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <FaGift/> Rewards</a></li>
                   <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
@@ -149,7 +149,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
                     <a href='/referrals' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaUserGroup/> Referrals</a>
                   </li>
                   <li className={dappsidebarstyles.ld}>
-                    <a href='/chatforum' rel='noopener noreferrer' className={dappsidebarstyles.si}>Chat Forum</a>
+                    <a href='/fanforum' rel='noopener noreferrer' className={dappsidebarstyles.si}>Chat Forum</a>
                   </li>
                   <li>
                     <a href='/settings' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaGear/> Settings</a>

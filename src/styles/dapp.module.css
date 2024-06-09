@@ -294,7 +294,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     margin: 20px 0 0 0;padding: 0 20px 100px 20px;
 }
 .main .stake {
-    width: fit-content;margin: 30px auto;
+    width: fit-content;margin: 30px auto;padding: 12px 48px;
 }
 .main .mine_ {
     width: 300px;margin: 30px auto;border-radius: 4px;

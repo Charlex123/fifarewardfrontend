@@ -8,8 +8,8 @@ import AlertDanger from './AlertDanger';
 import axios from 'axios';
 import Spinner from './Spinner';
 import { useWeb3ModalAccount, useWeb3Modal } from '@web3modal/ethers5/react';
-import MessageList from '../components/MessageList';
-import UserList from '../components/UserList';
+import MessageList from './MessageList';
+import UserList from './UserList';
 import Head from 'next/head';
 import FooterNavBar from './FooterNav';
 import styles from "../styles/chatforum.module.css";
@@ -30,7 +30,7 @@ interface Message {
     pic: string;
   }
 
-const ChatForum: React.FC<{}> = () =>  {
+const FanForum: React.FC<{}> = () =>  {
 
   const formRef = useRef<HTMLFormElement | null>(null);
   const fileInputRef = useRef<HTMLInputElement | null>(null); 
@@ -423,4 +423,4 @@ const ChatForum: React.FC<{}> = () =>  {
   );
 }
 
-export default ChatForum
+export default FanForum

@@ -1,7 +1,7 @@
 import React from 'react';
 import BackToTop from '../components/back-to-top/back-to-top';
 // import ChangeTheme from '../components/change-theme/change-theme';
-import ChatForum from '../components/ChatForum';
+import FanForum from '../components/FanForum';
 import Navbar from '../components/navbar/MainNavbar';
 // import Footer from '../components/Footer';
 function Chatforum() {
@@ -11,7 +11,7 @@ function Chatforum() {
         <Navbar/>
         <BackToTop />
         {/* <ChangeTheme /> */}
-        <ChatForum />
+        <FanForum />
         {/* <Footer/> */}
     </>
   )
