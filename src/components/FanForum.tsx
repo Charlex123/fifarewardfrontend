@@ -12,18 +12,20 @@ import MessageList from './MessageList';
 import UserList from './UserList';
 import Head from 'next/head';
 import FooterNavBar from './FooterNav';
-import styles from "../styles/chatforum.module.css";
+import styles from "../styles/fanforum.module.css";
 import dotenv from 'dotenv';
 import { FaLocationArrow, FaMicrophone, FaMicrophoneSlash, FaPaperclip } from 'react-icons/fa6';
 dotenv.config();
 
 
 interface Message {
-    user: string;
-    content: string;
-    pic: string;
-    timestamp: Date;
-  }
+  user: string;
+  content: string;
+  pic: string;
+  timestamp: Date;
+  taggedUser?: string;
+}
+
   
   interface User {
     walletaddress: string;
@@ -176,77 +178,80 @@ const FanForum: React.FC<{}> = () =>  {
   // };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    if (file && file !== null) {
-      const formData = new FormData();
-      formData.append('file', file);
+      e.preventDefault();
 
-      try {
-        setShowSpinner(true);
-        const response = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        const config = {
-          headers: {
-              "Content-type": "application/json"
-          }
-        }  
-
-        const content = response.data.url;
-        console.log("content uploaded url",content)
-        const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
-            content,
-            pic,
-            user: currentUser,
-        }, config);
-        console.log("data leee",data)
-        if(data.message) {
-            console.log("success",data)
-            setShowSpinner(false);
-            fetchMessages()
-            // setActionSuccess(true);
-            // setActionSuccessMessage("Profile upload ")
-        }
-        // sendMessage(content);
-      } catch (error) {
-        console.error('Error uploading file', error);
+      let taggedUser = '';
+      const tagMatch = text.match(/@(\w+)/);
+      if (tagMatch) {
+          taggedUser = tagMatch[1];
       }
-    } else if(text && text !== ''){
-        try {
-            setShowSpinner(true);
-            const config = {
-                headers: {
-                    "Content-type": "application/json"
-                }
-            }  
-            const content = text;
-            const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
-                content,
-                pic,
-                user: currentUser,
-            }, config);
-            console.log("data oponer",data)
-            if(data.message) {
-                setShowSpinner(false);
-                fetchMessages();
-            }
-            // sendMessage(text);
-        } catch (error) {
-            console.log("err mes",error)
-        }
-    }else {
-      setShowAlertDanger(true);
-      setErrorMessage("Enter message or upload a file");
-    }
 
-    setText('');
-    setFile(null);
-    setFileName('');
+      if (file && file !== null) {
+          const formData = new FormData();
+          formData.append('file', file);
+
+          try {
+              setShowSpinner(true);
+              const response = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
+                  headers: {
+                      'Content-Type': 'multipart/form-data',
+                  },
+              });
+
+              const config = {
+                  headers: {
+                      "Content-type": "application/json"
+                  }
+              }  
+
+              const content = response.data.url;
+              const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
+                  content,
+                  pic,
+                  user: currentUser,
+                  taggedUser
+              }, config);
+
+              if(data.message) {
+                  setShowSpinner(false);
+                  fetchMessages();
+              }
+          } catch (error) {
+              console.error('Error uploading file', error);
+          }
+      } else if(text && text !== '') {
+          try {
+              setShowSpinner(true);
+              const config = {
+                  headers: {
+                      "Content-type": "application/json"
+                  }
+              }  
+              const content = text;
+              const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
+                  content,
+                  pic,
+                  user: currentUser,
+                  taggedUser
+              }, config);
+
+              if(data.message) {
+                  setShowSpinner(false);
+                  fetchMessages();
+              }
+          } catch (error) {
+              console.log("err mes",error)
+          }
+      } else {
+          setShowAlertDanger(true);
+          setErrorMessage("Enter message or upload a file");
+      }
+
+      setText('');
+      setFile(null);
+      setFileName('');
   };
+
 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -4,7 +4,7 @@ import BackToTop from '../components/back-to-top/back-to-top';
 import FanForum from '../components/FanForum';
 import Navbar from '../components/navbar/MainNavbar';
 // import Footer from '../components/Footer';
-function Chatforum() {
+function Fanforum() {
 
   return (
     <>
@@ -17,4 +17,4 @@ function Chatforum() {
   )
 }
 
-export default Chatforum
+export default Fanforum

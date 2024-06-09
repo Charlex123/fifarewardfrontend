@@ -501,11 +501,9 @@ font-size: 2rem;
 
 @media (max-width: 991px) {
     .user_msg_cotainer_send {
-        width: 100%;
         max-width: 100%;
     }
     .grpmembers_msg_cotainer_send {
-        width: 100%;
         max-width: 100%;
     }
 
