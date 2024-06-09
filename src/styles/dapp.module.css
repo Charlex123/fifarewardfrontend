@@ -413,11 +413,14 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 .main .stake .stake_mod .s_m_in .cw_btn_div .farm_btns div {
     margin: 0 10px;width: 45%;
 }
-.main .stake .stake_mod .s_m_in .cw_btn_div .st_btns div button {
-    margin: 0 10px;width: 100%;
+.main .stake .stake_mod .s_m_in .cw_btn_div .farm_btns div button {
+    margin: 0 10px;width: 100%;height: 30px;
 }
 .main .stake .stake_mod .s_m_in .cw_btn_div .st_btns div {
     margin: 0 10px;
+}
+.main .stake .stake_mod .s_m_in .cw_btn_div .st_btns div button {
+    margin: 0 10px;width: 100%;height: 30px;
 }
 /* .main .stake .stake_mod .s_m_in .cw_btn_div .w_alert {
     position: absolute;background-color: rgba(60, 59, 59, 0.677);top: -60px;font-size: 12px;border-radius: 8px;width: 90%;
