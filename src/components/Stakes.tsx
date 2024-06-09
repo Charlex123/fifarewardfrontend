@@ -519,7 +519,7 @@ const Staking = () =>  {
     const newValue = parseInt(event.target.value);
     // setstakeAmount(newValue);
     setShowAlertDanger(true);
-    seterrorMessage(`Stake amount is set from the duration, drag the duration input and amount will be aautomatically set`)
+    seterrorMessage(`Stake amount is set from the duration, drag the duration input and amount will be automatically set`)
     console.log("stake mount range uipnput daragged")
   };
 
