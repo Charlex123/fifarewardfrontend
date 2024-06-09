@@ -221,7 +221,7 @@
     font-size: 12px;margin-left: 0;color: #000000b4;
 }
 .main .openbetmain table tbody tr td .betstatusopened {
-    background-color: #e28305;padding: 2px 6px;border-radius: 120px;color: #ffffff;text-align: center;
+    padding: 2px 6px;border-radius: 120px;color: #e28305;text-align: center;
 }
 .main .openbetmain table tbody tr td .betstatusclosed {
     background-color: #f64141;padding: 2px 6px;border-radius: 120px;color: #ffffff;text-align: center;

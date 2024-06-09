@@ -938,10 +938,10 @@ const closeBetFilter = () => {
                       <td><div className={openbetsstyle.div}>{(openbet.totalbetparticipantscount.toNumber()) - (openbet.remainingparticipantscount.toNumber())}</div></td>
                       <td><div className={openbetsstyle.div}>({openbet.participants}) <div className={openbetsstyle.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())} style={{cursor: 'pointer'}}> view bet details </button></div></div></td>
                       <td><div className={openbetsstyle.div}>{openbet.remainingparticipantscount.toString()}</div></td>
-                      <td className={openbetsstyle.stat}><div className={openbetsstyle.div}>{openbet.betstatus == 'open' ? <span className={openbetsstyle.betstatusopened}>{openbet.betstatus}</span> : <span className={openbetsstyle.betstatusclosed}>{openbet.betstatus}</span>}</div></td>
-                      {openbet.betstatus === 'open' 
+                      <td className={openbetsstyle.stat}><div className={openbetsstyle.div}>{openbet.betstatus === 'open' || openbet.remainingparticipantscount.toNumber() !== 0 ? <span className={openbetsstyle.betstatusopened}>Open</span> : <span className={openbetsstyle.betstatusclosed}>Closed</span>}</div></td>
+                      {openbet.betstatus === 'open' || openbet.remainingparticipantscount.toNumber() !== 0 
                       ? 
-                      <td className={openbetsstyle.jb}><div className={openbetsstyle.div}><button className={openbetsstyle.open} type='button' title='button' onClick={(e) => JoinBet(e.target)}>Join Bet</button></div></td> 
+                      <td className={openbetsstyle.jb}><div className={openbetsstyle.div}><button className={openbetsstyle.open} type='button' title='button' style={{fontWeight: '600',fontSize: '14px'}} onClick={(e) => JoinBet(e.target)}>Join Bet</button></div></td> 
                       : 
                       <td className={openbetsstyle.jb}><div className={openbetsstyle.div}><button className={openbetsstyle.closed} type='button' title='button' disabled >Bet Closed</button></div></td>}
                       <td>

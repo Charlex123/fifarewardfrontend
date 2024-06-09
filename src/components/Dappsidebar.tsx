@@ -137,7 +137,7 @@ const Dappsidebar:React.FC<Props> = ({onChange}) =>  {
                   <li className={dappsidebarstyles.ld}><a href='/stakes' rel='noopener noreferrer'>Stake FRD</a></li>
                   <li><a href='/gaming' rel='noopener noreferrer' className={dappsidebarstyles.linka}> <GiGamepad/> Gaming</a></li>
                   <li>
-                    <a href='/betting/bets' rel='noopener noreferrer' className={dappsidebarstyles.si}><IoIosFootball/> Bets</a>
+                    <a href='/betting/mybets' rel='noopener noreferrer' className={dappsidebarstyles.si}><IoIosFootball/> Bets</a>
                   </li>
                   <li>
                     <a href='nft//mynfts' rel='noopener noreferrer' className={dappsidebarstyles.si}> <FaArtstation/> NFTs</a>
