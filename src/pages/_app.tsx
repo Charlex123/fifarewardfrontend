@@ -1,5 +1,5 @@
 import type { AppProps } from "next/app";
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ThemeContextProvider from '../contexts/theme-context';
 import '../styles/globals.css';
@@ -7,15 +7,14 @@ import BgOverlay from "../components/BgOverlay";
 import Loading from "../components/Loading";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Web3Modal } from "../contexts/Web3Modal";
-// import '//widgets.api-sports.io/2.0.3/widgets.js';
-{/* <script type="module" src="https://widgets.api-sports.io/2.0.3/widgets.js"></script> */}
+import { UserProvider } from "../contexts/userContext";
 
 export const metadata = {
-  title: "FifaReward | Bet, Stake, Mine and craeate NFTs of football legends",
-  description: "FifaReward | Bet, Stake, Mine and craeate NFTs of football legends",
+  title: "FifaReward | Bet, Stake, Mine and create NFTs of football legends",
+  description: "FifaReward | Bet, Stake, Mine and create NFTs of football legends",
 };
 
-const App = ({ Component, pageProps } : AppProps) => {
+const App = ({ Component, pageProps }: AppProps) => {
   const [loading, setLoading] = useState(true);
   const [showbgOverlay, setShowBgOverlay] = useState(true);
   const router = useRouter();
@@ -60,15 +59,17 @@ const App = ({ Component, pageProps } : AppProps) => {
   const closeBgModal = () => {
     setLoading(false);
     setShowBgOverlay(false);
-  }
+  };
 
   return (
     <>
       {loading && <Loading />}
-      {showbgOverlay && <BgOverlay onChange={closeBgModal}/>}
+      {showbgOverlay && <BgOverlay onChange={closeBgModal} />}
       <ThemeContextProvider>
         <Web3Modal>
-          <Component {...pageProps} />
+          <UserProvider>
+            <Component {...pageProps} />
+          </UserProvider>
         </Web3Modal>
       </ThemeContextProvider>
     </>

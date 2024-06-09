@@ -957,6 +957,7 @@ const closeBgModal = () => {
                                               <label>Which team are you betting on?</label>
                                               <div>
                                                   <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
+                                                      <option> Select team </option>
                                                       <option value={matchData?.teams.home.name}>{matchData?.teams.home.name}</option>
                                                       <option value={matchData?.teams.away.name}>{matchData?.teams.away.name}</option>
                                                   </select>
@@ -967,6 +968,7 @@ const closeBgModal = () => {
                                               <label>Select Prediction</label>
                                               <div>
                                                   <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
+                                                      <option >Select Prediction</option>
                                                       <option value='Win'>Win</option>
                                                       <option value='Lose'>Lose</option>
                                                   </select>

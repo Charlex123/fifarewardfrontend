@@ -1017,6 +1017,7 @@ const closeBetFilter = () => {
                                     <label>Which team are you betting on?</label>
                                     <div>
                                         <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
+                                            <option> Select team </option>
                                             <option value={`${openbet.matchfixture.split('vs')[0].replace(/-/g, ' ')}`}>{`${openbet.matchfixture.split('vs')[0].replace(/-/g,' ')}`}</option>
                                             <option value={`${openbet.matchfixture.split('vs')[1].replace(/-/g, ' ')}`}>{`${openbet.matchfixture.split('vs')[1].replace(/-/g, ' ')}`}</option>
                                         </select>
@@ -1027,6 +1028,7 @@ const closeBetFilter = () => {
                                     <label>Select Prediction</label>
                                     <div>
                                         <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
+                                            <option >Select Prediction</option>
                                             <option value='Win'>Win</option>
                                             <option value='Lose'>Lose</option>
                                         </select>
