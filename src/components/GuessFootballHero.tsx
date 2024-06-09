@@ -198,7 +198,7 @@ const GuessFootballHero: React.FC = () => {
       let frdBal = ethers.utils.formatEther(transaction);
       if(parseInt(frdBal) < usdequivfrdamount) {
         setAlertDanger(true);
-        seterrorMessage(`You need a minimum of ${frdBal}FRD in your wallet to proceed, top up and try again!`);
+        seterrorMessage(`You need a minimum of ${usdequivfrdamount}FRD in your wallet to proceed, top up and try again!`);
         setLoading(false);
         setShowBgOverlay(false);
         return;
