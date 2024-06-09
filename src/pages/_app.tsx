@@ -7,7 +7,7 @@ import BgOverlay from "../components/BgOverlay";
 import Loading from "../components/Loading";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Web3Modal } from "../contexts/Web3Modal";
-import { UserProvider } from "../contexts/userContext";
+import { UserProvider } from "../contexts/UserContext";
 
 export const metadata = {
   title: "FifaReward | Bet, Stake, Mine and create NFTs of football legends",
