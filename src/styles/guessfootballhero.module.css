@@ -86,7 +86,7 @@
 /* components/ImageGallery.module.css */
 
 .bt_amt {
-  position: absolute;margin: 0 auto; width: 40%;height: fit-content;top: 0;bottom: 0;left: 0;right: 0;
+  position: fixed;margin: 0 auto; width: 40%;height: fit-content;top: 0;bottom: 0;left: 0;right: 0;top: 0;
   border-radius: 16px;z-index: 9999;text-align: center;left: 0;right: 0;color: #f1f1f1;
   padding: 10px 10px 10px 10px;background-color: #000003e2;border: 1px solid #3f3f3f7f;
 }
@@ -378,10 +378,10 @@
 
 @media (max-width: 991px) {
   .bt_amt {
-    width: 96%;top: 5%;
+    width: 96%;
   }
   .game_reslt {
-    width: 96%;top: 5%;
+    width: 96%;
   }
   
   .top {

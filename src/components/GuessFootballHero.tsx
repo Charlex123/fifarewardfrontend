@@ -600,7 +600,7 @@ const GuessFootballHero: React.FC = () => {
                               Player: {displayedName}
                             </div>
                             <div>
-                              Hint: {displayedHint}
+                              Hint: {`${displayedHint?.substring(0,120)+'...'}`}
                             </div>
                           </div>
                           <div className={styles.guess}>

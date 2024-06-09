@@ -274,6 +274,8 @@ const Farming = () =>  {
                 setAmountMined(data.amountmined);
                 setMiningStatus(data.miningstatus)
                 incrementMiningAmount(data.amountmined,data.miningstatus);
+                setShowAlertDanger(true);
+                seterrorMessage(`Mining activation `);
                 setShowBgOverlay(false)
                 setShowLoading(false)
               }

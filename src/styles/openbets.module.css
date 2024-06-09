@@ -351,4 +351,8 @@
     .main .openbetmain {
         width: 100%;
     }
+    .main .openbetmain table tbody tr td .divaddress .fulladdr {
+        top: -15px;
+        
+    }
 }
