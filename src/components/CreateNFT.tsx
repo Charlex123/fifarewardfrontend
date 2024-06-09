@@ -246,7 +246,7 @@ export default function CreateItem() {
                       <h1>Add Traits</h1>
                     </div>
                     <div>
-                      <button type='button' onClick={closeAddTaits}>{<FaXmark />}</button>
+                      <button type='button' style={{color: '#f1f1f1'}} onClick={closeAddTaits}>{<FaXmark size={22} />}</button>
                     </div>
                 </div>
                 <div className={styles.addtraits_c_in}>
@@ -264,7 +264,7 @@ export default function CreateItem() {
                     {addTraitDiv}
                     
                     <div>
-                      <button className={styles.addnewtrait} onClick={AddTraitNow}>Add More ...</button>
+                      <button className={styles.addnewtrait} onClick={AddTraitNow} style={{color: '#f1f1f1'}}>Add More ...</button>
                     </div>
                     <div>
                       <button className={styles.addnewtrait_} onClick={SubmitTrait}>Submit</button>
@@ -304,7 +304,9 @@ export default function CreateItem() {
                   type="number"
                   placeholder="1"
                   className={styles.input_}
+                  value={1}
                   onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
+                  readOnly
                   required
                 />
               </div>
