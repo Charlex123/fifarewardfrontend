@@ -25,7 +25,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const updateUser = async () => {
-      console.log("is connected 0-",isConnected)
+      console.log("is connected 0-",isConnected,address)
       if (isConnected) {
         try {
           const config = {
