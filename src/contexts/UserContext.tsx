@@ -8,7 +8,7 @@ interface UserContextProps {
   sponsoraddress: string;
   issponsorinfluencer: boolean;
   connectedaddress: string | null;
-  loading: boolean; // Add loading state
+  loading: boolean;
 }
 
 const UserContext = createContext<UserContextProps | undefined>(undefined);
@@ -19,65 +19,73 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const [sponsoraddress, setSponsorWalletAddress] = useState<string>("");
   const [connectedaddress, setConnectedAddress] = useState<string>("");
   const [issponsorinfluencer, setIsSponsorInfluencer] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true); // Initialize loading state
+  const [loading, setLoading] = useState<boolean>(true);
   const { open } = useWeb3Modal();
   const { address, isConnected } = useWeb3ModalAccount();
 
   useEffect(() => {
-    const updateUser = async () => {
-      console.log("is connected 0-",isConnected,address)
-      if (isConnected) {
-        try {
-          const config = {
-            headers: {
-              "Content-type": "application/json",
-            },
-          };
-          const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/getuser/", { address }, config);
-          const data = response.data;
-          if (data.user != null) {
-            setBadge(data.user.badge);
-            setSponsorWalletAddress(data.user.sponsoraddress);
-            setIsSponsorInfluencer(data.user.issponsorinfluencer);
-            setConnectedAddress(data.user.address);
-            setPic(data.user.pic);
-            console.log("user d 1",data.user)
-            localStorage.setItem("userInfo", JSON.stringify(data.user));
-          } else {
-            const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser/", {
-              address,
-              isConnected,
-              sponsoraddress,
-              issponsorinfluencer,
-              badge,
-              pic,
-            }, config);
-            const data = response.data;
+    const fetchUserData = async () => {
+      if (!isConnected) {
+        setLoading(false);
+        return;
+      }
 
-            if (data.message === "action success") {
-              setBadge(data.user.badge);
-              setSponsorWalletAddress(data.user.sponsoraddress);
-              setIsSponsorInfluencer(data.user.issponsorinfluencer);
-              setConnectedAddress(data.user.address);
-              setPic(data.user.pic);
-              console.log("user d 2",data.user)
-              localStorage.setItem("userInfo", JSON.stringify(data.user));
-            } else {
-              console.error('Failed to update user');
-            }
-          }
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setLoading(false); // Set loading to false after data is fetched
+      try {
+        const config = {
+          headers: {
+            "Content-type": "application/json",
+          },
+        };
+
+        const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/getuser/", { address }, config);
+        const data = response.data;
+        if (data.user) {
+          setBadge(data.user.badge);
+          setSponsorWalletAddress(data.user.sponsoraddress);
+          setIsSponsorInfluencer(data.user.issponsorinfluencer);
+          setConnectedAddress(data.user.address);
+          setPic(data.user.pic);
+          localStorage.setItem("userInfo", JSON.stringify(data.user));
+        } else {
+          const newUserResponse = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser/", {
+            address,
+            isConnected,
+            sponsoraddress,
+            issponsorinfluencer,
+            badge,
+            pic,
+          }, config);
+          const newUser = newUserResponse.data.user;
+          setBadge(newUser.badge);
+          setSponsorWalletAddress(newUser.sponsoraddress);
+          setIsSponsorInfluencer(newUser.issponsorinfluencer);
+          setConnectedAddress(newUser.address);
+          setPic(newUser.pic);
+          localStorage.setItem("userInfo", JSON.stringify(newUser));
         }
-      } else {
-        open();
-        setLoading(false); // Set loading to false if the user is not connected
+      } catch (error) {
+        console.log(error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    updateUser();
+    if (isConnected) {
+      const userInfo = localStorage.getItem('userInfo');
+      if (userInfo) {
+        const parsedUserInfo = JSON.parse(userInfo);
+        setBadge(parsedUserInfo.badge);
+        setSponsorWalletAddress(parsedUserInfo.sponsoraddress);
+        setIsSponsorInfluencer(parsedUserInfo.issponsorinfluencer);
+        setConnectedAddress(parsedUserInfo.address);
+        setPic(parsedUserInfo.pic);
+        setLoading(false);
+      } else {
+        fetchUserData();
+      }
+    } else {
+      setLoading(false);
+    }
   }, [address, isConnected]);
 
   useEffect(() => {
