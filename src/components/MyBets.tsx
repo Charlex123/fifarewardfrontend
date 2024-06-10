@@ -17,6 +17,7 @@ import Head from 'next/head';
 // material
 import styles from "../styles/mybets.module.css";
 import dotenv from 'dotenv';
+import { time } from 'console';
 dotenv.config();
 // component
 const MyBets: React.FC<{}> = () =>  {
@@ -125,7 +126,11 @@ const MyBets: React.FC<{}> = () =>  {
         }
     };
 
-    fetchData();
+    const timeoutid = setTimeout(fetchData,3000);
+
+    return () => {
+      clearTimeout(timeoutid)
+    }
     },[])
     
     const toggleAddress = (e:any) => {
