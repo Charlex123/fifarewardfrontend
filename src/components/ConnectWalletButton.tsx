@@ -71,7 +71,7 @@ export default function ConnectWallet() {
   const { address, isConnected } = useWeb3ModalAccount();
 
   useEffect(() => {
-    console.log("address eru",address)
+    console.log("address eru",isConnected,address)
     if(isConnected) {
       const updateUser = async () => {
         try {
