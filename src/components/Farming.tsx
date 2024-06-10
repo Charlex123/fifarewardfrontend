@@ -185,7 +185,7 @@ const Farming = () =>  {
   };
       
       
- },[])
+ },[username,connectedaddress,amountmined,miningstatus])
 
  const updateminedAmount = async (amountmined: number,miningstatus: string ) => {
     try {
