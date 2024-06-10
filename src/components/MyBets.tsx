@@ -1,7 +1,8 @@
-import React, { useState,useEffect, useRef } from 'react';
+import React, { useState,useEffect, useRef, useContext } from 'react';
 import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
+import { useUser } from '../contexts/UserContext';
 import AlertDanger from './AlertDanger';
 import { useRouter } from 'next/router';
 import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json';
@@ -21,6 +22,7 @@ dotenv.config();
 const MyBets: React.FC<{}> = () =>  {
 
     // const divRef = useRef<HTMLDivElement>(null);
+    const { connectedaddress } = useUser();
     const [showloading, setShowLoading] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
@@ -79,8 +81,9 @@ const MyBets: React.FC<{}> = () =>  {
               setShowLoading(true);
               const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
               const signer = provider.getSigner();
+              console.log("signer",signer)
               const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
-              const loadBets = await BetFeaturescontract.loadAllBets();
+              const loadBets = await BetFeaturescontract.getBetsByWallet(connectedaddress);
               await loadBets.forEach(async (element:any) => {
                 if(element.openedBy != 0x0000000000000000000000000000000000000000) {
                   let betAmt = Math.ceil((element.betamount.toString())/(10**18));
@@ -233,7 +236,7 @@ const MyBets: React.FC<{}> = () =>  {
         </div>
         <div className={styles.main_bg_overlay}></div>
           <div>
-            <div>
+            <div style={{marginBottom: '30px'}}>
               <h1>MY Bets</h1>
             </div>
           </div>

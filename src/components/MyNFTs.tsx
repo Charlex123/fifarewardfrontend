@@ -5,6 +5,7 @@ import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import AlertDanger from './AlertDanger';
 // import DappSideBar from './Dappsidebar';
+import { useUser } from '../contexts/UserContext';
 import { useRouter } from 'next/router';
 import { ThemeContext } from '../contexts/theme-context';
 import axios from 'axios';
@@ -27,11 +28,12 @@ dotenv.config();
 const MyNFTs: React.FC<{}> = () =>  {
 
     const divRef = useRef<HTMLDivElement>(null);
+    const { connectedaddress } = useUser();
     const [showloading, setShowLoading] = useState<boolean>(false);
     const [showchangepriceModal, setShowChangePriceModal] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
-    const { address, chainId, isConnected } = useWeb3ModalAccount();
+    const { chainId, isConnected } = useWeb3ModalAccount();
     const [username, setUsername] = useState<string>("");
     const [nftbidsLoaded,setNFTBidsLoaded] = useState<boolean>(false);
     const [nftbidsLoaded2,setNFTBidsLoaded2] = useState<boolean>(false);

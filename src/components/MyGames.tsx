@@ -4,6 +4,7 @@ import Loading from './Loading';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import AlertDanger from './AlertDanger';
+import { useUser } from '../contexts/UserContext';
 import { useRouter } from 'next/router';
 import moment from 'moment';
 import { ThemeContext } from '../contexts/theme-context';
@@ -21,6 +22,7 @@ dotenv.config();
 // component
 const MyGames: React.FC<{}> = () =>  {
 
+    const { connectedaddress } = useUser();
     const [showloading, setShowLoading] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
@@ -80,10 +82,10 @@ const MyGames: React.FC<{}> = () =>  {
               const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
               const signer = provider.getSigner();
               const gfhcontract = new ethers.Contract(GuessfhCA!, GFHAbi, signer);
-              const loadGames = await gfhcontract.loadGames();
+              const loadGames = await gfhcontract.loadUserGames(connectedaddress);
               await loadGames.forEach(async (element:any) => {
                 console.log("load game s data", loadGames)
-                if(element.openedBy != 0x0000000000000000000000000000000000000000) {
+                if(element.walletaddress != 0x0000000000000000000000000000000000000000) {
                   
                   let item: GuessFootBallHeroMetadata = {
                     Id: element.Id,

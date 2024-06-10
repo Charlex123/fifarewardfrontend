@@ -977,7 +977,7 @@ const closeBgModal = () => {
                                               <small id='predictionalert'></small>
                                           </div>
                                           <div className={matchstyle.form_g}>
-                                              <label>Enter amount ({`Min of ${usdequivfrdamount.toLocaleString()}FRD ($10)`})</label>
+                                              <label>Enter amount ({`Min of ${usdequivfrdamount?.toLocaleString()}FRD ($10)`})</label>
                                               <div style={{color: 'white'}}>${dollarequiv?.toLocaleString()}</div>
                                               <input type='number' title='input' required onChange={(e) => setBetAmounts(e)} min={5} placeholder={`${usdequivfrdamount.toLocaleString()}FRD`} />
                                               <small id='minamuntalert'></small>
