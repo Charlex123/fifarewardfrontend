@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import footerstyles from '../styles/footer.module.css';
 import FooterNavBar from './FooterNav';
-import { FaArtstation, FaBandcamp, FaCircleDollarToSlot, FaDiscord, FaGift, FaTelegram, FaTwitter } from 'react-icons/fa6';
+import { FaArtstation, FaBandcamp, FaCircleDollarToSlot, FaDiscord, FaGift, FaTelegram, FaTwitter, FaUserGroup } from 'react-icons/fa6';
 import { GiGamepad, GiMineralHeart } from 'react-icons/gi';
 import { IoIosFootball } from 'react-icons/io';
 // import cgk from '../assets/images/coingecko-aace8f3c.png';
@@ -70,7 +70,7 @@ const handleCopyClick = () => {
                         <a href='/betting' rel='noopener noreferrer' ><IoIosFootball className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Betting</span></a>
                      </div>
                      <div>
-                        <a href='/fanforum' rel='noopener noreferrer' ><IoIosFootball className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Betting</span></a>
+                        <a href='/fanforum' rel='noopener noreferrer' ><FaUserGroup className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Fan Forum</span></a>
                      </div>
                      <div>
                         <a href='/farming' rel='noopener noreferrer' ><GiMineralHeart className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Farm</span></a>
