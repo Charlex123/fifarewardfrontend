@@ -80,6 +80,12 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     updateUser();
   }, [address, isConnected]);
 
+  useEffect(() => {
+    if (!isConnected) {
+      open();
+    }
+  }, [isConnected, open]);
+
   return (
     <UserContext.Provider value={{ badge, pic, sponsoraddress, issponsorinfluencer, connectedaddress, loading }}>
       {children}
