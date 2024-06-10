@@ -25,6 +25,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const updateUser = async () => {
+      console.log("is connected 0-",isConnected)
       if (isConnected) {
         try {
           const config = {
@@ -40,6 +41,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
             setIsSponsorInfluencer(data.user.issponsorinfluencer);
             setConnectedAddress(data.user.address);
             setPic(data.user.pic);
+            console.log("user d 1",data.user)
             localStorage.setItem("userInfo", JSON.stringify(data.user));
           } else {
             const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser/", {
@@ -58,6 +60,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
               setIsSponsorInfluencer(data.user.issponsorinfluencer);
               setConnectedAddress(data.user.address);
               setPic(data.user.pic);
+              console.log("user d 2",data.user)
               localStorage.setItem("userInfo", JSON.stringify(data.user));
             } else {
               console.error('Failed to update user');

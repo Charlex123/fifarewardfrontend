@@ -76,8 +76,8 @@ function Navbar() {
                     <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
                     <li><a href='/betting' rel='noopener noreferrer'>Betting</a></li>
                     <li><a href='/fanforum' rel='noopener noreferrer'> Forum</a></li>
-                    <li><a href='/farming' rel='noopener noreferrer'>Farm</a></li>
-                    <li><a href='/stakes' rel='noopener noreferrer'>Stake</a></li>
+                    <li><a href='/farming' rel='noopener noreferrer'>Farm FRD</a></li>
+                    <li><a href='/stakes' rel='noopener noreferrer'>Stakes</a></li>
                     <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li>
                     <li><a href='/nft' rel='noopener noreferrer'>NFT MarketPlace</a></li>
                     <li><a href='/betting/mybets' rel='noopener noreferrer'>My Bets</a></li>
