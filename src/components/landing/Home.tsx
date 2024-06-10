@@ -421,9 +421,6 @@ useEffect(() => {
                 At our core, we believe that decentralization is the future of the betting industry. By leveraging blockchain technology, we are able to eliminate the need for intermediaries and create a trustless ecosystem where users have complete control over their bets. This ensures that all transactions are executed with utmost transparency, leaving no room for manipulation or foul play.
               </p>
               <p>
-                At our core, we believe that decentralization is the future of the betting industry. By leveraging blockchain technology, we are able to eliminate the need for intermediaries and create a trustless ecosystem where users have complete control over their bets. This ensures that all transactions are executed with utmost transparency, leaving no room for manipulation or foul play.
-              </p>
-              <p>
                 As we set out on this journey, our vision is to create a community-driven platform where every participant has a stake in the decision-making process. Through the use of governance tokens, our users will have the power to shape the future of the platform, ensuring that it evolves in a way that best serves the interests of the community.
               </p>
               <p>

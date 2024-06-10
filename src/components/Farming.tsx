@@ -1,6 +1,5 @@
 import React from 'react';
 import { useEffect, useState, useContext } from 'react';
-import { useRouter } from 'next/router';
 // import axios from 'axios';
 import DappSideBar from './Dappsidebar';
 // material
@@ -9,7 +8,6 @@ import FRDAbi from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToke
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
 import dappconalertstyles from "../styles/dappconnalert.module.css";
-import dappsidebarstyles from '../styles/dappsidebar.module.css';
 import { ethers } from 'ethers';
 // component
 import ConnectWallet from './ConnectWalletButton';
@@ -17,6 +15,7 @@ import ReferralLink from './ReferralLink';
 import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { ThemeContext } from '../contexts/theme-context';
+import { useUser } from '../contexts/UserContext';
 import DappNav from './Dappnav';
 import FRDabi from "../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json"
 import FooterNavBar from './FooterNav';
@@ -27,14 +26,12 @@ import RewardsBadge from './RewardsBadge';
 import ActionSuccessModal from './ActionSuccess';
 import Head from 'next/head';
 import axios from 'axios';
-import { FaAlignJustify, FaChevronDown, FaXmark } from 'react-icons/fa6';
+import { FaAlignJustify, FaXmark } from 'react-icons/fa6';
 
 const Farming = () =>  {
 
-  const router = useRouter();
-
-
   const { theme} = useContext(ThemeContext);
+  const { connectedaddress } = useUser();
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
   const [isSideBarToggled, setIsSideBarToggled] = useState(false)
@@ -43,14 +40,11 @@ const Farming = () =>  {
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
   const [dappConnector,setDappConnector] = useState(false);
-  const [wAlert,setWAlert] = useState(false);
   let [amountmined, setAmountMined] = useState<number>(0.00005);
   const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
-  const [dollarequiv, setDollarEquiv] = useState<number>(0);
   const [usdprice, setUsdPrice] = useState<number>(0);
   const [errorMessage, seterrorMessage] = useState("");
   const [miningstatus, setMiningStatus] = useState<string>("Inactive");
-  const [walletaddress, setWalletAddress] = useState("NA"); 
   const [isDragging, setIsDragging] = useState<boolean>(false);
   const [initialValues, setInitialValues] = useState<number[]>([]);
   const [showloading, setShowLoading] = useState<boolean>(false);
@@ -141,15 +135,17 @@ const Farming = () =>  {
 
  useEffect(() => {
 
-  const getminingdetails = async (address: string) => {
+  console.log("connected address",connectedaddress, '090---',address)
+  const getminingdetails = async (connectedaddress: string) => {
     // search database and return documents with similar keywords
     const config = {
         headers: {
             "Content-type": "application/json"
         }
     }  
+    console.log("connected address 323",connectedaddress)
     const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/getminingdetails", {
-        address
+        address:connectedaddress
     }, config);
     if(data) {
       if(data.message == "no mining details found") {
@@ -168,18 +164,22 @@ const Farming = () =>  {
     }
     
   }
-
+  
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(!udetails) {
       open()
-      getminingdetails(address!);
-      setWalletAddress(address!)
+      if(connectedaddress) {
+        getminingdetails(connectedaddress);
+      }
+      
     }else {
       setUsername(udetails.username)
-      getminingdetails(udetails.address);
-      setWalletAddress(udetails.address);
+      if(connectedaddress) {
+        getminingdetails(connectedaddress);
+      }
     }
 
+    
       
       
  },[])
@@ -197,7 +197,7 @@ const Farming = () =>  {
             }
         }  
         const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/updateminedamount", {
-            address: walletaddress, 
+            address: connectedaddress, 
             newamountmined,
             miningstatus
         }, config);
@@ -249,7 +249,7 @@ const Farming = () =>  {
             /* next, create the item */
             let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
             
-            let transaction = await FRDcontract.balanceOf(address);
+            let transaction = await FRDcontract.balanceOf(connectedaddress);
             
             let frdBal = ethers.utils.formatEther(transaction);
 
@@ -265,7 +265,7 @@ const Farming = () =>  {
                   }
               }  
               const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/startmining", {
-                  address: walletaddress, 
+                  address: connectedaddress, 
                   amountmined,
                   miningrate,
                   miningstatus
@@ -274,8 +274,8 @@ const Farming = () =>  {
                 setAmountMined(data.amountmined);
                 setMiningStatus(data.miningstatus)
                 incrementMiningAmount(data.amountmined,data.miningstatus);
-                setShowAlertDanger(true);
-                seterrorMessage(`Mining activation `);
+                setActionSuccess(true);
+                setActionSuccessMessage(`Mining activation `);
                 setShowBgOverlay(false)
                 setShowLoading(false)
               }
@@ -306,7 +306,7 @@ const stopminingCount = async (e: any) => {
             }
         }  
         const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/stopmining", {
-            address
+            address:connectedaddress
         }, config);
         if(data) {
           setAmountMined(data.amountmined);
@@ -355,7 +355,7 @@ const stopminingCount = async (e: any) => {
           const FRDContract = new ethers.Contract(FRDContractAddress!, FRDabi, signer);
           
           try {
-            const reslt = await FRDContract.transfer(address,wamount);;
+            const reslt = await FRDContract.transfer(connectedaddress,wamount);;
             const receipt = await reslt.wait();
   
             if (receipt && receipt.status === 1) {
@@ -460,11 +460,11 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                           {
                                             (() => {
                                               if(miningstatus == "Active" ) {
-                                                return <button type='button' className={dappstyles.stopmining} onClick={(e) => stopminingCount(e.target)}>Stop</button>
+                                                return <button type='button' className={dappstyles.stopmining} style={{color: '#f1f1f1'}} onClick={(e) => stopminingCount(e.target)}>Stop</button>
                                               }else if(miningstatus == "Inactive") {
-                                                return <button type='button' className={dappstyles.calcrwd} onClick={(e) => startMining(e.target)}>Start</button>
+                                                return <button type='button' className={dappstyles.calcrwd} style={{color: '#f1f1f1'}} onClick={(e) => startMining(e.target)}>Start</button>
                                               }else if(miningstatus == "Stopped") {
-                                                return <button type='button' className={dappstyles.calcrwd} onClick={() => resumeMiningAmount(amountmined,"Active")}>Resume</button>
+                                                return <button type='button' className={dappstyles.calcrwd} style={{color: '#f1f1f1'}} onClick={() => resumeMiningAmount(amountmined,"Active")}>Resume</button>
                                               }
                                             })()
                                           }

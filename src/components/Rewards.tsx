@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import DappSideBar from './Dappsidebar';
 // material
+import { useUser } from '../contexts/UserContext';
 import Image from 'next/image';
 import bronzemedal from '../assets/images/medal.png'
 import goldmedal from '../assets/images/gold-medal.png'
@@ -32,7 +33,7 @@ import { FaAlignJustify, FaXmark } from 'react-icons/fa6';
 const Rewards = () =>  {
 
   const router = useRouter();
-
+  const { connectedaddress } = useUser();
   const { theme} = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
@@ -57,7 +58,7 @@ const Rewards = () =>  {
   
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { walletProvider } = useWeb3ModalProvider();
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { chainId, isConnected } = useWeb3ModalAccount();
 
   const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOY_CA;
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
@@ -83,7 +84,7 @@ const Rewards = () =>  {
           const signer = provider.getSigner();
           
           const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const reslt = await StakeContract.getUserStakeCount(address);
+          const reslt = await StakeContract.getUserStakeCount(connectedaddress);
           setStakeCount(reslt);
           console.log(reslt)
         }
@@ -103,9 +104,9 @@ const Rewards = () =>  {
           const signer = provider.getSigner();
           
           const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
-          const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(address);
+          const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(connectedaddress);
 
-          const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(address);
+          const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(connectedaddress);
           sumTwoIntegers(createdbetreslt.toNumber(),joinedbetreslt.toNumber());
         }
           
@@ -211,7 +212,7 @@ setTimeout(() => {
   };
   
   
- }, [userId, router,username,address,chainId,isConnected,walletaddress,walletProvider,initialValues])
+ }, [userId, router,username,connectedaddress,chainId,isConnected,walletaddress,walletProvider,initialValues])
 
 
  // Function to toggle the navigation menu

@@ -67,19 +67,19 @@ const handleCopyClick = () => {
                   <h3>Features</h3>
                   <div className={footerstyles.f_c}>
                      <div>
+                        <a href='/betting' rel='noopener noreferrer' ><IoIosFootball className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Betting</span></a>
+                     </div>
+                     <div>
+                        <a href='/fanforum' rel='noopener noreferrer' ><IoIosFootball className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Betting</span></a>
+                     </div>
+                     <div>
                         <a href='/farming' rel='noopener noreferrer' ><GiMineralHeart className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Farm</span></a>
                      </div>
                      <div>
                         <a href='/nft' rel='noopener noreferrer' ><FaArtstation className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>NFT MarketPlace</span></a>
                      </div>
                      <div>
-                        <a href='/stake' rel='noopener noreferrer' ><FaCircleDollarToSlot className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Stake</span></a>
-                     </div>
-                     <div>
-                        <a href='/bet' rel='noopener noreferrer' ><IoIosFootball className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Betting</span></a>
-                     </div>
-                     <div>
-                        <a href='/airdrop' rel='noopener noreferrer' ><FaGift className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>AirDrop</span></a>
+                        <a href='/stakes' rel='noopener noreferrer' ><FaCircleDollarToSlot className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Stake</span></a>
                      </div>
                      <div>
                         <a href='/gaming' rel='noopener noreferrer' ><GiGamepad className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Gaming</span></a>

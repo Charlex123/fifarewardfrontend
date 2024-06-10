@@ -8,6 +8,7 @@ import DappSideBar from './Dappsidebar';
 import dappstyles from "../styles/dapp.module.css";
 import dappconalertstyles from "../styles/dappconnalert.module.css";
 import dappsidebarstyles from "../styles/dappsidebar.module.css";
+import { useUser } from '../contexts/UserContext';
 // component
 import ConnectWallet from './ConnectWalletButton';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
@@ -30,6 +31,7 @@ const Dapp:React.FC<{}> = () =>  {
   // dotenv.config();
   const router = useRouter();
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
+  const { connectedaddress } = useUser();
 
   console.log("stake ca", StakeCA)
   // Replace 'YOUR_API_KEY' with your BscScan API key
@@ -65,7 +67,7 @@ const Dapp:React.FC<{}> = () =>  {
   useEffect(() => {
   
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(!udetails) {
+    if(!udetails && !connectedaddress ) {
       open()
     }else {
       
@@ -141,7 +143,7 @@ const Dapp:React.FC<{}> = () =>  {
   };
   
   
- }, [userId,address,router,isWalletAddressUpdated,username,walletaddress,userObjId,sponsorWalletAddress,isConnected,walletProvider])
+ }, [userId,connectedaddress,address,router,isWalletAddressUpdated,username,walletaddress,userObjId,sponsorWalletAddress,isConnected,walletProvider])
 
  // Function to toggle the navigation menu
  const toggleSideBar = () => {

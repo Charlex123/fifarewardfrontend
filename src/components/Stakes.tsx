@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import DappSideBar from './Dappsidebar';
 // material
+import { useUser } from '../contexts/UserContext';
 import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
@@ -32,7 +33,7 @@ import { FaAlignJustify, FaChevronDown, FaClock, FaXmark } from 'react-icons/fa6
 const Staking = () =>  {
 
   const router = useRouter();
-
+  const { connectedaddress } = useUser();
   const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
   console.log("FRD CA", FRDCA)
@@ -78,7 +79,6 @@ const Staking = () =>  {
   
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { walletProvider } = useWeb3ModalProvider();
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { open } = useWeb3Modal();
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
@@ -176,7 +176,7 @@ const Staking = () =>  {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
         const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
-        let transaction = await FRDContract.balanceOf(address);
+        let transaction = await FRDContract.balanceOf(connectedaddress);
             
         let frdBal = ethers.utils.formatEther(transaction);
         
@@ -442,7 +442,7 @@ const Staking = () =>  {
   };
   
   
- }, [router,username,address,chainId,isConnected,stakeAmount,stakeduration,walletProvider,isDragging,initialValues])
+ }, [router,username,stakeAmount,stakeduration,walletProvider,isDragging,initialValues])
 
  useEffect(() => {
   const getUSDEQUIVFRDAMOUNT =  async () => {
@@ -470,7 +470,7 @@ const Staking = () =>  {
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
         const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-        const stks = await StakeContract.loadUserStakes(address);
+        const stks = await StakeContract.loadUserStakes(connectedaddress);
         console.log('stake data',stks);
         await stks.forEach(async (element:any) => {
           if(element) {

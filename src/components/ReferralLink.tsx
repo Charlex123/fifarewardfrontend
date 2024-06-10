@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import axios from 'axios';
 // import DappSideBar from './Dappsidebar';
 // material
+import { useUser } from '../contexts/UserContext';
 import { encode } from '../utils/hexUtils';
 import { ethers } from 'ethers';
 import { useWeb3Modal, useWeb3ModalProvider } from '@web3modal/ethers5/react';
@@ -14,16 +15,16 @@ import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 
 const ReferralLink:React.FC<{}> = () =>  {
 
+  const { connectedaddress } = useUser();
   const router = useRouter();
   const { theme } = useContext(ThemeContext);
   const [cipherText, setCipherText] = useState('');
-  const [walletaddress,setWalletAddress] = useState<string>("");
+  const [walletaddress, setWalletAddress] = useState<any>("");
   const [shortwalletaddress, setShortWalletAddress] = useState<any>("NA");
   const { walletProvider } = useWeb3ModalProvider();
   const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
   
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { open } = useWeb3Modal();
   const [referralLink, setreferralLink] = useState('');
   const [buttonText, setButtonText] = useState("Copy");
@@ -58,8 +59,8 @@ const ReferralLink:React.FC<{}> = () =>  {
   
   useEffect(() => {
 
-    setWalletAddress(address!);
-    const shrtwa = address?.substring(0,18)+' ...';
+    setWalletAddress(connectedaddress!);
+    const shrtwa = connectedaddress?.substring(0,18)+' ...';
         setShortWalletAddress(shrtwa);
 
     async function Addreferrer(sponsoraddress: string, username: string) {
@@ -74,10 +75,10 @@ const ReferralLink:React.FC<{}> = () =>  {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
         const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-        const tnx = await StakeContract.addReferrer(sponsoraddress,address);
+        const tnx = await StakeContract.addReferrer(sponsoraddress,connectedaddress);
         console.log("Account Balance: ", tnx);
         const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
-        const reslt = await betContract.addReferrer(sponsoraddress,address,uname);
+        const reslt = await betContract.addReferrer(sponsoraddress,connectedaddress,uname);
         console.log("Account Balance: ", reslt);
       } catch (error: any) {
         console.log("add ref error",error.code || error.message)
@@ -103,7 +104,7 @@ const ReferralLink:React.FC<{}> = () =>  {
                       }
                   };
                   const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/updatereflinkid/", {
-                      address,
+                      address: connectedaddress,
                       encrypted
                   }, config);
                   const data = response.data;
@@ -131,7 +132,7 @@ const ReferralLink:React.FC<{}> = () =>  {
     }
     
 
- }, [address,router,shortwalletaddress])
+ }, [connectedaddress,router,shortwalletaddress])
 
 const toggleWA = (e: any) => {
   let tbtn = e as HTMLButtonElement;

@@ -8,9 +8,7 @@ import BettingAbi from '../../artifacts/contracts/FRDBetting.sol/FRDBetting.json
 import BettingFeaturesAbi from '../../artifacts/contracts/FRDBettingFeatures.sol/FRDBettingFeatures.json';
 import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import { Bets } from './BetsMetadata';
 import axios from 'axios';
 import { BetConditions } from './BetConditionsMetadata';
@@ -26,10 +24,6 @@ const MyBets: React.FC<{}> = () =>  {
     const [showloading, setShowLoading] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
-    const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
-    const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any; 
-    const { chainId, isConnected } = useWeb3ModalAccount();
-    const { disconnect } = useDisconnect();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [limit] = useState<number>(10)
     const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
@@ -80,15 +74,11 @@ const MyBets: React.FC<{}> = () =>  {
 
       const fetchData = async () => {
 
-        let provider, signer;
-        
         if(walletProvider) {
-          provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-          signer = provider.getSigner();
-          
-          if(signer) {
             try {
               setShowLoading(true);
+              const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+              const signer = provider.getSigner();
               const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
               const loadBets = await BetFeaturescontract.loadAllBets();
               await loadBets.forEach(async (element:any) => {
@@ -128,8 +118,7 @@ const MyBets: React.FC<{}> = () =>  {
               seterrorMessage(error.code);
               setShowLoading(false);
             }
-            
-          }
+           
         }
     };
 
@@ -142,21 +131,14 @@ const MyBets: React.FC<{}> = () =>  {
     }
 
     const viewBetDetails = async(e:any,betId:number) => {
-      let provider, signer;
-            
-      if(walletProvider) {
-        provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-        signer = provider.getSigner();
-      }else {
-        const provider = walletProvider as any || Wprovider as any;
-        const wallet = new ethers.Wallet(walletPrivKey as any, provider);
-        signer = provider.getSigner(wallet.address);
-      }
       
-      if(signer) {
+      if(walletProvider) {
+        
         try {
           setShowLoading(true);
           setShowBgOverlay(true);
+          const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+          const signer = provider.getSigner();
           const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
               
             const getbetpredictions = await Betcontract.getPredictions(betId);

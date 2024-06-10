@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import Image from 'next/image';
 // import DappSideBar from './Dappsidebar';
 // material
-
+import { useUser } from '../contexts/UserContext';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import styles from "../styles/rewardbadge.module.css";
@@ -21,6 +21,7 @@ import { ThemeContext } from '../contexts/theme-context';
 const RewardsBadge:React.FC<{}> = () =>  {
 
   const router = useRouter();
+  const { connectedaddress } = useUser();
   const { theme } = useContext(ThemeContext);
   const [username, setUsername] = useState<string>("");
   const [stakecount, setStakeCount] = useState<number>(0);
@@ -30,7 +31,6 @@ const RewardsBadge:React.FC<{}> = () =>  {
 
   const [badge, setBadge] = useState("bronze"); // Initial value
   
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { walletProvider } = useWeb3ModalProvider();
 
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
@@ -57,7 +57,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
           const signer = provider.getSigner();
           
           const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const reslt = await StakeContract.getUserStakeCount(address);
+          const reslt = await StakeContract.getUserStakeCount(connectedaddress);
           setStakeCount(reslt);
           console.log(reslt)
         }
@@ -77,9 +77,9 @@ const RewardsBadge:React.FC<{}> = () =>  {
           const signer = provider.getSigner();
           
           const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
-          const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(address);
+          const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(connectedaddress);
 
-          const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(address);
+          const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(connectedaddress);
           sumTwoIntegers(createdbetreslt.toNumber(),joinedbetreslt.toNumber());
         }
           
@@ -123,7 +123,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
       }
     }
   
- }, [address,router,username,walletaddress])
+ }, [connectedaddress,router,username,walletaddress])
 
 
   return (

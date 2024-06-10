@@ -7,7 +7,7 @@ import BgOverlay from "../components/BgOverlay";
 import Loading from "../components/Loading";
 import '@fortawesome/fontawesome-svg-core/styles.css';
 import { Web3Modal } from "../contexts/Web3Modal";
-import { UserProvider } from "../contexts/UserContext";
+import { UserProvider, useUser } from "../contexts/UserContext";
 
 export const metadata = {
   title: "FifaReward | Bet, Stake, Mine and create NFTs of football legends",
@@ -68,7 +68,9 @@ const App = ({ Component, pageProps }: AppProps) => {
       <ThemeContextProvider>
         <Web3Modal>
           <UserProvider>
-            <Component {...pageProps} />
+            <UserLoader>
+              <Component {...pageProps} />
+            </UserLoader>
           </UserProvider>
         </Web3Modal>
       </ThemeContextProvider>
@@ -77,3 +79,13 @@ const App = ({ Component, pageProps }: AppProps) => {
 };
 
 export default App;
+
+const UserLoader: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const { loading } = useUser();
+
+  if (loading) {
+    return <Loading />;
+  }
+
+  return <>{children}</>;
+};

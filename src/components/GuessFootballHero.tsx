@@ -19,6 +19,7 @@ import { FaAngleRight, FaCheck, FaXmark } from "react-icons/fa6";
 import Head from 'next/head';
 import { ThemeContext } from '../contexts/theme-context';
 import axios from 'axios';
+import { useUser } from '../contexts/UserContext';
 
 interface Gamedata {
   image: string;
@@ -31,6 +32,7 @@ const GuessFootballHero: React.FC = () => {
   const divRef = useRef<HTMLDivElement>(null);
   const [gamedata, setGameData] = useState<Gamedata[]>([]);
   const [level, setLevel] = useState<number>(1);
+  const { connectedaddress } = useUser();
   const [playedcount, setPlayedCount] = useState<number>(0);
   const [wincount, setWinCount] = useState<number>(0);
   const [amount, setAmount] = useState<string>('');
@@ -96,7 +98,7 @@ const GuessFootballHero: React.FC = () => {
           }
         } 
         const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessfootballhero/getusergames',{
-          address
+          address: connectedaddress
         },config);
         if (data.games != null && data.games.length > 0) {
           setGameId(data.games[0].gameId);
@@ -136,7 +138,6 @@ const GuessFootballHero: React.FC = () => {
     };
 
     fetchItems();
-
     const getUSDEQUIVFRDAMOUNT =  async () => {
       try {
         const config = {
@@ -194,7 +195,7 @@ const GuessFootballHero: React.FC = () => {
       // let fundwalletaddress = FRDcontract.transfer("0x6df7E51F284963b33CF7dAe442E5719da69c312d",tamount);
       // console.log("fundwalletaddress result",fundwalletaddress);
       // return;
-      let transaction = await FRDcontract.balanceOf(address);
+      let transaction = await FRDcontract.balanceOf(connectedaddress);
       let frdBal = ethers.utils.formatEther(transaction);
       if(parseInt(frdBal) < usdequivfrdamount) {
         setAlertDanger(true);
@@ -239,7 +240,7 @@ const GuessFootballHero: React.FC = () => {
           }  
 
           const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessherohint/addupdatehint', {
-            address,
+            address:connectedaddress,
             name,
             image,
             hint
@@ -293,7 +294,7 @@ const GuessFootballHero: React.FC = () => {
             remainingcount,
             totalCount,
             level,
-            address,
+            address:connectedaddress,
             wincount
         }, config);
         if(data.game != null) {
@@ -336,7 +337,7 @@ const GuessFootballHero: React.FC = () => {
               remainingcount,
               totalCount,
               level,
-              address,
+              address: connectedaddress,
               wincount
           }, config);
           if(data.getupgame != null && data.getupgame != undefined) {
@@ -474,7 +475,7 @@ const GuessFootballHero: React.FC = () => {
       }  
 
       const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/guessherohint/gethint', {
-        address
+        address: connectedaddress
     }, config);
     if(data.hint != null) {
       setSelectedImage(data.hint.selectedImage);

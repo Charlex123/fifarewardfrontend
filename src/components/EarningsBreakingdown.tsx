@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 // import DappSideBar from './Dappsidebar';
 // material
-
+import { useUser } from '../contexts/UserContext';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import styles from "../styles/earningsbreakdown.module.css";
@@ -24,9 +24,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
   const [stakecount, setStakeCount] = useState<number>(0);
   const [betcount, setBetCount] = useState<number>(0);  
   // const [nftcount, setNFTCount] = useState<number>(0);
-
-  
-  const { address } = useWeb3ModalAccount();
+  const { connectedaddress } = useUser();
   const { walletProvider } = useWeb3ModalProvider();
 
   const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
@@ -52,7 +50,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
           const signer = provider.getSigner();
           
           const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
-          const reslt = await StakeContract.getUserStakeCount(address);
+          const reslt = await StakeContract.getUserStakeCount(connectedaddress);
           setStakeCount(reslt);
         }
           
@@ -71,7 +69,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
           const signer = provider.getSigner();
           
           const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
-          const reslt = await Betting.getUserBetCount(address);
+          const reslt = await Betting.getUserBetCount(connectedaddress);
           setBetCount(reslt);
         }
           
@@ -100,7 +98,7 @@ const EarningsBreakDown:React.FC<{}> = () =>  {
     }
     NFTCount()
   
- }, [address,router,username])
+ }, [connectedaddress,router,username])
 
 
   return (

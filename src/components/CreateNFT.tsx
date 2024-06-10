@@ -4,6 +4,7 @@ import { NFTStorage, File } from 'nft.storage'
 import { useRouter } from 'next/router';
 import AlertDanger from './AlertDanger';
 import Loading from './Loading';
+import { useUser } from '../contexts/UserContext';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
@@ -31,6 +32,8 @@ export default function CreateItem() {
   const { theme } = useContext(ThemeContext);
   const [betactionsuccess,setActionSuccess] = useState<boolean>(false);
 
+  const { connectedaddress } = useUser();
+
   const [uploadedMedia, setUploadedMedia] = useState<any>(null);
   const [showloading, setShowLoading] = useState<boolean>(false);
   const { open } = useWeb3Modal();
@@ -55,9 +58,7 @@ export default function CreateItem() {
   useEffect(() => {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
       
-    if(!isConnected) {
-      open()
-    }
+    
   },[])
 
   async function handleFileUpload(file: File) {
@@ -107,7 +108,7 @@ export default function CreateItem() {
           console.log('signer address',signer,signer.getAddress(),signer._address,address)
           /* next, create the item */
           let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken, signer.connectUnchecked());
-          let transaction = await contract.balanceOf(address);
+          let transaction = await contract.balanceOf(connectedaddress);
           let frdBal = ethers.utils.formatEther(transaction);
           if(parseInt(frdBal) < 500) {
             setShowAlertDanger(true);

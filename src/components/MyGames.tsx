@@ -10,9 +10,7 @@ import { ThemeContext } from '../contexts/theme-context';
 import GFHAbi from '../../artifacts/contracts/FRDGuessFootBallHero.sol/GuessFootBallHero.json'
 import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import { GuessFootBallHeroMetadata } from './GuessFootballHeroMetadata';
 import axios from 'axios';
 import Head from 'next/head';
@@ -26,10 +24,6 @@ const MyGames: React.FC<{}> = () =>  {
     const [showloading, setShowLoading] = useState<boolean>(false);
     const { open } = useWeb3Modal();
     const { walletProvider } = useWeb3ModalProvider();
-    const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
-    const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any; 
-    const { chainId, isConnected } = useWeb3ModalAccount();
-    const { disconnect } = useDisconnect();
     const [currentPage, setCurrentPage] = useState<number>(1);
     const [limit] = useState<number>(10)
     const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
@@ -79,15 +73,12 @@ const MyGames: React.FC<{}> = () =>  {
 
       const fetchData = async () => {
 
-        let provider, signer;
-        
-        if(walletProvider) {
-          provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
-          signer = provider.getSigner();
           
-          if(signer) {
+          if(walletProvider) {
             try {
               setShowLoading(true);
+              const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
+              const signer = provider.getSigner();
               const gfhcontract = new ethers.Contract(GuessfhCA!, GFHAbi, signer);
               const loadGames = await gfhcontract.loadGames();
               await loadGames.forEach(async (element:any) => {
@@ -128,7 +119,6 @@ const MyGames: React.FC<{}> = () =>  {
             }
             
           }
-        }
     };
 
     fetchData();

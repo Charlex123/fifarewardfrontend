@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useRouter } from 'next/router';
 import matchstyle from '../styles/match.module.css'
 import axios from 'axios';
 import Image from 'next/image';
+import { useUser } from '../contexts/UserContext';
 import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
@@ -78,6 +79,7 @@ const divRef = useRef<HTMLDivElement>(null);
 const [loadedlaguedata,setLoadedLeagueData] = useState<boolean>(false);
 const [countryfixturesdata, setCountryFixturesdata] = useState<any>('');
 const [leaguecomponent,setLeagueComponent] = useState<JSX.Element[]>([]);
+const { connectedaddress } = useUser();
 const [username, setUsername] = useState<string>("");
 const [isLoggedIn,setIsloggedIn] = useState<boolean>(false);
 const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
@@ -118,7 +120,6 @@ const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 const BettingFeaturesCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
 const { open, close } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
-const { address, chainId, isConnected } = useWeb3ModalAccount();
 
   useEffect(() => {
     try {
@@ -326,7 +327,7 @@ return () => {
   // clearInterval(intervalId);
 };
   
-},[countryfixturesdata,router.query.match,matchidparam,username,isConnected,isLoggedIn])
+},[countryfixturesdata,router.query.match,matchidparam,username])
 
 const openBetC = async () => {
   if (walletProvider) {
@@ -352,7 +353,7 @@ const openBetC = async () => {
           matchidparam,
           uniqueId,
           matchparam,
-          address,
+          connectedaddress,
           betParticipantsCount,
           { gasLimit: 1000000 }
         );
@@ -420,7 +421,7 @@ const handleOpenBetForm = async (e:any) => {
           /* next, create the item */
           let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
           
-          let transaction = await FRDcontract.balanceOf(address);
+          let transaction = await FRDcontract.balanceOf(connectedaddress);
           
           let frdBal = ethers.utils.formatEther(transaction);
           let inputAlertDiv = document.getElementById("minamuntalert") as HTMLElement;

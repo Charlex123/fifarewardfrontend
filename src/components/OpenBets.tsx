@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useContext } from 'react';
 import { useRouter } from 'next/router';
 import openbetsstyle from '../styles/openbets.module.css'
 import axios from 'axios';
 import dotenv from 'dotenv';
+import { useUser } from '../contexts/UserContext';
 import Image from 'next/image';
 import { ethers } from 'ethers';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
@@ -37,6 +38,7 @@ const [betopensuccess,setBetOpenSuccess] = useState<boolean>(false);
 
 const router = useRouter();
 
+const { connectedaddress } = useUser();
 
 const inputRef = useRef<HTMLInputElement>(null);
 const [betData,setBetData] = useState<Bets[]>([]);
@@ -64,14 +66,13 @@ const { open } = useWeb3Modal();
 const { walletProvider } = useWeb3ModalProvider();
 const Wprovider = new ethers.providers.JsonRpcProvider("https://data-seed-prebsc-1-s1.bnbchain.org:8545");
 const  walletPrivKey: any = process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY as any;
-const { address, isConnected } = useWeb3ModalAccount();
 const minfilterbyamount = usdequivfrdamount;
 const maxfilterbyamount = 500000;
 
 useEffect(() => {
  
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-  if(udetails && udetails !== null && udetails !== "") {
+  if(udetails && udetails !== null && udetails !== "" && connectedaddress) {
       const username_ = udetails.username;  
       if(username_) {
           setUsername(username_);
@@ -259,13 +260,13 @@ useEffect(() => {
                 /* next, create the item */
                 let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
                 
-                let transaction = await FRDcontract.balanceOf(address);
+                let transaction = await FRDcontract.balanceOf(connectedaddress);
                 
                 let frdBal = ethers.utils.formatEther(transaction);
 
                 let erAlertDv = e.parentElement.parentElement.previousElementSibling;
           
-                if(address === openedby) {
+                if(connectedaddress === openedby) {
                   erAlertDv.innerHTML = "You can't join a bet you opened";
                   return;
                 }
@@ -289,7 +290,7 @@ useEffect(() => {
 
                 const arrayofparticpants = participants.split(',');
                 
-                if(arrayofparticpants.indexOf(address!) !== -1) {
+                if(arrayofparticpants.indexOf(connectedaddress!) !== -1) {
                   erAlertDv.innerHTML = "You can't join this bet again!";
                   return;
                 }else {

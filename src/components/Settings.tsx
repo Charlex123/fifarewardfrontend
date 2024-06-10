@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import DappSideBar from './Dappsidebar';
 // material
-
+import { useUser } from '../contexts/UserContext';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
@@ -35,7 +35,7 @@ const Settings = () =>  {
 
   const router = useRouter();
 
-
+  const { connectedaddress } = useUser();
   const { theme} = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
@@ -66,7 +66,6 @@ const Settings = () =>  {
   const [showTimer, setShowTimer] = useState(false);
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { walletProvider } = useWeb3ModalProvider();
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
 
 
   const BettingCA = process.env.NEXT_PUBLIC_FRD_BETTING_CA;
@@ -124,7 +123,7 @@ const Settings = () =>  {
   };
   
   
- }, [userId, router,username,address,chainId,isConnected,walletaddress,wAlert,showTimer,walletProvider,isDragging,initialValues])
+ }, [userId, router,username,connectedaddress,wAlert,showTimer,walletProvider,isDragging,initialValues])
 
  
  // Function to toggle the navigation menu
@@ -162,7 +161,7 @@ const Settings = () =>  {
         }  
         const filePath_ = fullUrl;
         const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/users/uploadprofilepicture', {
-            address,
+            address: connectedaddress,
             filePath_
         }, config);
         if(data) {
@@ -187,7 +186,7 @@ async function UpdateUsername(e: any) {
           }
       }  
       const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/users/updateusername', {
-          address,
+          address: connectedaddress,
           username
       }, config);
       if(data) {

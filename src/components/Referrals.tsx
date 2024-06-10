@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 // import axios from 'axios';
 import DappSideBar from './Dappsidebar';
 // material
-
+import { useUser } from '../contexts/UserContext';
 // import Loading from "./Loading";
 // import AlertMessage from "./AlertMessage";
 import dappstyles from "../styles/dapp.module.css";
@@ -26,8 +26,9 @@ import { FaAlignJustify } from 'react-icons/fa6';
 const Referrals = () =>  {
 
   const router = useRouter();
-  const TAFAAddress = "0x5ae155f89308ca9050f8ce1c96741badd342c26b";
-  const StakeAddress = "0xE182a7e66E95a30F75971B2924346Ef5d187CE13";
+  const FRDCA = process.env.NEXT_PUBLIC_FRD_DEPLOYED_CA;
+  const StakeCA = process.env.NEXT_PUBLIC_FRD_STAKING_CA;
+  const { connectedaddress } = useUser();
   const { theme } = useContext(ThemeContext);
   const [isNavOpen, setNavOpen] = useState(false);
   const [scrolling, setScrolling] = useState(false);
@@ -40,8 +41,6 @@ const Referrals = () =>  {
   // const { isOpen, onOpen, onClose, closeWeb3Modal,openWeb3Modal } = useContext(Web3ModalContext);
   const { open, close } = useWeb3Modal();
   const { walletProvider } = useWeb3ModalProvider();
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
-  const { disconnect } = useDisconnect();
   
   useEffect(() => {
     
@@ -55,17 +54,18 @@ const Referrals = () =>  {
     async function GetReferrals() {
       try {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
-        const signer = provider.getSigner(address);
-        const StakeContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
-        const stakeref = await StakeContract.getReferrals(address);
+        const signer = provider.getSigner(connectedaddress!);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const stakeref = await StakeContract.getReferrals(connectedaddress);
         setStakeReferrals(stakeref);
-        const BetContract = new ethers.Contract(StakeAddress, StakeAbi, signer);
-        const betref = await BetContract.getReferrals(address);
+        const BetContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const betref = await BetContract.getReferrals(connectedaddress);
         setBetReferrals(betref)
       } catch (error: any) {
         
       }
     }
+    GetReferrals();
 
     // Function to handle window resize
     const handleResize = () => {
@@ -106,7 +106,7 @@ const Referrals = () =>  {
   };
   
   
- }, [ router,address])
+ }, [ router])
 
  // Function to toggle the navigation menu
  const toggleSideBar = () => {

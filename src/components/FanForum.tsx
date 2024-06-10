@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import { useUser } from '../contexts/UserContext';
 import successimage from '../assets/images/success1.png';
 import { ThemeContext } from '../contexts/theme-context';
 import socket from './Socket';
@@ -38,6 +39,7 @@ const FanForum: React.FC<{}> = () =>  {
   const fileInputRef = useRef<HTMLInputElement | null>(null); 
   const [showloading, setShowLoading] = useState<boolean>(false);
   const [showspinner, setShowSpinner] = useState<boolean>(false);
+  const { connectedaddress } = useUser();
   const [text, setText] = useState('');
   const [pic, setPic] = useState('https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg');
   const [file, setFile] = useState<File | null>(null);
@@ -48,7 +50,6 @@ const FanForum: React.FC<{}> = () =>  {
   const [isListening, setIsListening] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const { open } = useWeb3Modal();
-  const { isConnected, address } = useWeb3ModalAccount();
   const interimTranscriptRef = useRef<string>('');
   const [messages, setMessages] = useState<Message[]>([]);
   const [users, setUsers] = useState<User[]>([]);
@@ -119,10 +120,10 @@ const FanForum: React.FC<{}> = () =>  {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(!udetails) {
       open()
-      setCurrentUser(address)
+      setCurrentUser(connectedaddress)
     }else {
       setPic(udetails.pic);
-      setCurrentUser(udetails.address)
+      setCurrentUser(udetails.connectedaddress)
     }
     
     
