@@ -168,18 +168,21 @@ const Farming = () =>  {
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(!udetails) {
       open()
-      if(connectedaddress) {
-        getminingdetails(connectedaddress);
-      }
-      
+     
     }else {
       setUsername(udetails.username)
+      
+    }
+
+    const timeoutid = setTimeout(function() {
       if(connectedaddress) {
         getminingdetails(connectedaddress);
       }
-    }
+    },3000)
 
-    
+    return () => {
+      clearTimeout(timeoutid)
+  };
       
       
  },[])
