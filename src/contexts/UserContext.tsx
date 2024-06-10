@@ -24,6 +24,7 @@ export const UserProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const { address, isConnected } = useWeb3ModalAccount();
 
   useEffect(() => {
+    console.log(" huiop",isConnected, address)
     const fetchUserData = async () => {
       if (!isConnected) {
         setLoading(false);
