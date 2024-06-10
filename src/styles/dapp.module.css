@@ -297,14 +297,14 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     width: fit-content;margin: 30px auto;padding: 12px 48px;
 }
 .main .mine_ {
-    width: 40%;margin: 30px auto;border-radius: 4px;
+    width: 50%;margin: 30px auto !important;border-radius: 20px !important;
 }
 .main .mine_ .mine_r {
     font-size: 14px;text-align: left;margin: 20px 0 0 30px;
 }
 .main .mine_ .mine_m {
     font-size: 14px;text-align: left;margin: 20px 0 0 30px;
-    width: fit-content;padding: 2px 0 2px 0;border-radius: 4px;
+    width: fit-content;padding: 2px 0 2px 0;border-radius: 20px;
 }
 .main .mine_ .mine_m .mfrd {
     border-radius: 20px;width: fit-content;background-color: #ffffff;color: #010101;
@@ -325,6 +325,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
 }
 .main .stake .stake_mod {
     margin: 0;
+}
+.main .mine_ .stake_mod {
+    margin: 0;box-shadow: 0px 0px 8px 8px #43434349;
 }
 .main .stake .stake_mod .top {
     padding: 10px 10px;border-top-left-radius: 16px;border-top-right-radius: 16px;
@@ -545,6 +548,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     }
     .main .width_stake {
         width: 90%;
+    }
+    .main .mine_ {
+        width: 100%;
     }
     .main_c .main {
         width: 90%;height: 100%;

@@ -126,11 +126,8 @@ const MyBets: React.FC<{}> = () =>  {
         }
     };
 
-    const timeoutid = setTimeout(fetchData,3000);
+    fetchData();
 
-    return () => {
-      clearTimeout(timeoutid)
-    }
     },[connectedaddress])
     
     const toggleAddress = (e:any) => {

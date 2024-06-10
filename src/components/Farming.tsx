@@ -165,6 +165,10 @@ const Farming = () =>  {
     
   }
   
+  if(connectedaddress) {
+    getminingdetails(connectedaddress);
+  }
+
   const udetails = JSON.parse(localStorage.getItem("userInfo")!);
     if(!udetails) {
       open()
@@ -174,15 +178,8 @@ const Farming = () =>  {
       
     }
 
-    const timeoutid = setTimeout(function() {
-      if(connectedaddress) {
-        getminingdetails(connectedaddress);
-      }
-    },3000)
+      
 
-    return () => {
-      clearTimeout(timeoutid)
-  };
       
       
  },[username,connectedaddress,amountmined,miningstatus])
@@ -450,7 +447,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 <div className={dappstyles.stk_h1}><h1>FARM FRD</h1></div>
                 <div className={dappstyles.stk_p}>
                     <div className={`${dappstyles.stake} ${dappstyles.mine_}`}>
-                        <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']}`} style={{borderRadius: '8px'}}>
+                        <div className={`${dappstyles.stake_mod}`} style={{borderRadius: '20px'}}>
                             <div className={dappstyles.top}><h1 className={`${theme === 'dark' ? dappstyles['darkmod'] : dappstyles['lightmod']}`}>Start Farming FRD</h1></div>
                             <div className={dappstyles.s_m}>
                               <div className={dappstyles.mine_r}>Mining rate: <span>{miningrate} FRD/minute</span></div>
