@@ -131,7 +131,7 @@ const MyBets: React.FC<{}> = () =>  {
     return () => {
       clearTimeout(timeoutid)
     }
-    },[])
+    },[connectedaddress])
     
     const toggleAddress = (e:any) => {
       let fulladdress = e.previousElementSibling as HTMLSpanElement;

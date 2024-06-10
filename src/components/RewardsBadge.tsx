@@ -27,7 +27,6 @@ const RewardsBadge:React.FC<{}> = () =>  {
   const [stakecount, setStakeCount] = useState<number>(0);
   const [betcount, setBetCount] = useState<number>(0);  
   const [nftcount, setNFTCount] = useState<number>(0);
-  const [walletaddress, setWalletAddress] = useState<any>("NA");  
 
   const [badge, setBadge] = useState("bronze"); // Initial value
   
@@ -123,7 +122,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
       }
     }
   
- }, [connectedaddress,router,username,walletaddress])
+ }, [connectedaddress,router,username])
 
 
   return (
