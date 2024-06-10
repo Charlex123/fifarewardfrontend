@@ -1,8 +1,8 @@
 /* styles/roadmap.module.css */
 .main h3 {
-  margin: 5px auto 50px auto;
+  margin: 5px auto 10px auto;
   text-align: center;
-  font-size: 32px;
+  font-size: 40px;
   font-weight: 900;
 }
 .timelineContainer {
@@ -13,7 +13,7 @@
   margin-left: 80px;
   overflow-y: hidden;
   transition: transform 0.3s, height 0.3s;
-  height: 350px;
+  height: 400px;
 }
 
 .timelineContainer:focus {
@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   position: absolute;
-  margin-left: 20px;
+  margin-left: 40px;
   height: 350px;
   padding: 20px 0;
   width: fit-content;
@@ -37,10 +37,10 @@
   left: 0;
   right: 0;
   height: 2px;
-  color: #f1f1f1;
+  color: #f1f1f1 !important;
   background-color: #f1f1f1 !important;
   transform: translateY(-50%);
-  z-index: -1;
+  z-index: 1;
 }
 
 .eventContainer {
@@ -49,7 +49,7 @@
   align-items: center;
   flex: 0 0 auto;
   position: relative;
-  margin: 0 80px;
+  margin: 0 120px;
   cursor: pointer;
   font-size: 14px;
 }
@@ -74,7 +74,7 @@
 }
 
 .event {
-  transition: transform 0.3s;
+  transition: transform 0.3s;font-size: 10px;
 }
 
 .event:hover,
@@ -86,7 +86,7 @@
   position: absolute;
   top: -120px; /* Position the up event */
   line-height: 12px;
-  font-size: 13px;
+  font-size: 11px;
   color: #f1f1f1;
 }
 
@@ -96,7 +96,7 @@
   bottom: -120px;
   color: #f1f1f1;
   line-height: 13px;
-  font-size: 13px;
+  font-size: 11px;
 }
 
 .date {
@@ -123,20 +123,15 @@
   .timelineContainer {
       margin-left: 10px;
       padding: 10px;
-      height: 300px;
+      height: 350px;
   }
 
   .eventContainer {
-      margin: 0 40px;
-  }
-
-  .upLine,
-  .downLine {
-      height: 60px;
+      margin: 0 120px;
   }
 
   .upEvent,
   .downEvent {
-      font-size: 12px;
+      font-size: 11px;
   }
 }

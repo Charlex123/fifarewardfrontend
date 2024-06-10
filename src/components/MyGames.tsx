@@ -82,9 +82,8 @@ const MyGames: React.FC<{}> = () =>  {
               const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
               const signer = provider.getSigner();
               const gfhcontract = new ethers.Contract(GuessfhCA!, GFHAbi, signer);
-              const loadGames = await gfhcontract.loadUserGames(connectedaddress);
-              await loadGames.forEach(async (element:any) => {
-                console.log("load game s data", loadGames)
+              const loaduserGames = await gfhcontract.loadUserGames(connectedaddress);
+              await loaduserGames.forEach(async (element:any) => {
                 if(element.walletaddress != 0x0000000000000000000000000000000000000000) {
                   
                   let item: GuessFootBallHeroMetadata = {
@@ -124,7 +123,7 @@ const MyGames: React.FC<{}> = () =>  {
     };
 
     fetchData();
-    },[])
+    },[connectedaddress,gameData])
     
     const toggleAddress = (e:any) => {
       let fulladdress = e.previousElementSibling as HTMLSpanElement;

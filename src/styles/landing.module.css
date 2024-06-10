@@ -26,6 +26,21 @@
   background-color: var(--background-color-dark);
   color: var(--text-color-dark);
 }
+.fade-in {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
+}
+
+.section {
+  opacity: 0; /* Initially hidden */
+  transition: opacity 1s ease-out;
+}
+
 .blk {
   width: 100%;margin: 0 auto 0 auto;background-color: transparent;padding-top: 80px;position: relative;z-index: 0;
   background-image: url("../assets/images/guessfootballherobg.png");background-size: cover;padding-bottom: 120px;
@@ -207,7 +222,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   margin: 0 auto 30px auto;text-align: center;font-size: 20px;font-weight: 900;
 }
 .frdstaking {
-  width: 100%;text-align: center;padding-bottom: 120px;color: #f1f1f1;padding-left: 20px;padding-right: 20px;
+  width: 100%;text-align: center;padding-bottom: 0;color: #f1f1f1;padding-left: 20px;padding-right: 20px;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .frdstaking h3 {
@@ -221,7 +236,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 60%;text-align: center;margin: auto;
 }
 .frdstaking .gov {
-  width: 100%;padding: 0 auto 145px auto;text-align: center;
+  width: 100%;padding: 0 auto 15px auto;text-align: center;
   background: linear-gradient(to bottom,  rgba(0,0,0,0) 0%,rgba(0,0,0,0) 3%,rgba(0,0,0,0.65) 14%,rgba(0,0,0,0.65) 20%,rgba(0,0,0,0.65) 28%,rgba(0,0,0,0.65) 35%,rgba(0,0,0,0.65) 82%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   /* background: rgb(13,20,24);
 background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(17,17,25,0.9626225490196079) 0%, rgba(9,10,11,1) 0%, rgba(0,0,0,1) 0%, rgba(4,12,4,1) 0%, rgba(6,14,6,0.7903536414565826) 0%, rgba(6,14,6,0.8575805322128851) 100%, rgba(37,203,6,1) 100%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%); */
@@ -248,7 +263,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-family: "RussoOne Regular", sans-serif;color: #f1f1f1;font-size: 14px;
 }
 .frdstaking {
-  padding: 120px auto 120px auto;width: 100%;overflow: hidden;
+  padding: 120px auto 20px auto;width: 100%;overflow: hidden;
 }
 .frdstaking .stakingmain {
   display: flex;flex-direction: row;justify-content: space-between;
@@ -276,12 +291,8 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
-.roadmap {
-  width: 100%;background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
-  padding: 120px auto 120px auto;overflow-x: hidden;color: #f1f1f1;
-}
 .frdreferrals {
-  padding: 0 20px 60px 20px;width: 100%;overflow: hidden;color: #f1f1f1;
+  padding: 60px 20px 60px 20px;width: 100%;overflow: hidden;color: #f1f1f1;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .frdreferrals .referralsmain {
@@ -415,8 +426,9 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   border-radius: 120px;border: 2px solid #e28305;width: fit-content;padding: 6px 32px;color: #18221b;
 }
 .roadmap {
-  width: 100%;margin: 5rem 0 1rem 0;z-index: 0;padding: 0;
-}
+  width: 100%;background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
+  padding: 20px auto 120px auto;overflow-x: hidden;color: #f1f1f1;margin-bottom: 10px;margin-top: 80px;
+} 
 .roadmap .rdm h1 {
   font-size: 38px;font-family: "RussoOne Regular", sans-serif;margin: 5px auto 0 auto;text-align: center;color: #f1f1f1;
   font-weight: 800;
@@ -562,7 +574,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
       text-align: right;width: auto;
     }
     .frdreferrals {
-      padding: 0 20px 40px 20px;margin-top: -100px;
+      padding: 0 20px 40px 20px;margin-top: 60px;
     }
     .frdreferrals .referralsmain {
       display: block;flex-direction: none;justify-content: unset;margin: 1rem auto 1rem auto;
