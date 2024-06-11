@@ -141,7 +141,7 @@ function Navbar() {
                       <a href='/betting/mybets' rel='noopener noreferrer' className={styles.si}>Bets</a>
                     </li>
                     <li>
-                      <a href='/betting/mygames' rel='noopener noreferrer' className={styles.si}>Games</a>
+                      <a href='/gaming/mygames' rel='noopener noreferrer' className={styles.si}>Games</a>
                     </li>
                     <li>
                       <a href='/nft/mynfts' rel='noopener noreferrer' className={styles.si}> NFTs</a>
