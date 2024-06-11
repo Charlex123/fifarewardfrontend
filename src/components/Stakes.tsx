@@ -651,7 +651,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                 <div className={dappstyles.stk_h1}><h1>Stake FRD</h1></div>
                 <div className={dappstyles.stk_p}>
                     <div className={`${dappstyles.stake}`}>
-                        <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
+                        <div className={`${dappstyles.stake_mod}`}>
                             <div className={dappstyles.top}><h1>Stake FRD</h1></div>
                             <div className={dappstyles.s_m}>
                               <h3>Earn more FRD through staking</h3>
@@ -756,7 +756,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
 
                           {stakesdata.map((stake,index) => (
                             <div className={`${dappstyles.stake}`} key={index}>
-                              <div className={`${dappstyles.stake_mod} ${theme === 'dark' ? dappstyles['darkstakemod'] : dappstyles['lightstakemod']}`}>
+                              <div className={`${dappstyles.stake_mod}`}>
                                   <div className={dappstyles.top}><h1>Stake</h1></div>
                                   <div className={dappstyles.s_m}>
                                     {isstakeremainingtimeset && 

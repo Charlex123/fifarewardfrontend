@@ -298,30 +298,11 @@ useEffect(() => {
             <div className={styles.connectw}>
               <div>
                   <p>
-                    We've partnered with many AI companies to help aggregate football/soccer  
+                    We've partnered with many AI companies to help aggregate football/soccer in data in their AI Models data tunneling
                   </p>
                   <p>
-                    Fifareward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities.
+                    We filter and aggregate football data using our highly sophisticating AI scrapping tools
                   </p>
-              </div>
-              <div>
-                <p><span>As</span> a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
-              </div>
-              <div>
-                <h2>Decentralized Wager && Odd Betting</h2>
-                <p>Betting is in the heart of sports entertainment, at Fifareward, we are revolutionizing the world of betting, starting with wager betting to odd betting, removing middleman manipulation and putting everything in your hands (the users). </p>
-              </div>
-              <div>
-                <h2>The FAN FORUM</h2>
-                <p>We've designed and built a fan chat forum where all the fans gossip and chatterings are done. Enjoy the fun of the game. <a href='/fanforum' style={{color: '#e28304'}}>go to fan forum</a> </p>
-              </div>
-              <div>
-                <h2>Guess The Football Hero</h2>
-                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero. </p>
-              </div>
-              <div>
-                <h2>Minting NFT of Football Legends</h2>
-                <p> Mint and sell nft arts of your favorites legends using our NFT minting engine and nft market place respectively.</p>
               </div>
             </div>
             <div className={styles.conn_image}>
