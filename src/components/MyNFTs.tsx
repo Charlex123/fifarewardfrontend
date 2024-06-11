@@ -262,7 +262,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       }
       getMyListedNFTs();
       
-    },[])
+    },[connectedaddress])
   
     const getItemBidds = async (itemId: any,itemName: string) => {
       try {
