@@ -549,7 +549,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
     .main .width_stake {
         width: 90%;
     }
-    .main .mine_ {
+    .main .mine_ .main .stake {
         width: 100%;
     }
     .main_c .main {

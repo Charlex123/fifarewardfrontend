@@ -507,7 +507,7 @@ const Staking = () =>  {
     }
   }
   getStakes();
- },[connectedaddress, dollarprice, dollarequiv])
+ },[connectedaddress])
 
  // Function to toggle the navigation menu
  const toggleSideBar = () => {
