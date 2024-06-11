@@ -44,8 +44,9 @@ const textValues = ["Read More ...", "Read Less ..."];
 // State to track the current index in the array
 const [currentAboutRMTextIndex, setCurrentAboutRMTextIndex] = useState(0);
 const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
-const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
+// const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
 const [isMobile,setIsMobile] = useState<boolean>(false);
+const [currentSection, setCurrentSection] = useState<Element | null>(null); 
 const images = [
   cgk,
   cmc,
@@ -139,34 +140,40 @@ useEffect(() => {
 
 useEffect(() => {
   const sections = document.querySelectorAll(`.${styles.section}`);
-  const options = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1,
-  };
+  if (sections.length === 0) {
+    console.error("No sections found with the specified class.");
+    return;
+  }
 
-  const observer = new IntersectionObserver((entries, observer) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('fade-in');
-        entry.target.classList.remove('fade-out');
-      } else {
-        entry.target.classList.add('fade-out');
-        entry.target.classList.remove('fade-in');
-      }
-    });
-  }, options);
+  const observer = new IntersectionObserver(
+    (entries) => {
+      entries.forEach((entry) => {
+        console.log(entry); // Log each entry to debug
+        if (entry.isIntersecting) {
+          entry.target.classList.add(styles.inFocus);
+          setCurrentSection(entry.target); // Update the state with the current section
+        } else {
+          entry.target.classList.remove(styles.inFocus);
+        }
+      });
+    },
+    {
+      threshold: 0.5,
+    }
+  );
 
-  sections.forEach(section => {
+  sections.forEach((section) => {
     observer.observe(section);
   });
 
+  console.log("cureent section",currentSection);
   return () => {
-    sections.forEach(section => {
+    sections.forEach((section) => {
       observer.unobserve(section);
     });
   };
 }, []);
+
 
   return (
     <div style={{overflowX: 'hidden'}}>
@@ -207,7 +214,7 @@ useEffect(() => {
 
     <div className={`${styles.homemain}`}>
       <div className={styles.overlay_d}></div>
-      <section className={styles.blk}>
+      <section className={`${styles.blk} ${styles.section}`}>
           <div className={styles.overlay_d}></div>
           <div className={styles.blk_inner}>
             <div className={styles.blkc}>
@@ -233,7 +240,7 @@ useEffect(() => {
           </div>
       </section>
 
-      <section className={styles.c_content}>
+      <section className={`${styles.c_content} ${styles.section}`}>
         <video className={styles.bg_video} autoPlay loop muted >
           <source src="./fifarewardvideo.mp4" type="video/mp4"></source>
         </video>
@@ -285,7 +292,7 @@ useEffect(() => {
           </div> */}
       </section>
       {/* fifareward betting */}
-      <section className={styles.connectworld}>
+      <section className={`${styles.connectworld} ${styles.section}`}>
           <h1>Connecting the world through football</h1>
           <div className={styles.conn_inner}>
             <div className={styles.connectw}>
@@ -299,7 +306,15 @@ useEffect(() => {
               </div>
               <div>
                 <p><span>As</span> a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
-             </div>
+              </div>
+              <div>
+                <h2>Decentralized Wager Betting</h2>
+                <p>Bet  </p>
+              </div>
+              <div>
+                <h2>Guess The Football Hero</h2>
+                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero. </p>
+              </div>
               <div>
                 <h2>Guess The Football Hero</h2>
                 <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero. </p>
@@ -318,7 +333,7 @@ useEffect(() => {
       </section>
 
       {/* dex tools */}
-      <section className={styles.exchmain}>
+      <section className={`${styles.exchmain} ${styles.section}`}>
         <h1>SUPPORTED BY</h1>
 
         <div className={styles.dexchanges}>
@@ -343,7 +358,7 @@ useEffect(() => {
         </div>
       </section>
 
-      <section className={`${styles.frdbetting}`}>
+      <section className={`${styles.frdbetting} ${styles.section}`}>
           <div className={styles.betd}>
               <div className={styles.betdc}>
                   <div>
@@ -370,7 +385,7 @@ useEffect(() => {
           </div>
       </section>
 
-      <section className={`${styles.frdstaking}`} id="frdstaking">
+      <section className={`${styles.frdstaking} ${styles.section}`} id="frdstaking">
           {isMobile === true ? <h1>STAKING <div>AND</div> FARMING</h1> : <h1>STAKING AND FARMING</h1>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
@@ -408,11 +423,11 @@ useEffect(() => {
           </div>
       </section>
       
-      <section className={styles.roadmap} id='roadmap'>
+      <section className={`${styles.roadmap} ${styles.section}`} id='roadmap'>
         <RoadMap />
       </section>
 
-      <section className={`${styles.frdreferrals}`} id="referrals">
+      <section className={`${styles.frdreferrals} ${styles.section}`} id="referrals">
           <h1>REFER AND EARN</h1>
           <div className={styles.referralsmain}>
               <div className={styles.referralstext}>
@@ -440,7 +455,7 @@ useEffect(() => {
           </div>
       </section>
 
-      <section className={`${styles.aboutfrd}`} id="aboutfrd">
+      <section className={`${styles.aboutfrd} ${styles.section}`} id="aboutfrd">
           <h1>ABOUT FIFAREWARD</h1>
           
           <p>

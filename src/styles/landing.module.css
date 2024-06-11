@@ -1,7 +1,7 @@
 /* background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(19,28,28,1) 0%, rgba(9,22,29,1) 0%, rgba(58,58,66,0.7049194677871149) 0%, rgba(57,57,62,0.9262079831932774) 0%, rgba(38,38,92,1) 0%, rgba(4,4,14,0.9626225490196079) 0%, rgba(0,0,0,1) 100%, rgba(18,27,43,1) 100%, rgba(19,28,28,1) 100%, rgba(13,20,24,1) 100%, rgba(5,4,36,1) 100%, rgba(13,20,24,1) 100%, rgba(9,9,121,0.8757878151260504) 100%, rgba(0,212,255,1) 100%);  */
 
 .chronoh1 {
-  font-size: 16px !important;font-family: "RussoOne Regular";text-transform: capitalize;font-weight: 900;padding: 0;
+  font-size: 14px !important;font-family: "RussoOne Regular";text-transform: capitalize;font-weight: 900;padding: 0;
 }
 .chronop {
   font-size: 13px !important;font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;text-transform: capitalize;color: #18221b;font-weight: 700;
@@ -26,21 +26,6 @@
   background-color: var(--background-color-dark);
   color: var(--text-color-dark);
 }
-.fade-in {
-  opacity: 1;
-  transition: opacity 1s ease-in;
-}
-
-.fade-out {
-  opacity: 0;
-  transition: opacity 1s ease-out;
-}
-
-.section {
-  opacity: 0; /* Initially hidden */
-  transition: opacity 1s ease-out;
-}
-
 .blk {
   width: 100%;margin: 0 auto 0 auto;background-color: transparent;padding-top: 80px;position: relative;z-index: 0;
   background-image: url("../assets/images/guessfootballherobg.png");background-size: cover;padding-bottom: 120px;
@@ -70,7 +55,7 @@
 }
 .c_content {    
     margin: auto;padding: 75px 35px 35px 35px;display: flex;justify-content: space-between;position: relative;
-    overflow: hidden;min-height: 90vh;height: 90vh;width: 100%;z-index: 0;background-color: red;
+    overflow: hidden;min-height: 90vh;height: 90vh;width: 100%;z-index: 0;
 }
 .c_content:focus {
   transform: scale(1.2);
@@ -133,7 +118,7 @@
     font-size: 32px;font-family: "RussoOne Regular", sans-serif;font-weight: 900;text-transform: capitalize;
 }
 .c_content .hero_h1 div p {
-    font-size: 16px;font-family: "RussoOne Regular", sans-serif;font-weight: 900;text-transform: capitalize;text-align: left;
+    font-size: 14px;font-family: "RussoOne Regular", sans-serif;font-weight: 900;text-transform: capitalize;text-align: left;
     line-height: 20px;letter-spacing: 1px;padding: 5px 0;margin-left: 50px;
 }
 .c_content .hero_h1 div.get_sd_btns {
@@ -275,7 +260,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-size: 18px;font-weight: 800;
 }
 .frdstaking .stakingmain .stakevesttext ul li {
-  margin: 20px 0 10px 0;font-size: 16px;
+  margin: 20px 0 10px 0;font-size: 14px;
 }
 .frdstaking .stakingmain .stakevestimg {
   width: 50%;margin: 1rem auto;
@@ -288,7 +273,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;
 }
 .frdstaking .stakingmain p {
-  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 14px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .frdreferrals {
@@ -302,10 +287,10 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 56%;margin: 1rem auto;
 }
 .frdreferrals .referralsmain .referralstext h4, .frdreferrals .referralsmain .referralstext h5 {
-  font-size: 18px;font-weight: 800;margin-bottom: 15px;
+  font-size: 14px;font-weight: 800;margin-bottom: 15px;
 }
 .frdreferrals .referralsmain .referralstext ul li {
-  margin: 20px 0 10px 0;font-size: 16px;
+  margin: 20px 0 10px 0;font-size: 14px;
 }
 .frdreferrals .referralsmain .referralsimg {
   width: 40%;margin: 1rem auto;
@@ -318,7 +303,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;color: #e28305;
 }
 .frdreferrals .referralsmain p {
-  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 14px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .freeclaim {
@@ -332,7 +317,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   width: 100%;margin: auto;text-align: center;
 }
 .freeclaim p {
-  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 14px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .freeclaim button {
@@ -348,7 +333,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;
 }
 .aboutfrd p {
-  text-align: left;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  text-align: left;font-size: 14px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
   margin: 30px auto 30px auto;
 }
 .aboutfrd ul {
@@ -358,7 +343,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-size: 22px;font-weight: 800;
 }
 .aboutfrd ul li {
-  margin: 20px 0 10px 0;font-size: 16px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+  margin: 20px 0 10px 0;font-size: 14px;font-family: "RussoOne Regular", 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
 .tkl {
   width: 100%;margin: auto 0;padding: 0;
@@ -372,7 +357,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   margin: 2rem auto;text-align: center;
 }
 .tkl .tkl_in .tkl_head h4 {
-  font-size: 12px;font-family: "RussoOne Regular",Verdana, Geneva, Tahoma, sans-serif;color: #e28305;margin: 20px auto 0 auto;
+  font-size: 14px;font-family: "RussoOne Regular",Verdana, Geneva, Tahoma, sans-serif;color: #e28305;margin: 20px auto 0 auto;
   padding-top: 40px;font-weight: 600;
 }
 .tkl .tkl_in .tkl_head h1 {
@@ -417,12 +402,12 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-family: "RussoOne Regular", sans-serif;color: #f1f1f1;text-align: left;padding: 0 15px;
 }
 .tkl .tkl_in .tkl_body .button {
-  font-family: "RussoOne Regular", sans-serif;font-size: 16px;font-weight: 900;margin: 35px auto;text-align: center;
+  font-family: "RussoOne Regular", sans-serif;font-size: 14px;font-weight: 900;margin: 35px auto;text-align: center;
   border-radius: 120px;border: 2px solid #e28305;width: fit-content;padding: 6px 32px;color: #e28305;
 }
 .tkl .tkl_in .tkl_body .btn {
   background-color: #e28305;
-  font-family: "RussoOne Regular", sans-serif;font-size: 16px;font-weight: 900;margin: 35px auto;text-align: center;
+  font-family: "RussoOne Regular", sans-serif;font-size: 14px;font-weight: 900;margin: 35px auto;text-align: center;
   border-radius: 120px;border: 2px solid #e28305;width: fit-content;padding: 6px 32px;color: #18221b;
 }
 .roadmap {
@@ -625,4 +610,26 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   .frdstaking .gov .gov_in .gov_c {
     width: 90%;
   } 
+}
+
+.section {
+  overflow: hidden;
+  transition: transform 1s ease-in-out, scale 1s ease-in-out;
+  transform: scale(1);
+  transition: opacity 1s ease-out;
+}
+.section::-moz-focus-outer {
+  position: fixed;top: 0;bottom: 0;
+  right: 0;left: 0;
+  height: 100vh;
+  width: 100vw;
+}
+.inFocus {
+  opacity: 1;
+  transition: opacity 1s ease-in;
+}
+
+.fade_out {
+  opacity: 0;
+  transition: opacity 1s ease-out;
 }
