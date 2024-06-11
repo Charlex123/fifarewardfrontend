@@ -308,12 +308,12 @@ useEffect(() => {
                 <p><span>As</span> a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
               </div>
               <div>
-                <h2>Decentralized Wager Betting</h2>
-                <p>Bet  </p>
+                <h2>Decentralized Wager && Odd Betting</h2>
+                <p>Betting is in the heart of sports entertainment, at Fifareward, we are revolutionizing the world of betting, starting with wager betting to odd betting, removing middleman manipulation and putting everything in your hands (the users). </p>
               </div>
               <div>
-                <h2>Guess The Football Hero</h2>
-                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero. </p>
+                <h2>The FAN FORUM</h2>
+                <p>We've designed and built a fan chat forum where all the fans gossip and chatterings are done. Enjoy the fun of the game. <a href='/fanforum' style={{color: '#e28304'}}>go to fan forum</a> </p>
               </div>
               <div>
                 <h2>Guess The Football Hero</h2>
