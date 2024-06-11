@@ -291,6 +291,47 @@ useEffect(() => {
             <Image src={Heroimg} alt='hero img' style={{objectFit: "contain",marginTop: '5rem'}} quality={90} />
           </div> */}
       </section>
+      
+      <section className={`${styles.connectworld} ${styles.section}`}>
+          <h1>Aggregating Football Data For AI</h1>
+          <div className={styles.conn_inner}>
+            <div className={styles.connectw}>
+              <div>
+                  <p>
+                    We've partnered with many AI companies to help aggregate football/soccer  
+                  </p>
+                  <p>
+                    Fifareward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities.
+                  </p>
+              </div>
+              <div>
+                <p><span>As</span> a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
+              </div>
+              <div>
+                <h2>Decentralized Wager && Odd Betting</h2>
+                <p>Betting is in the heart of sports entertainment, at Fifareward, we are revolutionizing the world of betting, starting with wager betting to odd betting, removing middleman manipulation and putting everything in your hands (the users). </p>
+              </div>
+              <div>
+                <h2>The FAN FORUM</h2>
+                <p>We've designed and built a fan chat forum where all the fans gossip and chatterings are done. Enjoy the fun of the game. <a href='/fanforum' style={{color: '#e28304'}}>go to fan forum</a> </p>
+              </div>
+              <div>
+                <h2>Guess The Football Hero</h2>
+                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero. </p>
+              </div>
+              <div>
+                <h2>Minting NFT of Football Legends</h2>
+                <p> Mint and sell nft arts of your favorites legends using our NFT minting engine and nft market place respectively.</p>
+              </div>
+            </div>
+            <div className={styles.conn_image}>
+              <div className={styles.cimg}>
+                <Image src={frdbanner} style={{width: '100%', height: '100%',borderRadius: '8px',marginTop: '0'}} alt='connecting the world through football' />
+              </div>
+            </div>
+          </div>
+      </section>
+
       {/* fifareward betting */}
       <section className={`${styles.connectworld} ${styles.section}`}>
           <h1>Connecting the world through football</h1>

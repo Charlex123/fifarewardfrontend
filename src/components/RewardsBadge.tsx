@@ -134,7 +134,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
                   Activity Counts
               </h1>
               <p className={`${theme === 'dark' ? styles['darkmod'] : styles['lightmod']}`}>
-                Below is the number (counts) of activities you have perform in FifaReward using your connected wallet address
+                Below is the number (counts) of activities you have performed in FifaReward using your connected wallet address
               </p>
             </div>
             <div className={styles.rwdbadge}>
