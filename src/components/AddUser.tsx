@@ -82,7 +82,7 @@ const AddUser = () =>  {
           }
         }  
         setLoading(true);
-        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser", {
+        const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/addupdateuser", {
           username,
           address,
           sponsoraddress,

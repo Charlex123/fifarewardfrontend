@@ -49,7 +49,7 @@ import { FaChevronLeft, FaEye, FaEyeSlash, FaLockOpen } from 'react-icons/fa6';
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/checkforgotemail", {
+    const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/checkforgotemail", {
           email,
     }, config);
     if(data) {
@@ -71,7 +71,7 @@ import { FaChevronLeft, FaEye, FaEyeSlash, FaLockOpen } from 'react-icons/fa6';
       setLoading(true)
       console.log(email)
       console.log(newpassword)
-      const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/resetpassword", {
+      const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/resetpassword", {
         email,
         newpassword,
         confirmnewpassword

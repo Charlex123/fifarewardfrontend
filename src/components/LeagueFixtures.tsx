@@ -43,7 +43,7 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
               "Content-type": "application/json"
           }
         }  
-        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/fixtures/loadleaguefixtures/", {
+        const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadleaguefixtures/", {
           leagueid,
           currentPage,
           limit

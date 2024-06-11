@@ -33,7 +33,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/checkloginemail", {
+    const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/checkloginemail", {
           email,
     }, config);
     if(data) {
@@ -67,7 +67,7 @@ const LoginModal:React.FC <ChildProps> = ({prop,onChange}) => {
         }
       }  
       setLoading(true)
-      const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/signin", {
+      const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/signin", {
         email,
         password
       }, config);

@@ -90,7 +90,7 @@ const InfluencerReg = () =>  {
 //         "Content-type": "application/json"
 //       }
 //     }
-//     const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/checkusername", {
+//     const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/checkusername", {
 //           username,
 //     }, config);
 //     if(data) {
@@ -108,7 +108,7 @@ const InfluencerReg = () =>  {
 //         "Content-type": "application/json"
 //       }
 //     }
-//     const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/checkemail", {
+//     const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/checkemail", {
 //           email,
 //     }, config);
 //     if(data) {
@@ -144,7 +144,7 @@ function compareHexStrings(address1: any, address2: any) {
         }  
         console.log("address", address,sponsoraddress)
         setLoading(true);
-        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser", {
+        const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/addupdateuser", {
           username,
           address,
           sponsoraddress,

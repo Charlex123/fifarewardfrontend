@@ -470,11 +470,12 @@ const Staking = () =>  {
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
         const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        console.log("stajke contract",StakeContract)
         const stks = await StakeContract.loadUserStakes(connectedaddress);
         console.log('stake data',stks);
         await stks.forEach(async (element:any) => {
           if(element) {
-            
+            console.log("stake time",element.stakeDuration)
             let item: StakesMetadata = {
               stakeId: element.stakeId,
               rewardTime: element.rewardTime,
@@ -488,7 +489,7 @@ const Staking = () =>  {
               isActive: element.isActive,
               stakerAddress: element.stakerAddress
             }
-            const getstaketimeremaining = await StakeContract.getStakeRemainingTime(item.stakeId?.toNumber());
+            const getstaketimeremaining = await StakeContract.getStakeRemainingTime(element.stakeId?.toNumber());
             console.log("remaining stake time",getstaketimeremaining);
             setStakeTimeRemaining(getstaketimeremaining.toNumber());
             console.log("st time oo",getstaketimeremaining.toNumber());

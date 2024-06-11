@@ -1004,7 +1004,7 @@ const closeBetFilter = () => {
                                       </li>
                                   </ul>
                                 </div>
-                                <div className={openbetsstyle.form_g}>
+                                {/* <div className={openbetsstyle.form_g}>
                                     <div className={openbetsstyle.betp}>
                                         Participants joined
                                     </div>
@@ -1013,7 +1013,7 @@ const closeBetFilter = () => {
                                       {openbet.participants}
                                       </div>
                                     </div>
-                                </div>
+                                </div> */}
                                 <div className={openbetsstyle.form_g}>
                                     <label>Which team are you betting on?</label>
                                     <div>

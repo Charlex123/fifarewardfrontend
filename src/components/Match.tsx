@@ -158,7 +158,7 @@ const { walletProvider } = useWeb3ModalProvider();
                   "Content-type": "application/json"
               }
             }  
-            const {data} = await axios.get("https://fifarewardbackend.onrender.com/api/fixtures/loadfixtures/", config);
+            const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixtures/", config);
             setCountryFixturesdata(data);
           } catch (error) {
             console.error('Error fetching data:', error);
@@ -266,7 +266,7 @@ const { walletProvider } = useWeb3ModalProvider();
                         "Content-type": "application/json"
                     }
                 }  
-                const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/fixtures/loadmatch", {
+                const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadmatch", {
                     matchidparam
                 }, config);
                 if(data.match !== null) {
@@ -630,9 +630,10 @@ const openHIWE = () => {
 const placeBet = (divId:any) => {
 
   // let bgoverlay = document.querySelector('#hiw_overlay') as HTMLElement;
-
+  
   let svg = divId.getAttribute('data-icon');
   let path = divId.getAttribute('fill');
+  console.log("div iop",divId,svg,path)
   if((svg !== null && svg !== undefined) || (path !== null && path !== undefined)) {
     if(svg !== null && svg !== undefined) {
       let targetDiv = divId.parentElement.parentElement.parentElement.parentElement.nextElementSibling;
@@ -728,7 +729,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/fixtures/searchmatchbykeyword", {
+  const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/searchmatchbykeyword", {
       searchkeyword
   }, config);
   if(data) {
@@ -752,7 +753,7 @@ const loadSearchResults = async () => {
             "Content-type": "application/json"
         }
     }  
-    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/fixtures/loadmatchsearchresult", {
+    const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadmatchsearchresult", {
         hometeam,
         awayteam
     }, config);
@@ -920,9 +921,9 @@ const closeBgModal = () => {
                                     <div className={matchstyle.pbet} id="pbet_op">
                                       <div className={matchstyle.pbet_x} ><span onClick={(e) => closePBET(e.target)} style={{color: 'white',fontWeight: 'bolder'}}>x</span></div>
                                       <form>
-                                          <h3>Open Bet</h3>
+                                          <h3>Place Bet</h3>
                                           <div>
-                                            <p>Open bet by selecting the appropriate details</p>
+                                            <p>Place bet by selecting the appropriate details</p>
                                           </div>
                                           <div className={matchstyle.form_g}>
                                           <ul>
@@ -979,7 +980,7 @@ const closeBgModal = () => {
                                           <div className={matchstyle.form_g}>
                                               <label>Enter amount ({`Min of ${usdequivfrdamount?.toLocaleString()}FRD ($10)`})</label>
                                               <div style={{color: 'white'}}>${dollarequiv?.toLocaleString()}</div>
-                                              <input type='number' title='input' required onChange={(e) => setBetAmounts(e)} min={5} placeholder={`${usdequivfrdamount.toLocaleString()}FRD`} />
+                                              <input type='number' title='input' required onChange={(e) => setBetAmounts(e)} min={5} placeholder={`${usdequivfrdamount?.toLocaleString()}FRD`} />
                                               <small id='minamuntalert'></small>
                                           </div>
                                           <div className={matchstyle.form_g}>

@@ -77,7 +77,7 @@ const FanForum: React.FC<{}> = () =>  {
 
 
   const fetchMessages = async () => {
-    const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/chatforum/getmessages');
+    const {data} = await axios.get('https://fifarewardbackend-1.onrender.com/api/chatforum/getmessages');
     const messages = data.messages;
     if(data.messages.length > 0) {
       await messages.forEach(async (msg:any) => {
@@ -112,7 +112,7 @@ const FanForum: React.FC<{}> = () =>  {
     fetchMessages();
 
     const fetchUsers = async () => {
-        const {data} = await axios.get('https://fifarewardbackend.onrender.com/api/users/getusers');
+        const {data} = await axios.get('https://fifarewardbackend-1.onrender.com/api/users/getusers');
         setUsers(data.data);
     };
     fetchUsers();
@@ -193,7 +193,7 @@ const FanForum: React.FC<{}> = () =>  {
 
           try {
               setShowSpinner(true);
-              const response = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
+              const response = await axios.post('https://fifarewardbackend-1.onrender.com/api/upload', formData, {
                   headers: {
                       'Content-Type': 'multipart/form-data',
                   },
@@ -206,7 +206,7 @@ const FanForum: React.FC<{}> = () =>  {
               }  
 
               const content = response.data.url;
-              const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
+              const {data} = await axios.post('https://fifarewardbackend-1.onrender.com/api/chatforum/sendmessage', {
                   content,
                   pic,
                   user: currentUser,
@@ -229,7 +229,7 @@ const FanForum: React.FC<{}> = () =>  {
                   }
               }  
               const content = text;
-              const {data} = await axios.post('https://fifarewardbackend.onrender.com/api/chatforum/sendmessage', {
+              const {data} = await axios.post('https://fifarewardbackend-1.onrender.com/api/chatforum/sendmessage', {
                   content,
                   pic,
                   user: currentUser,

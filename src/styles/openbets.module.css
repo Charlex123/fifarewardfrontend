@@ -356,3 +356,9 @@
         
     }
 }
+
+@media (max-width: 767px) {
+    .main .openbetmain .pbet {
+        width: 100%;
+    }
+}

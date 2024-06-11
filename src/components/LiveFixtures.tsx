@@ -43,7 +43,7 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
             "Content-type": "application/json"
         }
       }  
-      const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/livefixtures/loadlivefixtures", {
+      const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/livefixtures/loadlivefixtures", {
         live,
         currentPage,
         limit

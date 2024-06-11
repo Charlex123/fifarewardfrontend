@@ -30,7 +30,7 @@ export default function LoginForm() {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/checkloginemail", {
+    const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/checkloginemail", {
           email,
     }, config);
     if(data) {
@@ -61,7 +61,7 @@ export default function LoginForm() {
         }
       }  
       setLoading(true)
-      const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/users/signin", {
+      const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/signin", {
         email,
         password
       }, config);

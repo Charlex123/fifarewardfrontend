@@ -44,7 +44,7 @@ const FixturesByCalenderDate:React.FC<MyComponentProps> = ({date}) => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/fixtures/loadfixturesbydate", {
+          const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixturesbydate", {
             fixturedate,
             currentPage,
             limit

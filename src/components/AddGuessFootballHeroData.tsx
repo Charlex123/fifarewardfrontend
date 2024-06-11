@@ -49,7 +49,7 @@ const AddGuessFootballHeroData = () =>  {
         "Content-type": "application/json"
       }
     }
-    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/players/checkname", {
+    const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/players/checkname", {
           name,
     }, config);
     console.log("dera",data)
@@ -70,7 +70,7 @@ const AddGuessFootballHeroData = () =>  {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('https://fifarewardbackend.onrender.com/api/upload', formData, {
+            const response = await axios.post('https://fifarewardbackend-1.onrender.com/api/upload', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -82,7 +82,7 @@ const AddGuessFootballHeroData = () =>  {
                 }
             }  
             const image = response.data.url;
-            const dresponse = await axios.post('https://fifarewardbackend.onrender.com/api/players/addplayer', {
+            const dresponse = await axios.post('https://fifarewardbackend-1.onrender.com/api/players/addplayer', {
                 name,
                 image,
                 hint
@@ -114,7 +114,7 @@ const updateHandler = async (e:any) => {
         formData.append('file', file);
 
         try {
-            const response = await axios.post('https://fifarewardbackend.onrender.com/uploadplayerimage', formData, {
+            const response = await axios.post('https://fifarewardbackend-1.onrender.com/uploadplayerimage', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },
@@ -127,7 +127,7 @@ const updateHandler = async (e:any) => {
             }  
             const image = response.data.fullUrl;
             console.log("res pom",response.data.fullUrl)
-            const data = await axios.post('https://fifarewardbackend.onrender.com/api/players/updateplayer', {
+            const data = await axios.post('https://fifarewardbackend-1.onrender.com/api/players/updateplayer', {
                 name,
                 image,
                 hint

@@ -23,7 +23,7 @@ import { useWeb3ModalAccount } from "@web3modal/ethers5/react";
 //               "Content-type": "application/json"
 //             }
 //           };
-//           const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/getuser/", { address }, config);
+//           const response = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/getuser/", { address }, config);
 //           const data = response.data;
 //           if(data.user != null) {
 //             setBadge(data.user.badge);
@@ -32,7 +32,7 @@ import { useWeb3ModalAccount } from "@web3modal/ethers5/react";
 //             setIsSponsorInfluencer(data.user.issponsorinfluencer);
 //             localStorage.setItem("userInfo", JSON.stringify(data.user));
 //           } else {
-//             const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser/", {
+//             const response = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/addupdateuser/", {
 //               address,
 //               isConnected,
 //               sponsoraddress,
@@ -80,7 +80,7 @@ export default function ConnectWallet() {
               "Content-type": "application/json"
             }
           };
-          const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/getuser/", { address }, config);
+          const response = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/getuser/", { address }, config);
           const data = response.data;
           if(data.user != null) {
             setBadge(data.user.badge);
@@ -88,7 +88,7 @@ export default function ConnectWallet() {
             setIsSponsorInfluencer(data.user.issponsorinfluencer);
             localStorage.setItem("userInfo", JSON.stringify(data.user));
           } else {
-            const response = await axios.post("https://fifarewardbackend.onrender.com/api/users/addupdateuser/", {
+            const response = await axios.post("https://fifarewardbackend-1.onrender.com/api/users/addupdateuser/", {
               address,
               isConnected,
               sponsoraddress,

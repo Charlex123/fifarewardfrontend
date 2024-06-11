@@ -309,7 +309,7 @@
     position: absolute;top: 4px;right: 5px;cursor: pointer;color: #151414;
 }
 .main .betwrap .betwrapin .league_wrap_in {
-    background-color: #ffffff;border: 2px solid #f1f1f1;
+    background-color: #ffffff;border: 2px solid #f1f1f1;position: relative;
 }
 .main .betwrap .betwrapin .league_wrap .league_wrap_in.display {
     display: block;cursor: pointer;
@@ -319,7 +319,7 @@
 }
 .main .betwrap .betwrapin .league_wrap .fixt {
     border-bottom: 1px solid #ffffff;margin: 0 0 5px 0;border-radius: 4px;
-    background-color: #ffffff ;cursor: pointer;
+    background-color: #ffffff ;cursor: pointer;position: relative;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .fixt_d_o {
     display: flex;justify-content: space-between;padding: 3px;font-size: 14px;font-weight: 600;
@@ -376,8 +376,8 @@
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet {
     position: fixed;z-index: 9;background-color: #000000de;padding: 10px 24px 10px 24px;
-    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 9%;display: none;
-    overflow-y: auto;
+    border-radius: 4px;left: 0;right: 0;width: fit-content;margin: auto;top: 0;display: none;
+    overflow-y: auto;margin: auto;bottom: 0;height: 100%;
 }
 .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet .pbet_x {
     color: #ffffff;position: absolute;right: 8px;top: 4px;cursor: pointer;
@@ -563,6 +563,9 @@
     }
     .main .search {
        width: 94%;
+    }
+    .main .betwrap .betwrapin .league_wrap .fixt .openbet .pbet { 
+        width: 100%;
     }
     .main .betbydate {
         margin: auto;padding: 0 1% 0 1%;font-size: 12px;

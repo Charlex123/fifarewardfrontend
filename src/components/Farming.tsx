@@ -27,6 +27,7 @@ import ActionSuccessModal from './ActionSuccess';
 import Head from 'next/head';
 import axios from 'axios';
 import { FaAlignJustify, FaXmark } from 'react-icons/fa6';
+import { number } from 'prop-types';
 
 const Farming = () =>  {
 
@@ -40,7 +41,7 @@ const Farming = () =>  {
   // const [dropdwnIcon2, setDropdownIcon2] = useState(<FaChevronDown size='22px' className={dappsidebarstyles.sidebarlisttoggle}/>);
   const [username, setUsername] = useState("");
   const [dappConnector,setDappConnector] = useState(false);
-  let [amountmined, setAmountMined] = useState<number>(0.00005);
+  const [amountmined, setAmountMined] = useState<number>(0.00005);
   const [usdequivfrdamount, setUsdEquivFrdAmount] = useState<number>(0);
   const [usdprice, setUsdPrice] = useState<number>(0);
   const [errorMessage, seterrorMessage] = useState("");
@@ -134,55 +135,48 @@ const Farming = () =>  {
  
 
  useEffect(() => {
-
-  console.log("connected address",connectedaddress, '090---',address)
-  const getminingdetails = async (connectedaddress: string) => {
-    // search database and return documents with similar keywords
-    const config = {
+  const getMiningDetails = async (address: any) => {
+    try {
+      const config = {
         headers: {
-            "Content-type": "application/json"
+          "Content-type": "application/json"
         }
-    }  
-    console.log("connected address 323",connectedaddress)
-    const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/getminingdetails", {
-        address:connectedaddress
-    }, config);
-    if(data) {
-      if(data.message == "no mining details found") {
-        setAmountMined(0.00005);
-        setMiningStatus("Inactive");
-      }else {
-        setAmountMined(data.amountmined);
-        setMiningStatus(data.miningstatus);
-        
-        if(data.miningstatus == "Active") (
-          incrementMiningAmount(data.amountmined,data.miningstatus)
-        )
+      };
+
+      const { data } = await axios.post("https://fifarewardbackend-1.onrender.com/api/mining/getminingdetails", {
+        address: address
+      }, config);
+
+      if (data) {
+        if (data.message === "no mining details found") {
+          setAmountMined(0.00005);
+          setMiningStatus("Inactive");
+        } else {
+          setAmountMined(data.amountmined);
+          setMiningStatus(data.miningstatus);
+
+          if (data.miningstatus === "Active") {
+            incrementMiningAmount("Active");
+          }
+        }
       }
-      
-      console.log('mining details',data);
+    } catch (error) {
+      console.error("Error fetching mining details:", error);
     }
-    
+  };
+
+  if (connectedaddress) {
+    getMiningDetails(connectedaddress);
   }
-  
-  if(connectedaddress) {
-    getminingdetails(connectedaddress);
+
+  const userInfo = JSON.parse(localStorage.getItem("userInfo")!);
+  if (!userInfo) {
+    open();
+  } else {
+    setUsername(userInfo.username);
   }
+}, [connectedaddress]);
 
-  const udetails = JSON.parse(localStorage.getItem("userInfo")!);
-    if(!udetails) {
-      open()
-     
-    }else {
-      setUsername(udetails.username)
-      
-    }
-
-      
-
-      
-      
- },[username,connectedaddress,amountmined,miningstatus])
 
  const updateminedAmount = async (amountmined: number,miningstatus: string ) => {
     try {
@@ -196,7 +190,7 @@ const Farming = () =>  {
                 "Content-type": "application/json"
             }
         }  
-        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/updateminedamount", {
+        const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/mining/updateminedamount", {
             address: connectedaddress, 
             newamountmined,
             miningstatus
@@ -204,10 +198,8 @@ const Farming = () =>  {
         if(data) {
           setAmountMined(data.amountmined);
           setMiningStatus(data.miningstatus);
-          // setShowLoading(false)
-          // setShowBgOverlay(false)
-          console.log('update mine was successful',data);
-          console.log(`Total mined: ${newamountmined}`);
+          setShowLoading(false)
+          setShowBgOverlay(false)
         }
       }
   } catch (error) {
@@ -217,23 +209,44 @@ const Farming = () =>  {
 
  }
 
- const incrementMiningAmount = async (amountmined: number,miningstatus: string) => {
-  if (!miningInterval) {
-    miningInterval = setInterval(function() {
-        amountmined += miningrate;
-        updateminedAmount(amountmined,miningstatus);
-        console.log(" upd mine amt ran",miningInterval);
-    }, 60000); // 60000 milliseconds = 1 minute
-  }
+ const getandupdateminingdetails = async (connectedaddress: string,miningstatus: string) => {
+  // search database and return documents with similar keywords
+  const config = {
+      headers: {
+          "Content-type": "application/json"
+      }
+  }  
+  const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/mining/getminingdetails", {
+      address:connectedaddress
+  }, config);
+    if(data) {
+      setShowBgOverlay(false)
+      setShowLoading(false)
+      setAmountMined(data.amountmined);
+      setMiningStatus(data.miningstatus);
+      const newamtmined = data.amountmined + miningrate;
+      if(data.miningstatus !== "Stopped" && data.miningstatus !== "Inactive" && miningstatus === "Active") {
+        updateminedAmount(newamtmined!,miningstatus);
+      }else if(data.miningstatus === "Stopped" && miningstatus === "Active") {
+        updateminedAmount(newamtmined!,miningstatus);
+      }
+      
+    }
+    
+  
+}
+
+ const incrementMiningAmount = async (miningstatus: string) => {
+  getandupdateminingdetails(connectedaddress!,miningstatus)
+  setInterval(function() {
+      getandupdateminingdetails(connectedaddress!,miningstatus)
+    }, 60000); 
  }
 
- const resumeMiningAmount = async (amountmined: number,miningstatus: string) => {
-    console.log(" resme mining clicked")
-    setInterval(function() {
-        amountmined += miningrate;
-        updateminedAmount(amountmined,miningstatus);
-        console.log(" upd mine amt ran",miningInterval);
-    }, 60000); // 60000 milliseconds = 1 minute
+ const resumeMiningAmount = async () => {
+    setShowLoading(true)
+    setShowBgOverlay(true);
+    incrementMiningAmount("Active");
  }
 
  const startMining = async (e: any) => {
@@ -264,7 +277,7 @@ const Farming = () =>  {
                       "Content-type": "application/json"
                   }
               }  
-              const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/startmining", {
+              const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/mining/startmining", {
                   address: connectedaddress, 
                   amountmined,
                   miningrate,
@@ -273,7 +286,7 @@ const Farming = () =>  {
               if(data) {
                 setAmountMined(data.amountmined);
                 setMiningStatus(data.miningstatus)
-                incrementMiningAmount(data.amountmined,data.miningstatus);
+                incrementMiningAmount(data.miningstatus);
                 setActionSuccess(true);
                 setActionSuccessMessage(`Mining activation `);
                 setShowBgOverlay(false)
@@ -291,12 +304,10 @@ const Farming = () =>  {
 };
 
 const stopminingCount = async (e: any) => {
-  console.log(' min interval',miningInterval);
 
   // if (miningInterval) {
     // clearInterval(miningInterval);
     // miningInterval = null;
-    console.log('Mining stopped.');
     setShowLoading(true)
     setShowBgOverlay(true)
       try {
@@ -305,13 +316,12 @@ const stopminingCount = async (e: any) => {
                 "Content-type": "application/json"
             }
         }  
-        const {data} = await axios.post("https://fifarewardbackend.onrender.com/api/mining/stopmining", {
+        const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/mining/stopmining", {
             address:connectedaddress
         }, config);
         if(data) {
           setAmountMined(data.amountmined);
           setMiningStatus(data.miningstatus);
-          console.log('Stoppend mining',data);
           setShowLoading(false)
           setShowBgOverlay(false)
         }
@@ -464,7 +474,7 @@ const sideBarToggleCheck = dappsidebartoggle ? dappstyles.sidebartoggled : '';
                                               }else if(miningstatus == "Inactive") {
                                                 return <button type='button' className={dappstyles.calcrwd} style={{color: '#f1f1f1'}} onClick={(e) => startMining(e.target)}>Start</button>
                                               }else if(miningstatus == "Stopped") {
-                                                return <button type='button' className={dappstyles.calcrwd} style={{color: '#f1f1f1'}} onClick={() => resumeMiningAmount(amountmined,"Active")}>Resume</button>
+                                                return <button type='button' className={dappstyles.calcrwd} style={{color: '#f1f1f1'}} onClick={() => resumeMiningAmount()}>Resume</button>
                                               }
                                             })()
                                           }
