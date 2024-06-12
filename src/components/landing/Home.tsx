@@ -13,6 +13,7 @@ import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
+import aibanner from '../../assets/images/aibanner2.png'
 // import dappimg from '../../assets/images/dapp.png';
 // import bnblogo from '../../assets/images/blockchain-binance-white-71f5d555.png';
 // import cronlogo from '../../assets/images/blockchain-cronos-light-78484d18.png';
@@ -25,7 +26,9 @@ import okxlogo from '../../assets/images/okx.png';
 import refgroup from '../../assets/images/refgroup.png';
 import huobilogo from '../../assets/images/huobi.png';
 import kucoinlogo from '../../assets/images/kucoin.png';
-import frdbanner from '../../assets/images/frdbanner.gif'
+import frdbanner from '../../assets/images/frdbanner.gif';
+import fanforum from '../../assets/images/fanforumbanner.png';
+import nftbanner from '../../assets/images/nftbanner.png'
 // import fworldmap from '../../assets/images/world-map.png'
 // import teamwork from '../../assets/images/Teamwork.png'
 import betmob from '../../assets/images/betmob.png';
@@ -298,16 +301,17 @@ useEffect(() => {
             <div className={styles.connectw}>
               <div>
                   <p>
-                    We've partnered with many AI companies to help aggregate football/soccer in data in their AI Models data tunneling
+                    We've partnered with many AI companies to help aggregate football/soccer in data in their AI Models data tunneling.
                   </p>
                   <p>
-                    We filter and aggregate football data using our highly sophisticating AI scrapping tools
+                    We filter and aggregate football data using our highly sophisticating AI scrapping tools.
                   </p>
               </div>
+              <h3 style={{textAlign: 'left',marginTop: '25px'}}>Be Part Of This AI Revolution ...</h3>
             </div>
             <div className={styles.conn_image}>
               <div className={styles.cimg}>
-                <Image src={frdbanner} style={{width: '100%', height: '100%',borderRadius: '8px',marginTop: '0'}} alt='connecting the world through football' />
+                <Image src={aibanner} style={{width: '80%', height: '80%',borderRadius: '8px',margin: '15px auto'}} alt='connecting the world through football' />
               </div>
             </div>
           </div>
@@ -331,19 +335,29 @@ useEffect(() => {
               </div>
               <div>
                 <h2>Decentralized Wager && Odd Betting</h2>
-                <p>Betting is in the heart of sports entertainment, at Fifareward, we are revolutionizing the world of betting, starting with wager betting to odd betting, removing middleman manipulation and putting everything in your hands (the users). </p>
+                <p>
+                  Betting is in the heart of sports entertainment, at Fifareward, we are revolutionizing the world of betting, starting with wager betting to odd betting, removing middleman manipulation and putting everything in your hands (the users). 
+                  <a href='/#betting' style={{color: '#e28304'}}>go to fan forum</a>
+                </p>
               </div>
               <div>
                 <h2>The FAN FORUM</h2>
-                <p>We've designed and built a fan chat forum where all the fans gossip and chatterings are done. Enjoy the fun of the game. <a href='/fanforum' style={{color: '#e28304'}}>go to fan forum</a> </p>
+                <p>We've designed and built a fan chat forum where all the fans gossip and chatterings are done. Enjoy the fun of the game. <a href='/#fanforum' style={{color: '#e28304'}}>go to fan forum</a> </p>
               </div>
               <div>
-                <h2>Guess The Football Hero</h2>
-                <p>Guess your football hero is a competitive, suspensious, educative and interesting IQ game designed to test how much you know your football hero. </p>
+                <h2>Gaming</h2>
+                <p> Enjoy, learn and be excited on the innovative games built just for you <a href='/#gaming' style={{color: '#e28304'}}>go to fan forum</a> </p>
               </div>
               <div>
                 <h2>Minting NFT of Football Legends</h2>
-                <p> Mint and sell nft arts of your favorites legends using our NFT minting engine and nft market place respectively.</p>
+                <p> 
+                  Mint and sell nft arts of your favorites legends using our NFT minting engine and nft market place respectively.
+                  <a href='/#nft' style={{color: '#e28304'}}>go to fan forum</a>
+                </p>
+              </div>
+              <div>
+                <h2>Staking And Mining</h2>
+                <p> We want to reward you for going on this amazing journey with us, we've built in many reward system to appreciate on your effort, staking and mining are one of the systems <a href='/#staking' style={{color: '#e28304'}}>go to staking and mining </a> </p>
               </div>
             </div>
             <div className={styles.conn_image}>
@@ -380,7 +394,7 @@ useEffect(() => {
         </div>
       </section>
 
-      <section className={`${styles.frdbetting} ${styles.section}`}>
+      <section className={`${styles.frdbetting} ${styles.section}`} id="betting">
           <div className={styles.betd}>
               <div className={styles.betdc}>
                   <div>
@@ -392,7 +406,7 @@ useEffect(() => {
                       Fifareward is introducing the <span>Wager Betting System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
                     </p>
                     <p>
-                      The user whose prediction is correct wins the bet and get the sum of bet amounts.
+                      The user whose prediction is correct wins the bet and get the sum of bet amounts. <a href='/betting' style={{color: '#e28304'}}>go to betting</a> 
                     </p>
                   </div>
               </div>
@@ -407,12 +421,81 @@ useEffect(() => {
           </div>
       </section>
 
-      <section className={`${styles.frdstaking} ${styles.section}`} id="frdstaking">
+      <section className={`${styles.connectworld} ${styles.section}`} id="#fanforum">
+          <h1>FIFAREWARD FAN FORUM</h1>
+          <div className={styles.conn_inner}>
+            <div className={styles.connectw}>
+              <div>
+                  <p>
+                    We beleive that community building and bonding are essential in sustaining a community as we keep adding innovations to our project.
+                  </p>
+                  <p>
+                    To continuously fooster and sustain our community engagements, we added innovative fan forum where users (fans) cn share their sentiments on games, fixtures, bets, results, and their experience on our project.
+                  </p>
+                  <p>
+                    Be sure to maximize the use of this fan forum efficiently <a href='/fanforum' style={{color: '#e28304'}}>go to fan forum</a>.
+                  </p>
+              </div>
+            </div>
+            <div className={styles.conn_image}>
+              <div className={`${styles.cimg} ${styles.cimg2}`}>
+                <Image src={fanforum} style={{width: '80%', height: '450px',borderRadius: '8px',margin: '15px auto',}} alt='connecting the world through football' />
+              </div>
+            </div>
+          </div>
+      </section>
+
+      <section className={`${styles.connectworld} ${styles.section}`} id="#nft">
+          <h1>NFT Minting And Market Place</h1>
+          <div className={styles.conn_inner}>
+            <div className={styles.connectw}>
+              <div>
+                  <p>
+                    Our NFT minting engine is designed to compete with the likes of OpenSea, with bidding and auctioning where the seller will accept the bid with the highest offer.
+                  </p>
+                  <p>
+                    If a user/buyer likes an nft art so much that he/she don't want to bid, the user can buy the nft outrightly with our direct buy option.
+                  </p>
+                  <p>
+                    NFT Creators also set lifetime royalties ranging from 2% to 5% that automatically gets paid to their wallet anytime the nft is sold <a href='/nft' style={{color: '#e28304'}}>go to nft market place</a>.
+                  </p>
+              </div>
+            </div>
+            <div className={styles.conn_image}>
+              <div className={styles.cimg}>
+                <Image src={nftbanner} style={{width: '80%', height: '80%',borderRadius: '8px',margin: '15px auto'}} alt='connecting the world through football' />
+              </div>
+            </div>
+          </div>
+      </section>
+
+      <section className={`${styles.connectworld} ${styles.section}`} id="#gaming">
+          <h1>Fiareward Games</h1>
+          <div className={styles.conn_inner}>
+            <div className={styles.connectw}>
+              <div>
+                  <p>
+                    Play and enjoy our exciting games, build on the blockchain.
+                  </p>
+                  <p>
+                    Our games are addicting, educating and exciting, get thrilled and addicted to our games <a href='/gaming' style={{color: '#e28304'}}>go to games</a>.
+                  </p>
+              </div>
+            </div>
+            <div className={styles.conn_image}>
+              <div className={styles.cimg}>
+                <Image src={nftbanner} style={{width: '80%', height: '80%',borderRadius: '8px',margin: '15px auto'}} alt='connecting the world through football' />
+              </div>
+            </div>
+          </div>
+      </section>
+
+      <section className={`${styles.frdstaking} ${styles.section}`} id="staking">
           {isMobile === true ? <h1>STAKING <div>AND</div> FARMING</h1> : <h1>STAKING AND FARMING</h1>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
-                Fifareward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain.
-                <h4>WHY STAKE FRD?</h4> 
+                Fifareward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain <a href='/staking' style={{color: '#e28304'}}>go to staking</a>.
+                {/* <h4>WHY STAKE FRD?</h4>  */}
                 <ul>
                   {/* <li>
                     <FontAwesomeIcon icon={faCheckSquare} size='lg' className={styles.chronotitleicon}/> You earn up to 0.1% FRD daily.

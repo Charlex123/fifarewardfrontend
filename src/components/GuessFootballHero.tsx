@@ -228,9 +228,6 @@ const GuessFootballHero: React.FC = () => {
   }
 
   const handleImageClick = async (image: string, hint: string, name: string) => {
-      if(!isConnected) {
-        open()
-      }else {
         try {
           
           const config = {
@@ -255,7 +252,6 @@ const GuessFootballHero: React.FC = () => {
           console.error('Error fetching items:', error);
         }
         HandleGamePlay(image, hint, name);
-      }
   };
 
   const Play = async() => {
@@ -467,7 +463,7 @@ const GuessFootballHero: React.FC = () => {
   const continueGame = async () => {
 
     try {
-          
+        setAmountModal(false)
       const config = {
         headers: {
             "Content-type": "application/json"
