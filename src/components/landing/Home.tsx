@@ -302,10 +302,10 @@ useEffect(() => {
             <div className={styles.connectw}>
               <div>
                   <p>
-                    We've partnered with many AI companies to help aggregate football/soccer in data in their AI Models data tunneling.
+                    We've partnered with many AI companies to help aggregate football/soccer in data in their AI Models data tunneling and training.
                   </p>
                   <p>
-                    We filter and aggregate football data using our highly sophisticating AI scrapping tools.
+                    We filter and aggregate football data using our highly sophisticated AI scrapping tools.
                   </p>
               </div>
               <h3 style={{textAlign: 'left',marginTop: '25px'}}>Be Part Of This AI Revolution ...</h3>
@@ -328,17 +328,17 @@ useEffect(() => {
                     Football is a sensational sport that connects the world. 
                   </p>
                   <p>
-                    Fifareward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain unique interesting games activities.
+                    Fifareward as a leading <span>GAMEFI</span> protocol has introduced into the decentralized world of blockchain, unique interesting games activities.
                   </p>
               </div>
               <div>
-                <p><span>As</span> a DEFI blockchain protocol introduces a decentralized betting system <span>WAGER BETTING</span>.</p> 
+                <p><span>As</span> a DEFI blockchain protocol, we introduced a decentralized betting system known as <span>WAGER BETTING</span>.</p> 
               </div>
               <div>
                 <h2>Decentralized Wager && Odd Betting</h2>
                 <p>
                   Betting is in the heart of sports entertainment, at Fifareward, we are revolutionizing the world of betting, starting with wager betting to odd betting, removing middleman manipulation and putting everything in your hands (the users). 
-                  <a href='/#betting' style={{color: '#e28304'}}>go to fan forum</a>
+                  <a href='/#betting' style={{color: '#e28304'}}>go to betting</a>
                 </p>
               </div>
               <div>
@@ -347,7 +347,7 @@ useEffect(() => {
               </div>
               <div>
                 <h2>Gaming</h2>
-                <p> Enjoy, learn and be excited on the innovative games built just for you <a href='/#gaming' style={{color: '#e28304'}}>go to fan forum</a> </p>
+                <p> Enjoy, learn and be excited on the innovative games built just for you <a href='/#gaming' style={{color: '#e28304'}}>go to games</a> </p>
               </div>
               <div>
                 <h2>Minting NFT of Football Legends</h2>
@@ -358,7 +358,7 @@ useEffect(() => {
               </div>
               <div>
                 <h2>Staking And Mining</h2>
-                <p> We want to reward you for going on this amazing journey with us, we've built in many reward system to appreciate on your effort, staking and mining are one of the systems <a href='/#staking' style={{color: '#e28304'}}>go to staking and mining </a> </p>
+                <p> We want to reward you for going on this amazing journey with us, we've built in many reward system to appreciate on your efforts. Staking and Mining are one of the systems <a href='/#staking' style={{color: '#e28304'}}>go to staking and mining </a> </p>
               </div>
             </div>
             <div className={styles.conn_image}>
@@ -428,10 +428,10 @@ useEffect(() => {
             <div className={styles.connectw}>
               <div>
                   <p>
-                    We beleive that community building and bonding are essential in sustaining a community as we keep adding innovations to our project.
+                    We believe that community building and bonding are essential in sustaining a community as we keep adding innovations to our project.
                   </p>
                   <p>
-                    To continuously fooster and sustain our community engagements, we added innovative fan forum where users (fans) cn share their sentiments on games, fixtures, bets, results, and their experience on our project.
+                    To continuously foster and sustain our community engagements, we added innovative fan forum where users (fans) can share their sentiments on games, fixtures, bets, results, and their experience on our project.
                   </p>
                   <p>
                     Be sure to maximize the use of this fan forum efficiently <a href='/fanforum' style={{color: '#e28304'}}>go to fan forum</a>.
@@ -452,7 +452,7 @@ useEffect(() => {
             <div className={styles.connectw}>
               <div>
                   <p>
-                    Our NFT minting engine is designed to compete with the likes of OpenSea, with bidding and auctioning where the seller will accept the bid with the highest offer.
+                    Our NFT minting engine is designed to compete with the likes of OpenSea, with bidding and auctioning functionalities where the seller will accept the bid with the highest offer.
                   </p>
                   <p>
                     If a user/buyer likes an nft art so much that he/she don't want to bid, the user can buy the nft outrightly with our direct buy option.
@@ -476,10 +476,10 @@ useEffect(() => {
             <div className={styles.connectw}>
               <div>
                   <p>
-                    Play and enjoy our exciting games, build on the blockchain.
+                    Play and enjoy our exciting games, built on the blockchain.
                   </p>
                   <p>
-                    Our games are addicting, educating and exciting, get thrilled and addicted to our games <a href='/gaming' style={{color: '#e28304'}}>go to games</a>.
+                    Our games are addicting, educating and exciting. Get thrilled and enjoy the fun <a href='/gaming' style={{color: '#e28304'}}>go to games</a>.
                   </p>
               </div>
             </div>
