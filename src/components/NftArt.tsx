@@ -94,6 +94,7 @@ const NFTArt: React.FC<{}> = () =>  {
         }
     }
     
+    console.log("nft query",nft)
     
     if(nft) {
         setTitleParams(nft[0]);
@@ -116,8 +117,9 @@ const NFTArt: React.FC<{}> = () =>  {
                     let nftcontract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
                     if(featurescontract) {
                         // const nftitemremtime = await contract.getAuctionItemRemainingTime(nft[1]);
-                        // console.log("ghyup opi",nftitemremtime)
+                        
                         const nftitem = await featurescontract.getAuctionItem(nft[1]);
+                        console.log("ghyup opi",nftitem)
                         if(nftitem && nftitem !== "") {
                             let ipfsurl = nftitem[4];
                             let ipfsurlarray = ipfsurl.split('//');
@@ -445,7 +447,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                 </div>
                                 <div className={styles.nft_op_}>
                                     <button>{<FaHeart/>}</button>
-                                </div>y
+                                </div>
                             </div>  
                         </div>
                         <div className={styles.nft_art_in}>

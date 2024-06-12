@@ -601,7 +601,7 @@ const GuessFootballHero: React.FC = () => {
                               Player: {displayedName}
                             </div>
                             <div>
-                              Hint: {`${displayedHint?.substring(0,120)+'...'}`}
+                              Hint: {`${displayedHint?.substring(0,60)+'...'}`}
                             </div>
                           </div>
                           <div className={styles.guess}>
@@ -615,7 +615,7 @@ const GuessFootballHero: React.FC = () => {
                               Player: {selectedName}
                             </div>
                             <div>
-                              Hint: {selectedHint}
+                              Hint: {selectedHint?.substring(0,60)+'...'}
                             </div>
                           </div>
                           <div className={styles.guess}>

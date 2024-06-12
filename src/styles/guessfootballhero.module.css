@@ -86,9 +86,9 @@
 /* components/ImageGallery.module.css */
 
 .bt_amt {
-  position: fixed;margin: 0 auto; width: 40%;height: fit-content;top: 0;bottom: 0;left: 0;right: 0;top: 0;
-  border-radius: 16px;z-index: 9999;text-align: center;left: 0;right: 0;color: #f1f1f1;
-  padding: 10px 10px 10px 10px;background-color: #000003e2;border: 1px solid #3f3f3f7f;
+  position: fixed; width: 40%;height: fit-content;top: 0;bottom: 0;left: 0;right: 0;top: 0;
+  border-radius: 16px;z-index: 9999;text-align: center;left: 0;right: 0;color: #f1f1f1;margin: auto;
+  padding: 10px 10px 10px 10px;background-color: #000003f4;border: 1px solid #3f3f3f7f;
 }
 .bt_amt .bt_amt_h {
   display: flex;flex-direction: row;justify-content: space-between;margin: 0 0 35px 0;
