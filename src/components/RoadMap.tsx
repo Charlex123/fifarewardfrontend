@@ -9,23 +9,24 @@ interface TimelineEvent {
 }
 
 const events: TimelineEvent[] = [
-  { id: 1, title: 'Website' },
-  { id: 2, title: 'NFT Minting & Market Place' },
-  { id: 3, title: 'Betting Protocol' },
-  { id: 4, title: 'Gaming Protocol' },
-  { id: 5, title: 'Staking & Farming' },
-  { id: 6, title: 'Interactive Chat' },
-  { id: 7, title: 'Pancakesawp Listing' },
-  { id: 8, title: 'Branding & Merchandize' },
-  { id: 9, title: 'Continual Soccer Events Sponsorships' },
-  { id: 10, title: 'Airdrop Campaign Stage 1' },
-  { id: 11, title: 'Airdrop Campaign Stage 2' },
-  { id: 12, title: 'Listing On tier2 Exchanges' },
-  { id: 13, title: 'Listing On Tier 1 Exchanges' },
-  { id: 14, title: 'Mobile App'}, 
-  { id: 15, title: 'Layer 2 Roll Up Testnet Completion' },
-  { id: 16, title: 'Layer 2 Roll Up Mainnet Completion' },
-  { id: 17, title: 'Dex Exchange' }
+  { id: 1, title: 'Seed & Private Sale' },
+  { id: 2, title: 'Pancakesawp Listing' },
+  { id: 3, title: 'NFT Minting & Market Place' },
+  { id: 4, title: 'Betting Protocol' },
+  { id: 5, title: 'Gaming Protocol' },
+  { id: 6, title: 'Staking & Farming' },
+  { id: 7, title: 'Website' },
+  { id: 8, title: 'Interactive Chat' },
+  { id: 9, title: 'Branding & Merchandize' },
+  { id: 11, title: 'Airdrop Campaign Stage 1' },
+  { id: 12, title: 'Airdrop Campaign Stage 2' },
+  { id: 13, title: 'Listing On tier2 Exchanges' },
+  { id: 14, title: 'Listing On Tier 1 Exchanges' },
+  { id: 15, title: 'Mobile App'}, 
+  { id: 16, title: 'Layer 2 Roll Up Testnet Completion' },
+  { id: 17, title: 'Layer 2 Roll Up Mainnet Completion' },
+  { id: 18, title: 'Dex Exchange' },
+  { id: 19, title: 'Continual Soccer Events Sponsorships' }
 ];
 
 const RoadMap: React.FC = () => {
