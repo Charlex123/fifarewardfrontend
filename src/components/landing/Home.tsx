@@ -29,6 +29,7 @@ import kucoinlogo from '../../assets/images/kucoin.png';
 import frdbanner from '../../assets/images/frdbanner.gif';
 import fanforum from '../../assets/images/fanforumbanner.png';
 import nftbanner from '../../assets/images/nftbanner.png'
+import gamebanner from '../../assets/images/guessherobanner.png'
 // import fworldmap from '../../assets/images/world-map.png'
 // import teamwork from '../../assets/images/Teamwork.png'
 import betmob from '../../assets/images/betmob.png';
@@ -484,7 +485,7 @@ useEffect(() => {
             </div>
             <div className={styles.conn_image}>
               <div className={styles.cimg}>
-                <Image src={nftbanner} style={{width: '80%', height: '80%',borderRadius: '8px',margin: '15px auto'}} alt='connecting the world through football' />
+                <Image src={gamebanner} style={{width: '80%', height: '80%',borderRadius: '8px',margin: '15px auto'}} alt='connecting the world through football' />
               </div>
             </div>
           </div>
