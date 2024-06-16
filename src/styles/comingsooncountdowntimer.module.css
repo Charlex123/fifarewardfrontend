@@ -1,0 +1,36 @@
+.comingsoonmain {
+    position: fixed;margin: auto;top: 0;left: 0;right: 0;left: 0;color: #f1f1f1;z-index: 9999;
+    background-image: url("../assets/images/guessfootballherobg.png");background-size: cover;background-repeat: no-repeat;
+}
+.overlay {
+    position: absolute;background-color: #0000008a;z-index: 1;top: 0;left: 0;right: 0;bottom: 0;
+}
+.closebtn {
+    position: absolute;color: #f1f1f1;z-index: 9999;top: 4%;right: 10px;
+}
+.ina {
+    margin: auto;text-align: center;line-height: 28px;padding: 20px 20px;position: relative;z-index: 9;
+}
+.ina h1 {
+    font-size: 28px;color: #e28304;
+}
+.ina h3 {
+    font-size: 18px;margin: 20px 0;text-align: left;
+}
+.ina ul {
+    width: 100%;
+}
+.ina ul li {
+    text-align: left;margin-top: 1px;
+}
+.ina h2 {
+    text-align: left;margin-top: 20px;
+}
+.ina .timer {
+    font-size: 62px;color: #e28304;margin: 40px auto;line-height: 68px;
+}
+@media (max-width: 767px) {
+    .ina .timer {
+        font-size: 32px;line-height: 38px;
+    }
+}

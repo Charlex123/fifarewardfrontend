@@ -9,6 +9,9 @@ import Image from 'next/image';
 import styles from '../../styles/landing.module.css'
 import Typed from 'react-typed';
 import RoadMap from '../RoadMap';
+import FooterNavBar from '../FooterNav';
+import ComingSoonCountdownTimer from '../ComingSoonCountDown';
+import BgOverlay from '../BgOverlay';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
@@ -46,6 +49,8 @@ const [aboutReadMore, setAboutReadMore] = useState(false);
 // Array of text values to toggle between
 const textValues = ["Read More ...", "Read Less ..."];
 // State to track the current index in the array
+const [comingsooncountdownModal,setComingSoonCountDownModal] = useState(false);
+const [showBgOverlay,setShowBgOverlay] = useState(false);
 const [currentAboutRMTextIndex, setCurrentAboutRMTextIndex] = useState(0);
 const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
 // const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
@@ -148,7 +153,8 @@ useEffect(() => {
     console.error("No sections found with the specified class.");
     return;
   }
-
+  setComingSoonCountDownModal(true);
+  setShowBgOverlay(true)
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -178,6 +184,18 @@ useEffect(() => {
   };
 }, []);
 
+const showcomingsoonContdown = () => {
+  setComingSoonCountDownModal(true);
+  setShowBgOverlay(true)
+}
+
+const closeCountdownModal = () => {
+  setComingSoonCountDownModal(false);
+  setShowBgOverlay(false)
+}
+const closeBgModal = () => {
+  setShowBgOverlay(false);
+}
 
   return (
     <div style={{overflowX: 'hidden'}}>
@@ -217,6 +235,8 @@ useEffect(() => {
     </Head>
 
     <div className={`${styles.homemain}`}>
+      {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
+      {comingsooncountdownModal && <ComingSoonCountdownTimer onChange={closeCountdownModal}/>}
       <div className={styles.overlay_d}></div>
       <section className={`${styles.blk} ${styles.section}`}>
           <div className={styles.overlay_d}></div>
@@ -407,7 +427,7 @@ useEffect(() => {
                       Fifareward is introducing the <span>Wager Betting System</span> where a user opens a bet with specific predictions and amount of choice using our token FRD, then another user joins the bet with counter predictions using FRD as well.
                     </p>
                     <p>
-                      The user whose prediction is correct wins the bet and get the sum of bet amounts. <a href='/betting' style={{color: '#e28304'}}>go to betting</a> 
+                      The user whose prediction is correct wins the bet and get the sum of bet amounts. <a onClick={showcomingsoonContdown} style={{color: '#e28304'}}>go to betting</a> 
                     </p>
                   </div>
               </div>
@@ -434,7 +454,7 @@ useEffect(() => {
                     To continuously foster and sustain our community engagements, we added innovative fan forum where users (fans) can share their sentiments on games, fixtures, bets, results, and their experience on our project.
                   </p>
                   <p>
-                    Be sure to maximize the use of this fan forum efficiently <a href='/fanforum' style={{color: '#e28304'}}>go to fan forum</a>.
+                    Be sure to maximize the use of this fan forum efficiently <a onClick={showcomingsoonContdown} style={{color: '#e28304'}}>go to fan forum</a>.
                   </p>
               </div>
             </div>
@@ -458,7 +478,7 @@ useEffect(() => {
                     If a user/buyer likes an nft art so much that he/she don't want to bid, the user can buy the nft outrightly with our direct buy option.
                   </p>
                   <p>
-                    NFT Creators also set lifetime royalties ranging from 2% to 5% that automatically gets paid to their wallet anytime the nft is sold <a href='/nft' style={{color: '#e28304'}}>go to nft market place</a>.
+                    NFT Creators also set lifetime royalties ranging from 2% to 5% that automatically gets paid to their wallet anytime the nft is sold <a onClick={showcomingsoonContdown} style={{color: '#e28304'}}>go to nft market place</a>.
                   </p>
               </div>
             </div>
@@ -479,7 +499,7 @@ useEffect(() => {
                     Play and enjoy our exciting games, built on the blockchain.
                   </p>
                   <p>
-                    Our games are addicting, educating and exciting. Get thrilled and enjoy the fun <a href='/gaming' style={{color: '#e28304'}}>go to games</a>.
+                    Our games are addicting, educating and exciting. Get thrilled and enjoy the fun <a onClick={showcomingsoonContdown} style={{color: '#e28304'}}>go to games</a>.
                   </p>
               </div>
             </div>
@@ -495,7 +515,7 @@ useEffect(() => {
           {isMobile === true ? <h1>STAKING <div>AND</div> FARMING</h1> : <h1>STAKING AND FARMING</h1>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
-                Fifareward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain <a href='/staking' style={{color: '#e28304'}}>go to staking</a>.
+                Fifareward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain <a onClick={showcomingsoonContdown} style={{color: '#e28304'}}>go to staking</a>.
                 {/* <h4>WHY STAKE FRD?</h4>  */}
                 <ul>
                   {/* <li>
@@ -611,7 +631,7 @@ useEffect(() => {
     </div>
 
     
-
+        <FooterNavBar />
     </div>
   )
 }
