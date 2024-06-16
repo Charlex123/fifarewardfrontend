@@ -160,7 +160,7 @@ function Navbar() {
                                 {/* <li><a href='/' rel='noopener noreferrer' ><FaFacebook className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Facebook</span></a></li> */}
                                 <li><a href='https://t.me/FifarewardLabs' rel='noopener noreferrer' ><FaTelegram className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Telegram</span></a></li>
                                 <li><a href='https://www.geckoterminal.com/bsc/pools/0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc' rel='noopener noreferrer' ><FaBandcamp className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Coin Gecko</span></a></li>
-                                <li><a href='/' rel='noopener noreferrer' ><FaDiscord className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Discord</span></a></li>
+                                <li><a onClick={showcomingsoonContdown} rel='noopener noreferrer' ><FaDiscord className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Discord</span></a></li>
                                 {/* <li><a href='/' rel='noopener noreferrer' ><FaMedium className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>Medium</span></a></li> */}
                                 {/* <li><a href='/' rel='noopener noreferrer' ><FaYoutube className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>YouTube</span></a></li> */}
                             </ul>
