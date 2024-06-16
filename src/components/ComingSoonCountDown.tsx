@@ -74,7 +74,7 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
                         <h1> Launch Count Down</h1> 
                         
                     </div>
-                    <h3>Below are some of the blockchain protocols we have built in to foster user engagement and community building as well as stand out amongst our conterpart Dapps</h3>
+                    <h3>Below are some of the blockchain protocols we have built to foster user engagement and community building as well as stand out amongst our counterpart Dapps</h3>
                     <ul>
                         <li> <FaSquareCheck size={18}/> Soccer Betting</li>
                         <li> <FaSquareCheck size={18}/>  Fan Forum</li>
