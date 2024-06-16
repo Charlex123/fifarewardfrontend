@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti-boom';
+import axios from 'axios';
 import ConfettiExplosion from 'react-confetti-explosion';
 import styles from '../styles/comingsooncountdowntimer.module.css'
 import { FaCheck, FaSquareCheck, FaXmark } from 'react-icons/fa6';
@@ -14,21 +15,37 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
   const [isExploding, setIsExploding] = useState(false);
 
   useEffect(() => {
+    const fetchTimer = async () => {
+        try {
+          const config = {
+            headers: {
+                "Content-type": "application/json"
+            }
+          }  
+          const {data} = await axios.get("http://localhost:9000/api/countdown/getremainingtime/", config);
+          console.log("here oul",data)
+          setTimeRemaining(data.remainingtime);
+        } catch (error) {
+          console.error('Error fetching data:', error);
+        }
+      };
+  
+      fetchTimer();
 
     setIsExploding(true);
-    const interval = setInterval(() => {
-      setTimeRemaining((prevTime:any) => {
-        if (prevTime <= 0) {
-          clearInterval(interval);
-          // You can add any additional logic here when the timer reaches zero
-          return 0;
-        }
-        return prevTime - 1;
-      });
-    }, 1000);
+    // const interval = setInterval(() => {
+    //   setTimeRemaining((prevTime:any) => {
+    //     if (prevTime <= 0) {
+    //       clearInterval(interval);
+    //       // You can add any additional logic here when the timer reaches zero
+    //       return 0;
+    //     }
+    //     return prevTime - 1;
+    //   });
+    // }, 1000);
 
     // Cleanup function to clear the interval when the component is unmounted
-    return () => clearInterval(interval);
+    // return () => clearInterval(interval);
   }, []);
 
   const closeCountdownModal = () => {
