@@ -171,7 +171,7 @@ const CountryFixtures:React.FC<{}> = () => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("https://fifareward.onrender.com/api/fixtures/loadfixtures/", config);
+          const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixtures/", config);
           setCountryFixturesdata(data.fixtures);
           setTotalPages(data.totalPages);
           setShowLoading(false);

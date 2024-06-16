@@ -22,7 +22,7 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("http://localhost:9000/api/countdown/getremainingtime/", config);
+          const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/countdown/getremainingtime/", config);
           console.log("here oul",data)
           setTimeRemaining(data.remainingtime);
         } catch (error) {
