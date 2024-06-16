@@ -329,7 +329,7 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   font-weight: 900;margin: 1rem auto;text-align: center;font-size: 18px;
 }
 .aboutfrd {
-  width: 100%;padding: 1rem 1rem 1rem 1rem;color: #f1f1f1;
+  width: 100%;padding: 1rem 1rem 10rem 1rem;color: #f1f1f1;
   background-image: url("../assets/images/bgbg.png");background-size: cover;background-repeat: no-repeat;
 }
 .aboutfrd h1 {
