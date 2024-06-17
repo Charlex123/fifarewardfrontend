@@ -57,7 +57,7 @@ const handleCopyClick = () => {
                      <div>
                         <a href='https://www.geckoterminal.com/bsc/pools/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1' rel='noopener noreferrer' ><FaBandcamp className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
                      </div>
-                     <div><a href='https://discord.com/invite/DC5Ta8bb' rel='noopener noreferrer' ><FaDiscord className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div>
+                     <div><a href='https://discord.gg/aQ7bjShzHy' rel='noopener noreferrer' ><FaDiscord className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Discord</span></a> </div>
                      {/* <div><a href='/' rel='noopener noreferrer' ><FaMedium className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Medium</span></a> </div>} */}
                      {/* {/* <div><a href='/' rel='noopener noreferrer' ><FaYoutube className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>YouTube</span></a> </div> */}
                   </div>
