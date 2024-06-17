@@ -582,6 +582,12 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   .blk {
     padding-top: 60px;
   }
+  .c_content .hero_h1 .h1 {
+      font-size: 28px;line-height: 30px;
+  }
+  .c_content .hero_h1 h1 {
+      font-size: 20px;line-height: 20px;
+  }
   .connectworld h1 {
     font-size: 28px;margin-bottom: 20px !important;
   }
@@ -614,6 +620,12 @@ background: linear-gradient(333deg, rgba(13,20,24,1) 0%, rgba(9,22,29,1) 0%, rgb
   }
 }
 @media (max-width: 480px) {
+  .c_content .hero_h1 .h1 {
+      font-size: 20px;line-height: 20px;
+  }
+  .c_content .hero_h1 h1 {
+      font-size: 16px;line-height: 16px;
+  }
   .frdstaking .gov .gov_in .gov_c {
     width: 90%;
   } 
