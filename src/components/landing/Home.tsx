@@ -11,7 +11,6 @@ import Typed from 'react-typed';
 import RoadMap from '../RoadMap';
 import FooterNavBar from '../FooterNav';
 import ComingSoonCountdownTimer from '../ComingSoonCountDown';
-import BgOverlay from '../BgOverlay';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
 import chainhead from '../../assets/images/chainhead.gif';
@@ -50,7 +49,6 @@ const [aboutReadMore, setAboutReadMore] = useState(false);
 const textValues = ["Read More ...", "Read Less ..."];
 // State to track the current index in the array
 const [comingsooncountdownModal,setComingSoonCountDownModal] = useState(false);
-const [showBgOverlay,setShowBgOverlay] = useState(false);
 const [currentAboutRMTextIndex, setCurrentAboutRMTextIndex] = useState(0);
 const [currentSliderIndex, setCurrentSliderIndex] = useState(0);
 // const [contractAddress, setcontractAddress] = useState('0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc');
@@ -154,7 +152,6 @@ useEffect(() => {
     return;
   }
   setComingSoonCountDownModal(true);
-  setShowBgOverlay(true)
   const observer = new IntersectionObserver(
     (entries) => {
       entries.forEach((entry) => {
@@ -186,15 +183,10 @@ useEffect(() => {
 
 const showcomingsoonContdown = () => {
   setComingSoonCountDownModal(true);
-  setShowBgOverlay(true)
 }
 
 const closeCountdownModal = () => {
   setComingSoonCountDownModal(false);
-  setShowBgOverlay(false)
-}
-const closeBgModal = () => {
-  setShowBgOverlay(false);
 }
 
   return (
@@ -235,7 +227,6 @@ const closeBgModal = () => {
     </Head>
 
     <div className={`${styles.homemain}`}>
-      {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       {comingsooncountdownModal && <ComingSoonCountdownTimer onChange={closeCountdownModal}/>}
       <div className={styles.overlay_d}></div>
       <section className={`${styles.blk} ${styles.section}`}>

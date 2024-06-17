@@ -4,7 +4,7 @@ import logo from '../../assets/images/logo.png';
 import ConnectWallet from '../ConnectWalletButton';
 import Image from 'next/image';
 import ComingSoonCountdownTimer from '../ComingSoonCountDown';
-import BgOverlay from '../BgOverlay';
+// import BgOverlay from '../BgOverlay';
 import { FaAlignJustify, FaAngleRight, FaArtstation, FaBandcamp, FaChevronDown, FaChevronUp, FaCircleDollarToSlot, FaDiscord, FaFacebook, FaMedium, FaRobot, FaTelegram, FaTwitter, FaUserGroup, FaYoutube } from 'react-icons/fa6';
 import { IoIosFootball } from 'react-icons/io';
 import { GiGamepad } from 'react-icons/gi';
@@ -16,7 +16,6 @@ function Navbar() {
     const [dropdwnIcon3] = useState(<FaChevronDown className={styles.navlisttoggle}/>);
     const [isMobile,setIsMobile] = useState<boolean>(false);
     const [comingsooncountdownModal,setComingSoonCountDownModal] = useState(false);
-    const [showBgOverlay,setShowBgOverlay] = useState(false);
 
     useEffect(() => {
 
@@ -77,22 +76,15 @@ function Navbar() {
 
     const showcomingsoonContdown = () => {
         setComingSoonCountDownModal(true);
-        setShowBgOverlay(true)
     }
 
     const closeCountdownModal = () => {
         setComingSoonCountDownModal(false);
-        setShowBgOverlay(false)
     }
-    const closeBgModal = () => {
-    setShowBgOverlay(false);
-    }
-
     const navClass = scrolling ? styles.scrolled : '';
 
     return (
         <nav className={styles.nav}>
-            {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
             {comingsooncountdownModal && <ComingSoonCountdownTimer onChange={closeCountdownModal}/>}
             <button title='togglebtn' className={styles.nav_toggle_btn} type='button' onClick={toggleNav}><FaAlignJustify className={styles.toggle_icon}/></button>
             <div className={`${styles.nav_container} ${navClass}`}>

@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import styles from '../styles/footernav.module.css';
 import ConnectWallet from './ConnectWalletButton';
 import ComingSoonCountdownTimer from './ComingSoonCountDown';
-import BgOverlay from './BgOverlay';
 import { IoIosFootball, IoIosHome } from 'react-icons/io';
 import { FaArtstation, FaGaugeHigh } from 'react-icons/fa6';
 import { GiGamepad } from 'react-icons/gi';
@@ -10,7 +9,6 @@ import { GiGamepad } from 'react-icons/gi';
 function FooterNavBar() {
 
     const [comingsooncountdownModal,setComingSoonCountDownModal] = useState(false);
-    const [showBgOverlay,setShowBgOverlay] = useState(false);
 
     const [isMobile, setIsMobile] = useState(true);
     useEffect(() => {
@@ -24,21 +22,14 @@ function FooterNavBar() {
 
     const showcomingsoonContdown = () => {
         setComingSoonCountDownModal(true);
-        setShowBgOverlay(true)
     }
 
     const closeCountdownModal = () => {
         setComingSoonCountDownModal(false);
-        setShowBgOverlay(false)
     }
-    const closeBgModal = () => {
-    setShowBgOverlay(false);
-    }
-
     return (
         <>
             <nav className={styles.footernav}>
-                {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
                 {comingsooncountdownModal && <ComingSoonCountdownTimer onChange={closeCountdownModal}/>}
                 {isMobile ? 
                 <>
