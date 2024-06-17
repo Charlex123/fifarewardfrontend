@@ -1,5 +1,5 @@
 .comingsoonmain {
-    position: fixed;margin: auto;top: 0;left: 0;right: 0;left: 0;color: #f1f1f1;z-index: 9999999999999999999999999999999;
+    position: fixed;margin: auto;top: 0;left: 0;right: 0;left: 0;color: #f1f1f1;z-index: 99999;
     background-image: url("../assets/images/guessfootballherobg.png");background-size: cover;background-repeat: no-repeat;
 }
 .overlay {
@@ -9,7 +9,7 @@
     position: absolute;color: #f1f1f1;z-index: 9999;top: 4%;right: 10px;
 }
 .ina {
-    margin: auto;text-align: center;line-height: 28px;padding: 20px 20px;position: relative;z-index: 99999999999999999999999999999999;
+    margin: auto;text-align: center;line-height: 28px;padding: 20px 20px;position: relative;z-index: 999999;
 }
 .ina h1 {
     font-size: 28px;color: #e28304;

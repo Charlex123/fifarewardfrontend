@@ -23,7 +23,6 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
             }
           }  
           const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/countdown/getremainingtime/", config);
-          console.log("here oul",data)
           setTimeRemaining(data.remainingtime);
         } catch (error) {
           console.error('Error fetching data:', error);
@@ -71,18 +70,17 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
             <div className={styles.ina}>
                 <div>
                     <div>
-                        <h1> Launch Count Down</h1> 
-                        
+                        <h1> Launch Count Down </h1> 
                     </div>
                     <h3>Below are some of the blockchain protocols we have built to foster user engagement and community building as well as stand out amongst our counterpart Dapps</h3>
                     <ul>
-                        <li> <FaSquareCheck size={18}/> Soccer Betting</li>
-                        <li> <FaSquareCheck size={18}/>  Fan Forum</li>
-                        <li> <FaSquareCheck size={18}/> Gaming</li>
-                        <li> <FaSquareCheck size={18}/> Staking</li>
-                        <li> <FaSquareCheck size={18}/> Farming</li>
-                        <li> <FaSquareCheck size={18}/>  NFT Minting Engine And Market Place</li>
-                        <li> <FaSquareCheck size={18}/>  Robust referral and reward system</li>
+                        <li> <FaSquareCheck size={18}/> Soccer Betting </li>
+                        <li> <FaSquareCheck size={18}/>  Fan Forum </li>
+                        <li> <FaSquareCheck size={18}/> Gaming </li>
+                        <li> <FaSquareCheck size={18}/> Staking </li>
+                        <li> <FaSquareCheck size={18}/> Farming </li>
+                        <li> <FaSquareCheck size={18}/>  NFT Minting Engine And Market Place </li>
+                        <li> <FaSquareCheck size={18}/>  Robust referral and reward system </li>
                     </ul>
                     <h2>All protocols are built on the blockchain</h2>
                 </div>
