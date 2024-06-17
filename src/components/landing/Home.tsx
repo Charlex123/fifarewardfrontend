@@ -187,6 +187,7 @@ const showcomingsoonContdown = () => {
 
 const closeCountdownModal = () => {
   setComingSoonCountDownModal(false);
+  console.log("clicked count down close btn")
 }
 
   return (
