@@ -8,6 +8,9 @@
 .closebtn {
     position: absolute;color: #f1f1f1;z-index: 99999999;top: 4%;right: 10px;
 }
+.closebtn button {
+    font-size: 20px;font-weight: 600;
+}
 .ina {
     margin: auto;text-align: center;line-height: 28px;padding: 20px 20px;position: relative;z-index: 999999;
 }

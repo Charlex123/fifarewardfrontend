@@ -64,7 +64,7 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
         <div className={styles.comingsoonmain}>
             <div className={styles.overlay}></div>
             <div className={styles.closebtn}>
-                <button onClick={closeCountdownModal} style={{color: '#f1f1f1'}}><FaXmark size={28} /></button>
+                <button onClick={closeCountdownModal} style={{color: 'red'}}>Close<FaXmark size={28}/></button>
             </div>
             <div>{isExploding && <><Confetti mode='fall' colors={['#ff577f', '#ff884b', '#ffd384', '#fff9b0', '#3498db']} shapeSize={18}/> <ConfettiExplosion/></>}</div>
             <div className={styles.ina}>
