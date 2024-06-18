@@ -103,7 +103,7 @@ function Navbar() {
                             <li><a href='/whitepaper' rel='noopener noreferrer' > <FaAngleRight className={styles.navdrbdwnbrandicon}/> <span className={styles.brnd}>White Paper</span></a></li>
                         </ul>
                     </li> */}
-                    {/* <li><a href='/whitepaper.pdf' rel='noopener noreferrer'>Whitepaper</a></li> */}
+                    <li><a href='/whitepaper.pdf' rel='noopener noreferrer'>Whitepaper</a></li>
 
                     {/* to be comment out after count down */}
 
