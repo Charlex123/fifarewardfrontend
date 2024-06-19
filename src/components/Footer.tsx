@@ -52,7 +52,7 @@ const handleCopyClick = () => {
                      </div>
                      <div><a href='https://www.dextools.io/app/en/bnb/pair-explorer/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1?t=1712569347593' rel='noopener noreferrer' ><FaBandcamp className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>DexTools</span></a></div>
                      <div>
-                        <a href='https://t.me/FifarewardLabs' rel='noopener noreferrer' ><FaTelegram className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
+                        <a href='https://t.me/fifarewardofficialchannel' rel='noopener noreferrer' ><FaTelegram className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Telegram</span></a>
                      </div>
                      <div>
                         <a href='https://www.geckoterminal.com/bsc/pools/0xfbe158e077e17c2c603f505d1a4d11f2a605ffa1' rel='noopener noreferrer' ><FaBandcamp className={footerstyles.navdrbdwnbrandicon}/> <span className={footerstyles.brnd}>Coin Gecko</span></a>
