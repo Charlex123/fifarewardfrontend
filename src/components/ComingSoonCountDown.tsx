@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Confetti from 'react-confetti-boom';
 import axios from 'axios';
+import Loading from './Loading';
 import ConfettiExplosion from 'react-confetti-explosion';
 import styles from '../styles/comingsooncountdowntimer.module.css'
 import { FaCheck, FaSquareCheck, FaXmark } from 'react-icons/fa6';
@@ -13,8 +14,10 @@ interface Props {
 const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
   const [timeRemaining, setTimeRemaining] = useState(5184000); // days in seconds
   const [isExploding, setIsExploding] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true)
     const fetchTimer = async () => {
         try {
           const config = {
@@ -24,6 +27,7 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
           }  
           const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/countdown/getremainingtime/", config);
           setTimeRemaining(data.remainingtime);
+          setLoading(false)
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -32,19 +36,19 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
       fetchTimer();
 
     setIsExploding(true);
-    // const interval = setInterval(() => {
-    //   setTimeRemaining((prevTime:any) => {
-    //     if (prevTime <= 0) {
-    //       clearInterval(interval);
-    //       // You can add any additional logic here when the timer reaches zero
-    //       return 0;
-    //     }
-    //     return prevTime - 1;
-    //   });
-    // }, 1000);
+    const interval = setInterval(() => {
+      setTimeRemaining((prevTime:any) => {
+        if (prevTime <= 0) {
+          clearInterval(interval);
+          // You can add any additional logic here when the timer reaches zero
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
 
     // Cleanup function to clear the interval when the component is unmounted
-    // return () => clearInterval(interval);
+    return () => clearInterval(interval);
   }, []);
 
   const closeCountdownModal = () => {
@@ -85,9 +89,10 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
                     <h2>All protocols are built on the blockchain</h2>
                 </div>
                 
-                <div className={styles.timer}>
-                {formatTime(timeRemaining)} 
-                </div>
+                {loading === true  ? <Loading/> : <div className={styles.timer}>
+                  {formatTime(timeRemaining)} 
+                  </div>
+                  }
             </div>
         </div>
     </>
