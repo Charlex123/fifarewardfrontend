@@ -91,10 +91,11 @@ const handleCopyClick = () => {
             <div className={footerstyles.footer_c3}>
                <h3>FRD Contract</h3>
                <div className={footerstyles.f_c}>
-                  <div><span>Contract Address:</span></div>
-                  <div><input title='input' type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
-                  <div className={footerstyles.buylinkp}><a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc' className={footerstyles.buylink} rel='noopener noreferrer'>BUY FRD</a></div>
-               </div>
+                  <div><span>Coming soon</span></div>
+                  {/* <div><span>Contract Address:</span></div> */}
+                  {/* <div><input title='input' type='text' value={contractAddress} onChange={(e) => setcontractAddress(e.target.value)}/> <button type='button' onClick={handleCopyClick}>{buttonText}</button></div>
+                  <div className={footerstyles.buylinkp}><a href='https://pancakeswap.finance/swap?outputCurrency=0x6fe537b0ba874eab212bb8321ad17cf6bb3a0afc' className={footerstyles.buylink} rel='noopener noreferrer'>BUY FRD</a></div> */}
+               </div> 
             </div>
          </div>
          <div><div className={footerstyles.footam}>FIFAREWARD | ©2023 <br></br></div></div>
