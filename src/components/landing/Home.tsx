@@ -9,7 +9,6 @@ import Image from 'next/image';
 import styles from '../../styles/landing.module.css'
 import Typed from 'react-typed';
 import RoadMap from '../RoadMap';
-import FooterNavBar from '../FooterNav';
 import ComingSoonCountdownTimer from '../ComingSoonCountDown';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
@@ -173,7 +172,6 @@ useEffect(() => {
     observer.observe(section);
   });
 
-  console.log("cureent section",currentSection);
   return () => {
     sections.forEach((section) => {
       observer.unobserve(section);
@@ -187,7 +185,6 @@ const showcomingsoonContdown = () => {
 
 const closeCountdownModal = () => {
   setComingSoonCountDownModal(false);
-  console.log("clicked count down close btn")
 }
 
   return (
@@ -622,8 +619,6 @@ const closeCountdownModal = () => {
       
     </div>
 
-    
-        <FooterNavBar />
     </div>
   )
 }

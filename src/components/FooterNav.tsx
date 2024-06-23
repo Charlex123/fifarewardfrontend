@@ -29,8 +29,8 @@ function FooterNavBar() {
     }
     return (
         <>
+            {comingsooncountdownModal && <ComingSoonCountdownTimer onChange={closeCountdownModal}/>}
             <nav className={styles.footernav}>
-                {comingsooncountdownModal && <ComingSoonCountdownTimer onChange={closeCountdownModal}/>}
                 {isMobile ? 
                 <>
                     <div className={styles.con}><div><ConnectWallet /></div></div>
