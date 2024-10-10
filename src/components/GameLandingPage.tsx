@@ -13,6 +13,7 @@ const GameLandingPage: React.FC<{}> = () => {
   const [showBgOverlay, setShowBgOverlay] = useState(false);
   const [showalertDanger, setShowAlertDanger] = useState(false);
   const [errorMessage, seterrorMessage] = useState('');
+  
   useEffect(() => {
     const udetails = JSON.parse(localStorage.getItem("userInfo")!);
       if(!udetails) {

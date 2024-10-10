@@ -35,7 +35,7 @@ interface KeyWordSearch {
     country: string
   }
 }
-
+bool
 interface League {
   leagueId: number;
   leagueName: string;
