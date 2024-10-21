@@ -260,7 +260,7 @@ const Farming = () =>  {
             const signer = provider.getSigner();
 
             /* next, create the item */
-            let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+            let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
             
             let transaction = await FRDcontract.balanceOf(connectedaddress);
             
@@ -362,7 +362,7 @@ const stopminingCount = async (e: any) => {
           const signer = provider.getSigner();
           const withdamt = amountmined + "000000000000000000";
           const wamount = ethers.BigNumber.from(withdamt);
-          const FRDContract = new ethers.Contract(FRDContractAddress!, FRDabi, signer);
+          const FRDContract = new ethers.Contract(FRDContractAddress!, FRDabi.abi, signer);
           
           try {
             const reslt = await FRDContract.transfer(connectedaddress,wamount);;

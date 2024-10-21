@@ -148,7 +148,7 @@ useEffect(() => {
         if(signer) {
           try {
             setShowLoading(true);
-            const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+            const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
             const loadBets = await BetFeaturescontract.loadAllBets();
             
             await loadBets.forEach(async (element:any) => {
@@ -210,7 +210,7 @@ useEffect(() => {
           signer = provider.getSigner();
   
           if (signer) {
-            const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+            const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
             const amt = betAmount + "000000000000000000";
             const tamount = ethers.BigNumber.from(amt);
   
@@ -258,7 +258,7 @@ useEffect(() => {
                 const signer = provider.getSigner();
     
                 /* next, create the item */
-                let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+                let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
                 
                 let transaction = await FRDcontract.balanceOf(connectedaddress);
                 
@@ -322,7 +322,7 @@ const Approve = async (betId: number,betAmount: number) => {
         setShowLoading(true);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
         const reslt = await FRDContract.approve(BettingCA,tamount);
@@ -439,7 +439,7 @@ const loadSearchResults = async () => {
     
     if(signer) {
       try {
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
         let loadBets;
         if(searchkeyword.length < 30) {
           loadBets = await BetFeaturescontract.getBetsByUsername(searchkeyword);
@@ -502,7 +502,7 @@ const viewBetDetails = async(e:any,betId:number) => {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
-      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
           
         const getbetpredictions = await Betcontract.getPredictions(betId);
         setBetConditions(getbetpredictions);
@@ -545,8 +545,8 @@ const FilterByBetAmount = async (event:any) => {
     
     if(signer) {
       try {
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
-        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
         const amt = filterbetAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
 
@@ -613,8 +613,8 @@ const FilterByClosedBets = async () => {
     
     if(signer) {
       try {
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
-        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
         const loadBets = await BetFeaturescontract.getBetsByStatus("closed");
         console.log(" cloesd bets",loadBets)
         await loadBets.forEach(async (element:any) => {
@@ -681,8 +681,8 @@ const FilterByOpenBets = async () => {
     if(signer) {
       try {
         
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
-        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
         const loadBets = await BetFeaturescontract.getBetsByStatus("open");
         console.log("load open vbets",loadBets)
         await loadBets.forEach(async (element:any) => {

@@ -652,7 +652,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                             <tbody id="userData">
                             {itemBids.map((bid:NFTBidMetadata,index: number) =>(
                                 <tr key={index}>
-                                <td>{bid.biddingprice.toLocaleString()}BNB</td>
+                                <td>{bid.biddingprice.toLocaleString()}TON</td>
                                 <td>${`${(bid.biddingprice.toString() as any * bnbdollarPrice!).toLocaleString()}`}</td>
                                 <td>{1}</td>
                                 <td>{((bid.biddingprice.toString()) as any/nftItemPrice!) * 100}%</td>
@@ -694,7 +694,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='text' value={_itemId} readOnly/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>New listing/floor price(BNB)</label>
+                        <label>New listing/floor price(TON)</label>
                         <input type='number' onChange={(e) => nftfloorpriceToInt(e.target.value) } placeholder='20'/>
                       </div>
                   </div>
@@ -704,7 +704,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>New min. bid amount (BNB)</label>
+                        <label>New min. bid amount (TON)</label>
                         <input type='number' onChange={(e) => nftminbidamountToInt(e.target.value) } placeholder='18'/>
                       </div>
                   </div>
@@ -736,7 +736,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='text' value={listingItemTokenId} readOnly/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>Listing/floor price(BNB)</label>
+                        <label>Listing/floor price(TON)</label>
                         <input type='number' onChange={(e) => nftfloorpriceToInt(e.target.value) } placeholder='20'/>
                       </div>
                   </div>
@@ -746,7 +746,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                         <input type='number' onChange={(e) => setBidDuration(e.target.value)} placeholder="Ex. 180"/>
                       </div>
                       <div className={styles.list_tc}>
-                        <label>Min. bid amount(BNB)</label>
+                        <label>Min. bid amount(TON)</label>
                         <input type='number' onChange={(e) => nftminbidamountToInt(e.target.value) } placeholder='18'/>
                       </div>
                   </div>

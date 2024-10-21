@@ -133,7 +133,7 @@ const Staking = () =>  {
 
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const amt = stakeAmount + "000000000000000000";
         const stkamount = ethers.BigNumber.from(amt);
         const profpercent = profitpercent * 1000;
@@ -175,7 +175,7 @@ const Staking = () =>  {
 
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
-        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
         let transaction = await FRDContract.balanceOf(connectedaddress);
             
         let frdBal = ethers.utils.formatEther(transaction);
@@ -222,7 +222,7 @@ const Staking = () =>  {
 
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const reslt = await StakeContract.calcReward(stakeId);
         console.log('calc reward error',reslt);
         setShowLoading(false);
@@ -272,7 +272,7 @@ const Staking = () =>  {
         let estdiv = e.parentElement.parentElement.previousElementSibling;
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const profpercent = profitpercent * 1000;
         const reslt = await StakeContract.EstimateReward(stakeAmount, stakeduration,profpercent);
         console.log('calc reward error',reslt);
@@ -295,7 +295,7 @@ const Staking = () =>  {
         
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const reslt = await StakeContract.getMaxWithdrawAmount(stakeAmount, stakeduration,profitpercent);
         console.log('calc reward error',reslt);
         setWithdrawReward(reslt/10**18);
@@ -314,7 +314,7 @@ const Staking = () =>  {
 
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const reslt = await StakeContract.getMinWithdrawAmount(stakeId);
         console.log('min withd amt',reslt);
         console.log('min withd amt to no',reslt.toString()/(10**18));
@@ -339,7 +339,7 @@ const Staking = () =>  {
         
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         console.log(" wi amt",withdrawamount);
         const withdamt = withdrawamount+ "000000000000000000";
         const wamount = ethers.BigNumber.from(withdamt);
@@ -469,7 +469,7 @@ const Staking = () =>  {
 
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         console.log("stajke contract",StakeContract)
         const stks = await StakeContract.loadUserStakes(connectedaddress);
         console.log('stake data',stks);

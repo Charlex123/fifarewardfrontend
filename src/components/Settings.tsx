@@ -193,7 +193,7 @@ async function UpdateUsername(e: any) {
           try {
             const provider = new ethers.providers.Web3Provider(walletProvider as any)
             const signer = provider.getSigner();
-            const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+            const betContract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
             await betContract.UpdateUsername(username);
           } catch (error: any) {
             console.log("add ref error",error.code || error.message)

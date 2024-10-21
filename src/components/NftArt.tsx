@@ -498,7 +498,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                 <span className={styles.cp_in}>Current price</span>
                             </div>
                             <div className={styles.ap}>
-                                <span className={styles.ap_in}>{nftauctItem?.price?.toString()} BNB <span className={styles.ap_inp}>${`${bnbPrice?.toLocaleString() || ''}`}</span></span> 
+                                <span className={styles.ap_in}>{nftauctItem?.price?.toString()} TON <span className={styles.ap_inp}>${`${bnbPrice?.toLocaleString() || ''}`}</span></span> 
                             </div>
                             <div className={styles.b_btns}>
                                 <div>
@@ -601,7 +601,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                             <tbody id="userData">
                                             {itemBids.map((bid:NFTBidMetadata,index: number) =>(
                                                 <tr key={index}>
-                                                <td>{bid.biddingprice.toLocaleString()}BNB</td>
+                                                <td>{bid.biddingprice.toLocaleString()}TON</td>
                                                 <td>${`${(bid.biddingprice.toString() as any * bnbdollarPrice!).toLocaleString()}`}</td>
                                                 <td>{1}</td>
                                                 <td>{((bid.biddingprice.toString()) as any/itemprice2!) * 100}%</td>

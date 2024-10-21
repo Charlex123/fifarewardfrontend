@@ -51,7 +51,7 @@ const GuessFootballHeroLeaderboard: React.FC = () => {
               const signer = provider.getSigner();
               console.log('bet signer', signer);
         
-              const guessfootballherocontract = new ethers.Contract(GuessfhCA!, GuessfhAbi, signer);
+              const guessfootballherocontract = new ethers.Contract(GuessfhCA!, GuessfhAbi.abi, signer);
               try {
                 const leaderbd = await guessfootballherocontract.getLeaderboard();
                 setLeaderboard(leaderbd);

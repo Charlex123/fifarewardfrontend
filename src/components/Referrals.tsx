@@ -55,10 +55,10 @@ const Referrals = () =>  {
       try {
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner(connectedaddress!);
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const stakeref = await StakeContract.getReferrals(connectedaddress);
         setStakeReferrals(stakeref);
-        const BetContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const BetContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const betref = await BetContract.getReferrals(connectedaddress);
         setBetReferrals(betref)
       } catch (error: any) {

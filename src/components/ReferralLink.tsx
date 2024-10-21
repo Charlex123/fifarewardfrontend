@@ -74,10 +74,10 @@ const ReferralLink:React.FC<{}> = () =>  {
         // const [accounta] = await window.ethereum.request({ method: 'eth_requestAccounts' })
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
-        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+        const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
         const tnx = await StakeContract.addReferrer(sponsoraddress,connectedaddress);
         console.log("Account Balance: ", tnx);
-        const betContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
+        const betContract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
         const reslt = await betContract.addReferrer(sponsoraddress,connectedaddress,uname);
         console.log("Account Balance: ", reslt);
       } catch (error: any) {

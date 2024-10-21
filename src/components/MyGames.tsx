@@ -81,7 +81,7 @@ const MyGames: React.FC<{}> = () =>  {
               setShowLoading(true);
               const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
               const signer = provider.getSigner();
-              const gfhcontract = new ethers.Contract(GuessfhCA!, GFHAbi, signer);
+              const gfhcontract = new ethers.Contract(GuessfhCA!, GFHAbi.abi, signer);
               const loaduserGames = await gfhcontract.loadUserGames(connectedaddress);
               await loaduserGames.forEach(async (element:any) => {
                 if(element.walletaddress != 0x0000000000000000000000000000000000000000) {

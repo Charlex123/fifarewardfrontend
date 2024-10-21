@@ -55,7 +55,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi, signer);
+          const StakeContract = new ethers.Contract(StakeCA!, StakeAbi.abi, signer);
           const reslt = await StakeContract.getUserStakeCount(connectedaddress);
           setStakeCount(reslt);
           console.log(reslt)
@@ -75,7 +75,7 @@ const RewardsBadge:React.FC<{}> = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
+          const Betting = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
           const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(connectedaddress);
 
           const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(connectedaddress);

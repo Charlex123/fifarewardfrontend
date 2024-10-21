@@ -36,7 +36,7 @@ const LoadSampleOpenBetsData:React.FC<Props> = ({onMount}) => {
               }
               if(signer) {
                 try {
-                  let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingfeaturesAbi, signer);
+                  let BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingfeaturesAbi.abi, signer);
                   let loadBetsByStatus = await BetFeaturescontract.getBetsByStatus("open");
                   
                   await loadBetsByStatus.forEach(async (element:any) => {

@@ -8,7 +8,7 @@ import { useUser } from '../contexts/UserContext';
 import BgOverlay from './BgOverlay';
 import ActionSuccessModal from './ActionSuccess';
 import NFTMarketPlace from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
-import FifaRewardToken from '../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json';
+import FifaRewardToken from "../../artifacts/contracts/FifaRewardToken.sol/FifaRewardToken.json"
 import { ethers } from 'ethers';
 import DragDropImageUpload from './DragDropImageUpload';
 import { useWeb3Modal } from '@web3modal/ethers5/react';
@@ -107,7 +107,7 @@ export default function CreateItem() {
 
           console.log('signer address',signer,signer.getAddress(),signer._address,address)
           /* next, create the item */
-          let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken, signer.connectUnchecked());
+          let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken.abi, signer);
           let transaction = await contract.balanceOf(connectedaddress);
           let frdBal = ethers.utils.formatEther(transaction);
           if(parseInt(frdBal) < 500) {
