@@ -10,16 +10,17 @@ interface TimelineEvent {
 
 const events: TimelineEvent[] = [
   { id: 1, title: 'Seed & Private Sale' },
-  { id: 2, title: 'Pancakesawp Listing' },
-  { id: 3, title: 'NFT Minting & Market Place' },
-  { id: 4, title: 'Betting Protocol' },
-  { id: 5, title: 'Gaming Protocol' },
-  { id: 6, title: 'Staking & Farming' },
-  { id: 7, title: 'Website' },
-  { id: 8, title: 'Interactive Chat' },
-  { id: 9, title: 'Branding & Merchandize' },
-  { id: 11, title: 'Airdrop Campaign Stage 1' },
-  { id: 12, title: 'Airdrop Campaign Stage 2' },
+  { id: 2, title: 'Ston.fi & Ton Diamonds Listing' },
+  { id: 3, title: 'Website' },
+  { id: 4, title: 'Telegram Mini App' },
+  { id: 5, title: 'Airdrop Campaign Phase 1' },
+  { id: 6, title: 'NFT Minting & Market Place' },
+  { id: 7, title: 'Betting Protocol' },
+  { id: 8, title: 'Gaming Protocol' },
+  { id: 9, title: 'Staking & Farming' },
+  { id: 10, title: 'Interactive Chat' },
+  { id: 11, title: 'Branding & Merchandize' },
+  { id: 12, title: 'Airdrop Campaign Phase 2' },
   { id: 13, title: 'Listing On tier2 Exchanges' },
   { id: 14, title: 'Listing On Tier 1 Exchanges' },
   { id: 15, title: 'Mobile App'}, 
@@ -80,7 +81,7 @@ const RoadMap: React.FC = () => {
                     <div className={`${styles.event} ${index % 2 === 0 ? styles.upEvent : styles.downEvent}`}>
                     <div className={styles.title}>
                       {event.title}
-                      {index < 9 && <FaCircleCheck className={styles.checkIcon} />} {/* Add checkmark icon for first three events */}
+                      {/* {index < 9 && <FaCircleCheck className={styles.checkIcon} />} Add checkmark icon for first three events */}
                     </div>
                     </div>
                 </div>
