@@ -237,10 +237,10 @@ const closeBgModal = () => {
                                  </div>
                                  <div className={styles.nft_list_p}>
                                    <div>
-                                     <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{(listedNFT.price!.toNumber())/(listedNFT.decimalplaces!.toNumber())}{listedNFT.chainId == 97 ? 'BNB': 'MATIC'}</div>
+                                     <div className={styles.listedp}>Selling Price</div> <div className={styles.listedp}>{(listedNFT.price!.toNumber())/(listedNFT.decimalplaces!.toNumber())}{listedNFT.chainId == 97 ? 'TON': 'TON'}</div>
                                    </div>
                                    <div>
-                                     <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{(listedNFT.minbidamount?.toNumber())/(listedNFT.decimalplaces!.toNumber())}{listedNFT.chainId == 97 ? 'BNB': 'MATIC'}</div>
+                                     <div className={styles.listedp}>Min Bid Price</div> <div className={styles.listedp}>{(listedNFT.minbidamount?.toNumber())/(listedNFT.decimalplaces!.toNumber())}{listedNFT.chainId == 97 ? 'TON': 'TON'}</div>
                                    </div>
                                    {/* <div>
                                      <div className={styles.listedp}>Sold</div> <div className={styles.listedp}>{listedNFT.sold == false ? 'No' : 'Yes'}</div>
