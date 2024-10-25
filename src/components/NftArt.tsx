@@ -447,7 +447,7 @@ const NFTArt: React.FC<{}> = () =>  {
                                     <Image src={tonlogo} alt='bnb logo' style={{width: '25px',height: '25px'}}/>
                                 </div>
                                 <div className={styles.nft_op_}>
-                                    <button>{<FaHeart/>}</button>
+                                    <button>{<FaHeart color='white'/>}</button>
                                 </div>
                             </div>  
                         </div>
@@ -504,7 +504,7 @@ const NFTArt: React.FC<{}> = () =>  {
                             </div>
                             <div className={styles.b_btns}>
                                 <div>
-                                    <button className={styles.b_btn} onClick={() => BuyNFT(nftauctItem?.itemId?.toString(),nftauctItem?.price?.toString())}><span>{<FaCartShopping/>}</span> Buy Now </button> 
+                                    <button className={styles.b_btn} onClick={() => BuyNFT(nftauctItem?.itemId?.toString(),nftauctItem?.price?.toString())}><span style={{color: 'white'}}>{<FaCartShopping color='white'/>}</span> Buy Now </button> 
                                 </div>
                                 <div>
                                     <button className={styles.b_btn1} onClick={() => openBidModal(nftauctItem?.tokenId?.toString(),nftauctItem?.itemId?.toString(),nftauctItem?.price?.toString(),nftauctItem?.minbidamount.toString(),nftauctItem?.name)}><span>{<FaCircleDollarToSlot/>}</span> Make Offer </button> 
