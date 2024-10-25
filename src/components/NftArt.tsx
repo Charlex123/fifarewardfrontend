@@ -498,7 +498,8 @@ const NFTArt: React.FC<{}> = () =>  {
                                 <span className={styles.cp_in}>Current price</span>
                             </div>
                             <div className={styles.ap}>
-                                <span className={styles.ap_in}>{nftauctItem?.price?.toString()} TON <span className={styles.ap_inp}>${`${bnbPrice?.toLocaleString() || ''}`}</span></span> 
+                            {/* ${`${bnbPrice?.toLocaleString() || ''}`} */}
+                                <span className={styles.ap_in}>{nftauctItem?.price?.toString()} TON <span className={styles.ap_inp}>$10.26</span></span> 
                             </div>
                             <div className={styles.b_btns}>
                                 <div>
