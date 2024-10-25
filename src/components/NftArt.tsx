@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
-import bnblogo from '../assets/images/bnb-bnb-logo.png'
+import bnblogo from '../assets/images/bnb-bnb-logo.png';
+import tonlogo from '../assets/images/toncoin-ton-logo.svg'
 import { ThemeContext } from '../contexts/theme-context';
 import NFTCountdownTimer from './NftCountDownTimer';
 import NFTMarketPlaceabi from '../../artifacts/contracts/FRDNFTMarketPlace.sol/FRDNFTMarketPlace.json';
@@ -443,7 +444,7 @@ const NFTArt: React.FC<{}> = () =>  {
                         <div className={styles.nft_art_top}>
                             <div className={styles.nft_op}>
                                 <div className={styles.nft_op_}>
-                                    <Image src={bnblogo} alt='bnb logo' style={{width: '25px',height: '25px'}}/>
+                                    <Image src={tonlogo} alt='bnb logo' style={{width: '25px',height: '25px'}}/>
                                 </div>
                                 <div className={styles.nft_op_}>
                                     <button>{<FaHeart/>}</button>
