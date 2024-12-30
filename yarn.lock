@@ -143,6 +143,31 @@
   resolved "https://registry.yarnpkg.com/@assemblyscript/loader/-/loader-0.9.4.tgz#a483c54c1253656bb33babd464e3154a173e1577"
   integrity sha512-HazVq9zwTVwGmqdwYzu7WyQ6FQVZ7SwET0KKQuKm55jD0IfUpZgN0OPIiZG3zV1iSrVYcN0bdwLRXI/VNCYsUA==
 
+"@axelar-network/axelar-cgp-solidity@6.4.0":
+  version "6.4.0"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelar-cgp-solidity/-/axelar-cgp-solidity-6.4.0.tgz#75619d775a46f9dfae9fc90be78db1bd0ae77c46"
+  integrity sha512-Xnw5xi234B1cmTCzgudV8zq+DDjJ1d1U362CM0vKH1FWmZprKIdqgmOYkiRyu+QiVhnznKiBURiSEHVrNjtYpw==
+  dependencies:
+    "@axelar-network/axelar-gmp-sdk-solidity" "5.10.0"
+
+"@axelar-network/axelar-gmp-sdk-solidity@5.10.0":
+  version "5.10.0"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelar-gmp-sdk-solidity/-/axelar-gmp-sdk-solidity-5.10.0.tgz#9679b0634e4db6eb345aac800df6dd3a38d2e242"
+  integrity sha512-s8SImALvYB+5AeiT3tbfWNBI2Mhqw1x91i/zM3DNpVUCnAR2HKtsB9T84KnUn/OJjOVgb4h0lv7q9smeYniRPw==
+
+"@axelar-network/axelar-gmp-sdk-solidity@6.0.4":
+  version "6.0.4"
+  resolved "https://registry.yarnpkg.com/@axelar-network/axelar-gmp-sdk-solidity/-/axelar-gmp-sdk-solidity-6.0.4.tgz#593d0aef12218ecb294fcdef0dfd0a99b0381975"
+  integrity sha512-o8pv+krIAlEwzid0Ac8qwykDsavc+1DRPvyFQ3V0R0zTQFtYLJIIXXXt7FRb8b+LJDAuX+E0bB3N2X+hlcxk/g==
+
+"@axelar-network/interchain-token-service@^2.0.0":
+  version "2.0.0"
+  resolved "https://registry.yarnpkg.com/@axelar-network/interchain-token-service/-/interchain-token-service-2.0.0.tgz#ebb74ec71be63a00bc1ea55d4424ab78f8130c57"
+  integrity sha512-WPkJbVOZrBhXMl2MCmo2YelxuXBcpXQVLgLlU0MeQ5I8+02alPIQJIIE5BP7INqMaOuBqXcOdQUa5SJmxERdEw==
+  dependencies:
+    "@axelar-network/axelar-cgp-solidity" "6.4.0"
+    "@axelar-network/axelar-gmp-sdk-solidity" "6.0.4"
+
 "@babel/code-frame@^7.0.0", "@babel/code-frame@^7.10.4", "@babel/code-frame@^7.12.13", "@babel/code-frame@^7.16.0", "@babel/code-frame@^7.24.6", "@babel/code-frame@^7.8.3":
   version "7.24.6"
   resolved "https://registry.yarnpkg.com/@babel/code-frame/-/code-frame-7.24.6.tgz#ab88da19344445c3d8889af2216606d3329f3ef2"

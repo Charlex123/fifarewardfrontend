@@ -34,13 +34,13 @@ module.exports = {
       url: "https://data-seed-prebsc-1-s1.bnbchain.org:8545",
       chainId: 97,
       gasPrice: 20000000000,
-      accounts:  [process.env.NFTMARKETPLACE_DEV_TEST_PRIVATE_KEY] 
+      accounts:  [process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY] 
     },
     mainnet: {
       url: "https://bsc-dataseed.bnbchain.org/",
       chainId: 56,
       gasPrice: 20000000000,
-      accounts: [process.env.NFTMARKETPLACE_DEV_TEST_PRIVATE_KEY]
+      accounts: [process.env.NEXT_PUBLIC_FRD_PRIVATE_KEY]
     },
     mumbai: {
       url: process.env.INFURA_POLYGON_MUMBAI_URL,

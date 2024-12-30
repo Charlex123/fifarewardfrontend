@@ -43,7 +43,7 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
             "Content-type": "application/json"
         }
       }  
-      const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/livefixtures/loadlivefixtures", {
+      const {data} = await axios.post("http://localhost:9000/api/livefixtures/loadlivefixtures", {
         live,
         currentPage,
         limit
@@ -188,7 +188,7 @@ return (
                                         <div className={leaguefixturestyle.fixt}>
                                           <div className={leaguefixturestyle.fixt_d_o}>
                                             <div className={leaguefixturestyle.fixt_d}>
-                                              <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
+                                              <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd YYYY')}`}
                                             </div>
                                             <div className={leaguefixturestyle.dd}>
                                                 <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>

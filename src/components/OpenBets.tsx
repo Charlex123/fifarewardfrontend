@@ -24,11 +24,11 @@ import Head from 'next/head';
 import { FaCircle, FaFilter, FaMagnifyingGlass, FaXmark } from 'react-icons/fa6';
 
 dotenv.config();
-// material
-// component
 
-
-
+interface Prediction {
+  bettingteam?: string;
+  prediction?: string;
+}
 
 const OpenBets:React.FC<{}> = () => {
   // types.ts
@@ -148,9 +148,9 @@ useEffect(() => {
         if(signer) {
           try {
             setShowLoading(true);
-            const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
+            const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
             const loadBets = await BetFeaturescontract.loadAllBets();
-            
+            console.log("all loaded bets 000-",loadBets)
             await loadBets.forEach(async (element:any) => {
               if(element.openedBy != 0x0000000000000000000000000000000000000000) {
                 let betAmt = Math.ceil((element.betamount.toString())/(10**18));
@@ -210,7 +210,7 @@ useEffect(() => {
           signer = provider.getSigner();
   
           if (signer) {
-            const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+            const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
             const amt = betAmount + "000000000000000000";
             const tamount = ethers.BigNumber.from(amt);
   
@@ -219,8 +219,8 @@ useEffect(() => {
                 betId, 
                 tamount, 
                 username, 
-                betprediction, 
-                bettingteam, 
+                betprediction.trim(), 
+                bettingteam.trim(), 
                 { gasLimit: 1000000 }
               );
   
@@ -248,24 +248,82 @@ useEffect(() => {
     
   };
 
-  const JoinBetNow = async (e:any,betId:number,betAmount:any,openedby:string,participants:string,remainingparticipantscount:number) => {
+  function doesPredictionExist(
+    predictions: Prediction[],
+    bettingteam: string,
+    betprediction: string
+  ): boolean {
+    // Validate the predictions array
+    if (!Array.isArray(predictions) || !predictions.length) {
+      console.error("Predictions array is empty or not valid.");
+      return false;
+    }
+  
+    // Validate the bettingteam input
+    if (!bettingteam || typeof bettingteam !== "string") {
+      console.error("Invalid betting team provided.");
+      return false;
+    }
+  
+    // Validate the betprediction input
+    if (!betprediction || typeof betprediction !== "string") {
+      console.error("Invalid bet prediction provided.");
+      return false;
+    }
+  
+    // Normalize and loop through each prediction
+    for (const prediction of predictions) {
+      console.log("loped")
+      if (prediction && typeof prediction === "object") {
+        const normalizedBettingTeam = prediction.bettingteam?.trim().toLowerCase();
+        const normalizedBetPrediction = prediction.prediction?.trim().toLowerCase();
+  
+        if (
+          normalizedBettingTeam === bettingteam.trim().toLowerCase() &&
+          normalizedBetPrediction === betprediction.trim().toLowerCase()
+        ) {
+          return true; // Found a match
+        }
+      }
+    }
+  
+    console.log("No match found. Debugging data:");
+    console.log("Input bettingteam:", bettingteam.trim().toLowerCase());
+    console.log("Input betprediction:", betprediction.trim().toLowerCase());
+    console.log("Predictions:", predictions);
+    return false; // No match found
+  }
+
+  const JoinBetNow = async (e:any,betId:number,betAmount:any,openedby:string,participants:string[],remainingparticipantscount:number, totalbetparticipantscount:number) => {
     try {
         let divP = e.parentElement.parentElement.parentElement;
+        console.log(" join bet details",betId, betAmount,openedby, participants, connectedaddress, totalbetparticipantscount,betprediction)
         
         setShowLoading(true);
           try {
             const provider = new ethers.providers.Web3Provider(walletProvider as any);
                 const signer = provider.getSigner();
-    
+                console.log("reta")
                 /* next, create the item */
-                let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
+                let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
                 
                 let transaction = await FRDcontract.balanceOf(connectedaddress);
+
+                let bettingContract = new ethers.Contract(BettingCA!, BettingAbi, signer);
                 
                 let frdBal = ethers.utils.formatEther(transaction);
 
-                let erAlertDv = e.parentElement.parentElement.previousElementSibling;
-          
+                const predictions = await bettingContract.getPredictions(betId);
+
+                let erAlertDv = e.parentElement.parentElement.previousElementSibling;   
+                
+                if(bettingteam === '') {
+                  erAlertDv.innerHTML = "You must select a team!";
+                  return;
+                }else {
+                  erAlertDv.innerHTML = "";
+                }
+                
                 if(connectedaddress === openedby) {
                   erAlertDv.innerHTML = "You can't join a bet you opened";
                   return;
@@ -274,35 +332,39 @@ useEffect(() => {
                   erAlertDv.innerHTML = "This bet is closed";
                   return;
                 }
-                if(bettingteam === '') {
-                  erAlertDv.innerHTML = "You must select a team!";
-                  return;
-                }else {
-                  erAlertDv.innerHTML = "";
-                }
-
+                
                 if(betprediction === '') {
                   erAlertDv.innerHTML = "You must choose a prediction!";
                   return;
                 }else {
                   erAlertDv.innerHTML = "";
                 }
-
-                const arrayofparticpants = participants.split(',');
+                console.log("reta oop opower 0909988")
                 
-                if(arrayofparticpants.indexOf(connectedaddress!) !== -1) {
-                  erAlertDv.innerHTML = "You can't join this bet again!";
+                const exists = (participants as string[]).some(wallet => wallet.trim() === connectedaddress!.trim());
+                console.log("exisits",exists)
+                if(exists === true) {
+                  erAlertDv.innerHTML = "You can't rejoin the same bet!";
                   return;
                 }else {
                   erAlertDv.innerHTML = "";
                 }
+                // if(parseInt(frdBal) < betAmount) {
+                //   setShowAlertDanger(true);
+                //   seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!`)
+                //   setShowLoading(false);
+                // }else {
+                //   divP.style.display = "";
+                  
+                // }
 
-                if(parseInt(frdBal) < betAmount) {
-                  setShowAlertDanger(true);
-                  seterrorMessage(`You need a minimum of ${betAmount}FRD to proceed!`)
-                  setShowLoading(false);
-                }else {
-                  divP.style.display = "none";
+                if (doesPredictionExist(predictions, bettingteam, betprediction)) {
+                  erAlertDv.innerHTML = "Exact prediction already set, choose another!";
+                  console.log("more de")
+                  return;
+                } else {
+                  console.log("more de nowe")
+                  divP.style.display = "";
                   Approve(betId, betAmount)
                 }
                 
@@ -322,7 +384,7 @@ const Approve = async (betId: number,betAmount: number) => {
         setShowLoading(true);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
         const reslt = await FRDContract.approve(BettingCA,tamount);
@@ -343,7 +405,7 @@ const closeActionModalComp = () => {
     // hiw_bgoverlay.style.display = 'none';
     setShowBgOverlay(false);
     setBetOpenSuccess(false);
-    router.push('openbets');
+    router.push('openbetslists');
 }
 
 const setBetPredictn = (prediction:any) => {
@@ -439,7 +501,7 @@ const loadSearchResults = async () => {
     
     if(signer) {
       try {
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
         let loadBets;
         if(searchkeyword.length < 30) {
           loadBets = await BetFeaturescontract.getBetsByUsername(searchkeyword);
@@ -502,7 +564,7 @@ const viewBetDetails = async(e:any,betId:number) => {
     try {
       setShowLoading(true);
       setShowBgOverlay(true);
-      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
           
         const getbetpredictions = await Betcontract.getPredictions(betId);
         setBetConditions(getbetpredictions);
@@ -545,8 +607,8 @@ const FilterByBetAmount = async (event:any) => {
     
     if(signer) {
       try {
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
-        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
         const amt = filterbetAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
 
@@ -613,8 +675,8 @@ const FilterByClosedBets = async () => {
     
     if(signer) {
       try {
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
-        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
         const loadBets = await BetFeaturescontract.getBetsByStatus("closed");
         console.log(" cloesd bets",loadBets)
         await loadBets.forEach(async (element:any) => {
@@ -681,8 +743,8 @@ const FilterByOpenBets = async () => {
     if(signer) {
       try {
         
-        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
-        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+        const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
+        const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
         const loadBets = await BetFeaturescontract.getBetsByStatus("open");
         console.log("load open vbets",loadBets)
         await loadBets.forEach(async (element:any) => {
@@ -805,11 +867,12 @@ const closeBetFilter = () => {
                 {betconditions.map((betcon, index) => (
                   <div key={index} className={openbetsstyle.betprd}>
                     <div>
-                      <div>{betcon.username}</div>
+                      <div>participant{index+1}</div>
                     </div>
                     <div>
                       <h3>Prediction</h3>
                       <div>
+                        <div><span>Address: </span> {betcon.useraddress}</div>
                         <div><span>Team: </span> {betcon.bettingteam}</div>
                         <div><span>Prediction: </span> {betcon.prediction}</div>
                       </div>
@@ -842,7 +905,7 @@ const closeBetFilter = () => {
                 <FaCircle className={openbetsstyle.hiwlistcircle} />  Click on Open Bets, and open a bet
               </li>
               <li>
-                <FaCircle className={openbetsstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a>open bets</a>
+                <FaCircle className={openbetsstyle.hiwlistcircle} />  Your opened bet will be listed in open bets page <a href='#'>open bets</a>
               </li>
               <li>
                 <FaCircle className={openbetsstyle.hiwlistcircle} />  Look for a bet partner/partners (min. of 2, max. of 6) who will close your bet
@@ -937,7 +1000,16 @@ const closeBetFilter = () => {
                       <td><div className={openbetsstyle.divaddress}><span>{openbet.openedBy.substring(0,8)+'...'}</span><span className={openbetsstyle.fulladdr}>{openbet.openedBy}</span><button type='button' onClick={(e) => toggleAddress(e.target)}>View</button></div></td>
                       <td><div className={openbetsstyle.div}>{openbet.totalbetparticipantscount.toString()}</div></td>
                       <td><div className={openbetsstyle.div}>{(openbet.totalbetparticipantscount.toNumber()) - (openbet.remainingparticipantscount.toNumber())}</div></td>
-                      <td><div className={openbetsstyle.div}>({openbet.participants}) <div className={openbetsstyle.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())} style={{cursor: 'pointer'}}> view bet details </button></div></div></td>
+                      <td><div className={openbetsstyle.div}>{openbet.participants.map((participant, index) => (
+                            <React.Fragment key={index}>
+                              <span>
+                                {participant.length > 8 ? participant.slice(0, 12)+'...' : participant}
+                              </span>
+                              {index < openbet.participants.length - 1 && ', '}
+                            </React.Fragment>
+                          ))} 
+                          <div className={openbetsstyle.bdet}><button type='button' title='button' onClick={(e) => viewBetDetails(e.target,openbet.betId.toNumber())} style={{cursor: 'pointer'}}> view bet details </button></div></div>
+                      </td>
                       <td><div className={openbetsstyle.div}>{openbet.remainingparticipantscount.toString()}</div></td>
                       <td className={openbetsstyle.stat}><div className={openbetsstyle.div}>{openbet.remainingparticipantscount.toNumber() > 0 ? <span className={openbetsstyle.betstatusopened}>Open</span> : <span className={openbetsstyle.betstatusclosed}>Closed</span>}</div></td>
                       {openbet.remainingparticipantscount.toNumber() > 0 
@@ -1018,7 +1090,7 @@ const closeBetFilter = () => {
                                     <label>Which team are you betting on?</label>
                                     <div>
                                         <select title='select' required onChange={(e) => setBetteam(e.target.value)}>
-                                            <option> Select team </option>
+                                            <option value=""> Select team </option>
                                             <option value={`${openbet.matchfixture.split('vs')[0].replace(/-/g, ' ')}`}>{`${openbet.matchfixture.split('vs')[0].replace(/-/g,' ')}`}</option>
                                             <option value={`${openbet.matchfixture.split('vs')[1].replace(/-/g, ' ')}`}>{`${openbet.matchfixture.split('vs')[1].replace(/-/g, ' ')}`}</option>
                                         </select>
@@ -1029,7 +1101,7 @@ const closeBetFilter = () => {
                                     <label>Select Prediction</label>
                                     <div>
                                         <select title='select' required onChange={(e) => setBetPredictn(e.target.value)}>
-                                            <option >Select Prediction</option>
+                                            <option value="">Select Prediction</option>
                                             <option value='Win'>Win</option>
                                             <option value='Lose'>Lose</option>
                                         </select>
@@ -1041,7 +1113,7 @@ const closeBetFilter = () => {
                                 <div className={openbetsstyle.error_alert}></div>
                                 <div className={openbetsstyle.form_btn}>
                                     <div>
-                                      <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betId.toNumber(),openbet.betamount,openbet.totalbetparticipantscount.toString(),openbet.openedBy,openbet.remainingparticipantscount.toNumber())} title='button'>Confirm</button>
+                                      <button type='button' className={openbetsstyle.sub_btn} onClick={(e) => JoinBetNow(e.target,openbet.betId.toNumber(),openbet.betamount,openbet.openedBy,openbet.participants,openbet.remainingparticipantscount.toNumber(),openbet.totalbetparticipantscount.toNumber())} title='button'>Confirm</button>
                                     </div>
                                     {/* <div>
                                       <button type='button' className={openbetsstyle.cancel_btn} onClick={(e) => Cancel(e.target)} title='button'>Cancel</button>

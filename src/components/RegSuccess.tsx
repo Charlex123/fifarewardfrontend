@@ -25,7 +25,7 @@ const RegSuccess = () =>  {
             <div className={regstyles.regs_in}>
               <h3>Registration Successful <FaCircleCheck /></h3>
               <div>
-                  <p>Hello, <span>{username}</span>, you've successfully registered with TafaXtra</p>
+                  <p>Hello, <span>{username}</span>, you've successfully registered with Fifareward</p>
                   <a href='/dapp' rel='noreferrer noopener'>Log In To Dapp</a>
               </div>
             </div>

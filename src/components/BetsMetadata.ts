@@ -10,7 +10,7 @@ export interface Bets {
     totalbetparticipantscount: BigNumber,
     remainingparticipantscount: BigNumber,
     betstatus: string,
-    participants: string,
+    participants: string[],
     betwinners: string,
     betlosers: string
   }

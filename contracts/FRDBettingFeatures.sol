@@ -95,9 +95,9 @@ contract FRDBettingFeatures is ReentrancyGuard {
         return FRDBettingContract.getBetIdsCreatedByUserCount(_user);
     }
 
-    function getBetIdsUserJoinedCount(address _user) external view returns (uint) {
-        return FRDBettingContract.getBetIdsUserJoinedCount(_user);
-    }
+    // function getBetIdsUserJoinedCount(address _user) external view returns (uint) {
+    //     return FRDBettingContract.getBetIdsUserJoinedCount(_user);
+    // }
 
     function nextBetId() external view returns (uint256) {
         return FRDBettingContract.nextBetId();

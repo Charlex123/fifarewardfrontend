@@ -83,7 +83,7 @@ const MyBets: React.FC<{}> = () =>  {
               const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
               const signer = provider.getSigner();
               console.log("signer",signer)
-              const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi.abi, signer);
+              const BetFeaturescontract = new ethers.Contract(BettingFeaturesCA!, BettingFeaturesAbi, signer);
               const loadBets = await BetFeaturescontract.getBetsByWallet(connectedaddress);
               await loadBets.forEach(async (element:any) => {
                 if(element.openedBy != 0x0000000000000000000000000000000000000000) {
@@ -144,7 +144,7 @@ const MyBets: React.FC<{}> = () =>  {
           setShowBgOverlay(true);
           const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
           const signer = provider.getSigner();
-          const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+          const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
               
             const getbetpredictions = await Betcontract.getPredictions(betId);
             setBetConditions(getbetpredictions);

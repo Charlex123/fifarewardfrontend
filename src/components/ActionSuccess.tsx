@@ -32,10 +32,10 @@ const ActionSuccessModal:React.FC<Props> = ({prop,onChange}) => {
 
     return(
         <>
-                <Head>
-                    <title>Action Success | FifaReward </title>
-                    <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
-                </Head>
+            <Head>
+                <title>Action Success | FifaReward </title>
+                <meta name='description' content='FifaReward | Bet, Stake, Mine and craeate NFTs of football legends'/>
+            </Head>
             <div className={actionsuccessmodalstyles.showactioncomp}>
                 <div className={actionsuccessmodalstyles.showactioncompin}>
                     <div className={actionsuccessmodalstyles.closebtn}><button type='button' title='button'>{<FaXmark onClick={(e) => closeActionModal()} />}</button></div>

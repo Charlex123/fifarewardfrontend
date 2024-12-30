@@ -256,7 +256,7 @@ return (
                                   <div className={leaguefixturestyle.fixt}>
                                     <div className={leaguefixturestyle.fixt_d_o}>
                                       <div className={leaguefixturestyle.fixt_d}>
-                                        <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
+                                        <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd YYYY')}`}
                                       </div>
                                       <div className={leaguefixturestyle.dd}>
                                           <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>

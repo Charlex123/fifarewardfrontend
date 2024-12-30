@@ -62,12 +62,14 @@ pragma solidity^0.8.9;
     }
 
     struct ParticipantsBetDetails {
+        address useraddress;
         string username;
         uint betamount;
         uint predictioncount;
         bool hasjoinedthisbet;
         string prediction;
         string bettingteam;
+        string outcome;
     }
 
     error priceMustBeGreaterThanZero();
@@ -127,6 +129,12 @@ pragma solidity^0.8.9;
 
         // Event to log when a referral reward is claimed
         event ReferralRewardClaimed(address indexed sponsor, uint amount);
+
+        // Event to log when a referral reward is claimed
+        event payWinners(address indexed user, uint amount);
+
+        // Event to log when a referral reward is claimed
+        event refundBets(address indexed user, uint amount);
 
         // Event to log when a user registers
         event UserRegistered(uint userId, address indexed user, address[] referrals);
@@ -216,12 +224,13 @@ pragma solidity^0.8.9;
             users[msg.sender].betCount = userCreatedBetIds[msg.sender].length.add(userJoinedBetIds[msg.sender].length);
 
             ParticipantsBetDetails storage details = participantsbetDetails[betId][msg.sender];
+            details.useraddress = msg.sender;
             details.username = username;
             details.betamount = betamount; // Assign appropriate default value
             details.hasjoinedthisbet = true; // Assign appropriate default value
             details.prediction = prediction; // Assign appropriate default value
             details.bettingteam = bettingteam; // Assign appropriate default value
-
+            details.outcome = "null";
             // Register user if not already registered
             if (!users[msg.sender].registered) {
                 registerUser(username, 0, true, 0, true, false, address(0), msg.sender);
@@ -309,242 +318,230 @@ pragma solidity^0.8.9;
 
     }
 
+    // Function for users to submit their predictions and predicted teams for a specific bet
+    function submitPrediction(
+        uint _betId,
+        uint betamount,
+        string memory username,
+        string memory _prediction,
+        string memory _team
+    )
+        public
+        isvalidWallet
+        nonReentrant
+    {
+        // Ensure the bet exists
+        Bet storage bet = bets[_betId];
+        require(bet.betId == _betId, "Bet does not exist");
+        require(bet.betamount == betamount, "Invalid bet amount");
 
-        // Function for users to submit their predictions and predicted teams for a specific bet
-        function submitPrediction(
-            uint _betId,
-            uint betamount,
-            string memory username,
-            string memory _prediction,
-            string memory _team
-        )
-            public
-            isvalidWallet
-            nonReentrant
-        {
-            // Ensure the bet exists
-            Bet storage bet = bets[_betId];
-            require(bet.betId == _betId, "Bet does not exist");
-            require(bet.betamount == betamount, "Invalid bet amount");
+        validateBet(betamount, _betId);
 
-            validateBet(betamount, _betId);
+        uint limit = bet.totalbetparticipantscount / 2;
 
-            uint limit = bet.totalbetparticipantscount / 2;
+        if (getPredictionCount(_betId, _team, _prediction) == limit) {
+            revert("Prediction count reached");
+        }
 
-            if (getPredictionCount(_betId, _team, _prediction) == limit) {
-                revert("Prediction count reached");
+        if (bet.remainingparticipantscount == 0) {
+            revert("Max bet participants reached");
+        }
+
+        // Update count of participants with the same _bettingteam and _prediction
+        updatepredictionCount(_betId, _team, _prediction, msg.sender);
+
+        // Map user address to the new betId
+        userJoinedBetIds[msg.sender].push(_betId);
+
+        address[] storage betParticipants = bet.participants;
+        betParticipants.push(msg.sender);
+
+        // Update remaining bet participants count
+        remainingparticipantscount = bet.totalbetparticipantscount - betParticipants.length;
+        bet.remainingparticipantscount = remainingparticipantscount;
+
+        // Assign values to ParticipantsBetDetails in storage
+        addPrediction(_betId, username, betamount, _prediction, _team);
+
+        // Map user address to the betId they betted on
+        userBetIds[msg.sender] = _betId;
+
+        // Check if the user is a downline and reward the sponsor
+        _rewardSponsorIfDownline(msg.sender, betamount, _betId);
+
+        // Emit an event
+        emit PredictionSubmitted(_betId, msg.sender, _prediction, _team);
+
+        // Transfer tokens
+        bool success = FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
+        require(success, "Token transfer failed");
+    }
+
+    function _rewardSponsorIfDownline(address user, uint betamount, uint betId) internal {
+        address sponsor = users[user].sponsor;
+        if (sponsor != address(0)) {
+            // Calculate referral reward (2% of the bet amount)
+            uint referralReward = (betamount * 2) / 100;
+            // Transfer referral reward to the sponsor
+
+            // Check if the contract has enough tokens to transfer the reward
+            require(FifaRewardTokenContract.balanceOf(address(this)) >= referralReward, "Contract does not have enough tokens");
+
+            // check if sponsor has received referral reward already
+            if(referralrewards[user].rewardrecieved) {
+                revert("referral reward already claimed");
             }
 
-            if (bet.remainingparticipantscount == 0) {
-                revert("Max bet participants reached");
-            }
-
-            // Update count of participants with the same _bettingteam and _prediction
-            updatepredictionCount(_betId, _team, _prediction, msg.sender);
-
-            // Map user address to the new betId
-            userJoinedBetIds[msg.sender].push(_betId);
-
-            address[] storage betParticipants = bet.participants;
-            betParticipants.push(msg.sender);
-
-            // Update remaining bet participants count
-            remainingparticipantscount = bet.totalbetparticipantscount - betParticipants.length;
-            bet.remainingparticipantscount = remainingparticipantscount;
-
-            // Assign values to ParticipantsBetDetails in storage
-            addPrediction(_betId, username, betamount, _prediction, _team);
-
-            // Map user address to the betId they betted on
-            userBetIds[msg.sender] = _betId;
-
-            // Check if the user is a downline and reward the sponsor
-            _rewardSponsorIfDownline(msg.sender, betamount, _betId);
-
-            // Emit an event
-            emit PredictionSubmitted(_betId, msg.sender, _prediction, _team);
-
-            // Transfer tokens
-            bool success = FifaRewardTokenContract.transferFrom(msg.sender, address(this), betamount);
-            require(success, "Token transfer failed");
-        }
-
-        function _rewardSponsorIfDownline(address user, uint betamount, uint betId) internal {
-            address sponsor = users[user].sponsor;
-            if (sponsor != address(0)) {
-                // Calculate referral reward (2% of the bet amount)
-                uint referralReward = (betamount * 2) / 100;
-                // Transfer referral reward to the sponsor
-
-                // Check if the contract has enough tokens to transfer the reward
-                require(FifaRewardTokenContract.balanceOf(address(this)) >= referralReward, "Contract does not have enough tokens");
-
-                // check if sponsor has received referral reward already
-                if(referralrewards[user].rewardrecieved) {
-                    revert("referral reward already claimed");
-                }
-
-                nextReferralRewardId++;
-                referralrewardIds[nextReferralRewardId] = ReferralReward(nextReferralRewardId, betId, sponsor, referralReward, true);
-                
-                // Assuming FifaRewardTokenContract has a transfer function
-                FifaRewardTokenContract.transfer(sponsor ,referralReward);
-                // Emit event for referral reward claimed
-                emit ReferralRewardClaimed(sponsor, referralReward);
-            }
-        }
-
-        function updateUsername(string memory username) public {
-            users[msg.sender].username = username;
-        }
-
-        function getReferrals(address sponsor) public view returns(address[] memory) {
-            return users[sponsor].referrals;
-        }
-
-        function getsponsorReferralRewards(address sponsor) public view returns(ReferralReward[] memory) {
-            uint totalRefRewards = nextReferralRewardId;
-            uint currentIndex = 0;
-
-            ReferralReward[] memory sponsorRewards = new ReferralReward[](totalRefRewards);
-            for (uint i = 1; i <= totalRefRewards; i++) {
-                if(referralrewardIds[i + 1].sponsor == sponsor) {
-                    ReferralReward storage currentRefReward = referralrewardIds[i+1];
-                    sponsorRewards[i+1] = currentRefReward;
-                    currentIndex += 1;
-                }
-            }
-            return sponsorRewards;
-        }
-
-        // Function to retrieve all predictions and predicted teams for a specific betId
-        function getPredictions(uint _betId) public view returns (ParticipantsBetDetails[] memory) {
-            // Ensure the bet exists
-            require(bets[_betId].betId == _betId, "Bet does not exist");
-
-            // Get the number of participants
-            uint participantsCount = bets[_betId].participants.length;
-
-            // Initialize array to store participants' bet details
-            ParticipantsBetDetails[] memory predictions = new ParticipantsBetDetails[](participantsCount);
-
-            // Populate array with participants' bet details
-            for (uint i = 0; i < participantsCount; i++) {
-                address participant = bets[_betId].participants[i];
-                predictions[i] = participantsbetDetails[_betId][participant];
-            }
-
-            // Return array of participants' bet details
-            return predictions;
-        }
-
-        // Function to retrieve the addresses of winners for a specific betId
-        function getWinners(uint _betId) public view returns (address[] memory) {
-            // Ensure the bet exists
-            require(bets[_betId].betId == _betId, "Bet does not exist");
+            nextReferralRewardId++;
+            referralrewardIds[nextReferralRewardId] = ReferralReward(nextReferralRewardId, betId, sponsor, referralReward, true);
             
-            // Return the array of winners
-            return bets[_betId].betwinners;
+            // Assuming FifaRewardTokenContract has a transfer function
+            FifaRewardTokenContract.transfer(sponsor ,referralReward);
+            // Emit event for referral reward claimed
+            emit ReferralRewardClaimed(sponsor, referralReward);
+        }
+    }
+
+    function updateUsername(string memory username) public {
+        users[msg.sender].username = username;
+    }
+
+    function getReferrals(address sponsor) public view returns(address[] memory) {
+        return users[sponsor].referrals;
+    }
+
+    function getsponsorReferralRewards(address sponsor) public view returns(ReferralReward[] memory) {
+        uint totalRefRewards = nextReferralRewardId;
+        uint currentIndex = 0;
+
+        ReferralReward[] memory sponsorRewards = new ReferralReward[](totalRefRewards);
+        for (uint i = 1; i <= totalRefRewards; i++) {
+            if(referralrewardIds[i + 1].sponsor == sponsor) {
+                ReferralReward storage currentRefReward = referralrewardIds[i+1];
+                sponsorRewards[i+1] = currentRefReward;
+                currentIndex += 1;
+            }
+        }
+        return sponsorRewards;
+    }
+
+    // Function to retrieve all predictions and predicted teams for a specific betId
+    function getPredictions(uint _betId) public view returns (ParticipantsBetDetails[] memory) {
+        // Ensure the bet exists
+        require(bets[_betId].betId == _betId, "Bet does not exist");
+
+        // Get the number of participants
+        uint participantsCount = bets[_betId].participants.length;
+
+        // Initialize array to store participants' bet details
+        ParticipantsBetDetails[] memory predictions = new ParticipantsBetDetails[](participantsCount);
+
+        // Populate array with participants' bet details
+        for (uint i = 0; i < participantsCount; i++) {
+            address participant = bets[_betId].participants[i];
+            predictions[i] = participantsbetDetails[_betId][participant];
         }
 
-        // // Function to retrieve the addresses of losers for a specific betId
-        function getLosers(uint _betId) public view returns (address[] memory) {
-            // Ensure the bet exists
-            require(bets[_betId].betId == _betId, "Bet does not exist");
+        // Return array of participants' bet details
+        return predictions;
+    }
+
+    // Function to retrieve the addresses of winners for a specific betId
+    function getWinners(uint _betId) public view returns (address[] memory) {
+        // Ensure the bet exists
+        require(bets[_betId].betId == _betId, "Bet does not exist");
+        
+        // Return the array of winners
+        return bets[_betId].betwinners;
+    }
+
+    // // Function to retrieve the addresses of losers for a specific betId
+    function getLosers(uint _betId) public view returns (address[] memory) {
+        // Ensure the bet exists
+        require(bets[_betId].betId == _betId, "Bet does not exist");
+        
+        // Return the array of losers
+        return bets[_betId].betlosers;
+    }
+
+    // Function to get all the betIds created by a particular address
+    function getBetIdsCreatedByUser(address _user) public view returns (uint[] memory) {
+        return (userCreatedBetIds[_user]);
+    }
+
+    // Function to get all the betIds created by a particular address
+    function getBetIdsCreatedByUserCount(address _user) public view returns (uint) {
+        return (userCreatedBetIds[_user].length);
+    }
+
+    // Function to get all the betIds created by a particular address
+    function getBetIdsUserJoined(address _user) public view returns (uint[] memory) {
+        return (userJoinedBetIds[_user]);
+    }
+
+    // // Function to get all the betIds created by a particular address
+    // function getBetIdsUserJoinedCount(address _user) public view returns (uint) {
+    //     return (userJoinedBetIds[_user].length);
+    // }
+
+    // Function to update bet outcome 
+    function updatePredictionOutcome(uint betId, address _user, string memory outcome) internal  {
+        participantsbetDetails[betId][_user].outcome = outcome;
+    }
+
+    // Function to pay bet winners participants
+    function processBetPayments( uint _betId, address user, string memory _bettingteam,  uint amount, bool closebet, string memory outcome ) external nonReentrant {
+        // Ensure the bet exists
+        require(bets[_betId].betId == _betId, "Bet does not exist");
+
+        address[] storage winners =  bets[_betId].betwinners;
+        address[] storage losers =  bets[_betId].betlosers;
+        
+        if(compareStrings(outcome, "Null")) {
+            // Transfer refund to the betters
+            FifaRewardTokenContract.transfer(user, amount);
+            emit refundBets(user, amount);
+        }else if (compareStrings(participantsbetDetails[_betId][user].prediction, outcome) &&
+            compareStrings(participantsbetDetails[_betId][user].bettingteam, _bettingteam)) {
             
-            // Return the array of losers
-            return bets[_betId].betlosers;
-        }
-
-        // Function to get all the betIds created by a particular address
-        function getBetIdsCreatedByUser(address _user) public view returns (uint[] memory) {
-            return (userCreatedBetIds[_user]);
-        }
-
-        // Function to get all the betIds created by a particular address
-        function getBetIdsCreatedByUserCount(address _user) public view returns (uint) {
-            return (userCreatedBetIds[_user].length);
-        }
-
-        // Function to get all the betIds created by a particular address
-        function getBetIdsUserJoined(address _user) public view returns (uint[] memory) {
-            return (userJoinedBetIds[_user]);
-        }
-
-        // Function to get all the betIds created by a particular address
-        function getBetIdsUserJoinedCount(address _user) public view returns (uint) {
-            return (userJoinedBetIds[_user].length);
-        }
-
-        // Function to pay bet winners participants
-        function payWinners(uint _betId, address[] memory _betwinners) internal {
-            // Ensure the bet exists
-            require(bets[_betId].betId == _betId, "Bet does not exist");
-
+            // Participant predicted correctly
+            winners.push(user);
             // Calculate the total bet amount for this bet
-            uint totalBetAmount = 0;
-            for (uint i = 0; i < bets[_betId].participants.length; i++) {
-                totalBetAmount += participantsbetDetails[_betId][bets[_betId].participants[i]].betamount;
-            }
-
-            // Calculate the reward per winner
-            uint rewardPerWinner = totalBetAmount * 80 / (_betwinners.length * 100);
-
-            // Pay each winner
-            for (uint j = 0; j < _betwinners.length; j++) {
-                // Transfer reward to the winner
-                FifaRewardTokenContract.transfer(_betwinners[j], rewardPerWinner);
-            }
-
-            // Mark the bet as closed
+            FifaRewardTokenContract.transfer(user, amount);
+            emit payWinners(user, amount);
+        } else {
+            // Participant predicted incorrectly
+            losers.push(user);
+        }
+        
+        // }
+        bets[_betId].betwinners = winners;
+        bets[_betId].betlosers = losers;
+        updatePredictionOutcome(_betId, user, outcome);
+        // Mark the bet as closed
+        if(closebet == true) {
             closeBet(_betId);
-        }
-
-        // Function to process match results and determine winners and losers
-        function processMatchResults(uint _matchId, string memory _result, string memory _bettingteam) public nonReentrant {
-            for (uint i = 1; i <= nextBetId; i++) {
-                address[] storage winners =  bets[i].betwinners;
-                address[] storage losers =  bets[i].betlosers;
-                if(compareStrings(bets[i].betstatus, "open")) {
-                    if (bets[i].matchId == _matchId) {
-                        Bet storage bet = bets[i];
-                        for (uint j = 0; j < bet.participants.length; j++) {
-                            address participant = bet.participants[j];
-                            if (compareStrings(participantsbetDetails[i][participant].prediction, _result) &&
-                                compareStrings(participantsbetDetails[i][participant].bettingteam, _bettingteam)) {
-                                // Participant predicted correctly
-                                winners.push(participant);
-                            } else {
-                                // Participant predicted incorrectly
-                                losers.push(participant);
-                            }
-                        }
-                    }
-                }
-                bets[i].betwinners = winners;
-                bets[i].betlosers = losers;
-                payWinners(bets[i].betId, winners);
-                // markWinnersAndLosers(nextBetId, winners, losers);
-            }
-        }
-
-        // Function to get user registration details using user's wallet address
-        function getUserRegistrationDetails(address _user) public view returns (User memory) {
-            return users[_user];
-        }
-
-        // Function to retrieve NFTMints by ID
-        function getBetsMapping(uint256 _betId) external view returns (Bet memory) {
-            return bets[_betId];
-        }
-
-        function getAllBetIdsCount() external view returns (uint) {
-            return nextBetId;
-        }   
-
-        function transferToken(address receiver) external isOwner nonReentrant {
-            uint tokenbal = FifaRewardTokenContract.balanceOf(address(this));
-            FifaRewardTokenContract.transfer(receiver,tokenbal);
         }
         
     }
+
+    // Function to get user registration details using user's wallet address
+    function getUserRegistrationDetails(address _user) public view returns (User memory) {
+        return users[_user];
+    }
+
+    // Function to retrieve bets by ID
+    function getBetsMapping(uint256 _betId) external view returns (Bet memory) {
+        return bets[_betId];
+    }
+
+    function getAllBetIdsCount() external view returns (uint) {
+        return nextBetId;
+    }   
+
+    function transferToken(address receiver) external isOwner nonReentrant {
+        uint tokenbal = FifaRewardTokenContract.balanceOf(address(this));
+        FifaRewardTokenContract.transfer(receiver,tokenbal);
+    }
+    
+}

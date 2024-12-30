@@ -339,7 +339,7 @@ const openBetC = async () => {
       const rembetparticipantscount = parseInt(betParticipantsCount) - 1;
       console.log("rem bet part", rembetparticipantscount);
 
-      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+      const Betcontract = new ethers.Contract(BettingCA!, BettingAbi, signer);
       const amt = betAmount + "000000000000000000";
       const tamount = ethers.BigNumber.from(amt);
       const uniqueId = Math.floor(100000 + Math.random() * 900000);
@@ -347,8 +347,8 @@ const openBetC = async () => {
       try {
         const bCOpenBet = await Betcontract.createBet(
           tamount,
-          betprediction,
-          bettingteam,
+          betprediction.trim(),
+          bettingteam.trim(),
           username,
           matchidparam,
           uniqueId,
@@ -394,7 +394,7 @@ const Approve = async (e:any) => {
         setShowLoading(true);
         const provider = new ethers.providers.Web3Provider(walletProvider as any);
         const signer = provider.getSigner();
-        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
         const amt = betAmount + "000000000000000000";
         const tamount = ethers.BigNumber.from(amt);
         const reslt = await FRDContract.approve(BettingCA,tamount);
@@ -419,7 +419,7 @@ const handleOpenBetForm = async (e:any) => {
           const signer = provider.getSigner();
 
           /* next, create the item */
-          let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
+          let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
           
           let transaction = await FRDcontract.balanceOf(connectedaddress);
           

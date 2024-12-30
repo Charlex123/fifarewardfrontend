@@ -272,7 +272,6 @@ const getleagueFixtures = async (leagueid:number, event:any) => {
         event.target.style.backgroundColor = (event.target.style.backgroundColor === "#ffffff") ? "lightblue" : "#ffffff";
       }
       else if(event.target.getAttribute("title") == "span___") {
-        console.log(" prev el sibl",event.target.previousElementSibling)
         event.target.previousElementSibling.style.backgroundColor = (event.target.previousElementSibling.style.backgroundColor === "#ffffff") ? "lightblue" : "#ffffff";
       }
 
@@ -444,6 +443,11 @@ const closeBgModal = () => {
     </Head>
     {showBgOverlay && <BgOverlay onChange={closeBgModal}/>}
       <div className={bettingstyle.main}>
+        
+        <div className={bettingstyle.headbg}>
+          <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
+        </div>
+
         <div className={bettingstyle.search} >
           <div>
             <form>
@@ -465,10 +469,7 @@ const closeBgModal = () => {
             </form>
           </div>
         </div>
-
-        <div className={bettingstyle.headbg}>
-          <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
-        </div>
+        
         <div className={bettingstyle.breadcrum}>
           <button type='button' title='button' style={{color: '151414'}} onClick={goBack}> {'<< '} back</button> <a href='/'>home</a> {'>'} <a href='/betting'>betting</a>
         </div>
@@ -560,6 +561,7 @@ const closeBgModal = () => {
               </div>
             </div> 
             } */}
+            
             {cupfixturesdata ? <div>
               <div className={bettingstyle.fb}><h3>By Leagues/Cups</h3></div>
               {cupfixturesdata.map((league,index) => (
