@@ -174,7 +174,7 @@ const { walletProvider } = useWeb3ModalProvider();
               headers: {
                   "Content-type": "application/json",
                   "x-rapidapi-host": "v3.football.api-sports.io",
-                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+                  "x-rapidapi-key": process.env.NEXT_PUBLIC_API_SPORTS
               }
             }
             const { data } = await axios.get(`https://v3.football.api-sports.io/fixtures/lineups?fixture=${fixtureid}`, config)
@@ -194,7 +194,7 @@ const { walletProvider } = useWeb3ModalProvider();
               headers: {
                   "Content-type": "application/json",
                   "x-rapidapi-host": "v3.football.api-sports.io",
-                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+                  "x-rapidapi-key": process.env.NEXT_PUBLIC_API_SPORTS
               }
             }
             const { data } = await axios.get(`https://v3.football.api-sports.io/fixtures/events?fixture=${fixtureid}`, config)
@@ -215,7 +215,7 @@ const { walletProvider } = useWeb3ModalProvider();
               headers: {
                   "Content-type": "application/json",
                   "x-rapidapi-host": "v3.football.api-sports.io",
-                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+                  "x-rapidapi-key": process.env.NEXT_PUBLIC_API_SPORTS
               }
             }
             const { data } = await axios.get(`https://v3.football.api-sports.io/fixtures/statistics?fixture=${fixtureid}`, config)
@@ -236,7 +236,7 @@ const { walletProvider } = useWeb3ModalProvider();
               headers: {
                   "Content-type": "application/json",
                   "x-rapidapi-host": "v3.football.api-sports.io",
-                  "x-rapidapi-key": "aa2a3bb1320411e0c7ad474b053c6514"
+                  "x-rapidapi-key": process.env.NEXT_PUBLIC_API_SPORTS
               }
             } 
 
