@@ -168,7 +168,7 @@ const LoadBetData:React.FC<{}> = () => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
+          const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixtures/", config);
           setCountryFixturesdata(data.fixtures);
           setTotalPages(data.totalPages);
           setShowLoading(false);
@@ -193,7 +193,7 @@ const LoadBetData:React.FC<{}> = () => {
           };
 
           // Fetch data from the API
-          const { data } = await axios.get("http://localhost:9000/api/fixtures/loadcupfixtures/", config);
+          const { data } = await axios.get("https://fifarewardbackend-1.onrender.com/api/fixtures/loadcupfixtures/", config);
 
           if (data?.fixtures) {
             // Map to prevent duplicates
@@ -412,7 +412,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("http://localhost:9000/api/fixtures/searchfixtbykeyword", {
+  const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/searchfixtbykeyword", {
       searchkeyword
   }, config);
   if(data) {
