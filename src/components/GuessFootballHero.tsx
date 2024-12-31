@@ -189,7 +189,7 @@ const GuessFootballHero: React.FC = () => {
       const signer = provider.getSigner();
 
       /* next, create the item */
-      let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
+      let FRDcontract = new ethers.Contract(FRDCA!, FRDAbi, signer);
       
       // const tamount = ethers.BigNumber.from("5000000000000000000000000");
       // let fundwalletaddress = FRDcontract.transfer("0x6df7E51F284963b33CF7dAe442E5719da69c312d",tamount);

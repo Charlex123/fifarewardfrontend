@@ -168,7 +168,7 @@ const LoadBetData:React.FC<{}> = () => {
                 "Content-type": "application/json"
             }
           }  
-          const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixtures/", config);
+          const {data} = await axios.get("http://localhost:9000/api/fixtures/loadfixtures/", config);
           setCountryFixturesdata(data.fixtures);
           setTotalPages(data.totalPages);
           setShowLoading(false);
@@ -181,23 +181,52 @@ const LoadBetData:React.FC<{}> = () => {
   
       fetchData();
 
+      const leagueid = [39, 2, 40, 41, 42, 43]; // IDs to prioritize
+
       const fetchcupLeagues = async () => {
         try {
           setShowLoading(true);
           const config = {
             headers: {
-                "Content-type": "application/json"
-            }
-          }  
-          const {data} = await axios.get("https://fifarewardbackend-1.onrender.com/api/fixtures/loadcupfixtures/", config);
-          setCupFixturesdata(data.fixtures);
+              "Content-type": "application/json",
+            },
+          };
+
+          // Fetch data from the API
+          const { data } = await axios.get("http://localhost:9000/api/fixtures/loadcupfixtures/", config);
+
+          if (data?.fixtures) {
+            // Map to prevent duplicates
+            const leagueMap = new Map<number, CupLeagues>(
+              data.fixtures.map((cupLeague: CupLeagues) => [cupLeague.league.id, cupLeague])
+            );
+
+            // Filter and reorder leagues based on leagueid
+            const prioritizedLeagues = leagueid
+              .map((id) => leagueMap.get(id))
+              .filter((cupLeague): cupLeague is CupLeagues => cupLeague !== undefined);
+
+            // Remaining leagues not in the leagueid array
+            const remainingLeagues = data.fixtures.filter(
+              (cupLeague: CupLeagues) => !leagueid.includes(cupLeague.league.id)
+            );
+
+            // Combine prioritized and remaining leagues
+            const orderedLeagues = [...prioritizedLeagues, ...remainingLeagues];
+
+            // Set the filtered and reordered data
+            setCupFixturesdata(orderedLeagues);
+          }
+
           setShowLoading(false);
           setLoadCount(1);
-          console.log("cup fixures",data);
+          console.log("Filtered and reordered cup fixtures:", cupfixturesdata);
         } catch (error) {
-          console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
+          setShowLoading(false);
         }
       };
+
   
       fetchcupLeagues();
 
@@ -383,7 +412,7 @@ const getKeyWordSearchN = async (keyword:any) => {
           "Content-type": "application/json"
       }
   }  
-  const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/searchfixtbykeyword", {
+  const {data} = await axios.post("http://localhost:9000/api/fixtures/searchfixtbykeyword", {
       searchkeyword
   }, config);
   if(data) {

@@ -175,7 +175,7 @@ const Staking = () =>  {
 
         const provider = new ethers.providers.Web3Provider(walletProvider as any)
         const signer = provider.getSigner();
-        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi.abi, signer);
+        const FRDContract = new ethers.Contract(FRDCA!, FRDAbi, signer);
         let transaction = await FRDContract.balanceOf(connectedaddress);
             
         let frdBal = ethers.utils.formatEther(transaction);

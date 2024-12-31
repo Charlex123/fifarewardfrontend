@@ -71,7 +71,7 @@ const NFTMarketPlace: React.FC<{}> = () =>  {
             if(signer) {
                 /* next, create the item */
                 console.log("signer we",signer);
-                let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi, signer);
+                let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi.abi, signer);
                 console.log("contract",contract)
                 if(contract) {
                     let listednfts = await contract.fetchUnSoldAuctionItems();

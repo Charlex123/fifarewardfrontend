@@ -114,8 +114,8 @@ const NFTArt: React.FC<{}> = () =>  {
                 }
                 if(signer) {
                     /* next, create the item */
-                    let featurescontract = new ethers.Contract(NFTFeatureCA!, NFTMarketPlaceFeaturesabi, signer);
-                    let nftcontract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
+                    let featurescontract = new ethers.Contract(NFTFeatureCA!, NFTMarketPlaceFeaturesabi.abi, signer);
+                    let nftcontract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi.abi, signer);
                     if(featurescontract) {
                         // const nftitemremtime = await contract.getAuctionItemRemainingTime(nft[1]);
                         
@@ -230,7 +230,7 @@ const NFTArt: React.FC<{}> = () =>  {
             
             try {
                 
-                let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
+                let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi.abi, signer);
                 
                 try {
                     const bidnftC = await contract.bidOnNFT(_itemId,bidPrice,{gasLimit: 1000000});
@@ -277,7 +277,7 @@ const NFTArt: React.FC<{}> = () =>  {
             const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
             const signer = provider.getSigner();
 
-            let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi, signer);
+            let contract = new ethers.Contract(NFTCA!, NFTMarketPlaceabi.abi, signer);
             
             try {
                 const buynftC = await contract.DirectNFTSale(itemId,price, {gasLimit: 1000000});

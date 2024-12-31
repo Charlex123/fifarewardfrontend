@@ -103,7 +103,7 @@ const Rewards = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const Betting = new ethers.Contract(BettingCA!, BettingAbi.abi, signer);
+          const Betting = new ethers.Contract(BettingCA!, BettingAbi, signer);
           const createdbetreslt = await Betting.getBetIdsCreatedByUserCount(connectedaddress);
 
           const joinedbetreslt = await Betting.getBetIdsUserJoinedCount(connectedaddress);
@@ -124,7 +124,7 @@ const Rewards = () =>  {
           const provider = new ethers.providers.Web3Provider(walletProvider as any)
           const signer = provider.getSigner();
           
-          const NFTFeatureContract = new ethers.Contract(NFTFeaturesCA!, FRDNFTFeaturesAbi, signer);
+          const NFTFeatureContract = new ethers.Contract(NFTFeaturesCA!, FRDNFTFeaturesAbi.abi, signer);
           const reslt = await NFTFeatureContract.getUserNFTMintedCount();
           setNFTCount(reslt);
           console.log(reslt)

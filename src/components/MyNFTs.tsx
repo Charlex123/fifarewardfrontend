@@ -111,7 +111,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+                  let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi.abi, signer);
                   if(contract) {
                       let caddress = await contract.getContractAddress();
                       setContractAddress(caddress);
@@ -132,7 +132,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi, signer);
+                  let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi.abi, signer);
                   if(contract) {
                       getContractAddress();
                       let mintednfts = await contract.getMintedNfts();
@@ -191,7 +191,7 @@ const MyNFTs: React.FC<{}> = () =>  {
                   const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
                   const signer = provider.getSigner();
                   /* next, create the item */
-                  let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi, signer);
+                  let contract = new ethers.Contract(nftfeaturescontractAddress!, NFTMarketPlaceFeaturesContractAbi.abi, signer);
                   
                   if(contract) {
                       let listednfts = await contract.fetchItemsCreated();
@@ -273,7 +273,7 @@ const MyNFTs: React.FC<{}> = () =>  {
               const provider = new ethers.providers.Web3Provider(walletProvider as any) || null;
               const signer = provider.getSigner();
               /* next, create the item */
-              let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+              let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi.abi, signer);
               
               if(contract) {
                   const getbids = await contract.getAllBidsForItem(itemId);
@@ -317,7 +317,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       try {
           const provider = new ethers.providers.Web3Provider(walletProvider as any);
           const signer = provider.getSigner();
-          const contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+          const contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi.abi, signer);
           
           try {
             const aceeptoffer = await contract.acceptHighestBid(itemId, { gasLimit: 1000000 });
@@ -375,7 +375,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       if(listingItemTokenId && nftItemPrice! > 0 && bidduration > 0 && minbidamount > 0) {
         try {
           setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi.abi, signer);
           let transaction = await contract.createAuctionItem(listingItemTokenId,nftItemPrice,bidduration,minbidamount,salesroyaltyfee,dcp );
           transaction.wait().then(async (receipt:any) => {
             // console.log(receipt);
@@ -406,7 +406,7 @@ const MyNFTs: React.FC<{}> = () =>  {
         try {
           setShowLoading(true);
           setShowBgOverlay(true);
-          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi.abi, signer);
           let transaction = await contract.unListAuctionItem(itemId);
           transaction.wait().then(async (receipt:any) => {
             // console.log(receipt);
@@ -433,7 +433,7 @@ const MyNFTs: React.FC<{}> = () =>  {
         try {
           setShowLoading(true);
           setShowBgOverlay(true);
-          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi.abi, signer);
           let transaction = await contract.ListBackAuctionItem(itemId);
           
           transaction.wait().then(async (receipt:any) => {
@@ -460,7 +460,7 @@ const MyNFTs: React.FC<{}> = () =>  {
       
         try {
           setShowLoading(true);
-          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi, signer);
+          let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlaceAbi.abi, signer);
           let transaction = await contract.updateAuctionItem(_itemId,bidduration,minbidamount,nftItemPrice);
           transaction.wait().then(async (receipt:any) => {
               // console.log(receipt);

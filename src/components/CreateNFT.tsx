@@ -107,7 +107,7 @@ export default function CreateItem() {
 
           console.log('signer address',signer,signer.getAddress(),signer._address,address)
           /* next, create the item */
-          let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken.abi, signer);
+          let contract = new ethers.Contract(frdcontractAddress!, FifaRewardToken, signer);
           let transaction = await contract.balanceOf(connectedaddress);
           let frdBal = ethers.utils.formatEther(transaction);
           if(parseInt(frdBal) < 500) {
@@ -139,7 +139,7 @@ export default function CreateItem() {
         const signer = provider.getSigner();
 
         /* next, create the item */
-        let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace, signer);
+        let contract = new ethers.Contract(nftcontractAddress!, NFTMarketPlace.abi, signer);
         let transaction = await contract.createToken(fileUrl)
         await transaction.wait();
         console.log(" nft creation transaction",transaction)
