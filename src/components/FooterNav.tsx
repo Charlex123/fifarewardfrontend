@@ -35,7 +35,7 @@ function FooterNavBar() {
                 <>
                     <div className={styles.con}><div><ConnectWallet /></div></div>
                     <div className={styles.nav_container}>
-                        {/* <div className={styles.linka}>
+                        <div className={styles.linka}>
                             <a href='/' rel='noopener noreferrer'> <div className={styles.tc}>{<IoIosHome />}</div>Home</a>
                         </div>
                         <div className={styles.linka}>
@@ -49,8 +49,8 @@ function FooterNavBar() {
                         </div>
                         <div className={styles.linka}>
                             <a href='/gaming' rel='noopener noreferrer'> <div className={styles.tc}>{<GiGamepad />}</div> Gaming </a>
-                        </div> */}
-                        <div className={styles.linka}>
+                        </div>
+                        {/* <div className={styles.linka}>
                             <a onClick={showcomingsoonContdown} rel='noopener noreferrer'> <div className={styles.tc}>{<IoIosHome />}</div>Home</a>
                         </div>
                         <div className={styles.linka}>
@@ -64,12 +64,12 @@ function FooterNavBar() {
                         </div>
                         <div className={styles.linka}>
                             <a onClick={showcomingsoonContdown} rel='noopener noreferrer'> <div className={styles.tc}>{<GiGamepad />}</div> Gaming </a>
-                        </div>
+                        </div> */}
                     </div>
                 </> :
                 <>
                     <div className={styles.nav_container}>
-                        {/* <div className={styles.linka}>
+                        <div className={styles.linka}>
                             <a href='/' rel='noopener noreferrer'> <div className={styles.tc}>{<IoIosHome />}</div>Home</a>
                         </div>
                         <div className={styles.linka}>
@@ -83,8 +83,8 @@ function FooterNavBar() {
                         </div>
                         <div className={styles.linka}>
                             <a href='/gaming' rel='noopener noreferrer'> <div className={styles.tc}>{<GiGamepad />}</div> Gaming </a>
-                        </div> */}
-                        <div className={styles.linka}>
+                        </div>
+                        {/* <div className={styles.linka}>
                             <a onClick={showcomingsoonContdown} rel='noopener noreferrer'> <div className={styles.tc}>{<IoIosHome />}</div>Home</a>
                         </div>
                         <div className={styles.linka}>
@@ -98,7 +98,7 @@ function FooterNavBar() {
                         </div>
                         <div className={styles.linka}>
                             <a onClick={showcomingsoonContdown} rel='noopener noreferrer'> <div className={styles.tc}>{<GiGamepad />}</div> Gaming </a>
-                        </div>
+                        </div> */}
                         <ConnectWallet />
                     </div>
                 </>     
