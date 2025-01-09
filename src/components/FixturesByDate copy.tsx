@@ -36,7 +36,26 @@ const FixturesByDate:React.FC<MyComponentProps> = ({date}) => {
     
     (async () => {
       const fixturedate = date;
-      
+      // try {
+      //   setShowLoading(true);
+      //   const config = {
+      //     headers: {
+      //         "Content-type": "application/json"
+      //     }
+      //   }  
+      //   const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixturesbydate", {
+      //     fixturedate,
+      //     currentPage,
+      //     limit
+      //   }, config);
+      //   setIsleagueLoaded(true)
+      //   setFixturesd(data.leaguefixtures);
+      //   setTotalPages(data.totalPages);
+      //   setShowLoading(false);
+      // } catch (error) {
+      //   console.log(error)
+      // }
+
       try {
         setShowLoading(true);
       
@@ -69,7 +88,7 @@ const FixturesByDate:React.FC<MyComponentProps> = ({date}) => {
       
         const priorityLeagues = [
           1, 2, 3, 4, 15, 36, 39, 45, 46, 47, 61, 71, 78, 88, 94, 135, 137, 140,
-          143, 62, 179, 181, 526, 528, 529, 531, 547, 550, 556
+          143, 62, 179, 181, 526, 528, 529, 531, 547, 550, 556,
         ];
       
         // Group fixtures by league and structure as League[]
@@ -250,7 +269,11 @@ return (
                       <div>
                         {fixturesd?.map((league,index) => (
                           <div className={leaguefixturestyle.league_wrap} key={index}>
-                           
+                            <div className={leaguefixturestyle.tgle} >
+                              <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
+                              <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown/>}</div>
+                              <div className={leaguefixturestyle.closeicon} onClick={(e) => closeLeagueFixtures(e.target)}>{<FaXmark/>}</div>
+                            </div>
                             <div className={leaguefixturestyle.league_wrap_in} >
                               {league.fixtures.map((fixture,index) => (
                                 <a href={`/betting/${league.leagueCountry.replace(/ /g, '-')}/${league.leagueName.replace(/ /g, '-')}/${fixture.teams.home.name.replace(/ /g, '-')}-vs-${fixture.teams.away.name.replace(/ /g, '-')}/${fixture?.fixture.id}`} key={index}>

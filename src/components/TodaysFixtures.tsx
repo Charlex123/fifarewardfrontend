@@ -73,35 +73,110 @@ const TodaysFixtures:React.FC = () => {
   const [fixturesd,setFixturesd] = useState<League[]>();
   const [isleagueloaded,setIsleagueLoaded] = useState<boolean>(false);
   const [currentPage, setCurrentPage] = useState<number>(1);
-  const [windowloadgetbetruntimes, setwindowloadgetbetruntimes] = useState<number>(0);
-  const [limit] = useState<number>(10);
+  const [limit] = useState<number>(2);
   const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     
       (async () => {
-        const todaysdate = moment().format("YYYY-MM-DD");
         
         try {
           setShowLoading(true);
+        
           const config = {
             headers: {
-                "Content-type": "application/json"
+              "Content-type": "application/json",
+            },
+          };
+        
+          const todaysdate = moment().format("YYYY-MM-DD");
+          const currentPage = 1; // Default to page 1
+          const limit = 10; // Default limit
+        
+          const { data } = await axios.post<{
+            leaguefixtures: {
+              _id: number;
+              leagueName: string;
+              leagueCountry: string;
+              fixtures: Fixture[];
+            }[];
+            totalPages: number;
+          }>(
+            "https://fifarewardbackend-1.onrender.com/api/fixtures/loadtodaysfixtures",
+            {
+              todaysdate,
+              currentPage,
+              limit,
+            },
+            config
+          );
+        
+          const priorityLeagues = [
+            1, 2, 3, 4, 15, 36, 39, 45, 9, 46, 47, 61, 71, 78, 88, 94, 135, 137, 140,
+            143, 62, 179, 181, 526, 528, 529, 531, 547, 550, 556,
+          ];
+        
+          // Group fixtures by league and structure as League[]
+          const leagueMap = new Map<number, League & { totalPages: number }>();
+        
+          data.leaguefixtures.forEach((league) => {
+            const leagueId = league._id;
+            const leagueName = league.leagueName;
+            const leagueCountry = league.leagueCountry;
+        
+            if (!leagueMap.has(leagueId)) {
+              leagueMap.set(leagueId, {
+                leagueId,
+                leagueName,
+                leagueCountry,
+                fixtures: [],
+                totalPages: Math.ceil(league.fixtures.length / limit), // Calculate totalPages for this league
+              });
             }
-          }  
-          const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadtodaysfixtures", {
-            todaysdate,
-            currentPage,
-            limit
-          }, config);
-          setIsleagueLoaded(true)
-          setFixturesd(data.leaguefixtures);
-          setTotalPages(data.totalPages);
+        
+            const existingFixtures = leagueMap.get(leagueId)!.fixtures;
+            league.fixtures.forEach((fixture) => {
+              if (!existingFixtures.some((f) => f.fixture.id === fixture.fixture.id)) {
+                existingFixtures.push(fixture);
+              }
+            });
+        
+            // Update totalPages for this league based on updated fixtures length
+            leagueMap.get(leagueId)!.totalPages = Math.ceil(existingFixtures.length / limit);
+          });
+        
+          const priorityLeagueData: League[] = [];
+          const nonPriorityLeagueData: League[] = [];
+        
+          leagueMap.forEach((league) => {
+            console.log("league dsas",league)
+            if (priorityLeagues.includes(league.leagueId)) {
+              priorityLeagueData.push(league);
+            } else {
+              nonPriorityLeagueData.push(league);
+            }
+          });
+        
+          // Sort priorityLeagueData based on the order in priorityLeagues
+          priorityLeagueData.sort(
+            (a, b) => priorityLeagues.indexOf(a.leagueId) - priorityLeagues.indexOf(b.leagueId)
+          );
+        
+          // Combine priority leagues followed by non-priority leagues
+          const combinedLeagues = [...priorityLeagueData, ...nonPriorityLeagueData];
+        
+          // Update states
+          setIsleagueLoaded(true);
+          setFixturesd(combinedLeagues);
           setShowLoading(false);
-          console.log('Todays fix data',data);
+        
+          console.log("Today's league data with total pages:", combinedLeagues);
         } catch (error) {
-          console.log(error)
+          console.error("Error while loading today's fixtures:", error);
+          setShowLoading(false);
         }
+        
+        
       })()
       
   
@@ -257,7 +332,7 @@ return (
                                         <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd')}`}
                                       </div>
                                       <div className={leaguefixturestyle.dd}>
-                                          <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                          <div><span>Time</span>{`${moment(fixture?.fixture.date).format('hh:mm a')}`}</div>
                                           <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
                                       </div>
                                     </div>
@@ -277,7 +352,7 @@ return (
                                 </div>
                                 </a>
                               ))}
-                              {fixturesd!.length > 10 ? 
+                              {league.fixtures.length > 10 ? 
                                 <div className={leaguefixturestyle.paginate_btns}>
                                   <button type='button' title='button' onClick={() => gotoPage(1)} disabled={currentPage === 1}>
                                     {'<<'}

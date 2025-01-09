@@ -43,7 +43,7 @@ const LoadLeagueFixtures:React.FC<Props> = ({leagueid}) => {
               "Content-type": "application/json"
           }
         }  
-        const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadleaguefixtures/", {
+        const {data} = await axios.post("http://localhost:9000/api/fixtures/loadleaguefixtures/", {
           leagueid,
           currentPage,
           limit
@@ -188,7 +188,7 @@ return (
                                         <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd YYYY')}`}
                                       </div>
                                       <div className={leaguefixturestyle.dd}>
-                                          <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                          <div><span>Time</span>{`${moment(fixture?.fixture.date).format('hh:mm a')}`}</div>
                                           <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
                                       </div>
                                     </div>

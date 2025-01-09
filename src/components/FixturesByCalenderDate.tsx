@@ -37,25 +37,119 @@ const FixturesByCalenderDate:React.FC<MyComponentProps> = ({date}) => {
       (async () => {
         const fixturedate = date;
         
+        // try {
+        //   setShowLoading(true);
+        //   const config = {
+        //     headers: {
+        //         "Content-type": "application/json"
+        //     }
+        //   }  
+        //   const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixturesbydate", {
+        //     fixturedate,
+        //     currentPage,
+        //     limit
+        //   }, config);
+        //   setIsleagueLoaded(true)
+        //   setFixturesd(data.leaguefixtures);
+        //   setTotalPages(data.totalPages);
+        //   setShowLoading(false);
+        // } catch (error) {
+        //   console.log(error)
+        // }
+
         try {
           setShowLoading(true);
+        
           const config = {
             headers: {
-                "Content-type": "application/json"
+              "Content-type": "application/json",
+            },
+          };
+        
+          const currentPage = 1; // Default to page 1
+          const limit = 10; // Default limit
+        
+          const { data } = await axios.post<{
+            leaguefixtures: {
+              _id: number;
+              leagueName: string;
+              leagueCountry: string;
+              fixtures: Fixture[];
+            }[];
+            totalPages: number;
+          }>(
+            "https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixturesbydate",
+            {
+              fixturedate,
+              currentPage,
+              limit,
+            },
+            config
+          );
+        
+          const priorityLeagues = [
+            1, 2, 3, 4, 15, 36, 39, 45, 46, 47, 61, 71, 78, 88, 94, 135, 137, 140,
+            143, 62, 179, 181, 526, 528, 529, 531, 547, 550, 556,
+          ];
+        
+          // Group fixtures by league and structure as League[]
+          const leagueMap = new Map<number, League>();
+        
+          data.leaguefixtures.forEach((league) => {
+            // Use the _id property as the league ID
+            const leagueId = league._id;
+            const leagueName = league.leagueName;
+            const leagueCountry = league.leagueCountry;
+        
+            if (!leagueMap.has(leagueId)) {
+              leagueMap.set(leagueId, {
+                leagueId,
+                leagueName,
+                leagueCountry,
+                fixtures: [],
+              });
             }
-          }  
-          const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/fixtures/loadfixturesbydate", {
-            fixturedate,
-            currentPage,
-            limit
-          }, config);
-          setIsleagueLoaded(true)
-          setFixturesd(data.leaguefixtures);
+        
+            // Add fixtures from the current league, avoiding duplicates
+            const existingFixtures = leagueMap.get(leagueId)!.fixtures;
+            league.fixtures.forEach((fixture) => {
+              if (!existingFixtures.some((f) => f.fixture.id === fixture.fixture.id)) {
+                existingFixtures.push(fixture);
+              }
+            });
+          });
+        
+          const priorityLeagueData: League[] = [];
+          const nonPriorityLeagueData: League[] = [];
+        
+          leagueMap.forEach((league) => {
+            if (priorityLeagues.includes(league.leagueId)) {
+              priorityLeagueData.push(league);
+            } else {
+              nonPriorityLeagueData.push(league);
+            }
+          });
+        
+          // Sort priorityLeagueData based on the order in priorityLeagues
+          priorityLeagueData.sort(
+            (a, b) => priorityLeagues.indexOf(a.leagueId) - priorityLeagues.indexOf(b.leagueId)
+          );
+        
+          // Combine priority leagues followed by non-priority leagues
+          const combinedLeagues = [...priorityLeagueData, ...nonPriorityLeagueData];
+        
+          // Update states
+          setIsleagueLoaded(true);
+          setFixturesd(combinedLeagues);
           setTotalPages(data.totalPages);
           setShowLoading(false);
+        
+          console.log("Today's league data:", combinedLeagues);
         } catch (error) {
-          console.log(error)
-        }
+          console.error("Error while loading today's fixtures:", error);
+          setShowLoading(false);
+        } 
+
       })()
   
   },[date,currentPage,limit])
@@ -259,7 +353,7 @@ return (
                                         <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd YYYY')}`}
                                       </div>
                                       <div className={leaguefixturestyle.dd}>
-                                          <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
+                                          <div><span>Time</span>{`${moment(fixture?.fixture.date).format('hh:mm a')}`}</div>
                                           <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
                                       </div>
                                     </div>

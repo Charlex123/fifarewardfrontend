@@ -24,7 +24,7 @@ import betbg from '../../assets/images/betting.png'
 import binancelogo from '../../assets/images/binance.png';
 import mexclogo from '../../assets/images/mexc.png';
 import okxlogo from '../../assets/images/okx.png';
-import refgroup from '../../assets/images/refgroup.png';
+import refgroup from '../../assets/images/group2ref.png';
 import huobilogo from '../../assets/images/huobi.png';
 import kucoinlogo from '../../assets/images/kucoin.png';
 import frdbanner from '../../assets/images/frdbanner.gif';

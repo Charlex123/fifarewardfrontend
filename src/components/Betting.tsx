@@ -181,7 +181,8 @@ const LoadBetData:React.FC<{}> = () => {
   
       fetchData();
 
-      const leagueid = [39, 2, 40, 41, 42, 43]; // IDs to prioritize
+      const leagueid = [1, 2, 3, 4, 15, 36, 39, 45, 46, 47, 61, 71, 78, 88, 94, 135, 137, 140,
+        143, 62, 179, 181, 526, 528, 529, 531, 547, 550, 556]; // IDs to prioritize
 
       const fetchcupLeagues = async () => {
         try {
