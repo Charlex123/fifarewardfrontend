@@ -204,15 +204,8 @@ const TodaysFixtures:React.FC = () => {
   }
   
   const closeLeagueFixtures = (divId:any) => {
-    console.log('huo',divId);
-    let svg = divId.getAttribute('data-icon');
-    let path = divId.getAttribute('fill');
-    if(svg !== null && svg !== undefined) {
-      divId.parentElement.parentElement.parentElement.remove();
-    }
-    if(path !== null && path !== undefined) {
-      divId.parentElement.parentElement.parentElement.parentElement.remove()
-    }
+    let targetdiv = document.getElementById("fixtureparent") as HTMLElement;
+    targetdiv.remove();
   }
   
   const closeHIWDiv = (divId:any) => {
@@ -317,7 +310,7 @@ return (
                       <div>
                         <div>
                           {fixturesd?.map((league, index) => (
-                          <div className={leaguefixturestyle.league_wrap} key={index}>
+                          <div className={leaguefixturestyle.league_wrap} key={index} id="fixtureparent">
                             <div className={leaguefixturestyle.tgle} >
                               <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
                               <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown />}</div>
@@ -333,15 +326,15 @@ return (
                                       </div>
                                       <div className={leaguefixturestyle.dd}>
                                           <div><span>Time</span>{`${moment(fixture?.fixture.date).format('hh:mm a')}`}</div>
-                                          <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
+                                          {/* <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div> */}
                                       </div>
                                     </div>
 
                                     <div className={leaguefixturestyle.fixt_tm}>
                                       <div className={leaguefixturestyle.teams}>
-                                        <div><Image src={fixture.teams.home.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'left',paddingRight: '5px', height: '30px'}}/> {`${fixture.teams.home.name}`} {fixture.goals.home != null ? (fixture.goals.home) : ''}</div>
+                                        <div><Image src={fixture.teams.home.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'left',paddingRight: '5px', height: '30px'}}/> {`${fixture.teams.home.name}`} {fixture.goals.home != null ? (fixture.goals.home) : '(-)'}</div>
                                         <div className={leaguefixturestyle.vs}>Vs</div>
-                                        <div>{fixture.goals.away != null ? (fixture.goals.away) : ''} {`${fixture.teams.away.name}`} <Image src={fixture.teams.away.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'right',paddingLeft: '5px', height: '30px'}} /></div>
+                                        <div>{fixture.goals.away != null ? (fixture.goals.away) : '(-)'} {`${fixture.teams.away.name}`} <Image src={fixture.teams.away.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'right',paddingLeft: '5px', height: '30px'}} /></div>
                                       </div>
                                     </div>
                                     <div className={leaguefixturestyle.openbet}>

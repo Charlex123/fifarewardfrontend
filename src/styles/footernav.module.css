@@ -13,7 +13,7 @@
 }
 .footernav .nav_container {
     display: flex;vertical-align: auto;justify-content: space-between;width: 100%;align-items: center;
-    font-family: "RussoOne Regular",sans-serif;color: rgb(230, 224, 224);height: inherit;
+    font-family: "Poppins Regular",sans-serif;color: rgb(230, 224, 224);height: inherit;
     margin: auto;z-index: 0;top: 0;right: 0;left: 0;padding: 5px 15px 5px 15px;bottom: 0;
 }
 .footernav .nav_container .linka a {

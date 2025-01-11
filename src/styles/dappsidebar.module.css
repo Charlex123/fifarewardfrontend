@@ -27,7 +27,7 @@
 }
 .sidebar .sidebar_container {
     display: block;width: 100%;
-    font-family: "RussoOne Regular",sans-serif;height: inherit;
+    font-family: "Poppins Regular",sans-serif;height: inherit;
     margin: auto;z-index: 0;top: 0;right: 0;left: 0;padding-bottom: 2rem;margin-bottom: 2rem;
 }
 /* .sidebar .sidebar_container.scrolled { */
@@ -105,7 +105,7 @@ color: #e0f7e8;
 background-color: #f0eded49;border: 1px dashed #e3a204 ;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li a {
-    font-family: "RussoOne Regular",sans-serif;text-decoration: none;font-size: 14px;
+    font-family: "Poppins Regular",sans-serif;text-decoration: none;font-size: 14px;
 }
 .sidebar .sidebar_container .sidebar_container_p ul.upa li ul {
   position: relative;width: 100%;
@@ -193,7 +193,7 @@ background-color: #f0eded49;border: 1px dashed #e3a204 ;
       list-style: none;vertical-align: auto;margin: 13px 10px -8px 0;
   }
   .sidebar .sidebar_container .sidebar_container_p ul li a {
-      color: #ffffff;font-family: "RussoOne Regular",sans-serif;text-decoration: none;font-weight: normal;font-size: 12px;
+      color: #ffffff;font-family: "Poppins Regular",sans-serif;text-decoration: none;font-weight: normal;font-size: 12px;
   }
   .sidebar .sidebar_container .sidebar_container_p ul li.signin {
       background-color: #ffffff;color: #0a0a0a !important;padding: 4px 8px 4px 8px;border-radius: 20px;

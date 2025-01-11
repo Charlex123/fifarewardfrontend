@@ -99,12 +99,12 @@ function Navbar() {
                 <ul className={styles.upa}>
                     <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
                     <li><a href='/betting' rel='noopener noreferrer'>Betting</a></li>
-                    <li><a href='/fanforum' rel='noopener noreferrer'> Forum</a></li>
-                    <li><a href='/farming' rel='noopener noreferrer'>Farm FRD</a></li>
-                    <li><a href='/stakes' rel='noopener noreferrer'>StakeS</a></li>
-                    <li><a href='/nft' rel='noopener noreferrer'>NFT MarketPlace</a></li>
-                    <li><a href='/gaming/' rel='noopener noreferrer'>Gaming</a></li>
-                    <li><a href='/gaming/mygames' rel='noopener noreferrer'>My Games</a></li>
+                    {/* <li><a href='/fanforum' rel='noopener noreferrer'> Forum</a></li> */}
+                    {/* <li><a href='/farming' rel='noopener noreferrer'>Farm FRD</a></li> */}
+                    {/* <li><a href='/stakes' rel='noopener noreferrer'>StakeS</a></li> */}
+                    {/* <li><a href='/nft' rel='noopener noreferrer'>NFT MarketPlace</a></li> */}
+                    {/* <li><a href='/gaming/' rel='noopener noreferrer'>Gaming</a></li> */}
+                    {/* <li><a href='/gaming/mygames' rel='noopener noreferrer'>My Games</a></li> */}
                 </ul>
                 
                 <div className={styles.con_btns}>

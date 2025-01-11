@@ -851,6 +851,7 @@ const closeBetFilter = () => {
         <div className={openbetsstyle.headbg}>
           <Image src={footballb} alt='banner' style={{width: '100%',height: '120px'}}/>
         </div>
+        
         <div className={openbetsstyle.breadcrum}>
           <button type='button' title='button' onClick={goBack} style={{color: '#151414'}}> {'<< '} back</button> 
         </div> 

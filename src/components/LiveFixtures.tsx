@@ -36,25 +36,121 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
   useEffect(() => {
   
   (async (live) => {
+    // try {
+    //   setShowLoading(true);
+    //   const config = {
+    //     headers: {
+    //         "Content-type": "application/json"
+    //     }
+    //   }  
+    //   const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/livefixtures/loadlivefixtures", {
+    //     live,
+    //     currentPage,
+    //     limit
+    //   }, config);
+    //   setIsleagueLoaded(true)
+    //   setFixturesd(data.leaguefixtures);
+    //   setTotalPages(data.totalPages);
+    //   setShowLoading(false);
+    // } catch (error) {
+    //   console.log(error)
+    // }
+
     try {
       setShowLoading(true);
+    
       const config = {
         headers: {
-            "Content-type": "application/json"
+          "Content-type": "application/json",
+        },
+      };
+    
+      const currentPage = 1; // Default to page 1
+      const limit = 10; // Default limit
+    
+      const { data } = await axios.post<{
+        leaguefixtures: {
+          _id: number;
+          leagueName: string;
+          leagueCountry: string;
+          fixtures: Fixture[];
+        }[];
+        totalPages: number;
+      }>(
+        "https://fifarewardbackend-1.onrender.com/api/livefixtures/loadlivefixtures",
+        {
+          live,
+          currentPage,
+          limit,
+        },
+        config
+      );
+    
+      const priorityLeagues = [
+        1, 2, 3, 4, 15, 36, 39, 45, 9, 46, 47, 61, 71, 78, 88, 94, 135, 137, 140,
+        143, 62, 179, 181, 526, 528, 529, 531, 547, 550, 556,
+      ];
+    
+      // Group fixtures by league and structure as League[]
+      const leagueMap = new Map<number, League & { totalPages: number }>();
+    
+      data.leaguefixtures.forEach((league) => {
+        const leagueId = league._id;
+        const leagueName = league.leagueName;
+        const leagueCountry = league.leagueCountry;
+    
+        if (!leagueMap.has(leagueId)) {
+          leagueMap.set(leagueId, {
+            leagueId,
+            leagueName,
+            leagueCountry,
+            fixtures: [],
+            totalPages: Math.ceil(league.fixtures.length / limit), // Calculate totalPages for this league
+          });
         }
-      }  
-      const {data} = await axios.post("https://fifarewardbackend-1.onrender.com/api/livefixtures/loadlivefixtures", {
-        live,
-        currentPage,
-        limit
-      }, config);
-      setIsleagueLoaded(true)
-      setFixturesd(data.leaguefixtures);
-      setTotalPages(data.totalPages);
+    
+        const existingFixtures = leagueMap.get(leagueId)!.fixtures;
+        league.fixtures.forEach((fixture) => {
+          if (!existingFixtures.some((f) => f.fixture.id === fixture.fixture.id)) {
+            existingFixtures.push(fixture);
+          }
+        });
+    
+        // Update totalPages for this league based on updated fixtures length
+        leagueMap.get(leagueId)!.totalPages = Math.ceil(existingFixtures.length / limit);
+      });
+    
+      const priorityLeagueData: League[] = [];
+      const nonPriorityLeagueData: League[] = [];
+    
+      leagueMap.forEach((league) => {
+        console.log("league dsas",league)
+        if (priorityLeagues.includes(league.leagueId)) {
+          priorityLeagueData.push(league);
+        } else {
+          nonPriorityLeagueData.push(league);
+        }
+      });
+    
+      // Sort priorityLeagueData based on the order in priorityLeagues
+      priorityLeagueData.sort(
+        (a, b) => priorityLeagues.indexOf(a.leagueId) - priorityLeagues.indexOf(b.leagueId)
+      );
+    
+      // Combine priority leagues followed by non-priority leagues
+      const combinedLeagues = [...priorityLeagueData, ...nonPriorityLeagueData];
+    
+      // Update states
+      setIsleagueLoaded(true);
+      setFixturesd(combinedLeagues);
       setShowLoading(false);
+    
+      console.log("Today's league data with total pages:", combinedLeagues);
     } catch (error) {
-      console.log(error)
+      console.error("Error while loading today's fixtures:", error);
+      setShowLoading(false);
     }
+
   })(live)
     
 },[live,currentPage,limit])
@@ -82,15 +178,8 @@ const LoadLiveFixtures:React.FC<MyComponentProps> = (live) => {
   }
   
   const closeLeagueFixtures = (divId:any) => {
-    console.log('huo',divId);
-    let svg = divId.getAttribute('data-icon');
-    let path = divId.getAttribute('fill');
-    if(svg !== null && svg !== undefined) {
-      divId.parentElement.parentElement.parentElement.remove();
-    }
-    if(path !== null && path !== undefined) {
-      divId.parentElement.parentElement.parentElement.parentElement.remove()
-    }
+    let targetdiv = document.getElementById("fixtureparent") as HTMLElement;
+    targetdiv.remove();
   }
   
   
@@ -176,7 +265,7 @@ return (
                           <div>
                             {
                               fixturesd?.map((league,index:number) => (
-                                <div className={leaguefixturestyle.league_wrap} key={index}>
+                                <div className={leaguefixturestyle.league_wrap} key={index} id="fixtureparent">
                                   <div className={leaguefixturestyle.tgle} >
                                     <div onClick={(e) => toggleFixtures(e.target)}><h3>{league.leagueName}</h3></div>
                                     <div className={leaguefixturestyle.drpdwn} onClick={(e) => toggleFixtures(e.target)}>{<FaCaretDown/>}</div>
@@ -191,16 +280,16 @@ return (
                                               <span>Date</span> {`${moment(fixture?.fixture.date).format('DD/MM ddd YYYY')}`}
                                             </div>
                                             <div className={leaguefixturestyle.dd}>
-                                                <div><span>Time</span>{`${moment(fixture?.fixture.timestamp).format('hh:mm a')}`}</div>
-                                                <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
+                                                <div><span>Time</span>{`${moment(fixture?.fixture.date).format('hh:mm a')}`}</div>
+                                                {/* <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div> */}
                                             </div>
                                           </div>
           
                                           <div className={leaguefixturestyle.fixt_tm}>
                                             <div className={leaguefixturestyle.teams}>
-                                              <div><Image src={fixture.teams.home.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'left',paddingRight: '5px'}}/> {`${fixture.teams.home.name}`} {fixture.goals.home != null ? (fixture.goals.home) : ''}</div>
+                                              <div><Image src={fixture.teams.home.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'left',paddingRight: '5px'}}/> {`${fixture.teams.home.name}`} {fixture.goals.home != null ? (fixture.goals.home) : '(-)'}</div>
                                               <div className={leaguefixturestyle.vs}>Vs</div>
-                                              <div>{fixture.goals.away != null ? (fixture.goals.away) : ''} {`${fixture.teams.away.name}`} <Image src={fixture.teams.away.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'right',paddingLeft: '5px'}} /></div>
+                                              <div>{fixture.goals.away != null ? (fixture.goals.away) : '(-)'} {`${fixture.teams.away.name}`} <Image src={fixture.teams.away.logo} className={leaguefixturestyle.lg} alt="logo" width={25} height={30} style={{float: 'right',paddingLeft: '5px'}} /></div>
                                             </div>
                                           </div>
                                           <div className={leaguefixturestyle.openbet}>

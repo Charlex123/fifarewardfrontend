@@ -156,15 +156,8 @@ const FixturesByDate:React.FC<MyComponentProps> = ({date}) => {
   }
   
   const closeLeagueFixtures = (divId:any) => {
-    console.log('huo',divId);
-    let svg = divId.getAttribute('data-icon');
-    let path = divId.getAttribute('fill');
-    if(svg !== null && svg !== undefined) {
-      divId.parentElement.parentElement.parentElement.remove();
-    }
-    if(path !== null && path !== undefined) {
-      divId.parentElement.parentElement.parentElement.parentElement.remove()
-    }
+    let targetdiv = document.getElementById("fixtureparent") as HTMLElement;
+    targetdiv.remove();
   }
   
   
@@ -249,7 +242,7 @@ return (
                     {fixturesd!.length > 0 ?
                       <div>
                         {fixturesd?.map((league,index) => (
-                          <div className={leaguefixturestyle.league_wrap} key={index}>
+                          <div className={leaguefixturestyle.league_wrap} key={index} id="fixtureparent">
                            
                             <div className={leaguefixturestyle.league_wrap_in} >
                               {league.fixtures.map((fixture,index) => (
@@ -261,7 +254,7 @@ return (
                                       </div>
                                       <div className={leaguefixturestyle.dd}>
                                           <div><span>Time</span>{`${moment(fixture?.fixture.date).format('hh:mm a')}`}</div>
-                                          <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div>
+                                          {/* <div className={leaguefixturestyle.fid}>ID: {fixture?.fixture.id}</div> */}
                                       </div>
                                     </div>
 

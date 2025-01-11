@@ -112,8 +112,8 @@ function Navbar() {
                         <li><a href='/betting' rel='noopener noreferrer'>Betting </a></li>
                         {/* <li><a href='/fanforum' rel='noopener noreferrer'>Forum</a></li> */}
                         {/* <li><a href='/stakes' rel='noopener noreferrer'>StakeS</a></li> */}
-                        <li><a href='/farming' rel='noopener noreferrer'>Farm FRD</a></li>
-                        <li><a href='/nft' rel='noopener noreferrer'>NFT</a></li>
+                        {/* <li><a href='/farming' rel='noopener noreferrer'>Farm FRD</a></li> */}
+                        {/* <li><a href='/nft' rel='noopener noreferrer'>NFT</a></li> */}
                         {/* <li><a href='/aichat' rel='noopener noreferrer'>Prediction AI</a></li> */}
                         {/* <li><a href='/gaming' rel='noopener noreferrer'>Gaming </a></li> */}
 

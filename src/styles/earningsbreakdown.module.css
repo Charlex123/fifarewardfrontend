@@ -33,7 +33,7 @@
     width: 100%;
 }
 .earnins .rwdb h1 {
-    margin: 15px auto;text-align: center;font-family: "RussoOne Regular",sans-serif;font-size: 25px;
+    margin: 15px auto;text-align: center;font-family: "Poppins Regular",sans-serif;font-size: 25px;
     font-weight: 800;
 }
 .earnins .rwdbadge {
@@ -41,11 +41,11 @@
     display: flex;flex-wrap: nowrap;flex-direction: row;justify-content: space-between;align-items: center;
 }
 .earnins .rwdbadge h1 {
-    font-weight: 600;font-family: "RussoOne Regular", sans-serif;margin-bottom: 10px;font-size: 16px;
+    font-weight: 600;font-family: "Poppins Regular", sans-serif;margin-bottom: 10px;font-size: 16px;
 }
 .earnins .rwdbadge .d {
     border: 1px solid #656363c2;padding: 10px;background-color: #252525c2;width: 30%;
-    font-size: 13px;font-family: "RussoOne Regular",sans-serif;margin: auto;text-align: center;
+    font-size: 13px;font-family: "Poppins Regular",sans-serif;margin: auto;text-align: center;
     border-radius: 8px;
 }
 .earnins .rwdbadge .d .dd {
@@ -59,7 +59,7 @@
     float: left;
 }
 .earnins .rwdbadge .d .dd .ddc .rwd_c {
-    font-weight: 800;font-family: "RussoOne Regular",sans-serif;text-align: right;float: right;
+    font-weight: 800;font-family: "Poppins Regular",sans-serif;text-align: right;float: right;
 }
 
 @media (max-width: 991px) {

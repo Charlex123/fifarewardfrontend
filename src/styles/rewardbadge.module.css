@@ -21,7 +21,7 @@
     width: 100%;
 }
 .rewardsbagde .rwdb h1 {
-    margin: 15px auto 5px auto;text-align: center;font-family: "RussoOne Regular",sans-serif;font-size: 25px;
+    margin: 15px auto 5px auto;text-align: center;font-family: "Poppins Regular",sans-serif;font-size: 25px;
     font-weight: 800;
 }
 .rewardsbagde .rwdb p {
@@ -33,15 +33,15 @@
 }
 .rewardsbagde .rwdbadge .d {
     border: 1px solid #656363c2;padding: 10px;background-color: #252525c2;width: 22%;
-    font-size: 13px;font-family: "RussoOne Regular",sans-serif;margin: auto;text-align: center;
+    font-size: 13px;font-family: "Poppins Regular",sans-serif;margin: auto;text-align: center;
     border-radius: 8px;
 }
 .rewardsbagde .rwdbadge .d4 {
     font-size: 10px !important;text-align: center;
-    font-family: "RussoOne Regular";
+    font-family: "Poppins Regular";
 }
 .rewardsbagde .rwdbadge div .rwd_c {
-    font-weight: 800;font-family: "RussoOne Regular",sans-serif
+    font-weight: 800;font-family: "Poppins Regular",sans-serif
 }
 
 @media (max-width: 991px) {

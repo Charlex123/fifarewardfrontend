@@ -28,7 +28,7 @@
 .top .gameh1 {
   z-index: 9999;
   position: relative;
-  font-family: "RussoOne Regular",sans-serif;
+  font-family: "Poppins Regular",sans-serif;
 	font-size: 4em;
 	color: #fff;
 	text-align: center;
@@ -219,7 +219,7 @@
   margin: 2rem auto;
 }
 .gallery .head h3 {
-  font-weight: 600;font-family: "RussoOne Regular","RussoOne Regular", sans-serif;
+  font-weight: 600;font-family: "Poppins Regular","Poppins Regular", sans-serif;
   font-size: 28px;animation: blinka 1s infinite;margin: 0 auto 2rem auto;
 }
 @keyframes blinka {
@@ -241,7 +241,7 @@
   padding: 12px 22px;
 }
 .gallery .hint .heda {
-  font-weight: 600;font-size: 16px;font-family: "RussoOne Regular", "RussoOne Regular", sans-serif;
+  font-weight: 600;font-size: 16px;font-family: "Poppins Regular", "Poppins Regular", sans-serif;
 }
 .gallery .hint .hinta {
   margin: 20px 0;

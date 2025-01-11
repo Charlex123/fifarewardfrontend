@@ -74,7 +74,7 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
             <div className={styles.ina}>
                 <div>
                     <div>
-                        <h1> Launch Count Down </h1> 
+                        <h1> Coming Soon </h1> 
                     </div>
                     <h3>Below are some of the blockchain protocols we have built to foster user engagement and community building as well as stand out amongst our counterpart Dapps</h3>
                     <ul>
@@ -89,10 +89,10 @@ const ComingSoonCountdownTimer:React.FC <Props> = ({onChange}) => {
                     <h2>All protocols are built on the blockchain</h2>
                 </div>
                 
-                {loading === true  ? <Loading/> : <div className={styles.timer}>
+                {/* {loading === true  ? <Loading/> : <div className={styles.timer}>
                   {formatTime(timeRemaining)} 
                   </div>
-                  }
+                  } */}
             </div>
         </div>
     </>

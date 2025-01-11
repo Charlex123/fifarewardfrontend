@@ -12,9 +12,9 @@ import RoadMap from '../RoadMap';
 import ComingSoonCountdownTimer from '../ComingSoonCountDown';
 import cgk from '../../assets/images/coingecko-aace8f3c.png';
 import cmc from '../../assets/images/coinmarketcap-a91aaec1.png';
-import chainhead from '../../assets/images/chainhead.gif';
+import chainhead from '../../assets/images/chainhead.png';
 import quckswap from '../../assets/images/quickswap-light-3af62abd.png';
-import aibanner from '../../assets/images/aibanner2.png'
+import aibanner from '../../assets/images/frdaiphoto.png'
 // import dappimg from '../../assets/images/dapp.png';
 // import bnblogo from '../../assets/images/blockchain-binance-white-71f5d555.png';
 // import cronlogo from '../../assets/images/blockchain-cronos-light-78484d18.png';
@@ -27,7 +27,7 @@ import okxlogo from '../../assets/images/okx.png';
 import refgroup from '../../assets/images/group2ref.png';
 import huobilogo from '../../assets/images/huobi.png';
 import kucoinlogo from '../../assets/images/kucoin.png';
-import frdbanner from '../../assets/images/frdbanner.gif';
+import frdbanner from '../../assets/images/frdbanner.png';
 import fanforum from '../../assets/images/fanforumbanner.png';
 import nftbanner from '../../assets/images/nftbanner.png'
 import gamebanner from '../../assets/images/guessherobanner.png'
@@ -237,7 +237,7 @@ const closeCountdownModal = () => {
 
               <div className={styles.blkc2}>
                 <h1>A LAYER 2 GAMEFI BLOCKCHAIN </h1>
-                <h1> ON BINANCE SMART CHAIN </h1>
+                {/* <h1> ON BINANCE SMART CHAIN </h1> */}
               </div>
               
               {/* <div className={styles.blkc3}>
@@ -321,7 +321,7 @@ const closeCountdownModal = () => {
             </div>
             <div className={styles.conn_image}>
               <div className={styles.cimg}>
-                <Image src={aibanner} style={{width: '80%', height: '80%',borderRadius: '8px',margin: '15px auto'}} alt='connecting the world through football' />
+                <Image src={aibanner} style={{width: '100%', height: '80%',borderRadius: '8px',margin: '15px auto'}} alt='connecting the world through football' />
               </div>
             </div>
           </div>
@@ -372,7 +372,7 @@ const closeCountdownModal = () => {
             </div>
             <div className={styles.conn_image}>
               <div className={styles.cimg}>
-                <Image src={frdbanner} style={{width: '100%', height: '100%',borderRadius: '8px',marginTop: '0'}} alt='connecting the world through football' />
+                <Image src={frdbanner} style={{width: '100%', height: '100%', minHeight: '300px',borderRadius: '8px',marginTop: '0'}} alt='connecting the world through football' />
               </div>
             </div>
           </div>
@@ -380,7 +380,12 @@ const closeCountdownModal = () => {
 
       {/* dex tools */}
       <section className={`${styles.exchmain} ${styles.section}`}>
-        <h1>SUPPORTED BY</h1>
+        
+        <div className="w-full flex justify-center items-center text-center px-4 py-8">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-black font-sans my-4">
+            SUPPORTED BY
+          </h1>
+        </div>
 
         <div className={styles.dexchanges}>
           <div className={styles.dexc}>
@@ -408,7 +413,11 @@ const closeCountdownModal = () => {
           <div className={styles.betd}>
               <div className={styles.betdc}>
                   <div>
-                    <h1>FIFAREWARD BETTING</h1>
+                    <div className="w-full flex justify-center items-center text-center px-4 py-8">
+                      <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-black font-sans my-4">
+                        FIFAREWARD BETTING
+                      </h1>
+                    </div>
                     <h3>(Wager Bet)</h3>
                   </div>
                   <div>
@@ -432,7 +441,13 @@ const closeCountdownModal = () => {
       </section>
 
       <section className={`${styles.connectworld} ${styles.section}`} id="#fanforum">
-          <h1>FIFAREWARD FAN FORUM</h1>
+
+        <div className="w-full flex justify-center items-center text-center px-4 py-8">
+          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-black font-sans my-4">
+            FIFAREWARD FAN FORUM
+          </h1>
+        </div>
+
           <div className={styles.conn_inner}>
             <div className={styles.connectw}>
               <div>
@@ -449,14 +464,20 @@ const closeCountdownModal = () => {
             </div>
             <div className={styles.conn_image}>
               <div className={`${styles.cimg} ${styles.cimg2}`}>
-                <Image src={fanforum} style={{width: '80%', height: '450px',borderRadius: '8px',margin: '15px auto',}} alt='connecting the world through football' />
+                <Image src={fanforum} style={{width: '50%', height: '350px',borderRadius: '8px',margin: '15px auto',}} alt='connecting the world through football' />
               </div>
             </div>
           </div>
       </section>
 
       <section className={`${styles.connectworld} ${styles.section}`} id="#nft">
-          <h1>NFT Minting And Market Place</h1>
+        
+          <div className="w-full flex justify-center items-center text-center px-4 py-8">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-black font-sans my-4">
+              SUPPORTED BY
+            </h1>
+          </div>
+
           <div className={styles.conn_inner}>
             <div className={styles.connectw}>
               <div>
@@ -480,7 +501,13 @@ const closeCountdownModal = () => {
       </section>
 
       <section className={`${styles.connectworld} ${styles.section}`} id="#gaming">
-          <h1>Fiareward Games</h1>
+        
+          <div className="w-full flex justify-center items-center text-center px-4 py-8">
+            <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-black font-sans my-4">
+              FIFAREWARD GAMES
+            </h1>
+          </div>
+          
           <div className={styles.conn_inner}>
             <div className={styles.connectw}>
               <div>
@@ -501,7 +528,17 @@ const closeCountdownModal = () => {
       </section>
 
       <section className={`${styles.frdstaking} ${styles.section}`} id="staking">
-          {isMobile === true ? <h1>STAKING <div>AND</div> FARMING</h1> : <h1>STAKING AND FARMING</h1>}
+          {isMobile === true ? 
+            <div className="w-full flex justify-center items-center text-center px-4 py-8">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-black font-sans my-4">
+              STAKING AND FARMING
+              </h1>
+            </div>
+           : <div className="w-full flex justify-center items-center text-center px-4 py-8">
+              <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight text-black font-sans my-4">
+              STAKING AND FARMING
+              </h1>
+            </div>}
           <div className={styles.stakingmain}>
               <div className={styles.stakevesttext}>
                 Fifareward built staking and FARMING systems to reward loyal and active users who are the pioneers of the first betting and sport protocol on the blockchain <a onClick={showcomingsoonContdown} style={{color: '#e28304'}}>go to staking</a>.

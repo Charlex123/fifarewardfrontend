@@ -28,7 +28,7 @@
 .top .gameh1 {
   z-index: 9999;
   position: relative;
-  font-family: "RussoOne Regular",sans-serif;
+  font-family: "Poppins Regular",sans-serif;
 	font-size: 4em;
 	color: #fff;
 	text-align: center;
@@ -193,7 +193,7 @@
 }
 .dc .coins_col h4 {
   margin: auto;position: absolute;left: 0;right: 0;top: 54px;font-size: 28px;
-  font-family: "RussoOne Regular", sans-serif;
+  font-family: "Poppins Regular", sans-serif;
 }
 
 .pretty_italic {

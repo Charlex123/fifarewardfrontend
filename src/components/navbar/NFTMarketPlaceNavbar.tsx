@@ -66,13 +66,13 @@ function Navbar() {
                 <ul className={styles.upa}> 
                     <li><a href='/dapp' rel='noopener noreferrer'>Dapp</a></li>
                     <li><a href='/betting' rel='noopener noreferrer'>Betting</a></li>
-                    <li><a href='/fanforum' rel='noopener noreferrer'> Forum</a></li>
-                    <li><a href='/farming' rel='noopener noreferrer'>Farm FRD</a></li>
-                    <li><a href='/stakes' rel='noopener noreferrer'>Stakes</a></li>
-                    <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li>
-                    <li><a href='/nft/mynfts' rel='noopener noreferrer'>My NFTs</a></li>
-                    <li><a href='/nft' rel='noopener noreferrer'> MarketPlace</a></li>
-                    <li><a href='/nft/createnft' rel='noopener noreferrer'>Mint NFT</a></li>
+                    {/* <li><a href='/fanforum' rel='noopener noreferrer'> Forum</a></li> */}
+                    {/* <li><a href='/farming' rel='noopener noreferrer'>Farm FRD</a></li> */}
+                    {/* <li><a href='/stakes' rel='noopener noreferrer'>Stakes</a></li> */}
+                    {/* <li><a href='/gaming' rel='noopener noreferrer'>Gaming</a></li> */}
+                    {/* <li><a href='/nft/mynfts' rel='noopener noreferrer'>My NFTs</a></li> */}
+                    {/* <li><a href='/nft' rel='noopener noreferrer'> MarketPlace</a></li> */}
+                    {/* <li><a href='/nft/createnft' rel='noopener noreferrer'>Mint NFT</a></li> */}
                 </ul>
                 
                 <div className={styles.con_btns}>
